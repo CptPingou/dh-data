@@ -1,0 +1,24 @@
+﻿# Source PDFs - stored externally
+pdf/
+
+# Local snapshots / archives
+DH Data.zip
+*.zip
+
+# Accidental/generated CLI output
+--help/
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments
+.venv/
+venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

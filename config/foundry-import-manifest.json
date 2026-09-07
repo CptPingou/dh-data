@@ -1,0 +1,97 @@
+{
+  "version": "BH-2026-07-09-active",
+  "description": "Canonical DH-DATA sources used by the Foundry full import. Blood Hunter active playtest source is The Void 2026-07-09; v1.5 remains historical in DH-DATA and is excluded from the active Foundry export.",
+  "sources": [
+    {
+      "corpus": "srd-2.0",
+      "kind": "class",
+      "paths": [
+        "data/srd-2.0/indexes/classes.json"
+      ]
+    },
+    {
+      "corpus": "srd-2.0",
+      "kind": "subclass",
+      "paths": [
+        "data/srd-2.0/indexes/subclasses.json",
+        "data/srd-2.0/indexes/subclasses-hope-fear.json"
+      ]
+    },
+    {
+      "corpus": "srd-2.0",
+      "kind": "domain_card",
+      "paths": [
+        "data/srd-2.0/domain-cards/arcana.json",
+        "data/srd-2.0/domain-cards/blade.json",
+        "data/srd-2.0/domain-cards/bone.json",
+        "data/srd-2.0/domain-cards/codex.json",
+        "data/srd-2.0/domain-cards/dread.json",
+        "data/srd-2.0/domain-cards/grace.json",
+        "data/srd-2.0/domain-cards/midnight.json",
+        "data/srd-2.0/domain-cards/sage.json",
+        "data/srd-2.0/domain-cards/splendor.json",
+        "data/srd-2.0/domain-cards/valor.json"
+      ]
+    },
+    {
+      "corpus": "srd-2.0",
+      "kind": "weapon",
+      "paths": [
+        "data/srd-2.0/equipment/weapons-raw.json",
+        "data/srd-2.0/equipment/supplemental-weapons.json",
+        "data/srd-2.0/equipment/*wheel*.json"
+      ]
+    },
+    {
+      "corpus": "srd-2.0",
+      "kind": "armor",
+      "paths": [
+        "data/srd-2.0/equipment/armor.json"
+      ]
+    },
+    {
+      "corpus": "srd-2.0",
+      "kind": "adversary",
+      "paths": [
+        "data/srd-2.0/adversaries/adversaries.json"
+      ]
+    },
+    {
+      "corpus": "srd-2.0",
+      "kind": "environment",
+      "paths": [
+        "data/srd-2.0/environments/environments.json"
+      ]
+    },
+    {
+      "corpus": "blood-hunter-2026-07-09",
+      "kind": "class",
+      "paths": [
+        "data/playtest/blood-hunter-2026-07-09/classes/**/*.json"
+      ]
+    },
+    {
+      "corpus": "blood-hunter-2026-07-09",
+      "kind": "subclass",
+      "paths": [
+        "data/playtest/blood-hunter-2026-07-09/subclasses/**/*.json"
+      ]
+    },
+    {
+      "corpus": "blood-hunter-2026-07-09",
+      "kind": "domain_card",
+      "paths": [
+        "data/playtest/blood-hunter-2026-07-09/domains/blood/cards/**/*.json"
+      ]
+    }
+  ],
+  "expected_counts": {
+    "class": 14,
+    "subclass": 29,
+    "domain_card": 231,
+    "weapon": 358,
+    "armor": 69,
+    "adversary": 264,
+    "environment": 47
+  }
+}

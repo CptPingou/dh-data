@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://campaignos.local/schemas/primitive.schema.json",
+  "title": "Daggerheart Mechanical Primitive",
+  "type": "object",
+  "required": [
+    "id",
+    "primitive_id",
+    "label",
+    "level",
+    "status",
+    "evidence_count",
+    "evidence"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^primitive\\."
+    },
+    "primitive_id": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    },
+    "level": {
+      "enum": [
+        "data",
+        "mechanical",
+        "runtime_ui"
+      ]
+    },
+    "description": {
+      "type": "string"
+    },
+    "status": {
+      "enum": [
+        "candidate",
+        "confirmed",
+        "rejected",
+        "merged",
+        "split"
+      ]
+    },
+    "evidence_count": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "corpora": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    },
+    "cross_corpus": {
+      "type": "boolean"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    }
+  },
+  "additionalProperties": true
+}

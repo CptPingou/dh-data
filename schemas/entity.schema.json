@@ -1,0 +1,124 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "entity.schema.json",
+  "type": "object",
+  "required": [
+    "id",
+    "kind",
+    "identity",
+    "source",
+    "provenance",
+    "availability"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "name",
+        "slug"
+      ],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        }
+      }
+    },
+    "source": {
+      "type": "object",
+      "required": [
+        "corpus",
+        "product",
+        "status"
+      ],
+      "properties": {
+        "corpus": {
+          "type": "string"
+        },
+        "product": {
+          "type": "string"
+        },
+        "edition": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "version": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "enum": [
+            "srd",
+            "published",
+            "playtest",
+            "homebrew",
+            "design_reference"
+          ]
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "properties": {
+        "source_file": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "page": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "srd_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "foundry_uuid": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "availability": {
+      "type": "object",
+      "required": [
+        "in_srd",
+        "private_only",
+        "deprecated"
+      ],
+      "properties": {
+        "in_srd": {
+          "type": "boolean"
+        },
+        "private_only": {
+          "type": "boolean"
+        },
+        "deprecated": {
+          "type": "boolean"
+        }
+      }
+    },
+    "content": {
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,301 @@
+[
+  {
+    "id": "srd-2.0.class.assassin",
+    "kind": "class",
+    "name": "Assassin",
+    "slug": "assassin",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "blade",
+      "midnight"
+    ],
+    "starting_evasion": 12,
+    "starting_hit_points": 5,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.bard",
+    "kind": "class",
+    "name": "Bard",
+    "slug": "bard",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "codex",
+      "grace"
+    ],
+    "starting_evasion": 10,
+    "starting_hit_points": 5,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.brawler",
+    "kind": "class",
+    "name": "Brawler",
+    "slug": "brawler",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "valor",
+      "bone"
+    ],
+    "starting_evasion": 10,
+    "starting_hit_points": 6,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.druid",
+    "kind": "class",
+    "name": "Druid",
+    "slug": "druid",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "arcana",
+      "sage"
+    ],
+    "starting_evasion": 10,
+    "starting_hit_points": 6,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.guardian",
+    "kind": "class",
+    "name": "Guardian",
+    "slug": "guardian",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "blade",
+      "valor"
+    ],
+    "starting_evasion": 9,
+    "starting_hit_points": 7,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.ranger",
+    "kind": "class",
+    "name": "Ranger",
+    "slug": "ranger",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "bone",
+      "sage"
+    ],
+    "starting_evasion": 12,
+    "starting_hit_points": 6,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.rogue",
+    "kind": "class",
+    "name": "Rogue",
+    "slug": "rogue",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "grace",
+      "midnight"
+    ],
+    "starting_evasion": 12,
+    "starting_hit_points": 6,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.seraph",
+    "kind": "class",
+    "name": "Seraph",
+    "slug": "seraph",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "splendor",
+      "valor"
+    ],
+    "starting_evasion": 9,
+    "starting_hit_points": 7,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.sorcerer",
+    "kind": "class",
+    "name": "Sorcerer",
+    "slug": "sorcerer",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "arcana",
+      "midnight"
+    ],
+    "starting_evasion": 10,
+    "starting_hit_points": 6,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.warlock",
+    "kind": "class",
+    "name": "Warlock",
+    "slug": "warlock",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "dread",
+      "grace"
+    ],
+    "starting_evasion": 11,
+    "starting_hit_points": 5,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.warrior",
+    "kind": "class",
+    "name": "Warrior",
+    "slug": "warrior",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "blade",
+      "bone"
+    ],
+    "starting_evasion": 11,
+    "starting_hit_points": 6,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.witch",
+    "kind": "class",
+    "name": "Witch",
+    "slug": "witch",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "dread",
+      "sage"
+    ],
+    "starting_evasion": 10,
+    "starting_hit_points": 6,
+    "validation": "confirmed_srd2_pdf"
+  },
+  {
+    "id": "srd-2.0.class.wizard",
+    "kind": "class",
+    "name": "Wizard",
+    "slug": "wizard",
+    "source": {
+      "corpus": "daggerheart-srd",
+      "version": "2.0",
+      "status": "srd"
+    },
+    "availability": {
+      "in_srd": true,
+      "private_only": false,
+      "deprecated": false
+    },
+    "domains": [
+      "codex",
+      "splendor"
+    ],
+    "starting_evasion": 11,
+    "starting_hit_points": 5,
+    "validation": "confirmed_srd2_pdf"
+  }
+]

@@ -1,0 +1,13 @@
+{
+  "dataset": "daggerheart-data",
+  "version": "0.1.1",
+  "validated": {
+    "blood_hunter_v1.5": true
+  },
+  "counts": {
+    "classes": 1,
+    "subclasses": 3,
+    "domains": 1,
+    "domain_cards": 21
+  }
+}

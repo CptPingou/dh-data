@@ -1,0 +1,2244 @@
+{
+  "milestone": "P2.3.3j",
+  "green": true,
+  "policy": "Conservative source normalization only; no Foundry embedded Items are generated in this milestone.",
+  "adversaries": {
+    "rows": [
+      {
+        "id": "srd-2.0.adversary.acid-burrower",
+        "name": "Acid Burrower",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": {
+          "embedded_adversary": "Bear",
+          "offset": 1025,
+          "marker": "BEAR Tier  Bruiser",
+          "removed_characters": 685
+        }
+      },
+      {
+        "id": "srd-2.0.adversary.ahuizotl",
+        "name": "Ahuizotl",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.atototl",
+        "name": "Atototl",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.bear",
+        "name": "Bear",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.bugboar",
+        "name": "Bugboar",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cave-ogre",
+        "name": "Cave Ogre",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.common-ruffian",
+        "name": "Common Ruffian",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.construct",
+        "name": "Construct",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.courtier",
+        "name": "Courtier",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.darkweave-crawler",
+        "name": "Darkweave Crawler",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.darkweave-queen",
+        "name": "Darkweave Queen",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.darkweave-spinner",
+        "name": "Darkweave Spinner",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.darkweave-swarmlings",
+        "name": "Darkweave Swarmlings",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.deeproot-defender",
+        "name": "Deeproot Defender",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.dire-wolf",
+        "name": "Dire Wolf",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.elk",
+        "name": "Elk",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.falcon",
+        "name": "Falcon",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-mosquitoes",
+        "name": "Giant Mosquitoes",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-rat",
+        "name": "Giant Rat",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-scorpion",
+        "name": "Giant Scorpion",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.glass-snake",
+        "name": "Glass Snake",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.grimmling-warband",
+        "name": "Grimmling Warband",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.archer-guard",
+        "name": "Archer Guard",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.bladed-guard",
+        "name": "Bladed Guard",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.head-guard",
+        "name": "Head Guard",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.harpy",
+        "name": "Harpy",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.harrier",
+        "name": "Harrier",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jagged-knife-bandit",
+        "name": "Jagged Knife Bandit",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jagged-knife-hexer",
+        "name": "Jagged Knife Hexer",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jagged-knife-kneebreaker",
+        "name": "Jagged Knife Kneebreaker",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jagged-knife-lackey",
+        "name": "Jagged Knife Lackey",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jagged-knife-lieutenant",
+        "name": "Jagged Knife Lieutenant",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jagged-knife-shadow",
+        "name": "Jagged Knife Shadow",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jagged-knife-sniper",
+        "name": "Jagged Knife Sniper",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.kelpie",
+        "name": "Kelpie",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.masque-muerte",
+        "name": "Masque Muerte",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.mechanorb",
+        "name": "Mechanorb",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.merchant",
+        "name": "Merchant",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.minor-chaos-elemental",
+        "name": "Minor Chaos Elemental",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.minor-fire-elemental",
+        "name": "Minor Fire Elemental",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.minor-demon",
+        "name": "Minor Demon",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.minor-treant",
+        "name": "Minor Treant",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.mountain-troll",
+        "name": "Mountain Troll",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.octopus",
+        "name": "Octopus",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.green-ooze",
+        "name": "Green Ooze",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.tiny-green-ooze",
+        "name": "Tiny Green Ooze",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.red-ooze",
+        "name": "Red Ooze",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.tiny-red-ooze",
+        "name": "Tiny Red Ooze",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.panther",
+        "name": "Panther",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.petty-noble",
+        "name": "Petty Noble",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.phantom",
+        "name": "Phantom",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.pirate-captain",
+        "name": "Pirate Captain",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.pirate-raiders",
+        "name": "Pirate Raiders",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.pirate-t-ough",
+        "name": "Pirate T ough",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.poltergeist",
+        "name": "Poltergeist",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.rabble-mawb",
+        "name": "Rabble Mawb",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.redcap-biters",
+        "name": "Redcap Biters",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.redcap-breaker",
+        "name": "Redcap Breaker",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.redcap-butcher",
+        "name": "Redcap Butcher",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.redcap-candlemaker",
+        "name": "Redcap Candlemaker",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.redcap-skinner",
+        "name": "Redcap Skinner",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.rugaru",
+        "name": "Rugaru",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.sawtoothed-gillbeast",
+        "name": "Sawtoothed Gillbeast",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.sellsword",
+        "name": "Sellsword",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.skeleton-archer",
+        "name": "Skeleton Archer",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.skeleton-dredge",
+        "name": "Skeleton Dredge",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.skeleton-knight",
+        "name": "Skeleton Knight",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.skeleton-warrior",
+        "name": "Skeleton Warrior",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.soul-shattered-mage",
+        "name": "Soul-Shattered Mage",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.spellblade",
+        "name": "Spellblade",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.spellbound-armor",
+        "name": "Spellbound Armor",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.swarm-of-rats",
+        "name": "Swarm of Rats",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.sylvan-soldier",
+        "name": "Sylvan Soldier",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.t-angle-bramble-swarm",
+        "name": "T angle Bramble Swarm",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.t-angle-bramble",
+        "name": "T angle Bramble",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.viper",
+        "name": "Viper",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.waxwork-creation",
+        "name": "Waxwork Creation",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.weaponmaster",
+        "name": "Weaponmaster",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.will-o-the-wisps",
+        "name": "Will-o’-the-Wisps",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.young-dryad",
+        "name": "Young Dryad",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.yufo",
+        "name": "Yufo",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.brawny-zombie",
+        "name": "Brawny Zombie",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.patchwork-zombie-hulk",
+        "name": "Patchwork Zombie Hulk",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.rotted-zombie",
+        "name": "Rotted Zombie",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.shambling-zombie",
+        "name": "Shambling Zombie",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.zombie-pack",
+        "name": "Zombie Pack",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.archer-squadron",
+        "name": "Archer Squadron",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.apprentice-assassin",
+        "name": "Apprentice Assassin",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.assassin-poisoner",
+        "name": "Assassin Poisoner",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.master-assassin",
+        "name": "Master Assassin",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.banshee",
+        "name": "Banshee",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.basilisk",
+        "name": "Basilisk",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.battle-box",
+        "name": "Battle Box",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.berserker-alpha",
+        "name": "Berserker Alpha",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.berserker-initiate",
+        "name": "Berserker Initiate",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.centaur-warden",
+        "name": "Centaur Warden",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.chaos-skull",
+        "name": "Chaos Skull",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.chicken-foot-hut",
+        "name": "Chicken-Foot Hut",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.conscript",
+        "name": "Conscript",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.courtesan",
+        "name": "Courtesan",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cult-adept",
+        "name": "Cult Adept",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cult-fang",
+        "name": "Cult Fang",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cult-initiate",
+        "name": "Cult Initiate",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.demonic-hound-pack",
+        "name": "Demonic Hound Pack",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.dire-pangolati",
+        "name": "Dire Pangolati",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.doppelhound",
+        "name": "Doppelhound",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.dragon-knight",
+        "name": "Dragon Knight",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.electric-eels",
+        "name": "Electric Eels",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.elephant",
+        "name": "Elephant",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.elite-soldier",
+        "name": "Elite Soldier",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.entombed-cat-beast",
+        "name": "Entombed Cat Beast",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.entombed-elite-guard",
+        "name": "Entombed Elite Guard",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.entombed-empress",
+        "name": "Entombed Empress",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.entombed-necropriest",
+        "name": "Entombed Necropriest",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.entombed-skin-beetles",
+        "name": "Entombed Skin Beetles",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.entombed-stonemason",
+        "name": "Entombed Stonemason",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.failed-experiment",
+        "name": "Failed Experiment",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.flock-of-feather-fiends",
+        "name": "Flock of Feather Fiends",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fowlbear",
+        "name": "Fowlbear",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fungispunj-sporeling",
+        "name": "Fungispunj Sporeling",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fungispunj-sporophore",
+        "name": "Fungispunj Sporophore",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.gargoyle",
+        "name": "Gargoyle",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-beastmaster",
+        "name": "Giant Beastmaster",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-brawler",
+        "name": "Giant Brawler",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-eagle",
+        "name": "Giant Eagle",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-octopus",
+        "name": "Giant Octopus",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.giant-recruit",
+        "name": "Giant Recruit",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.gobstalker",
+        "name": "Gobstalker",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.gorgon",
+        "name": "Gorgon",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.guahalan-alebrujo",
+        "name": "Guahalan Alebrujo",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.guahalan-fang-lord",
+        "name": "Guahalan Fang Lord",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.guahalan-shifter",
+        "name": "Guahalan Shifter",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.guahalan-spirit-beast",
+        "name": "Guahalan Spirit Beast",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.guahalan-spirit-singer",
+        "name": "Guahalan Spirit Singer",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.hill-titan",
+        "name": "Hill Titan",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.hive-walker",
+        "name": "Hive Walker",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.jack-o-lantern",
+        "name": "Jack-o’-Lantern",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.juvenile-flickerfly",
+        "name": "Juvenile Flickerfly",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.knight-of-the-realm",
+        "name": "Knight of the Realm",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.landshark",
+        "name": "Landshark",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.landshark-behemoth",
+        "name": "Landshark Behemoth",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.masked-thief",
+        "name": "Masked Thief",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.merchant-baron",
+        "name": "Merchant Baron",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.minotaur-wrecker",
+        "name": "Minotaur Wrecker",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.mortal-hunter",
+        "name": "Mortal Hunter",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.ravenous-mockery",
+        "name": "Ravenous Mockery",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.royal-advisor",
+        "name": "Royal Advisor",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.rust-eater",
+        "name": "Rust Eater",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.scarecrow",
+        "name": "Scarecrow",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.secret-keeper",
+        "name": "Secret-Keeper",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.shark",
+        "name": "Shark",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.siren",
+        "name": "Siren",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": {
+          "embedded_adversary": "Sprite",
+          "offset": 550,
+          "marker": "SPRITE Tier  Minion",
+          "removed_characters": 938
+        }
+      },
+      {
+        "id": "srd-2.0.adversary.spectral-archer",
+        "name": "Spectral Archer",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.spectral-captain",
+        "name": "Spectral Captain",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.spectral-guardian",
+        "name": "Spectral Guardian",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.sprite",
+        "name": "Sprite",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.spy",
+        "name": "Spy",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.stone-titan",
+        "name": "Stone Titan",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.stonewraith",
+        "name": "Stonewraith",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.triceratops",
+        "name": "Triceratops",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.tyrannosaurus",
+        "name": "Tyrannosaurus",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.urco",
+        "name": "Urco",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.valdenhax",
+        "name": "Valdenhax",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.war-wizard",
+        "name": "War Wizard",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.adult-flickerfly",
+        "name": "Adult Flickerfly",
+        "feature_count": 7,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.archmage",
+        "name": "Archmage",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.catrin",
+        "name": "Catrin",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.chimera",
+        "name": "Chimera",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.crimson-lepus",
+        "name": "Crimson Lepus",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cryptimoth",
+        "name": "Cryptimoth",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cursed-merfolk",
+        "name": "Cursed Merfolk",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.deep-dweller",
+        "name": "Deep Dweller",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.demon-of-avarice",
+        "name": "Demon of Avarice",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.demon-of-despair",
+        "name": "Demon of Despair",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.demon-of-hubris",
+        "name": "Demon of Hubris",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.demon-of-jealousy",
+        "name": "Demon of Jealousy",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.demon-of-wrath",
+        "name": "Demon of Wrath",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.dire-bat",
+        "name": "Dire Bat",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.drake",
+        "name": "Drake",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.dryad",
+        "name": "Dryad",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.dullahan",
+        "name": "Dullahan",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.elemental-spark",
+        "name": "Elemental Spark",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fellmounted-shadow-king",
+        "name": "Fellmounted Shadow King",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fire-titan",
+        "name": "Fire Titan",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.frost-titan",
+        "name": "Frost Titan",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.gargantuan-sea-turtle",
+        "name": "Gargantuan Sea Turtle",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.greater-earth-elemental",
+        "name": "Greater Earth Elemental",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.greater-water-elemental",
+        "name": "Greater Water Elemental",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.huge-green-ooze",
+        "name": "Huge Green Ooze",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.hydra",
+        "name": "Hydra",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.lamia",
+        "name": "Lamia",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.lamplight-beguiler",
+        "name": "Lamplight Beguiler",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.manticore",
+        "name": "Manticore",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.monarch",
+        "name": "Monarch",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.night-children",
+        "name": "Night Children",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.pain-priest",
+        "name": "Pain Priest",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.phoenix",
+        "name": "Phoenix",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.plesiosaurus",
+        "name": "Plesiosaurus",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.roc",
+        "name": "Roc",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.sandwyrm",
+        "name": "Sandwyrm",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.shapeshifting-fiend",
+        "name": "Shapeshifting Fiend",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.shapeshifting-fiend-revealed",
+        "name": "Shapeshifting Fiend Revealed",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.stag-knight",
+        "name": "Stag Knight",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.storm-titan",
+        "name": "Storm Titan",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.oak-treant",
+        "name": "Oak Treant",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.treant-sapling",
+        "name": "Treant Sapling",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.unicorn",
+        "name": "Unicorn",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.head-vampire",
+        "name": "Head Vampire",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.vampire",
+        "name": "Vampire",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.vampire-bat-swarm",
+        "name": "Vampire Bat Swarm",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.vampire-lord",
+        "name": "Vampire Lord",
+        "feature_count": 8,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.vault-guardian-gaoler",
+        "name": "Vault Guardian Gaoler",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.vault-guardian-sentinel",
+        "name": "Vault Guardian Sentinel",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.vault-guardian-turret",
+        "name": "Vault Guardian Turret",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.viscera-sucker",
+        "name": "Viscera Sucker",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.whisper-wraith",
+        "name": "Whisper Wraith",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.wyvern",
+        "name": "Wyvern",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.young-fire-dragon",
+        "name": "Young Fire Dragon",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.young-ice-dragon",
+        "name": "Young Ice Dragon",
+        "feature_count": 7,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.arch-necromancer",
+        "name": "Arch-Necromancer",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cephilith-abomination",
+        "name": "Cephilith Abomination",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cephilith-hatchling",
+        "name": "Cephilith Hatchling",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cephilith-novitiate",
+        "name": "Cephilith Novitiate",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cephilith-priest",
+        "name": "Cephilith Priest",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cephilith-titan",
+        "name": "Cephilith Titan",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cipactli",
+        "name": "Cipactli",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.cloud-titan",
+        "name": "Cloud Titan",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.demon-lord-berzug",
+        "name": "Demon Lord Berzug",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.dragon-mother-mitera",
+        "name": "Dragon Mother Mitera",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fallen-shock-troop",
+        "name": "Fallen Shock Troop",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fallen-sorcerer",
+        "name": "Fallen Sorcerer",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fallen-warlord-realm-breaker",
+        "name": "Fallen Warlord: Realm-Breaker",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fallen-warlord-undefeated-champion",
+        "name": "Fallen Warlord: Undefeated Champion",
+        "feature_count": 7,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.fire-titan-warlord",
+        "name": "Fire Titan Warlord",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.gargantuan-war-machine",
+        "name": "Gargantuan War Machine",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.ghastly-legion",
+        "name": "Ghastly Legion",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.griffin",
+        "name": "Griffin",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.hallowed-archer",
+        "name": "Hallowed Archer",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.hallowed-choir",
+        "name": "Hallowed Choir",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.hallowed-soldier",
+        "name": "Hallowed Soldier",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.harbinger-of-death",
+        "name": "Harbinger of Death",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.harbinger-of-famine",
+        "name": "Harbinger of Famine",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.harbinger-of-pestilence",
+        "name": "Harbinger of Pestilence",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.harbinger-of-war",
+        "name": "Harbinger of War",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.high-seraph",
+        "name": "High Seraph",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.kraken",
+        "name": "Kraken",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.oracle-of-doom",
+        "name": "Oracle of Doom",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.outer-realms-abomination",
+        "name": "Outer Realms Abomination",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.outer-realms-corruptor",
+        "name": "Outer Realms Corruptor",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.outer-realms-thrall",
+        "name": "Outer Realms Thrall",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.owl-witch",
+        "name": "Owl Witch",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.ruby-dragon",
+        "name": "Ruby Dragon",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.severed-shadow",
+        "name": "Severed Shadow",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.supreme-demiurge-adonix",
+        "name": "Supreme Demiurge Adonix",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.t-emporal-enforcer",
+        "name": "T emporal Enforcer",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.volcanic-dragon-obsidian-predator",
+        "name": "Volcanic Dragon: Obsidian Predator",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.volcanic-dragon-molten-scourge",
+        "name": "Volcanic Dragon: Molten Scourge",
+        "feature_count": 7,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.volcanic-dragon-ashen-tyrant",
+        "name": "Volcanic Dragon: Ashen Tyrant",
+        "feature_count": 7,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.water-mother",
+        "name": "Water Mother",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.wyrmfiend",
+        "name": "Wyrmfiend",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.wyrmlings",
+        "name": "Wyrmlings",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.xero-the-castle-killer",
+        "name": "Xero the Castle Killer",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.perfected-zombie",
+        "name": "Perfected Zombie",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.adversary.zombie-legion",
+        "name": "Zombie Legion",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      }
+    ],
+    "documents": 264,
+    "features": 899,
+    "feature_types": {
+      "Action": 372,
+      "Passive": 333,
+      "Reaction": 194
+    },
+    "unsplit": [],
+    "contamination_removed": [
+      {
+        "id": "srd-2.0.adversary.acid-burrower",
+        "name": "Acid Burrower",
+        "embedded_adversary": "Bear",
+        "offset": 1025,
+        "marker": "BEAR Tier  Bruiser",
+        "removed_characters": 685
+      },
+      {
+        "id": "srd-2.0.adversary.siren",
+        "name": "Siren",
+        "embedded_adversary": "Sprite",
+        "offset": 550,
+        "marker": "SPRITE Tier  Minion",
+        "removed_characters": 938
+      }
+    ],
+    "residual_contamination": []
+  },
+  "environments": {
+    "rows": [
+      {
+        "id": "srd-2.0.environment.abandoned-grove",
+        "name": "Abandoned Grove",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.abandoned-mine",
+        "name": "Abandoned Mine",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.alchemists-abandoned-workshop",
+        "name": "Alchemist’s Abandoned Workshop",
+        "feature_count": 2,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.ambushed",
+        "name": "Ambushed",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.ambushers",
+        "name": "Ambushers",
+        "feature_count": 1,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.bustling-marketplace",
+        "name": "Bustling Marketplace",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.cliffside-ascent",
+        "name": "Cliffside Ascent",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.corrupted-swamp",
+        "name": "Corrupted Swamp",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.cursed-graveyard",
+        "name": "Cursed Graveyard",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.grand-feast",
+        "name": "Grand Feast",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.hold-the-line",
+        "name": "Hold the Line",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.local-festival",
+        "name": "Local Festival",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.local-tavern",
+        "name": "Local Tavern",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.outpost-town",
+        "name": "Outpost Town",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.raging-river",
+        "name": "Raging River",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.raiding-party",
+        "name": "Raiding Party",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.beach-day",
+        "name": "Beach Day",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.cult-ritual",
+        "name": "Cult Ritual",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.deadly-dungeon",
+        "name": "Deadly Dungeon",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.duel",
+        "name": "Duel",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.hallowed-temple",
+        "name": "Hallowed Temple",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.haunted-city",
+        "name": "Haunted City",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.heist",
+        "name": "Heist",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.masquerade-ball",
+        "name": "Masquerade Ball",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.mountain-pass",
+        "name": "Mountain Pass",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.ocean-voyage",
+        "name": "Ocean Voyage",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.vast-desert",
+        "name": "Vast Desert",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.witchs-hut",
+        "name": "Witch’s Hut",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.archmages-tower",
+        "name": "Archmage’s Tower",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.astral-realm",
+        "name": "Astral Realm",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.burning-heart-of-the-woods",
+        "name": "Burning Heart of the Woods",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.castle-siege",
+        "name": "Castle Siege",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.crystal-wasteland",
+        "name": "Crystal Wasteland",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.dragons-lair",
+        "name": "Dragon’s Lair",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.megastorm",
+        "name": "Megastorm",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.pitched-battle",
+        "name": "Pitched Battle",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.sunken-citadel",
+        "name": "Sunken Citadel",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.upscale-casino",
+        "name": "Upscale Casino",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.volcanic-eruption",
+        "name": "Volcanic Eruption",
+        "feature_count": 3,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.chaos-realm",
+        "name": "Chaos Realm",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.convergence-city-of-portals",
+        "name": "Convergence, City of Portals",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.divine-usurpation",
+        "name": "Divine Usurpation",
+        "feature_count": 6,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.imperial-court",
+        "name": "Imperial Court",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.moon-kingdom",
+        "name": "Moon Kingdom",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.necromancers-ossuary",
+        "name": "Necromancer’s Ossuary",
+        "feature_count": 4,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.realm-of-the-dead",
+        "name": "Realm of the Dead",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      },
+      {
+        "id": "srd-2.0.environment.time-court",
+        "name": "Time Court",
+        "feature_count": 5,
+        "status": "normalized",
+        "contamination_removed": null
+      }
+    ],
+    "documents": 47,
+    "features": 189,
+    "feature_types": {
+      "Action": 58,
+      "Passive": 94,
+      "Reaction": 37
+    },
+    "unsplit": [],
+    "contamination_removed": [],
+    "residual_contamination": []
+  },
+  "summary": {
+    "documents": 311,
+    "normalized_features": 1088,
+    "unsplit_blocks": 0,
+    "cross_stat_contaminations_removed": 2,
+    "residual_cross_stat_contaminations": 0
+  }
+}

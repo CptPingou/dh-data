@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "domain-card.schema.json",
+  "allOf": [
+    {
+      "$ref": "entity.schema.json"
+    }
+  ],
+  "properties": {
+    "kind": {
+      "const": "domain_card"
+    },
+    "rules": {
+      "type": "object",
+      "required": [
+        "domain",
+        "level",
+        "card_type",
+        "recall_cost"
+      ]
+    }
+  }
+}

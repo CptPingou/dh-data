@@ -1,0 +1,34 @@
+{
+  "schema_version": "0.1.0",
+  "sources": [
+    {
+      "id": "srd-2.0",
+      "status": "srd",
+      "version": "2.0"
+    },
+    {
+      "id": "core-private",
+      "status": "published"
+    },
+    {
+      "id": "hope-fear-private",
+      "status": "published"
+    },
+    {
+      "id": "blood-hunter-v1.5",
+      "status": "playtest",
+      "version": "1.5"
+    },
+    {
+      "id": "monster-hunter",
+      "status": "homebrew"
+    },
+    {
+      "id": "blood-hunter-2026-07-09",
+      "status": "playtest",
+      "version": "2026-07-09",
+      "active": false,
+      "supersedes": "blood-hunter-v1.5"
+    }
+  ]
+}
