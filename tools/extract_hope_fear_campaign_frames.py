@@ -69,11 +69,41 @@ CANONICAL_SECTION_HEADINGS=[
     "SESSION ZERO QUESTIONS",
 ]
 
+SOURCE_HEADING_ALIASES={
+    "THE INCITING INCIDENT":"INCITING INCIDENT",
+}
+
 def clean(s:str)->str:
-    return (s.replace("\u00ad","")
-             .replace("\u200b","")
-             .replace("\ufeff","")
-             .replace("￾","-"))
+    s=(s.replace("\u00ad","")
+       .replace("\u200b","")
+       .replace("\ufeff","")
+       .replace("￾","-"))
+
+    # P2.4.2d-1: remove deterministic H&F running page footers.
+    # The extracted footer is a standalone line beginning with the printed
+    # page number followed by "Chapter 4: ...". Removing the whole line is
+    # safe and reproducible; ordinary prose mentioning Chapter 4 is untouched.
+    s=re.sub(
+        r"(?mi)^[ \t]*\d{2,3}[ \t]*(?:\r?\n[ \t]*)?Chapter[ \t]+4:[^\r\n]*(?:\r?\n|$)",
+        "",
+        s,
+    )
+
+    # P2.4.2d-2: deterministic OCR repairs confirmed against source context.
+    # Repair pronoun line breaks such as "(he/\nhim)" while preserving the
+    # actual pronoun pair.
+    s=re.sub(
+        r"\((he|she|they)/[ \t]*\r?\n[ \t]*(him|her|them)\)",
+        lambda m: f"({m.group(1)}/{m.group(2)})",
+        s,
+        flags=re.I,
+    )
+
+    # Repair the recurrent Type1 extraction artifact "T o" -> "To".
+    # Deliberately narrow: capital T + horizontal whitespace + lowercase o.
+    s=re.sub(r"\bT[ \t]+o\b", "To", s)
+
+    return s
 
 def norm(s:str)->str:
     return re.sub(r"\s+"," ",clean(s)).strip()
@@ -91,22 +121,35 @@ def load_pages(reader,start,end):
             parts.append(txt)
     return "\n".join(parts)
 
-def find_frame_start_page(reader, frame_name):
+def find_frame_start_page(reader, frame_name, expected_start=None, expected_end=None, margin=6):
     """Locate the actual PDF page containing a campaign-frame opener.
 
-    We do not trust printed-page == PDF-index here because H&F includes
-    front matter and pypdf pagination can differ. The opener is identified
-    by the frame name plus its Complexity Rating on the same page.
+    Printed page numbers are treated as approximate anchors, not exact PDF
+    indexes. Restricting the search to a small window prevents overview pages
+    that mention several frames from being mistaken for individual openers.
     """
     name_re=re.compile(re.escape(frame_name), re.I)
-    for idx,page in enumerate(reader.pages):
-        txt=clean(page.extract_text() or "")
+
+    if expected_start is not None and expected_end is not None:
+        approx_start=max(0, expected_start-1-margin)
+        approx_end=min(len(reader.pages)-1, expected_end-1+margin)
+        indexes=range(approx_start, approx_end+1)
+    else:
+        indexes=range(len(reader.pages))
+
+    for idx in indexes:
+        txt=clean(reader.pages[idx].extract_text() or "")
         if name_re.search(txt) and re.search(r"Complexity\s+Rating",txt,re.I):
             return idx
     return None
 
 def load_frame_by_boundaries(reader, spec, next_spec=None):
-    start_idx=find_frame_start_page(reader,spec["name"])
+    start_idx=find_frame_start_page(
+        reader,
+        spec["name"],
+        expected_start=spec["start"],
+        expected_end=spec["end"],
+    )
     if start_idx is None:
         # Fallback to historical printed-page assumption.
         return load_pages(reader,spec["start"],spec["end"]), {
@@ -117,7 +160,12 @@ def load_frame_by_boundaries(reader, spec, next_spec=None):
 
     end_idx=None
     if next_spec is not None:
-        next_idx=find_frame_start_page(reader,next_spec["name"])
+        next_idx=find_frame_start_page(
+            reader,
+            next_spec["name"],
+            expected_start=next_spec["start"],
+            expected_end=next_spec["end"],
+        )
         if next_idx is not None and next_idx>start_idx:
             end_idx=next_idx-1
 
@@ -143,25 +191,57 @@ def load_frame_by_boundaries(reader, spec, next_spec=None):
     }
 
 def split_sections(text:str):
+    """Split a frame on plausible standalone canonical heading lines.
+
+    The previous extractor searched the first occurrence of every heading
+    anywhere in the full text. That allowed ordinary prose mentions such as
+    "classes" or "overview" to become false boundaries.
+
+    This pass scans extracted lines in source order. A boundary is accepted
+    only when the normalized line exactly equals a canonical heading and its
+    canonical position comes after the last accepted heading. Missing headings
+    are allowed; out-of-order/repeated prose matches are ignored.
+    """
     compact=clean(text)
+    canonical_index={heading:i for i,heading in enumerate(CANONICAL_SECTION_HEADINGS)}
     matches=[]
-    for heading in CANONICAL_SECTION_HEADINGS:
-        # tolerate PDF spacing artifacts inside headings
-        words=heading.split()
-        patt=r"\s+".join(re.escape(w) for w in words)
-        m=re.search(patt,compact,re.I)
-        if m:
-            matches.append((m.start(),m.end(),heading))
-    matches.sort()
+    last_canonical=-1
+
+    offset=0
+    for raw_line in compact.splitlines(keepends=True):
+        line_without_eol=raw_line.rstrip("\r\n")
+        normalized=norm(line_without_eol).upper()
+        heading=None
+        raw_heading=None
+
+        for candidate in CANONICAL_SECTION_HEADINGS:
+            if normalized == candidate:
+                heading=candidate
+                raw_heading=candidate
+                break
+
+        if heading is None and normalized in SOURCE_HEADING_ALIASES:
+            raw_heading=normalized
+            heading=SOURCE_HEADING_ALIASES[normalized]
+
+        if heading is not None:
+            idx=canonical_index[heading]
+            if idx > last_canonical:
+                start=offset
+                end=offset+len(line_without_eol)
+                matches.append((start,end,heading,raw_heading))
+                last_canonical=idx
+
+        offset += len(raw_line)
 
     sections=[]
-    for i,(start,end,heading) in enumerate(matches):
+    for i,(start,end,heading,raw_heading) in enumerate(matches):
         nxt=matches[i+1][0] if i+1<len(matches) else len(compact)
         body=compact[end:nxt].strip()
         sections.append({
             "id":slug(heading),
             "name":heading.title(),
-            "raw_heading":heading,
+            "raw_heading":raw_heading,
             "rules_text":body,
         })
     return sections
@@ -254,11 +334,230 @@ def save(path:Path,obj):
 def main():
     if len(sys.argv)<2:
         raise SystemExit(
-            'Usage: python tools/extract_hope_fear_campaign_frames.py "pdf/Daggerheart_HF.pdf"'
+            'Usage: python tools/extract_hope_fear_campaign_frames.py "pdf/Daggerheart_HF.pdf" '
+            '[--diagnose-boundaries|--diagnose-sections|--diagnose-headings|--diagnose-ocr|--diagnose-footers]'
         )
 
     pdf=Path(sys.argv[1])
     reader=PdfReader(str(pdf))
+
+    if "--diagnose-boundaries" in sys.argv[2:]:
+        print("Detected frame starts:")
+        for spec in FRAME_SPECS:
+            idx=find_frame_start_page(
+                reader,
+                spec["name"],
+                expected_start=spec["start"],
+                expected_end=spec["end"],
+            )
+            print(
+                f'{spec["name"]}: pdf_index={idx} '
+                f'expected_printed={spec["start"]}-{spec["end"]}'
+            )
+        return
+
+    if "--diagnose-footers" in sys.argv[2:]:
+        print("Hope & Fear residual footer diagnostic (read-only):")
+        pattern=re.compile(r"(?mi)(?:^|\n)[ \t]*\d{2,3}[ \t]*(?:\r?\n[ \t]*)?Chapter[ \t]+4:[^\r\n]*")
+        total=0
+
+        for idx,spec in enumerate(FRAME_SPECS):
+            next_spec=FRAME_SPECS[idx+1] if idx+1<len(FRAME_SPECS) else None
+            raw,boundary_info=load_frame_by_boundaries(reader,spec,next_spec)
+            sections=split_sections(raw)
+
+            print()
+            print(f'[{spec["name"]}]')
+            print(f'  boundary={boundary_info}')
+            frame_total=0
+
+            for section in sections:
+                body=section.get("rules_text","")
+                for match in pattern.finditer(body):
+                    frame_total+=1
+                    total+=1
+                    lo=max(0,match.start()-80)
+                    hi=min(len(body),match.end()+100)
+                    context=re.sub(r"\s+", " ", body[lo:hi]).strip()
+                    print(f'  {section["id"]} | match={match.group(0)!r}')
+                    print(f'    ...{context}...')
+
+            if frame_total==0:
+                print("  no residual footers")
+
+        print()
+        print(f"RESIDUAL_FOOTERS={total}")
+        return
+
+    if "--diagnose-ocr" in sys.argv[2:]:
+        print("Hope & Fear OCR artifact diagnostic (read-only):")
+        patterns={
+            "split_pronoun":re.compile(
+                r"\((?:he|she|they)/\s*\n\s*(?:him|her|them)\)",
+                re.I,
+            ),
+            "split_word_T":re.compile(r"\bT\s+[a-z]\b"),
+        }
+        total=0
+
+        for idx,spec in enumerate(FRAME_SPECS):
+            next_spec=FRAME_SPECS[idx+1] if idx+1<len(FRAME_SPECS) else None
+            raw,boundary_info=load_frame_by_boundaries(reader,spec,next_spec)
+            sections=split_sections(raw)
+
+            print()
+            print(f'[{spec["name"]}]')
+            print(f'  boundary={boundary_info}')
+
+            frame_total=0
+            for section in sections:
+                body=section.get("rules_text","")
+                for label,pattern in patterns.items():
+                    for match in pattern.finditer(body):
+                        frame_total+=1
+                        total+=1
+                        lo=max(0,match.start()-110)
+                        hi=min(len(body),match.end()+150)
+                        context=body[lo:hi]
+                        context=re.sub(r"\s+", " ", context).strip()
+                        print(
+                            f'  {section["id"]} | {label} | '
+                            f'match={match.group(0)!r}'
+                        )
+                        print(f'    ...{context}...')
+
+            if frame_total==0:
+                print("  no OCR candidates")
+
+        print()
+        print(f"OCR_CANDIDATES={total}")
+        return
+
+    if "--diagnose-headings" in sys.argv[2:]:
+        print("Campaign-frame heading diagnostic (read-only):")
+        targets=[
+            "PLAYER PRINCIPLES",
+            "INCITING INCIDENT",
+            "DISTINCTIONS",
+            "CAMPAIGN MECHANICS",
+            "SESSION ZERO QUESTIONS",
+        ]
+
+        overall_green=True
+
+        for idx,spec in enumerate(FRAME_SPECS):
+            next_spec=FRAME_SPECS[idx+1] if idx+1<len(FRAME_SPECS) else None
+            raw,boundary_info=load_frame_by_boundaries(reader,spec,next_spec)
+            cleaned=clean(raw)
+            lines=cleaned.splitlines()
+
+            print()
+            print(f'[{spec["name"]}]')
+            print(f'  boundary={boundary_info}')
+
+            frame_hits={}
+            for target in targets:
+                exact=[]
+                anywhere=[]
+                target_re=re.compile(re.escape(target),re.I)
+
+                for line_no,line in enumerate(lines,1):
+                    normalized=norm(line)
+                    if normalized.upper()==target:
+                        exact.append(line_no)
+                    elif target_re.search(normalized):
+                        anywhere.append((line_no,normalized))
+
+                frame_hits[target]=(exact,anywhere)
+                print(
+                    f'  {target}: exact_lines={exact or []} '
+                    f'anywhere_count={len(anywhere)}'
+                )
+
+                for line_no,normalized in anywhere[:5]:
+                    snippet=normalized
+                    if len(snippet)>220:
+                        snippet=snippet[:217]+"..."
+                    print(f'    mention line {line_no}: {snippet}')
+
+            # Show source-line neighborhoods around the three large-block boundaries.
+            print("  boundary_contexts:")
+            for target in ("DISTINCTIONS","CAMPAIGN MECHANICS","SESSION ZERO QUESTIONS"):
+                exact,_=frame_hits[target]
+                if not exact:
+                    print(f'    {target}: NO EXACT HEADING LINE')
+                    overall_green=False
+                    continue
+
+                line_no=exact[0]
+                lo=max(1,line_no-2)
+                hi=min(len(lines),line_no+2)
+                print(f'    {target} @ line {line_no}:')
+                for n in range(lo,hi+1):
+                    snippet=norm(lines[n-1])
+                    if len(snippet)>180:
+                        snippet=snippet[:177]+"..."
+                    prefix=">" if n==line_no else " "
+                    print(f'      {prefix} {n:04d}: {snippet}')
+
+            # The two questioned headings are allowed to be absent, but if they
+            # exist only as exact standalone headings and split_sections missed
+            # them, the diagnostic must fail.
+            for target in ("PLAYER PRINCIPLES","INCITING INCIDENT"):
+                exact,_=frame_hits[target]
+                section_names=[s["raw_heading"] for s in split_sections(raw)]
+                if exact and target not in section_names:
+                    overall_green=False
+
+        print()
+        print(f'HEADING_DIAGNOSTIC={"GREEN" if overall_green else "RED"}')
+        return
+
+    if "--diagnose-sections" in sys.argv[2:]:
+        import hashlib
+
+        print("Campaign-frame section diagnostic (read-only):")
+        seen_hashes=set()
+        diagnostic_green=True
+
+        for idx,spec in enumerate(FRAME_SPECS):
+            next_spec=FRAME_SPECS[idx+1] if idx+1<len(FRAME_SPECS) else None
+            raw,boundary_info=load_frame_by_boundaries(reader,spec,next_spec)
+            sections=split_sections(raw)
+            digest=hashlib.sha256(raw.encode("utf-8")).hexdigest()[:12]
+            duplicate_hash=digest in seen_hashes
+            seen_hashes.add(digest)
+
+            names=[section["raw_heading"] for section in sections]
+            lengths=[len(section["rules_text"]) for section in sections]
+            giant=[(section["raw_heading"],len(section["rules_text"]))
+                   for section in sections if len(section["rules_text"])>50000]
+
+            frame_green=(
+                not duplicate_hash
+                and len(sections)>=10
+                and not giant
+                and len(names)==len(set(names))
+            )
+            diagnostic_green = diagnostic_green and frame_green
+
+            print()
+            print(f'[{spec["name"]}]')
+            print(f'  boundary={boundary_info}')
+            print(f'  raw_chars={len(raw)} sha256={digest} duplicate_hash={duplicate_hash}')
+            print(f'  sections={len(sections)} frame_green={frame_green}')
+            for number,section in enumerate(sections,1):
+                print(
+                    f'  {number:02d}. {section["raw_heading"]}: '
+                    f'{len(section["rules_text"])} chars'
+                )
+            if giant:
+                print(f'  GIANT_SECTIONS={giant}')
+
+        print()
+        print(f'DIAGNOSTIC={"GREEN" if diagnostic_green else "RED"}')
+        return
+
     all_hypotheses=[]
     frame_reports=[]
     errors=[]
