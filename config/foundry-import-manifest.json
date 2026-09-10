@@ -1,6 +1,6 @@
 {
   "version": "BH-2026-07-09-active",
-  "description": "Canonical DH-DATA sources used by the Foundry full import. Blood Hunter active playtest source is The Void 2026-07-09; v1.5 remains historical in DH-DATA and is excluded from the active Foundry export.",
+  "description": "Canonical DH-DATA sources used by the Foundry full import. Blood Hunter active playtest source is The Void 2026-07-09; v1.5 remains historical in DH-DATA and is excluded from the active Foundry export. Monster Hunter homebrew adversaries are exported as the distinct `homebrew-monster-hunter` corpus.",
   "sources": [
     {
       "corpus": "srd-2.0",
@@ -57,6 +57,13 @@
       ]
     },
     {
+      "corpus": "homebrew-monster-hunter",
+      "kind": "adversary",
+      "paths": [
+        "data/homebrew/monster-hunter/adversaries/**/*.json"
+      ]
+    },
+    {
       "corpus": "srd-2.0",
       "kind": "environment",
       "paths": [
@@ -91,7 +98,7 @@
     "domain_card": 231,
     "weapon": 358,
     "armor": 69,
-    "adversary": 264,
+    "adversary": 267,
     "environment": 47
   }
 }

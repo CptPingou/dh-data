@@ -1,7 +1,18 @@
-# daggerheart-data v0.1.1
+# P2.6.3e1 — correction Vespoid features
 
-P0.1 : Blood Hunter v1.5 validé contre le PDF source.
+Le test `buildActor()` a révélé :
+- Tetsucabra : 3 embeddedItems
+- Reine Vespoid : 0
+- Vespoid Minion : 0
 
-Contient la classe, les trois subclasses et les 21 cartes du domaine Blood avec texte mécanique.
+Cause : les deux JSON Vespoid précédents avaient `features_text` mais pas le tableau
+normalisé `features`, alors que `buildActor()` matérialise les features embarquées depuis
+ce tableau.
 
-Prochaine étape : adapter Foundryborne minimal pour Blood Hunter v1.5, puis index SRD 2.0.
+Corrections :
+- ajout de `features` à la Reine (4 entrées)
+- ajout de `features` au Vespoid Minion (3 entrées)
+- ajout de l'attaque standard du Vespoid Minion : ATK -2, Piqûre, Melee, 2 phy
+
+Après copie dans DH Data, relancer `export_foundry_full.py`, puis redémarrer Foundry
+avant de refaire le test de mapping.
