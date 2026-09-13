@@ -11,6 +11,13 @@
     },
     {
       "corpus": "srd-2.0",
+      "kind": "class_feature",
+      "paths": [
+        "data/srd-2.0/indexes/class-features.json"
+      ]
+    },
+    {
+      "corpus": "srd-2.0",
       "kind": "subclass",
       "paths": [
         "data/srd-2.0/indexes/subclasses.json",
@@ -99,6 +106,7 @@
     "weapon": 358,
     "armor": 69,
     "adversary": 267,
-    "environment": 47
+    "environment": 47,
+    "class_feature": 36
   }
 }
