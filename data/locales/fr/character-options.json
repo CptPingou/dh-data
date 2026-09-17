@@ -466,6 +466,201 @@
       "effects.0.name": "Pas léger",
       "effects.0.description": "<p>Vos déplacements sont naturellement silencieux. Vous avez un avantage aux jets visant à vous déplacer sans être entendu.</p>",
       "effects.0.system.changes.0.value": "Se déplacer sans être entendu."
+    },
+    "srd-2.0.class.druid": {
+      "description": "<p>Être druide ne consiste pas simplement à exercer un métier : c’est répondre à l’appel de celles et ceux qui souhaitent comprendre et préserver la magie des terres sauvages. Un druide paisible occupé à faire prospérer la flore peut sembler inoffensif, mais ceux qui déchaînent les forces indomptées de la nature inspirent la terreur. Les druides développent généralement leurs talents au sein de petits cercles réunis par une même philosophie ou attachés à un territoire particulier, même si certains suivent cette voie en solitaire. Au terme de longues années d’étude et de pratique, ils apprennent à prendre la forme de bêtes et à modeler la nature elle-même.</p>"
+    },
+    "srd-2.0.class-feature.druid.evolution": {
+      "name": "Évolution",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour adopter une Forme bestiale sans marquer de Stress. Lorsque vous le faites, choisissez un trait : il bénéficie d’un bonus de +1 jusqu’à ce que vous quittiez cette Forme bestiale.</p>"
+    },
+    "srd-2.0.class-feature.druid.beastform": {
+      "name": "Forme bestiale",
+      "description": "<p>Marquez 1 Stress pour vous transformer par magie en une créature de votre niveau ou inférieur choisie dans la liste des Formes bestiales. Vous pouvez mettre fin à cette transformation à tout moment. Sous cette forme, vous ne pouvez ni utiliser d’armes ni lancer de sorts provenant de cartes de domaine, mais vous conservez l’accès à vos autres capacités et spécificités. Les sorts lancés avant votre transformation restent actifs pendant leur durée normale, et vous pouvez toujours parler et communiquer. Vous gagnez également les spécificités de la Forme bestiale, ajoutez son bonus d’Évasion à votre Évasion et utilisez le trait indiqué dans son profil pour vos attaques. Votre armure fusionne avec votre corps : vous continuez à marquer normalement ses emplacements, qui restent marqués lorsque vous reprenez votre forme habituelle. Si vous marquez votre dernier PV, la transformation prend automatiquement fin.</p>"
+    },
+    "srd-2.0.class-feature.druid.wildtouch": {
+      "name": "Toucher sauvage",
+      "description": "<p>Vous pouvez produire à volonté de petits effets naturels, subtils et inoffensifs : faire éclore rapidement une fleur, soulever une légère brise ou allumer un feu de camp, par exemple.</p>"
+    },
+    "srd-2.0.class.assassin": {
+      "description": "<p>Les assassins excellent dans l’art d’infliger des blessures mortelles par des frappes précises. Contrairement à ceux qui n’emploient la violence que comme un moyen, ils font de la mort une profession. Beaucoup considèrent leur métier comme honorable, voire sacré, et certains rejoignent des guildes pour perfectionner leur art, définir leurs principes et gagner leur vie. Des commanditaires de tous horizons louent leurs services : souverains souhaitant éviter une guerre ouverte, dirigeants cherchant à éliminer la concurrence ou simples particuliers désireux de régler une dette. L’assassin est souvent le dernier recours contre une cible que l’on croyait impossible à tuer. Certains éliminent quiconque se dresse sur leur route pour une juste cause ou le juste prix ; d’autres suivent un code moral strict qui détermine leurs cibles. Quiconque devient la cible d’un assassin devrait déjà se compter parmi les morts.</p>"
+    },
+    "srd-2.0.class.bard": {
+      "description": "<p>Les bardes comptent parmi les personnes les plus charismatiques de tous les royaumes. Maîtres dans l’art de captiver, ils se spécialisent dans diverses formes de spectacle : chant, musique, récit ou comédie. Qu’ils se produisent devant une foule ou s’adressent à une seule personne, les bardes s’épanouissent dans les situations sociales. Ils se rencontrent et s’entraînent au sein d’écoles ou de guildes, mais l’ego n’est jamais très loin chez ceux qui suivent cette voie. S’ils sont souvent les mieux placés pour rassembler un groupe, les bardes au tempérament difficile peuvent tout aussi aisément le déchirer.</p>"
+    },
+    "srd-2.0.class.brawler": {
+      "description": "<p>Experts du combat à mains nues, les bagarreurs façonnent leur corps pour en faire une arme mortelle. Qu’ils aient reçu un entraînement formel, étudié auprès d’un mentor ou appris combat après combat, leur discipline reste exigeante : le corps et l’esprit doivent agir comme un seul. Leur puissance et leur polyvalence sont appréciées, et ils rejoignent généralement un groupe ou une cause lorsque le besoin ou l’envie s’en fait sentir. Leur corps étant leur meilleure arme, ils recherchent de nouveaux défis et des partenaires d’entraînement réguliers afin d’entretenir leurs talents et d’enrichir leur répertoire. Ils peuvent sembler inoffensifs à ceux qui ne craignent que les adversaires lourdement armés, mais leurs poings accomplissent souvent davantage que l’épée d’un soldat ordinaire.</p>"
+    },
+    "srd-2.0.class.guardian": {
+      "description": "<p>Le titre de gardien recouvre de nombreuses professions martiales et décrit davantage une boussole morale et une détermination inébranlable qu’une manière précise de combattre. Beaucoup servent des forces armées au nom d’un pays ou d’une cause, mais ils suivent plus volontiers les rares personnes auxquelles ils tiennent vraiment, quelle que soit l’opinion de la majorité. Les gardiens sont réputés pour leur férocité face aux forces les plus écrasantes et placent la défense de leurs compagnons au-dessus de tout. Malheur à quiconque blesse l’allié d’un gardien : celui-ci rendra coup pour coup.</p>"
+    },
+    "srd-2.0.class.ranger": {
+      "description": "<p>Les rôdeurs sont des chasseurs accomplis qui, malgré leurs talents martiaux, mettent rarement leurs compétences au service d’une armée. En maîtrisant leur corps et en comprenant profondément les terres sauvages, ils deviennent de subtils tacticiens qui poursuivent leur proie avec ruse et patience. Beaucoup traquent et combattent aux côtés d’un compagnon animal avec lequel ils ont noué un puissant lien spirituel. À force de perfectionner leur art dans la nature, les rôdeurs deviennent des pisteurs experts, aussi susceptibles de prendre leurs ennemis au piège que de les affronter de front.</p>"
+    },
+    "srd-2.0.class.rogue": {
+      "description": "<p>Les roublards sont des canailles, tant par leur attitude que par leurs méthodes. Réputés menteurs et voleurs, les meilleurs d’entre eux traversent le monde sans laisser de nom derrière eux. Grâce à leur esprit affûté autant qu’à leurs lames, ils trompent leurs adversaires par la manipulation sociale aussi facilement qu’ils forcent une serrure, passent par une fenêtre ou frappent en traître. Ces maîtres d’un art magique jouent avec les ombres et le mouvement pour ajouter à leur arsenal des outils aussi utiles que mortels. Les roublards fondent souvent des guildes afin de rencontrer de futurs complices, décrocher des contrats et perfectionner des techniques secrètes : preuve qu’il existe bien un honneur parmi les voleurs, pour qui sait où le chercher.</p>"
+    },
+    "srd-2.0.class.seraph": {
+      "description": "<p>Les séraphins sont des combattants et des guérisseurs divins investis d’une mission sacrée. Les royaumes abritent d’innombrables divinités, qui choisissent chacune leurs propres séraphins. Leur conduite s’accorde généralement au domaine ou aux objectifs de leur dieu : défendre les faibles, exercer une vengeance, protéger un territoire ou un artefact, ou faire respecter une foi particulière. Certains s’allient à une armée ou à une communauté, pour la plus grande satisfaction de ses dirigeants ; d’autres croisent le fer contre les folies du Royaume mortel. Mieux vaut être l’allié d’un séraphin que son ennemi, car ceux qui s’opposent à sa mission affrontent un adversaire terrifiant.</p>"
+    },
+    "srd-2.0.class.sorcerer": {
+      "description": "<p>Toutes les personnes dotées d’une magie innée ne choisissent pas de la cultiver, mais celles qui s’y consacrent peuvent devenir de puissants ensorceleurs. Leurs dons se transmettent au sein des familles, même lorsque celles-ci les ignorent ou refusent de les pratiquer. Leurs talents vont de la maîtrise des éléments aux illusions et bien au-delà ; beaucoup se regroupent en cercles fondés sur leurs affinités. Devenir un ensorceleur redoutable ne consiste pas à acquérir davantage de pouvoir, mais à nourrir et contrôler celui que l’on possède déjà. La magie d’un ensorceleur égaré ou indiscipliné constitue une force dangereuse.</p>"
+    },
+    "srd-2.0.class.warlock": {
+      "description": "<p>Ceux qui ont offert leur vie — voire leur âme — à un patron venu d’un autre monde en échange d’un pouvoir extraordinaire sont appelés occultistes. Souvent poussés au sacrifice par le désespoir, ils cherchent à se protéger, sauver un proche, aider leur communauté, se venger, améliorer leur condition ou satisfaire quelque autre ambition. Leurs puissants interlocuteurs sont aussi variés qu’eux : dieux, esprits, démons ou entités que même le signataire du pacte ne comprend pas. Chacun possède une sphère d’influence qui définit son pouvoir surnaturel, et ceux qui collectionnent les âmes sont rarement connus pour leur bonté. Le pouvoir d’un occultiste dépend donc de la relation qu’il entretient avec son bienfaiteur. Malgré sa magie terrifiante, il peut découvrir que quelqu’un — ou quelque chose — tire encore les ficelles.</p>"
+    },
+    "srd-2.0.class.warrior": {
+      "description": "<p>Devenir guerrier exige des années, parfois toute une vie, d’entraînement et de dévouement à la maîtrise des armes et de la violence. Là où beaucoup ne développent que leur force, les guerriers comprennent l’importance d’un corps et d’un esprit agiles, ce qui en fait des combattants très recherchés dans tous les royaumes. Ils servent souvent dans une armée, une compagnie de mercenaires ou une garde royale, mais toute fonction qui les empêche d’améliorer et d’élargir leurs compétences gaspille leur potentiel. Les guerriers sont connus pour avoir une arme favorite ; se placer entre eux et leur lame serait une grave erreur.</p>"
+    },
+    "srd-2.0.class.witch": {
+      "description": "<p>Les sorcières sont des praticiennes de la magie qui communient avec les forces de la nature et les entités des royaumes lointains. Leur art mêle le tangible et l’éphémère : sorts, incantations murmurées, talismans, illusions et rituels personnels. Elles protègent leurs alliés et nuisent à leurs ennemis en invoquant des puissances qui les dépassent, tels des ancêtres, des divinités ou des aspects de la nature. Leur savoir magique leur est souvent transmis par ces entités ou par des générations de praticiens réunis en petits groupes appelés covens. Leurs méthodes mystérieuses, étranges, voire macabres aux yeux des profanes, leur valent crainte et incompréhension. Quelle que soit la voie choisie, une sorcière avance sans peur sur la frontière entre lumière et ombre.</p>"
+    },
+    "srd-2.0.class.wizard": {
+      "description": "<p>Qu’ils étudient dans une institution ou en solitaire, les magiciens acquièrent et perfectionnent une immense puissance magique au fil de longues années d’apprentissage, à l’aide de livres, de pierres, de potions, d’herbes et de nombreux autres outils. Certains consacrent leur vie à une école de magie particulière, tandis que d’autres puisent dans de multiples disciplines. Beaucoup deviennent des figures sages et influentes de leur communauté : ils conseillent les dirigeants, préparent remèdes et soins, ou dirigent même des conseils de guerre. Tous poursuivent l’objectif commun de recueillir le savoir magique, mais leurs plus violents conflits les opposent souvent entre eux, car l’acquisition, la conservation et le partage des secrets de pouvoir nourrissent des débats qui ont déjà causé d’innombrables morts.</p>"
+    },
+    "srd-2.0.class-feature.assassin.deadly-determination": {
+      "name": "Détermination mortelle",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour effacer 2 Stress.</p>"
+    },
+    "srd-2.0.class-feature.assassin.get-in-and-get-out": {
+      "name": "Entrer et ressortir",
+      "description": "<p><strong>Dépensez 1 Espoir</strong> pour demander au MJ un moyen rapide ou discret d’entrer dans un lieu visible ou d’en sortir. Le prochain jet effectué pour exploiter cette information bénéficie d’un avantage.</p>"
+    },
+    "srd-2.0.class-feature.assassin.marked-for-death": {
+      "name": "Marqué pour la mort",
+      "description": "<p>Lorsque vous réussissez une attaque avec une arme, vous pouvez <strong>marquer 1 Stress</strong> pour désigner la cible comme <em>Marquée pour la mort</em>. Lorsque vous lui infligez des dégâts, ajoutez au jet de dégâts un nombre de <strong>d4</strong> égal à votre rang.</p><p>Un seul adversaire peut être <em>Marqué pour la mort</em> à la fois. Cet état persiste jusqu’à ce que vous preniez un repos, que l’adversaire soit vaincu ou que le MJ dépense un nombre de Peurs égal à votre rang pour y mettre fin.</p>"
+    },
+    "srd-2.0.class-feature.bard.make-a-scene": {
+      "name": "Faire une scène",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour <strong>distraire temporairement une cible</strong> à portée Proche, ce qui lui inflige un <strong>malus de −2</strong> à sa Difficulté.</p>"
+    },
+    "srd-2.0.class-feature.bard.rally": {
+      "name": "Ralliement",
+      "description": "<p>Une fois par session, décrivez comment vous ralliez le groupe et accordez-vous, ainsi qu’à chacun de vos alliés, un dé de Ralliement. Au niveau 1, ce dé est un d6. Un PJ peut dépenser son dé de Ralliement pour le lancer et ajouter le résultat à un jet d’action, de réaction ou de dégâts, ou pour effacer un nombre de Stress égal au résultat. À la fin de chaque session, retirez tous les dés de Ralliement non dépensés. Au niveau 5, votre dé de Ralliement devient un d8.</p>"
+    },
+    "srd-2.0.class-feature.brawler.combo-strike": {
+      "name": "Enchaînement",
+      "description": "<p>Après avoir lancé les dégâts d’une attaque réussie avec une arme de Corps à corps, vous pouvez <strong>marquer 1 Stress</strong> pour commencer un enchaînement. Lancez votre dé d’Enchaînement et notez le résultat, puis continuez à le lancer jusqu’à obtenir un résultat inférieur au précédent. Cette attaque inflige des dégâts supplémentaires égaux à la somme de tous les résultats obtenus. Ces résultats ne peuvent être modifiés d’aucune manière.</p><p>Votre dé d’Enchaînement commence comme un <strong>d4</strong>. Une fois par rang, vous pouvez l’augmenter d’un cran en choisissant l’option correspondante lors d’une progression de niveau.</p>"
+    },
+    "srd-2.0.class-feature.brawler.i-am-the-weapon": {
+      "name": "Je suis l’arme",
+      "description": "<p>Vos attaques à mains nues sont aussi puissantes que n’importe quelle lame. Tant que vous n’avez aucune autre arme active, vous êtes équipé d’une arme principale appelée Frappe du bagarreur. Elle utilise le trait de votre choix, possède une portée Corps à corps et inflige <strong>d8+d6</strong> dégâts physiques selon votre Maîtrise ; le <strong>d8</strong> et le <strong>d6</strong> évoluent tous deux avec celle-ci. Tant que cette arme est active, vous gagnez un bonus de +1 à votre Évasion.</p>"
+    },
+    "srd-2.0.class-feature.brawler.square-up": {
+      "name": "Face-à-face",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour intimider une cible à portée Proche et la rendre temporairement <em>Vulnérable</em>.</p>"
+    },
+    "srd-2.0.class-feature.guardian.frontline-tank": {
+      "name": "Rempart de première ligne",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour effacer 2 emplacements d’Armure.</p>"
+    },
+    "srd-2.0.class-feature.guardian.unstoppable": {
+      "name": "Inarrêtable",
+      "description": "<p>Une fois par repos long, vous pouvez devenir Inarrêtable et gagner un dé Inarrêtable. Au niveau 1, il s’agit d’un d4. Placez-le sur votre fiche de personnage, face 1 visible. Après avoir effectué un jet de dégâts qui fait perdre au moins 1 PV à une cible, augmentez sa valeur de 1. Lorsque sa valeur devrait dépasser son maximum, ou lorsque la scène prend fin, retirez le dé et vous cessez d’être Inarrêtable. Au niveau 5, ce dé devient un d6. Tant que vous êtes Inarrêtable, vous bénéficiez des effets suivants :</p><ul><li><p>Vous réduisez d’un seuil la gravité des dégâts physiques : Grave devient Majeure, Majeure devient Mineure et Mineure devient Nulle.</p></li><li><p>Vous ajoutez la valeur actuelle du dé Inarrêtable à vos jets de dégâts.</p></li><li><p>Vous ne pouvez être ni Entravé ni Vulnérable.</p></li></ul><blockquote><p>Conseil : si votre dé Inarrêtable est un d4 affichant 4, retirez-le la prochaine fois que vous devriez l’augmenter. S’il est devenu un d6 et affiche 4, tournez-le sur 5 ; vous ne le retirerez que lorsqu’il devrait dépasser 6.</p></blockquote>"
+    },
+    "srd-2.0.class-feature.ranger.hold-them-off": {
+      "name": "Retenez-les",
+      "description": "<p>Lorsque vous réussissez une attaque avec une arme, <strong>dépensez 3 Espoir</strong> pour appliquer le même résultat de jet à deux adversaires supplémentaires situés à portée de l’attaque.</p>"
+    },
+    "srd-2.0.class-feature.ranger.rangers-focus": {
+      "name": "Focalisation du rôdeur",
+      "description": "<p>Dépensez 1 Espoir et effectuez une attaque contre une cible. En cas de réussite, infligez les dégâts normaux de l’attaque et faites temporairement de cette cible votre Focalisation. Jusqu’à ce que cette spécificité prenne fin ou que vous choisissiez une autre créature, vous bénéficiez des effets suivants contre votre Focalisation :</p><ul><li><p>Vous savez précisément dans quelle direction elle se trouve.</p></li><li><p>Lorsque vous lui infligez des dégâts, elle doit marquer 1 Stress.</p></li><li><p>Lorsque vous échouez à une attaque contre elle, vous pouvez mettre fin à cette spécificité pour relancer vos dés de Dualité.</p></li></ul>"
+    },
+    "srd-2.0.class-feature.rogue.cloaked": {
+      "name": "Dissimulé",
+      "description": "<p>Chaque fois que vous devriez être Caché, vous êtes à la place Dissimulé. En plus des bénéfices de l’état Caché, vous restez invisible tant que vous demeurez immobile lorsqu’un adversaire se déplace jusqu’à un endroit d’où il devrait normalement vous voir. Après avoir effectué une attaque ou terminé un déplacement dans la ligne de vue d’un adversaire, vous n’êtes plus Dissimulé.</p>"
+    },
+    "srd-2.0.class-feature.rogue.rogues-dodge": {
+      "name": "Esquive du roublard",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour gagner un bonus de +2 à votre Évasion jusqu’à la prochaine attaque réussie contre vous. Si aucune attaque ne réussit, ce bonus persiste jusqu’à votre prochain repos.</p>"
+    },
+    "srd-2.0.class-feature.rogue.sneak-attack": {
+      "name": "Attaque sournoise",
+      "description": "<p>Lorsque vous réussissez une attaque en étant Dissimulé, ou lorsqu’un allié se trouve à portée Corps à corps de votre cible, ajoutez à votre jet de dégâts un nombre de d6 égal à votre rang.</p><ul><li><p>Niveau 1 → rang 1</p></li><li><p>Niveaux 2 à 4 → rang 2</p></li><li><p>Niveaux 5 à 7 → rang 3</p></li><li><p>Niveaux 8 à 10 → rang 4</p></li></ul>"
+    },
+    "srd-2.0.class-feature.seraph.life-support": {
+      "name": "Soutien vital",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour effacer 1 PV sur un allié à portée Proche.</p>"
+    },
+    "srd-2.0.class-feature.seraph.prayer-dice": {
+      "name": "Dés de prière",
+      "description": "<p>Au début de chaque session, lancez un nombre de d4 égal à votre trait d’Incantation de sous-classe et placez-les dans l’espace prévu sur votre fiche de personnage. Ce sont vos dés de prière. Vous pouvez dépenser autant de ces dés que vous le souhaitez pour vous aider ou aider un allié à portée Loin. Utilisez la valeur d’un dé dépensé pour réduire des dégâts subis, l’ajouter au résultat d’un jet après son lancer ou gagner autant d’Espoir. À la fin de chaque session, retirez tous les dés de prière non dépensés.</p>"
+    },
+    "srd-2.0.class-feature.sorcerer.arcane-sense": {
+      "name": "Sens arcanique",
+      "description": "<p>Vous pouvez ressentir la présence de personnes et d’objets magiques à portée Proche.</p>"
+    },
+    "srd-2.0.class-feature.sorcerer.channel-raw-power": {
+      "name": "Canaliser la puissance brute",
+      "description": "<p>Une fois par repos long, vous pouvez placer une carte de domaine de votre équipement actif dans votre réserve, puis choisir l’un des effets suivants :</p><ul><li><p>Gagner un nombre d’Espoir égal au niveau de la carte.</p></li><li><p>Renforcer un sort infligeant des dégâts et gagner un bonus au jet de dégâts égal au double du niveau de la carte.</p></li></ul>"
+    },
+    "srd-2.0.class-feature.sorcerer.minor-illusion": {
+      "name": "Illusion mineure",
+      "description": "<p>Effectuez un <strong>jet d’Incantation (10)</strong>. En cas de réussite, vous créez à portée Proche une petite illusion visuelle qui ne dépasse pas votre taille. Cette illusion paraît convaincante à toute personne située à portée Proche ou au-delà.</p>"
+    },
+    "srd-2.0.class-feature.sorcerer.volatile-magic": {
+      "name": "Magie volatile",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour relancer autant de dés de dégâts que vous le souhaitez lors d’une attaque qui inflige des dégâts magiques.</p>"
+    },
+    "srd-2.0.class-feature.warlock.favor": {
+      "name": "Faveur",
+      "description": "<p>Vous commencez avec 3 Faveurs. Vous pouvez utiliser une action de temps libre pour rendre hommage à votre patron : décrivez comment, puis gagnez un nombre de Faveurs égal à votre trait d’Incantation. De plus, lorsque vous réussissez un jet d’action avec Espoir, vous pouvez choisir de gagner 1 Faveur au lieu de 1 Espoir.</p>"
+    },
+    "srd-2.0.class-feature.warlock.patrons-boon": {
+      "name": "Don du patron",
+      "description": "<p>Lorsque vous échouez à un jet, vous pouvez <strong>dépenser 3 Espoir</strong> pour le relancer avec un avantage.</p>"
+    },
+    "srd-2.0.class-feature.warlock.patrons-pact": {
+      "name": "Pacte du patron",
+      "description": "<p>Vous vous êtes lié à une entité surnaturelle — dieu, fée ou démon, par exemple — en échange de pouvoir. Inscrivez son nom sur votre fiche de personnage, puis déterminez avec le MJ sa sphère d’influence, comme la Nature, le Chaos, la Sagesse, la Malice, l’Amour, la Guerre, la Justice ou la Mort. Avant d’effectuer un jet d’action en rapport avec cette sphère, vous pouvez <strong>dépenser 1 Faveur</strong> pour demander son aide : lancez votre dé de Patron et ajoutez son résultat au total. Votre dé de Patron commence comme un <strong>[[/r d6]]</strong> et devient un <strong>[[/r d8]]</strong> au niveau 5.</p>"
+    },
+    "srd-2.0.class-feature.warrior.attack-of-opportunity": {
+      "name": "Attaque d’opportunité",
+      "description": "<p>Lorsqu’un adversaire à portée Corps à corps tente de quitter cette portée, effectuez un jet de réaction avec le trait de votre choix contre sa Difficulté. En cas de réussite, choisissez un effet ci-dessous ; choisissez-en deux en cas de réussite critique :</p><ul><li><p>Il ne peut pas quitter sa position.</p></li><li><p>Vous lui infligez des dégâts égaux à ceux de votre arme principale.</p></li><li><p>Vous vous déplacez avec lui.</p></li></ul>"
+    },
+    "srd-2.0.class-feature.warrior.combat-training": {
+      "name": "Entraînement au combat",
+      "description": "<p>Vous ignorez l’Encombrement lorsque vous équipez des armes. Lorsque vous infligez des dégâts physiques, ajoutez à votre jet de dégâts un bonus égal à votre niveau.</p>"
+    },
+    "srd-2.0.class-feature.warrior.no-mercy": {
+      "name": "Sans pitié",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour gagner un bonus de +1 à vos jets d’attaque jusqu’à votre prochain repos.</p>"
+    },
+    "srd-2.0.class-feature.witch.commune": {
+      "name": "Communion",
+      "description": "<p>Une fois par repos long, pendant un moment de calme, vous pouvez communier avec un ancêtre, une divinité, un esprit ou une entité d’un autre monde. Posez-lui une question, puis lancez un nombre de <strong>[[/r d6]]{d6}</strong> égal à votre trait d’Incantation. Choisissez l’un des résultats et appliquez l’effet correspondant :</p><ul><li><p>1–3 : vous percevez une saveur, une odeur ou une sensation en rapport avec la réponse.</p></li><li><p>4–5 : vous entendez des sons ou voyez une vision en rapport avec la réponse.</p></li><li><p>6 : vous vivez psychiquement une scène en rapport avec la réponse comme si vous y étiez.</p></li></ul>"
+    },
+    "srd-2.0.class-feature.witch.hex": {
+      "name": "Maléfice",
+      "description": "<p><strong>Marquez 1 Stress</strong> pour placer temporairement un <em>Maléfice</em> sur une cible à portée Loin. Tant qu’elle est <em>Maudite</em>, elle subit à ses jets de dégâts et à sa Difficulté un malus égal à votre rang. Vous pouvez maintenir simultanément un nombre maximal de créatures sous <em>Maléfice</em> égal à votre trait d’Incantation.</p>"
+    },
+    "srd-2.0.class-feature.witch.witchs-charm": {
+      "name": "Charme de la sorcière",
+      "description": "<p>Lorsque vous ou un allié à portée Loin échouez à un jet d’action, vous pouvez <strong>dépenser 3 Espoir</strong> pour transformer cet échec en réussite avec Peur.</p>"
+    },
+    "srd-2.0.class-feature.wizard.not-this-time": {
+      "name": "Pas cette fois",
+      "description": "<p><strong>Dépensez 3 Espoir</strong> pour obliger un adversaire à portée Loin à relancer un jet d’attaque ou de dégâts.</p>"
+    },
+    "srd-2.0.class-feature.wizard.prestidigitation": {
+      "name": "Prestidigitation",
+      "description": "<p>Vous pouvez produire à volonté de petits effets magiques subtils et inoffensifs. Vous pouvez par exemple changer la couleur d’un objet, créer une odeur, allumer une bougie, faire flotter un objet minuscule, éclairer une pièce ou réparer un petit objet.</p>"
+    },
+    "srd-2.0.class-feature.wizard.strange-patterns": {
+      "name": "Motifs étranges",
+      "description": "<p>Choisissez un nombre compris entre 1 et 12. Lorsque l’un de vos dés de Dualité obtient ce nombre, gagnez 1 Espoir ou effacez 1 Stress.</p><p>Vous pouvez changer ce nombre lorsque vous prenez un repos long.</p>"
+    },
+    "the-void.2026-07-09.class.blood-hunter.feature.blood-maledict": {
+      "name": "Malédiction du sang",
+      "description": "<p>Lorsqu’un adversaire réussit un jet d’attaque à portée Proche, <strong>dépensez 3 Espoir</strong> pour l’obliger à le relancer avec un désavantage.</p>"
+    },
+    "the-void.2026-07-09.class.blood-hunter.feature.crimson-rite": {
+      "name": "Rite écarlate",
+      "description": "<p>Marquez 1 PV pour imprégner l’une de vos armes actives d’une puissance assoiffée de sang jusqu’à la fin de votre prochain repos ou jusqu’à ce que vous utilisiez de nouveau cette spécificité. Lorsque vous réussissez une attaque avec cette arme, elle inflige 1d4 dégâts magiques supplémentaires. Ces dégâts passent à 2d4 au niveau 2, 3d4 au niveau 5 et 4d4 au niveau 8.</p>"
+    },
+    "the-void.2026-07-09.class.blood-hunter.feature.grim-psychometry": {
+      "name": "Psychométrie macabre",
+      "description": "<p>Effectuez un jet d’Incantation (12) pour examiner un lieu à portée Très proche. En cas de réussite, vous avez une vision de la dernière créature à y avoir commis un acte violent. Jusqu’à votre prochain repos long ou jusqu’à ce que vous utilisiez de nouveau cette spécificité, vous bénéficiez d’un avantage aux jets d’action visant à la traquer ou à vous remémorer des informations à son sujet.</p>"
     }
   }
 }
