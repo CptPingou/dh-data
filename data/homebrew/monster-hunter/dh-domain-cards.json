@@ -4,7 +4,7 @@
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Lecture du terrain.</strong> Une fois par chasse, sans effectuer de jet, obtenez une information sÃ»re sur le comportement du monstre ou son biome.</p><p>Les autres informations obtenues par observation ou Ã©tude sont rÃ©solues normalement par le MJ.</p>",
+      "description": "<p><strong>Lecture du terrain.</strong> Une fois par chasse, sans effectuer de jet, obtenez une information sûre sur le comportement du monstre ou son biome.</p><p>Les autres informations obtenues par observation ou étude sont résolues normalement par le MJ.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -44,7 +44,7 @@
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>MaÃ®trise de la piste.</strong> Vous savez identifier le trajet probable dâ€™un monstre et lâ€™emplacement de sa taniÃ¨re Ã  partir de traces suffisantes.</p><p>Lorsque vous prÃ©parez un piÃ¨ge sur un passage identifiÃ© avant la confrontation, les PJ ont lâ€™initiative lorsque le monstre entre dans la zone prÃ©parÃ©e.</p>",
+      "description": "<p><strong>Maîtrise de la piste.</strong> Vous savez identifier le trajet probable d’un monstre et l’emplacement de sa tanière à partir de traces suffisantes.</p><p>Lorsque vous préparez un piège sur un passage identifié avant la confrontation, les PJ ont l’initiative lorsque le monstre entre dans la zone préparée.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -84,7 +84,7 @@
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>RÃ©orientation.</strong> Pendant un Engagement, vous pouvez changer le Finisher dÃ©signÃ© par lâ€™Opener avant que lâ€™OpportunitÃ© ne soit convertie.</p><p>Vous Ãªtes Ã©galement le rÃ©fÃ©rent logistique du groupe pour lâ€™organisation et la capacitÃ© des objets de chasse.</p>",
+      "description": "<p><strong>Réorientation.</strong> Pendant un Engagement, vous pouvez changer le Finisher désigné par l’Opener avant que l’Opportunité ne soit convertie.</p><p>Vous êtes également le référent logistique du groupe pour l’organisation et la capacité des objets de chasse.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -124,7 +124,7 @@
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>PrÃ©paration de chasse.</strong> Vous pouvez prÃ©parer des appÃ¢ts adaptÃ©s aux habitudes alimentaires du monstre afin de provoquer des dÃ©savantages ou crÃ©er une ouverture appropriÃ©e.</p><p>Vous pouvez Ã©galement cuisiner pour favoriser la rÃ©cupÃ©ration et rÃ©aliser les prÃ©parations locales nÃ©cessaires au craft de chasse.</p>",
+      "description": "<p><strong>Préparation de chasse.</strong> Vous pouvez préparer des appâts adaptés aux habitudes alimentaires du monstre afin de provoquer des désavantages ou créer une ouverture appropriée.</p><p>Vous pouvez également cuisiner pour favoriser la récupération et réaliser les préparations locales nécessaires au craft de chasse.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -164,7 +164,7 @@
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>PrÃ©servation.</strong> Une fois par chasse, vous pouvez dÃ©signer une partie du monstre comme <em>prÃ©servÃ©e</em> afin dâ€™Ã©viter quâ€™elle soit perdue lors de lâ€™extraction.</p><p>Le dÃ©peÃ§age final reste rÃ©solu par un jet de DualitÃ© ; la partie prÃ©servÃ©e est sÃ©curisÃ©e indÃ©pendamment de ce rÃ©sultat.</p>",
+      "description": "<p><strong>Préservation.</strong> Une fois par chasse, vous pouvez désigner une partie du monstre comme <em>préservée</em> afin d’éviter qu’elle soit perdue lors de l’extraction.</p><p>Le dépeçage final reste résolu par un jet de Dualité ; la partie préservée est sécurisée indépendamment de ce résultat.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -204,7 +204,7 @@
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Opener.</strong> DÃ©pensez 2 Espoir lorsque vous engagez le monstre. Sur une ouverture rÃ©ussie, crÃ©ez 2 OpportunitÃ©s et dÃ©signez le Finisher.</p>",
+      "description": "<p><strong>Opener.</strong> Dépensez 2 Espoir lorsque vous engagez le monstre. Sur une ouverture réussie, créez 2 Opportunités et désignez le Finisher.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -216,7 +216,7 @@
           "type": "attack",
           "baseAction": false,
           "name": "Ouverture",
-          "description": "<p>Effectuez une attaque dâ€™Ouverture contre le monstre engagÃ©. Le coÃ»t de 2 Espoir et la gÃ©nÃ©ration dâ€™OpportunitÃ© sont rÃ©solus par le sous-systÃ¨me Chasse.</p>",
+          "description": "<p>Effectuez une attaque d’Ouverture contre le monstre engagé. Le coût de 2 Espoir et la génération d’Opportunité sont résolus par le sous-système Chasse.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -320,7 +320,7 @@
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Finisher.</strong> Lorsque vous convertissez une OpportunitÃ©, chaque OP dÃ©pensÃ©e en dÃ©gÃ¢ts ajoute 1 dÃ© de dÃ©gÃ¢ts de lâ€™arme. Vous pouvez Ã  la place dÃ©clencher un Effet disponible. Sur un critique du Finisher, vous pouvez appliquer les dÃ©gÃ¢ts et lâ€™Effet.</p>",
+      "description": "<p><strong>Finisher.</strong> Lorsque vous convertissez une Opportunité, chaque OP dépensée en dégâts ajoute 1 dé de dégâts de l’arme. Vous pouvez à la place déclencher un Effet disponible. Sur un critique du Finisher, vous pouvez appliquer les dégâts et l’Effet.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -332,7 +332,7 @@
           "type": "attack",
           "baseAction": false,
           "name": "Conversion",
-          "description": "<p>Effectuez une attaque de Finisher contre le monstre engagÃ©. Le coÃ»t de 1 Espoir et la conversion de lâ€™OpportunitÃ© sont rÃ©solus par le sous-systÃ¨me Chasse.</p>",
+          "description": "<p>Effectuez une attaque de Finisher contre le monstre engagé. Le coût de 1 Espoir et la conversion de l’Opportunité sont résolus par le sous-système Chasse.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -436,11 +436,11 @@
     "_id": "MHFINISHERBASE01"
   },
   {
-    "name": "Appui dÃ©fensif",
+    "name": "Appui défensif",
     "img": "icons/svg/book.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Support.</strong> Une fois par combat pour cet engagement, dÃ©pensez 1 Espoir pour imposer <strong>âˆ’1d4</strong> au jet dâ€™attaque du monstre contre un personnage engagÃ©.</p>",
+      "description": "<p><strong>Support.</strong> Une fois par combat pour cet engagement, dépensez 1 Espoir pour imposer <strong>−1d4</strong> au jet d’attaque du monstre contre un personnage engagé.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -451,8 +451,8 @@
           "systemPath": "actions",
           "type": "effect",
           "baseAction": false,
-          "name": "Appui dÃ©fensif",
-          "description": "<p>DÃ©pensez 1 Espoir. Lors de la prochaine attaque appropriÃ©e du monstre contre un personnage engagÃ©, appliquez <strong>âˆ’1d4</strong> au jet dâ€™attaque du monstre. Lâ€™application du modificateur reste manuelle.</p>",
+          "name": "Appui défensif",
+          "description": "<p>Dépensez 1 Espoir. Lors de la prochaine attaque appropriée du monstre contre un personnage engagé, appliquez <strong>−1d4</strong> au jet d’attaque du monstre. L’application du modificateur reste manuelle.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -521,7 +521,7 @@
               "modifier": "-1d4",
               "appliesTo": "monster-attack-roll",
               "automation": "manual",
-              "chat": "<p>Lors de la prochaine attaque appropriÃ©e du monstre contre un personnage engagÃ©, appliquez <strong>âˆ’1d4</strong> au jet dâ€™attaque du monstre.</p><p><em>Le MJ applique ce modificateur manuellement.</em></p>"
+              "chat": "<p>Lors de la prochaine attaque appropriée du monstre contre un personnage engagé, appliquez <strong>−1d4</strong> au jet d’attaque du monstre.</p><p><em>Le MJ applique ce modificateur manuellement.</em></p>"
             }
           }
         },
@@ -542,11 +542,11 @@
     "_id": "MHSUPPORTGUARD01"
   },
   {
-    "name": "Feinte dâ€™approche",
+    "name": "Feinte d’approche",
     "img": "icons/svg/daze.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Opener.</strong> RÃ©solvez lâ€™Ouverture normalement. Si elle provoque une rÃ©action du monstre, appliquez <strong>âˆ’1d4</strong> Ã  son jet dâ€™attaque.</p>",
+      "description": "<p><strong>Opener.</strong> Résolvez l’Ouverture normalement. Si elle provoque une réaction du monstre, appliquez <strong>−1d4</strong> à son jet d’attaque.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -557,8 +557,8 @@
           "systemPath": "actions",
           "type": "attack",
           "baseAction": false,
-          "name": "Feinte dâ€™approche",
-          "description": "<p>Effectuez une attaque dâ€™Ouverture. Le Core Chasse paie 2 Espoir et rÃ©sout lâ€™OpportunitÃ©.</p>",
+          "name": "Feinte d’approche",
+          "description": "<p>Effectuez une attaque d’Ouverture. Le Core Chasse paie 2 Espoir et résout l’Opportunité.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -649,7 +649,7 @@
               "modifier": "-1d4",
               "appliesTo": "monster-reaction-attack-roll",
               "automation": "manual",
-              "chat": "<p><strong>Feinte :</strong> appliquez <strong>âˆ’1d4</strong> au jet dâ€™attaque de la rÃ©action du monstre.</p><p><em>Application manuelle.</em></p>"
+              "chat": "<p><strong>Feinte :</strong> appliquez <strong>−1d4</strong> au jet d’attaque de la réaction du monstre.</p><p><em>Application manuelle.</em></p>"
             }
           }
         },
@@ -674,7 +674,7 @@
     "img": "icons/svg/explosion.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Finisher.</strong> <strong>Effet â€” Rupture (2 OP) :</strong> au lieu des dÃ©s bonus, rendez le monstre <strong>VulnÃ©rable</strong> jusquâ€™Ã  ce quâ€™il subisse la prochaine attaque. Sur un critique : Effet + dÃ©gÃ¢ts convertis.</p>",
+      "description": "<p><strong>Finisher.</strong> <strong>Effet — Rupture (2 OP) :</strong> au lieu des dés bonus, rendez le monstre <strong>Vulnérable</strong> jusqu’à ce qu’il subisse la prochaine attaque. Sur un critique : Effet + dégâts convertis.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -686,7 +686,7 @@
           "type": "attack",
           "baseAction": false,
           "name": "Frappe de rupture",
-          "description": "<p>Effectuez une attaque de Finisher. Le Core Chasse paie 1 Espoir, engage jusquâ€™Ã  4 OP puis remet lâ€™OpportunitÃ© Ã  0.</p>",
+          "description": "<p>Effectuez une attaque de Finisher. Le Core Chasse paie 1 Espoir, engage jusqu’à 4 OP puis remet l’Opportunité à 0.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -780,7 +780,7 @@
               "cost": 2,
               "rarity": "standard",
               "automation": "manual",
-              "chat": "<p><strong>Effet â€” Rupture (2 OP) :</strong> au lieu des dÃ©s bonus, rendez le monstre <strong>VulnÃ©rable</strong> jusquâ€™Ã  ce quâ€™il subisse la prochaine attaque. Sur un critique, appliquez Rupture <strong>et</strong> les dÃ©s convertis.</p>"
+              "chat": "<p><strong>Effet — Rupture (2 OP) :</strong> au lieu des dés bonus, rendez le monstre <strong>Vulnérable</strong> jusqu’à ce qu’il subisse la prochaine attaque. Sur un critique, appliquez Rupture <strong>et</strong> les dés convertis.</p>"
             }
           }
         },
@@ -805,7 +805,7 @@
     "img": "icons/svg/upgrade.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Support.</strong> DÃ©pensez 1 Espoir : le prochain jet dâ€™attaque du Finisher de cet Engagement gagne <strong>+1d6</strong>.</p>",
+      "description": "<p><strong>Support.</strong> Dépensez 1 Espoir : le prochain jet d’attaque du Finisher de cet Engagement gagne <strong>+1d6</strong>.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -817,7 +817,7 @@
           "type": "effect",
           "baseAction": false,
           "name": "Guidage du Finisher",
-          "description": "<p>DÃ©pensez 1 Espoir. Le prochain jet dâ€™attaque du Finisher de cet Engagement gagne +1d6. Application manuelle.</p>",
+          "description": "<p>Dépensez 1 Espoir. Le prochain jet d’attaque du Finisher de cet Engagement gagne +1d6. Application manuelle.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -884,7 +884,7 @@
               "modifier": "+1d6",
               "appliesTo": "finisher-attack-roll",
               "automation": "manual",
-              "chat": "<p><strong>Guidage :</strong> ajoutez <strong>+1d6</strong> au prochain jet dâ€™attaque du Finisher de cet Engagement.</p><p><em>Application manuelle.</em></p>"
+              "chat": "<p><strong>Guidage :</strong> ajoutez <strong>+1d6</strong> au prochain jet d’attaque du Finisher de cet Engagement.</p><p><em>Application manuelle.</em></p>"
             }
           }
         },
@@ -905,11 +905,11 @@
     "_id": "MHGUIDESUPP00001"
   },
   {
-    "name": "Ouverture prÃ©cise",
+    "name": "Ouverture précise",
     "img": "icons/svg/eye.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Opener.</strong> RÃ©solvez lâ€™Ouverture normalement. Si elle rÃ©ussit avec Espoir, le Finisher dÃ©signÃ© gagne <strong>+1d6</strong> Ã  son prochain jet dâ€™attaque pendant cet Engagement.</p>",
+      "description": "<p><strong>Opener.</strong> Résolvez l’Ouverture normalement. Si elle réussit avec Espoir, le Finisher désigné gagne <strong>+1d6</strong> à son prochain jet d’attaque pendant cet Engagement.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -920,8 +920,8 @@
           "systemPath": "actions",
           "type": "attack",
           "baseAction": false,
-          "name": "Ouverture prÃ©cise",
-          "description": "<p>Effectuez une attaque dâ€™Ouverture. Sur une rÃ©ussite avec Espoir, prÃ©parez un guidage de <strong>+1d6</strong> pour le Finisher dÃ©signÃ©. Le Core Chasse paie 2 Espoir et rÃ©sout lâ€™OpportunitÃ©.</p>",
+          "name": "Ouverture précise",
+          "description": "<p>Effectuez une attaque d’Ouverture. Sur une réussite avec Espoir, préparez un guidage de <strong>+1d6</strong> pour le Finisher désigné. Le Core Chasse paie 2 Espoir et résout l’Opportunité.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -1012,7 +1012,7 @@
               "modifier": "+1d6",
               "appliesTo": "finisher-attack-roll",
               "automation": "manual",
-              "chat": "<p><strong>Ouverture prÃ©cise :</strong> si lâ€™Ouverture rÃ©ussit avec Espoir, le Finisher dÃ©signÃ© gagne <strong>+1d6</strong> Ã  son prochain jet dâ€™attaque de cet Engagement.</p><p><em>Application manuelle.</em></p>"
+              "chat": "<p><strong>Ouverture précise :</strong> si l’Ouverture réussit avec Espoir, le Finisher désigné gagne <strong>+1d6</strong> à son prochain jet d’attaque de cet Engagement.</p><p><em>Application manuelle.</em></p>"
             }
           }
         },
@@ -1037,7 +1037,7 @@
     "img": "icons/svg/combat.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Opener.</strong> RÃ©solvez lâ€™Ouverture normalement. Si elle provoque une rÃ©action du monstre, celui-ci doit, si possible, diriger cette rÃ©action contre lâ€™Opener.</p>",
+      "description": "<p><strong>Opener.</strong> Résolvez l’Ouverture normalement. Si elle provoque une réaction du monstre, celui-ci doit, si possible, diriger cette réaction contre l’Opener.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -1049,7 +1049,7 @@
           "type": "attack",
           "baseAction": false,
           "name": "Provocation",
-          "description": "<p>Effectuez une attaque dâ€™Ouverture. Si une rÃ©action est dÃ©clenchÃ©e, provoquez le monstre afin quâ€™il la dirige contre vous si la situation le permet. Le Core Chasse paie 2 Espoir et rÃ©sout lâ€™OpportunitÃ©.</p>",
+          "description": "<p>Effectuez une attaque d’Ouverture. Si une réaction est déclenchée, provoquez le monstre afin qu’il la dirige contre vous si la situation le permet. Le Core Chasse paie 2 Espoir et résout l’Opportunité.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -1139,7 +1139,7 @@
               "timing": "monster-reaction",
               "appliesTo": "monster-reaction-target",
               "automation": "manual",
-              "chat": "<p><strong>Provocation :</strong> si possible, la rÃ©action du monstre doit viser lâ€™Opener.</p><p><em>Le MJ conserve le choix de lâ€™attaque appropriÃ©e.</em></p>"
+              "chat": "<p><strong>Provocation :</strong> si possible, la réaction du monstre doit viser l’Opener.</p><p><em>Le MJ conserve le choix de l’attaque appropriée.</em></p>"
             }
           }
         },
@@ -1164,7 +1164,7 @@
     "img": "icons/svg/bones.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Finisher.</strong> <strong>Effet â€” Mutilation (3 OP) :</strong> au lieu des dÃ©s bonus, infligez une consÃ©quence fictionnelle durable Ã  une partie exposÃ©e du monstre : aile, patte, corne, carapace ou organe appropriÃ©. Le MJ traduit cette atteinte dans les actions du monstre. Sur un critique : Effet + dÃ©gÃ¢ts convertis.</p>",
+      "description": "<p><strong>Finisher.</strong> <strong>Effet — Mutilation (3 OP) :</strong> au lieu des dés bonus, infligez une conséquence fictionnelle durable à une partie exposée du monstre : aile, patte, corne, carapace ou organe approprié. Le MJ traduit cette atteinte dans les actions du monstre. Sur un critique : Effet + dégâts convertis.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -1176,7 +1176,7 @@
           "type": "attack",
           "baseAction": false,
           "name": "Frappe mutilante",
-          "description": "<p>Effectuez une attaque de Finisher. Vous pouvez convertir <strong>3 OP</strong> en Mutilation au lieu des dÃ©s bonus. Le Core Chasse paie 1 Espoir, engage jusquâ€™Ã  4 OP puis remet lâ€™OpportunitÃ© Ã  0.</p>",
+          "description": "<p>Effectuez une attaque de Finisher. Vous pouvez convertir <strong>3 OP</strong> en Mutilation au lieu des dés bonus. Le Core Chasse paie 1 Espoir, engage jusqu’à 4 OP puis remet l’Opportunité à 0.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -1271,7 +1271,7 @@
               "cost": 3,
               "rarity": "rare",
               "automation": "manual",
-              "chat": "<p><strong>Effet â€” Mutilation (3 OP) :</strong> au lieu des dÃ©s bonus, infligez une consÃ©quence fictionnelle durable Ã  une partie exposÃ©e du monstre. Le MJ adapte ses actions en consÃ©quence.</p><p>Sur un critique, appliquez Mutilation <strong>et</strong> les dÃ©s convertis.</p>"
+              "chat": "<p><strong>Effet — Mutilation (3 OP) :</strong> au lieu des dés bonus, infligez une conséquence fictionnelle durable à une partie exposée du monstre. Le MJ adapte ses actions en conséquence.</p><p>Sur un critique, appliquez Mutilation <strong>et</strong> les dés convertis.</p>"
             }
           }
         },
@@ -1292,11 +1292,11 @@
     "_id": "MHMUTILFINISH001"
   },
   {
-    "name": "Frappe dâ€™Ã©puisement",
+    "name": "Frappe d’épuisement",
     "img": "icons/svg/downgrade.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Finisher.</strong> <strong>Effet â€” Ã‰puisement (2 OP) :</strong> au lieu des dÃ©s bonus, faites subir <strong>1 Stress</strong> au monstre si sa fiche utilise le Stress. Sur un critique : Effet + dÃ©gÃ¢ts convertis.</p>",
+      "description": "<p><strong>Finisher.</strong> <strong>Effet — Épuisement (2 OP) :</strong> au lieu des dés bonus, faites subir <strong>1 Stress</strong> au monstre si sa fiche utilise le Stress. Sur un critique : Effet + dégâts convertis.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -1307,8 +1307,8 @@
           "systemPath": "actions",
           "type": "attack",
           "baseAction": false,
-          "name": "Frappe dâ€™Ã©puisement",
-          "description": "<p>Effectuez une attaque de Finisher. Vous pouvez convertir <strong>2 OP</strong> en Ã‰puisement au lieu des dÃ©s bonus. Le Core Chasse paie 1 Espoir, engage jusquâ€™Ã  4 OP puis remet lâ€™OpportunitÃ© Ã  0.</p>",
+          "name": "Frappe d’épuisement",
+          "description": "<p>Effectuez une attaque de Finisher. Vous pouvez convertir <strong>2 OP</strong> en Épuisement au lieu des dés bonus. Le Core Chasse paie 1 Espoir, engage jusqu’à 4 OP puis remet l’Opportunité à 0.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -1402,7 +1402,7 @@
               "cost": 2,
               "rarity": "standard",
               "automation": "manual",
-              "chat": "<p><strong>Effet â€” Ã‰puisement (2 OP) :</strong> au lieu des dÃ©s bonus, faites subir <strong>1 Stress</strong> au monstre si sa fiche utilise le Stress.</p><p>Sur un critique, appliquez Ã‰puisement <strong>et</strong> les dÃ©s convertis.</p>"
+              "chat": "<p><strong>Effet — Épuisement (2 OP) :</strong> au lieu des dés bonus, faites subir <strong>1 Stress</strong> au monstre si sa fiche utilise le Stress.</p><p>Sur un critique, appliquez Épuisement <strong>et</strong> les dés convertis.</p>"
             }
           }
         },
@@ -1427,7 +1427,7 @@
     "img": "icons/svg/shield.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Support.</strong> DÃ©pensez 1 Espoir : la prochaine attaque appropriÃ©e du monstre contre le Finisher dÃ©signÃ© subit <strong>âˆ’1d4</strong> pendant cet Engagement.</p>",
+      "description": "<p><strong>Support.</strong> Dépensez 1 Espoir : la prochaine attaque appropriée du monstre contre le Finisher désigné subit <strong>−1d4</strong> pendant cet Engagement.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -1439,7 +1439,7 @@
           "type": "effect",
           "baseAction": false,
           "name": "Couverture",
-          "description": "<p>DÃ©pensez 1 Espoir. La prochaine attaque appropriÃ©e du monstre contre le Finisher dÃ©signÃ© subit <strong>âˆ’1d4</strong>. Application manuelle.</p>",
+          "description": "<p>Dépensez 1 Espoir. La prochaine attaque appropriée du monstre contre le Finisher désigné subit <strong>−1d4</strong>. Application manuelle.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -1506,7 +1506,7 @@
               "modifier": "-1d4",
               "appliesTo": "monster-attack-roll",
               "automation": "manual",
-              "chat": "<p><strong>Couverture :</strong> appliquez <strong>âˆ’1d4</strong> Ã  la prochaine attaque appropriÃ©e du monstre contre le Finisher dÃ©signÃ© pendant cet Engagement.</p><p><em>Application manuelle.</em></p>"
+              "chat": "<p><strong>Couverture :</strong> appliquez <strong>−1d4</strong> à la prochaine attaque appropriée du monstre contre le Finisher désigné pendant cet Engagement.</p><p><em>Application manuelle.</em></p>"
             }
           }
         },
@@ -1531,7 +1531,7 @@
     "img": "icons/svg/daze.svg",
     "type": "domainCard",
     "system": {
-      "description": "<p><strong>Support.</strong> DÃ©pensez 1 Espoir : jusquâ€™au prochain Finisher de cet Engagement, la prochaine rÃ©action du monstre subit <strong>âˆ’1d4</strong> Ã  son jet dâ€™attaque.</p>",
+      "description": "<p><strong>Support.</strong> Dépensez 1 Espoir : jusqu’au prochain Finisher de cet Engagement, la prochaine réaction du monstre subit <strong>−1d4</strong> à son jet d’attaque.</p>",
       "domain": "valor",
       "recallCost": 1,
       "level": 1,
@@ -1543,7 +1543,7 @@
           "type": "effect",
           "baseAction": false,
           "name": "Diversion",
-          "description": "<p>DÃ©pensez 1 Espoir. La prochaine rÃ©action du monstre pendant cet Engagement subit <strong>âˆ’1d4</strong> Ã  son jet dâ€™attaque. Application manuelle.</p>",
+          "description": "<p>Dépensez 1 Espoir. La prochaine réaction du monstre pendant cet Engagement subit <strong>−1d4</strong> à son jet d’attaque. Application manuelle.</p>",
           "chatDisplay": true,
           "actionType": "action",
           "originItem": {
@@ -1611,7 +1611,7 @@
               "modifier": "-1d4",
               "appliesTo": "monster-reaction-attack-roll",
               "automation": "manual",
-              "chat": "<p><strong>Diversion :</strong> appliquez <strong>âˆ’1d4</strong> au jet dâ€™attaque de la prochaine rÃ©action du monstre pendant cet Engagement.</p><p><em>Application manuelle.</em></p>"
+              "chat": "<p><strong>Diversion :</strong> appliquez <strong>−1d4</strong> au jet d’attaque de la prochaine réaction du monstre pendant cet Engagement.</p><p><em>Application manuelle.</em></p>"
             }
           }
         },

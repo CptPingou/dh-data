@@ -183,6 +183,17 @@ export async function consumeEffects({ timing = null, appliesTo = null } = {}) {
   return Object.freeze(consumed);
 }
 
+export async function consumeEffect(instanceId) {
+  if (!instanceId) throw new TypeError("Campaign Toolkit | Pending Hunt effect instanceId is required");
+  const value = source(); value.pendingEffects ??= [];
+  const effect = value.pendingEffects.find(entry => entry.instanceId === instanceId && entry.status === "pending");
+  if (!effect) return Object.freeze({ green: false, consumed: false, reason: "pending-effect-not-found", instanceId });
+  effect.status = "consumed";
+  effect.consumedAt = Date.now();
+  await write(value);
+  return Object.freeze({ green: true, consumed: true, effect: Object.freeze(foundry.utils.deepClone(effect)), state: snapshot() });
+}
+
 export async function designateFinisher(actorOrId) {
   const actorId = typeof actorOrId === "string" ? actorOrId : actorOrId?.id;
   if (!actorId) throw new TypeError("Campaign Toolkit | Finisher designation requires an Actor");
@@ -233,6 +244,7 @@ export const engagementStateApi = Object.freeze({
   queueEffect,
   pendingEffects,
   consumeEffects,
+  consumeEffect,
   claim: claimMonsterHunterAction,
   release: releaseMonsterHunterAction,
   open: openEngagement,

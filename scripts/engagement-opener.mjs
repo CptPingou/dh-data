@@ -265,8 +265,33 @@ export function createEngagementOpenerApi(opportunityApi, stateApi = null) {
       `Opener : +${resolution.gained} Opportunity${resolution.reactionRequired ? " — réaction du monstre." : "."}`,
     );
 
+    const cardEffects = huntCardEffectsFromDocument(context.item);
+    const openerEffect = cardEffects.opener ?? null;
+
+    // `effects.opener.timing` is the trigger that decides whether the effect
+    // activates. Once activated, a Finisher attack modifier belongs to the
+    // next-finisher-attack lifecycle so the Finisher can surface and consume it.
+    if (
+      openerEffect
+      && openerEffect.timing === `opener-${resolution.outcome}`
+      && stateApi?.queueEffect
+    ) {
+      const queuedEffect = openerEffect.appliesTo === "finisher-attack-roll"
+        ? { ...openerEffect, timing: "next-finisher-attack" }
+        : openerEffect;
+
+      await stateApi.queueEffect(queuedEffect, {
+        sourceActor: context.actor,
+        sourceCard: context.item,
+      });
+    }
+
     if (resolution.reactionRequired) {
-      const reactionEffect = huntCardEffectsFromDocument(context.item).reaction ?? null;
+      const reactionEffect = cardEffects.reaction ?? null;
+      const pendingReactionEffects = stateApi?.pendingEffects
+        ? stateApi.pendingEffects({ timing: "next-monster-reaction" })
+        : [];
+
       await ChatMessage.create({
         content: [
           '<div class="daggerheart-campaign-toolkit monster-hunter-reaction">',
@@ -275,6 +300,7 @@ export function createEngagementOpenerApi(opportunityApi, stateApi = null) {
           reactionEffect?.chat
             ? `<div>${reactionEffect.chat}</div>`
             : "<p><em>La réaction peut être modifiée par les effets de la carte Chasse utilisée.</em></p>",
+          ...pendingReactionEffects.map(effect => `<div>${effect.chat ?? foundry.utils.escapeHTML(effect.id)}</div>`),
           "</div>",
         ].join(""),
         flags: {
@@ -289,6 +315,10 @@ export function createEngagementOpenerApi(opportunityApi, stateApi = null) {
           },
         },
       });
+
+      if (pendingReactionEffects.length && stateApi?.consumeEffects) {
+        await stateApi.consumeEffects({ timing: "next-monster-reaction" });
+      }
     }
 
     return result;

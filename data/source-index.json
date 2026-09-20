@@ -30,7 +30,7 @@
         "dh-domain-cards": {
           "count": 210,
           "file": "data/core/fr/dh-domain-cards.json",
-          "sha256": "cbd39934b67fa4b71a22199103f5853ea255cf36dae6f7a2a529f188eb1cb6db"
+          "sha256": "ccde752fb38648018d32493f4b7bdd119cd261e7dde29f91080e2a22be03ef7a"
         },
         "dh-subclasses": {
           "count": 26,
@@ -73,7 +73,7 @@
             "dh-domain-cards": {
               "count": 17,
               "file": "data/homebrew/monster-hunter/dh-domain-cards.json",
-              "sha256": "6e4a2a6c8921e7a4d50442e817bfb906dddb3a25c440a43424d4ed2a1d13ac34"
+              "sha256": "6c440ffd0284594e424e4cd83b16c2d747fa6100c545dd7d47dc947948d88b2c"
             }
           }
         },
