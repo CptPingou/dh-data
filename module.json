@@ -1,0 +1,134 @@
+{
+  "id": "daggerheart-campaign-toolkit",
+  "title": "Daggerheart — Campaign Toolkit",
+  "description": "Module unique pour les compendiums, macros, automatisations et extensions Daggerheart de campagne.",
+  "version": "0.4.2",
+  "authors": [
+    {
+      "name": "Campaign Toolkit"
+    }
+  ],
+  "compatibility": {
+    "minimum": "14.367",
+    "verified": "14.367",
+    "maximum": "14"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "daggerheart",
+        "type": "system",
+        "compatibility": {
+          "minimum": "2.8.2"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "scripts/main.mjs"
+  ],
+  "languages": [
+    {
+      "lang": "fr",
+      "name": "Français",
+      "path": "lang/fr.json"
+    }
+  ],
+  "packs": [
+    {
+      "name": "toolkit-macros",
+      "label": "Campaign Toolkit — Macros",
+      "path": "packs/toolkit-macros",
+      "type": "Macro"
+    },
+    {
+      "name": "dh-classes",
+      "label": "Campaign Toolkit — Classes",
+      "path": "packs/dh-classes",
+      "type": "Item"
+    },
+    {
+      "name": "dh-subclasses",
+      "label": "Campaign Toolkit — Subclasses",
+      "path": "packs/dh-subclasses",
+      "type": "Item"
+    },
+    {
+      "name": "dh-features",
+      "label": "Campaign Toolkit — Features",
+      "path": "packs/dh-features",
+      "type": "Item"
+    },
+    {
+      "name": "dh-communities",
+      "label": "Campaign Toolkit — Communities FR",
+      "path": "packs/dh-communities",
+      "type": "Item"
+    },
+    {
+      "name": "dh-ancestries",
+      "label": "Campaign Toolkit — Ancestries FR",
+      "path": "packs/dh-ancestries",
+      "type": "Item"
+    },
+    {
+      "name": "dh-domain-cards",
+      "label": "Campaign Toolkit — Domain Cards",
+      "path": "packs/dh-domain-cards",
+      "type": "Item"
+    },
+    {
+      "name": "dh-weapons",
+      "label": "Campaign Toolkit — Weapons",
+      "path": "packs/dh-weapons",
+      "type": "Item"
+    },
+    {
+      "name": "dh-armor",
+      "label": "Campaign Toolkit — Armor",
+      "path": "packs/dh-armor",
+      "type": "Item"
+    },
+    {
+      "name": "dh-adversaries",
+      "label": "Campaign Toolkit — Adversaries",
+      "path": "packs/dh-adversaries",
+      "type": "Actor"
+    },
+    {
+      "name": "dh-environments",
+      "label": "Campaign Toolkit — Environments",
+      "path": "packs/dh-environments",
+      "type": "Actor"
+    },
+    {
+      "name": "dh-campaign-frames",
+      "label": "Campaign Toolkit — Campaign Frames",
+      "path": "packs/dh-campaign-frames",
+      "type": "JournalEntry"
+    }
+  ],
+  "packFolders": [
+    {
+      "name": "Campaign Toolkit",
+      "sorting": "a",
+      "packs": [
+        "toolkit-macros",
+        "dh-classes",
+        "dh-subclasses",
+        "dh-features",
+        "dh-communities",
+        "dh-ancestries",
+        "dh-domain-cards",
+        "dh-weapons",
+        "dh-armor",
+        "dh-adversaries",
+        "dh-environments",
+        "dh-campaign-frames"
+      ]
+    }
+  ],
+  "styles": [
+    "styles/weapon-augments.css"
+  ]
+}
