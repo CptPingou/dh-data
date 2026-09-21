@@ -1091,6 +1091,40 @@ function huntingNotesHtml(raw) {
     lines.push(`<p><strong>Mobilité :</strong> ${esc(mobility)}</p>`);
   }
 
+  if (Array.isArray(hunting.loot) && hunting.loot.length) {
+    lines.push("<h4>Parties et butin</h4>");
+    lines.push("<ul>");
+    for (const loot of hunting.loot) {
+      const part = esc(loot?.part ?? "Butin");
+      const uuid = String(loot?.uuid ?? "").trim();
+      const link = uuid ? `@UUID[${uuid}]{${part}}` : part;
+      lines.push(`<li>${link}</li>`);
+    }
+    lines.push("</ul>");
+  }
+
+  if (hunting.colossus?.parts?.length) {
+    lines.push("<h4>Parties Colossus</h4>");
+    lines.push("<ul>");
+    for (const part of hunting.colossus.parts) {
+      const ft = Number(part?.fractureThreshold);
+      const ftText = Number.isFinite(ft) ? ` — FT ${esc(ft)}` : "";
+      const effectText = part?.brokenEffectName ? ` → <strong>${esc(part.brokenEffectName)}</strong>` : "";
+      const consequence = part?.brokenConsequence ? `<br><small>${esc(part.brokenConsequence)}</small>` : "";
+      lines.push(`<li><strong>${esc(part?.name ?? part?.id ?? "Partie")}</strong>${ftText}${effectText}${consequence}</li>`);
+    }
+    lines.push("</ul>");
+    lines.push("<p><em>Assembler dans Colossus par glisser-déposer : Tetsucabra comme principal, puis les Actors de partie.</em></p>");
+  }
+
+  if (hunting.colossusPart === true) {
+    const ft = Number(hunting.fractureThreshold);
+    lines.push("<h4>Partie Colossus</h4>");
+    if (Number.isFinite(ft)) lines.push(`<p><strong>Seuil de fracture :</strong> ${esc(ft)} sur un même impact.</p>`);
+    if (hunting.brokenEffect?.name) lines.push(`<p><strong>Broken :</strong> ${esc(hunting.brokenEffect.name)} — ${esc(hunting.brokenEffect.rule ?? "")}</p>`);
+    if (hunting.notes) lines.push(`<p>${esc(hunting.notes)}</p>`);
+  }
+
   const normal = hunting.reactions?.normal;
   const fear = hunting.reactions?.fear;
   const normalName = normal?.name ?? "Réaction normale";
@@ -1436,3 +1470,109 @@ export async function mappingAudit() {
   console.table(rows);
   return rows;
 }
+
+/**
+ * Import one canonical homebrew adversary without rebuilding any owned Item pack.
+ * This deliberately keeps the Actor legacy/native-template route isolated from
+ * syncAutonomousSources(): Foundry is the session runtime, while DH-DATA remains
+ * the canonical source.
+ */
+export async function importCanonicalAdversary(sourcePath) {
+  if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est réservé au MJ.");
+  const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
+  if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
+    throw new Error(`Chemin adversaire non autorisé: ${cleanPath}`);
+  }
+
+  const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, { cache: "no-store" });
+  if (!response.ok) throw new Error(`${cleanPath} introuvable (${response.status}).`);
+  const raw = await response.json();
+  if (raw?.kind !== "adversary" || !raw?.id) throw new Error(`${cleanPath} n'est pas un adversaire canonique valide.`);
+
+  const entry = {
+    kind: "adversary",
+    key: raw.id,
+    corpus: raw?.source?.corpus ?? "homebrew",
+    source_path: cleanPath,
+    data: raw,
+  };
+  const data = await buildActor(entry);
+  data.flags ??= {};
+  data.flags[FLAG_SCOPE] ??= {};
+  data.flags[FLAG_SCOPE].managed = true;
+  data.flags[FLAG_SCOPE].kind = "adversary";
+  data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
+  data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
+
+  const pack = game.packs.get(`${MODULE_ID}.dh-adversaries`);
+  if (!pack) throw new Error("Compendium Toolkit dh-adversaries absent.");
+  await pack.configure({ locked: false });
+  try {
+    const docs = await pack.getDocuments();
+    const previous = docs.filter(doc => doc.flags?.[FLAG_SCOPE]?.sourceId === raw.id);
+    for (const doc of previous) await doc.delete();
+    const created = await Actor.create(data, { pack: pack.collection });
+    ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
+    return created;
+  } finally {
+    await pack.configure({ locked: true });
+  }
+}
+
+const TETSUCABRA_ACTOR_SOURCES = [
+  "data/homebrew/monster-hunter/adversaries/tetsucabra.json",
+  "data/homebrew/monster-hunter/adversaries/tetsucabra-part-head-fangs.json",
+  "data/homebrew/monster-hunter/adversaries/tetsucabra-part-forelegs.json",
+  "data/homebrew/monster-hunter/adversaries/tetsucabra-part-hindlegs.json",
+];
+
+export async function importTetsucabra() {
+  const actors = [];
+  for (const sourcePath of TETSUCABRA_ACTOR_SOURCES) {
+    actors.push(await importCanonicalAdversary(sourcePath));
+  }
+  return actors;
+}
+
+export async function tetsucabraStatus() {
+  const principalSourceId = "homebrew.monster-hunter.adversary.tetsucabra";
+  const expectedPartIds = [
+    "homebrew.monster-hunter.adversary.tetsucabra-part-head-fangs",
+    "homebrew.monster-hunter.adversary.tetsucabra-part-forelegs",
+    "homebrew.monster-hunter.adversary.tetsucabra-part-hindlegs",
+  ];
+  const pack = game.packs.get(`${MODULE_ID}.dh-adversaries`);
+  if (!pack) return { green: false, reason: "dh-adversaries absent" };
+  const docs = await pack.getDocuments();
+  const principalMatches = docs.filter(doc => doc.flags?.[FLAG_SCOPE]?.sourceId === principalSourceId);
+  const doc = principalMatches[0] ?? null;
+  const hunting = doc?.flags?.[FLAG_SCOPE]?.hunting ?? null;
+  const loot = Array.isArray(hunting?.loot) ? hunting.loot : [];
+  const parts = expectedPartIds.map(sourceId => docs.find(doc => doc.flags?.[FLAG_SCOPE]?.sourceId === sourceId) ?? null);
+  const partRows = parts.map((part, index) => ({
+    sourceId: expectedPartIds[index],
+    name: part?.name ?? null,
+    uuid: part?.uuid ?? null,
+    fractureThreshold: part?.flags?.[FLAG_SCOPE]?.hunting?.fractureThreshold ?? null,
+  }));
+  const result = {
+    green: principalMatches.length === 1 && Boolean(doc?.system?.attack) && loot.length === 2 && parts.every(Boolean),
+    count: principalMatches.length + parts.filter(Boolean).length,
+    name: doc?.name ?? null,
+    uuid: doc?.uuid ?? null,
+    tier: doc?.system?.tier ?? null,
+    role: doc?.system?.type ?? null,
+    embeddedFeatures: doc?.items?.size ?? doc?.items?.length ?? 0,
+    huntingTags: hunting?.tags ?? [],
+    lootLinks: loot.map(row => ({ part: row.part ?? null, uuid: row.uuid ?? null })),
+    colossus: {
+      mode: hunting?.colossus?.integration ?? null,
+      principal: doc?.uuid ?? null,
+      parts: partRows,
+    },
+  };
+  console.table(partRows);
+  console.log(`${MODULE_ID} | Tetsucabra Colossus status`, result);
+  return result;
+}
+

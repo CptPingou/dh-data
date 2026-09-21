@@ -1,1 +1,85 @@
-[]
+[
+  {
+    "_id": "vhjIk5Vv0U72JqQo",
+    "name": "Cuir de Tetsucabra",
+    "type": "loot",
+    "img": "icons/commodities/leather/leather-hide-tan.webp",
+    "system": {
+      "description": "<p>Épaisse peau de Tetsucabra, prélevée sur une partie préservée ou récupérée lors du dépeçage. Composant de chasse de Tier 1.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "homebrew.monster-hunter.loot.tetsucabra-hide",
+        "canonicalSourceId": "homebrew.monster-hunter.loot.tetsucabra-hide",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "loot",
+        "lootCategory": "material",
+        "materialCategory": "hide",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "tetsucabra",
+        "tier": 1,
+        "monsterId": "homebrew.monster-hunter.adversary.tetsucabra",
+        "partId": "hide"
+      }
+    }
+  },
+  {
+    "_id": "3Z3SuZPFQYnpjE01",
+    "name": "Croc de Tetsucabra",
+    "type": "loot",
+    "img": "icons/commodities/bones/tooth-long-white.webp",
+    "system": {
+      "description": "<p>Croc massif de Tetsucabra. Matériau de chasse de Tier 1 traité comme une relique et prioritaire lors du dépeçage.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "homebrew.monster-hunter.loot.tetsucabra-tusk",
+        "canonicalSourceId": "homebrew.monster-hunter.loot.tetsucabra-tusk",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "loot",
+        "lootCategory": "relic",
+        "materialCategory": "relic",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "tetsucabra",
+        "tier": 1,
+        "monsterId": "homebrew.monster-hunter.adversary.tetsucabra",
+        "partId": "tusks",
+        "relicPriority": true
+      }
+    }
+  }
+]

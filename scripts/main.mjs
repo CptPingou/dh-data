@@ -13,6 +13,8 @@ import { frenchSourceDebtAudit, frenchSourceDebtSummary } from "./source-fr-debt
 import { autonomousSourceStatus, autonomousSourceDiff, autonomousSourceDiffSummary, syncAutonomousSources, rebuildAutonomousSources } from "./autonomous-source-loader.mjs";
 import "./content-locale-settings.mjs";
 import { importFullMapped as importFullMappedData, fullStatus } from "./full-import.mjs";
+import { importTetsucabra, tetsucabraStatus } from "./pilot-import.mjs";
+import { registerHuntingStatusEffects, huntingEffectsApi } from "./hunting-effects.mjs";
 import { importCampaignFrames, importCampaignFramePilot, campaignFrameStatus } from "./campaign-frame-import.mjs";
 import { semanticAudit } from "./semantic-audit.mjs";
 import { localizationAudit } from "./localization-audit.mjs";
@@ -118,6 +120,7 @@ function registerBloodDomain() {
 // Item documents containing system.domain = "blood" may already be validated then.
 const bloodDomainBootstrapped = registerBloodDomain();
 const huntingDomainBootstrapped = registerHuntingDomain();
+const huntingStatusEffectsBootstrapped = registerHuntingStatusEffects();
 
 Hooks.once("init", () => {
   console.log(`${MODULE_ID} | init`);
@@ -157,6 +160,9 @@ Hooks.once("init", () => {
       return localizeNativeCharacterOptions(locale);
     },
     fullStatus,
+    importTetsucabra,
+    tetsucabraStatus,
+    huntingEffects: huntingEffectsApi,
     importCampaignFrames,
     importCampaignFramePilot,
     campaignFrameStatus,

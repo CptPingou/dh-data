@@ -1,0 +1,50 @@
+{
+  "kind": "adversary",
+  "tier": 1,
+  "role": "Bruiser",
+  "difficulty": 13,
+  "thresholds": {
+    "major": 8,
+    "severe": 14
+  },
+  "hp": 1,
+  "stress": 0,
+  "stress_none": true,
+  "attack": null,
+  "experience_text": "",
+  "source": {
+    "corpus": "monster-hunter-homebrew",
+    "version": "0.1",
+    "status": "homebrew"
+  },
+  "canonical": true,
+  "id": "homebrew.monster-hunter.adversary.tetsucabra-part-head-fangs",
+  "name": "Tetsucabra — Tête / Crocs",
+  "motives_tactics": "Partie anatomique du Tetsucabra gérée par Colossus.",
+  "features": [
+    {
+      "name": "Mâchoire fracturable",
+      "type": "Passive",
+      "text": "Si un même impact atteint 8 dégâts sur cette partie, le MJ peut la marquer Broken dans Colossus. La fracture n’est pas une jauge cumulative. Quand elle devient Broken, appliquez l’état « Crocs brisés » au Tetsucabra principal."
+    }
+  ],
+  "features_text": "Mâchoire fracturable - Passive: Si un même impact atteint 8 dégâts sur cette partie, le MJ peut la marquer Broken dans Colossus. La fracture n’est pas une jauge cumulative. Quand elle devient Broken, appliquez l’état « Crocs brisés » au Tetsucabra principal.",
+  "description": "<p>Partie Colossus du Tetsucabra. Les crocs et la mâchoire encaissent les impacts frontaux.</p>",
+  "hunting": {
+    "schemaVersion": 2,
+    "tags": [
+      "monster-part",
+      "fracturable"
+    ],
+    "parentSourceId": "homebrew.monster-hunter.adversary.tetsucabra",
+    "fractureThreshold": 8,
+    "colossusPart": true,
+    "notes": "Crocs — Fracturable à 8 dégâts sur un même impact. Quand la partie est fracturée, marquez-la Broken dans Colossus. Le Croc de Tetsucabra reste attribué manuellement par le MJ. Quand elle devient Broken, appliquez l’état « Crocs brisés » au Tetsucabra principal. Mâchoire de pierre ne repousse plus la cible. Le Croc de Tetsucabra est disponible au dépeçage.",
+    "brokenEffect": {
+      "id": "mh-broken-fangs",
+      "name": "Crocs brisés",
+      "rule": "Mâchoire de pierre ne repousse plus la cible. Le Croc de Tetsucabra est disponible au dépeçage.",
+      "application": "manual-on-principal"
+    }
+  }
+}

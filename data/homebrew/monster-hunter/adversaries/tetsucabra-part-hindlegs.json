@@ -1,0 +1,50 @@
+{
+  "kind": "adversary",
+  "tier": 1,
+  "role": "Bruiser",
+  "difficulty": 13,
+  "thresholds": {
+    "major": 8,
+    "severe": 14
+  },
+  "hp": 1,
+  "stress": 0,
+  "stress_none": true,
+  "attack": null,
+  "experience_text": "",
+  "source": {
+    "corpus": "monster-hunter-homebrew",
+    "version": "0.1",
+    "status": "homebrew"
+  },
+  "canonical": true,
+  "id": "homebrew.monster-hunter.adversary.tetsucabra-part-hindlegs",
+  "name": "Tetsucabra — Pattes arrière",
+  "motives_tactics": "Partie anatomique du Tetsucabra gérée par Colossus.",
+  "features": [
+    {
+      "name": "Propulsion fracturable",
+      "type": "Passive",
+      "text": "Si un même impact atteint 8 dégâts sur cette partie, le MJ peut la marquer Broken dans Colossus. La fracture n’est pas une jauge cumulative. Quand elle devient Broken, appliquez l’état « Pattes arrière blessées » au Tetsucabra principal."
+    }
+  ],
+  "features_text": "Propulsion fracturable - Passive: Si un même impact atteint 8 dégâts sur cette partie, le MJ peut la marquer Broken dans Colossus. La fracture n’est pas une jauge cumulative. Quand elle devient Broken, appliquez l’état « Pattes arrière blessées » au Tetsucabra principal.",
+  "description": "<p>Partie Colossus du Tetsucabra. Ses membres postérieurs assurent ses bonds et sa poussée.</p>",
+  "hunting": {
+    "schemaVersion": 2,
+    "tags": [
+      "monster-part",
+      "fracturable"
+    ],
+    "parentSourceId": "homebrew.monster-hunter.adversary.tetsucabra",
+    "fractureThreshold": 8,
+    "colossusPart": true,
+    "notes": "Pattes arrière — Fracturable à 8 dégâts sur un même impact. Le statut Broken est géré manuellement dans Colossus. Quand elle devient Broken, appliquez l’état « Pattes arrière blessées » au Tetsucabra principal. Percée souterraine permet toujours de s'enfouir et de ressortir, mais plus de se repositionner immédiatement au contact d'une cible.",
+    "brokenEffect": {
+      "id": "mh-injured-hindlegs",
+      "name": "Pattes arrière blessées",
+      "rule": "Percée souterraine permet toujours de s'enfouir et de ressortir, mais plus de se repositionner immédiatement au contact d'une cible.",
+      "application": "manual-on-principal"
+    }
+  }
+}

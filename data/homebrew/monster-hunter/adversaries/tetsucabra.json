@@ -4,7 +4,7 @@
   "tier": 1,
   "role": "Bruiser",
   "name": "Tetsucabra",
-  "motives_tactics": "Défendre son territoire, charger, projeter, creuser, utiliser les rochers",
+  "motives_tactics": "Défendre son territoire, isoler une proie, charger, soulever des rochers, disparaître sous terre",
   "difficulty": 13,
   "thresholds": {
     "major": 9,
@@ -46,7 +46,7 @@
     }
   ],
   "hunting": {
-    "schemaVersion": 1,
+    "schemaVersion": 2,
     "footprint": {
       "width": 2,
       "height": 2
@@ -95,6 +95,61 @@
           }
         }
       }
+    },
+    "loot": [
+      {
+        "part": "Cuir",
+        "sourceId": "homebrew.monster-hunter.loot.tetsucabra-hide",
+        "uuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.vhjIk5Vv0U72JqQo"
+      },
+      {
+        "part": "Crocs",
+        "sourceId": "homebrew.monster-hunter.loot.tetsucabra-tusk",
+        "uuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.3Z3SuZPFQYnpjE01"
+      }
+    ],
+    "colossus": {
+      "principalSourceId": "homebrew.monster-hunter.adversary.tetsucabra",
+      "parts": [
+        {
+          "id": "head-fangs",
+          "name": "Tête / Crocs",
+          "sourceId": "homebrew.monster-hunter.adversary.tetsucabra-part-head-fangs",
+          "status": "healthy",
+          "fractureThreshold": 8,
+          "lootSourceIds": [
+            "homebrew.monster-hunter.loot.tetsucabra-tusk"
+          ],
+          "brokenEffectId": "mh-broken-fangs",
+          "brokenEffectName": "Crocs brisés",
+          "brokenConsequence": "Mâchoire de pierre ne repousse plus la cible. Le Croc de Tetsucabra est disponible au dépeçage."
+        },
+        {
+          "id": "forelegs",
+          "name": "Pattes avant",
+          "sourceId": "homebrew.monster-hunter.adversary.tetsucabra-part-forelegs",
+          "status": "healthy",
+          "fractureThreshold": 8,
+          "lootSourceIds": [],
+          "brokenEffectId": "mh-injured-forelegs",
+          "brokenEffectName": "Pattes avant blessées",
+          "brokenConsequence": "Charge tectonique ne provoque plus son déplacement forcé. La réaction conserve son attaque de base."
+        },
+        {
+          "id": "hindlegs",
+          "name": "Pattes arrière",
+          "sourceId": "homebrew.monster-hunter.adversary.tetsucabra-part-hindlegs",
+          "status": "healthy",
+          "fractureThreshold": 8,
+          "lootSourceIds": [],
+          "brokenEffectId": "mh-injured-hindlegs",
+          "brokenEffectName": "Pattes arrière blessées",
+          "brokenConsequence": "Percée souterraine permet toujours de s'enfouir et de ressortir, mais plus de se repositionner immédiatement au contact d'une cible."
+        }
+      ],
+      "integration": "manual-drag-drop",
+      "notes": "Le Tetsucabra est le principal. Quand une partie passe Broken dans Colossus, appliquez manuellement l’état Hunting indiqué au principal. L’état reste visible et porte la conséquence de la fracture; le Toolkit n’automatise ni le seuil ni le timing."
     }
-  }
+  },
+  "description": "<p>Un amphibien massif à la mâchoire démesurée, territorial et brutal. Le Tetsucabra alterne charges courtes, coups de mâchoire et déplacements souterrains. Il arrache des blocs de pierre pour contrôler l’espace et isoler une proie.</p><p>En chasse, ses crocs constituent la partie la plus précieuse tandis que son cuir épais fournit un matériau robuste.</p>"
 }

@@ -2,7 +2,7 @@
   "schema": "daggerheart-campaign-toolkit/source-index@2",
   "owner": "daggerheart-campaign-toolkit",
   "sourceNamespace": "daggerheart-srd-2.0",
-  "total": 1114,
+  "total": 1116,
   "origins": {
     "core": {
       "total": 1054,
@@ -85,10 +85,10 @@
       }
     },
     "homebrew": {
-      "total": 17,
+      "total": 19,
       "namespaces": {
         "monster-hunter": {
-          "total": 17,
+          "total": 19,
           "packs": {
             "dh-domain-cards": {
               "count": 17,
@@ -96,9 +96,9 @@
               "sha256": "4fdc22236849afd8495be84fa99af2123295362d28a1a5f36fdf84dd15ac9225"
             },
             "dh-loot": {
-              "count": 0,
+              "count": 2,
               "file": "data/homebrew/monster-hunter/dh-loot.json",
-              "sha256": "37517e5f3dc66819f61f5a7bb8ace1921282415f10551d2defa5c3eb0985b570"
+              "sha256": "2dc624598e2f8c05a3338f5e2578ad397c44329b1af810cfff3320e8ea8134c6"
             }
           }
         },
