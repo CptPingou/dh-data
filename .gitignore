@@ -1,4 +1,4 @@
-﻿# Source PDFs - stored externally
+# Source PDFs - stored externally
 pdf/
 
 # Local snapshots / archives
@@ -22,3 +22,6 @@ venv/
 .idea/
 .DS_Store
 Thumbs.db
+# Generated audit/work files
+tmp/
+hf-extraction-diagnostic.txt
