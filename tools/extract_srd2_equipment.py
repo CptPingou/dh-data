@@ -208,15 +208,75 @@ def section_between(text, start_pat, end_pat=None):
         if n: return text[start:start+n.start()]
     return text[start:]
 
+def repair_items(rows):
+    """Repair deterministic PDF table extraction splits in SRD 2.0 item tables."""
+    fixes = {
+        ("core", 11): ("Glamour Stone", "Activate this pebble-sized stone to memorize the appearance of someone you can see. Spend a Hope to magically recreate this guise on yourself as an illusion."),
+        ("core", 14): ("Piercing Arrows", "Three times per rest when you succeed on an attack with one of these arrows, you can add your Proficiency to the damage roll."),
+        ("core", 17): ("Arcane Prism", "Position this prism in a location of your choosing and activate it. All allies within Close range of it gain a +1 bonus to their Spellcast Rolls. While activated, the prism can’t be moved. Once the prism is deactivated, it can’t be activated again until your next long rest."),
+        ("core", 20): ("Homing Compasses", "These two compasses point toward each other no matter how far apart they are."),
+        ("hope-fear", 40): ("Soul-Twin Circlets", "Two creatures can wear this pair of circlets. You can spend a Hope to switch places with whoever is wearing the other circlet."),
+        ("hope-fear", 42): ("Crucible Frames", "These eyeglasses reveal weak points in objects and creatures. Three times per rest, you can spend a Hope to gain advantage on an attack roll."),
+        ("hope-fear", 44): ("Knockback Bracelets", "On a successful weapon attack, you can knock your target back up to Close range from their location."),
+        ("hope-fear", 49): ("Collar of Ascendancy", "An animal who wears this collar gains the ability to speak and understand common speech."),
+        ("hope-fear", 52): ("Rings of Friendship", "Two creatures can wear this pair of rings shaped like coiled snakes. You can spend the Hope of whoever is wearing the other ring (with their permission) as if it were your own."),
+        ("hope-fear", 53): ("Rings of Camaraderie", "Two creatures can wear this pair of wooden rings. You can mark the Stress of whoever is wearing the other ring (with their permission) as if it were your own."),
+        ("hope-fear", 54): ("Rings of Alliance", "Two creatures can wear this pair of rose gold rings. Once per session, you can initiate a Tag Team Roll with whoever is wearing the other ring without spending Hope or counting against your session limit for Tag Team Rolls."),
+    }
+    for row in rows:
+        key=(row.get("source_subset"), row.get("roll"))
+        if key not in fixes:
+            row["rules_text"] = row.get("rules_text", "").replace("T ag T eam", "Tag Team")
+            continue
+        name, text = fixes[key]
+        row["name"] = name
+        row["rules_text"] = text
+        row["id"] = f"srd-2.0.loot.{slug(row['source_subset'])}-{row['roll']:02d}-{slug(name)}"
+    return rows
+
 def parse_items(text):
     core=section_between(text,r"Core Set Items",r"Additional Items")
     add=section_between(text,r"Additional Items",r"(?:CONSUMABLES|Core Set Consumables)")
-    return parse_numbered_table(core,"core","loot")+parse_numbered_table(add,"hope-fear","loot")
+    return repair_items(parse_numbered_table(core,"core","loot")+parse_numbered_table(add,"hope-fear","loot"))
+
+def repair_consumables(rows):
+    """Repair deterministic PDF table extraction splits in SRD 2.0 consumables.
+
+    Keep source IDs/rolls stable; only restore text that was split between the
+    LOOT and description columns by PDF extraction.
+    """
+    fixes = {
+        ("core", 7): ("Minor Health Potion", "Clear 1d4 HP."),
+        ("core", 8): ("Minor Stamina Potion", "Clear 1d4 Stress."),
+        ("core", 12): ("Unstable Arcane Shard", "You can make a Finesse Roll to throw this shard at a group of adversaries within Far range. Targets you succeed against take 1d20 magic damage."),
+        ("core", 17): ("Jumping Root", "Eat this root to leap up to Far range once without needing to roll."),
+        ("core", 19): ("Health Potion", "Clear 1d4+1 HP."),
+        ("core", 20): ("Stamina Potion", "Clear 1d4+1 Stress."),
+        ("core", 23): ("Replication Parchment", "By touching this piece of parchment to another, you can perfectly copy the second parchment’s contents. Once used, this parchment becomes mundane paper."),
+        ("core", 24): ("Improved Arcane Shard", "You can make a Finesse Roll to throw this shard at a group of adversaries within Far range. Targets you succeed against take 2d20 magic damage."),
+        ("core", 41): ("Sun Tree Sap", "Consume this sap to roll a d6. On a result of 5–6, clear 2 HP. On a result of 2–4, clear 3 Stress. On a result of 1, see through the veil of death and return changed, gaining one scar."),
+        ("core", 43): ("Major Health Potion", "Clear 1d4+2 HP."),
+        ("core", 44): ("Major Stamina Potion", "Clear 1d4+2 Stress."),
+        ("core", 48): ("Dragonbloom Tea", "You can drink this tea to unleash a fiery breath attack. Make an Instinct Roll against all adversaries in front of you within Close range. Targets you succeed against take d20 physical damage using your Proficiency."),
+        ("core", 49): ("Bridge Seed", "Thick vines grow from your location to a point of your choice within Far range, allowing you to climb up or across them. The vines dissipate on your next short rest."),
+        ("hope-fear", 26): ("Stonemason’s Fortune", "When you throw this gray brick on the ground, it immediately grows into a 6-foot-tall, 10-foot-wide, and 2-foot-deep wall of solid stone."),
+        ("hope-fear", 30): ("Sunlight Orb", "You can shatter this orb to make the area within Very Far range appear as though it’s sunlit daytime for the next 24 hours."),
+        ("hope-fear", 59): ("Tears of the Undying Hero", "When you drink this potion, death can’t touch you until your next long rest. When you would mark your last Hit Point, instead of making a death move, you make one final action roll before falling into a dreamless slumber until an ally chooses the Tend to Wounds downtime move to clear your Hit Points."),
+        ("hope-fear", 60): ("Featherstep Potion", "You can drink this potion to sprout small wings from your ankles that give you a bonus to your Evasion equal to your tier until your next rest."),
+    }
+    for row in rows:
+        fix = fixes.get((row.get("source_subset"), row.get("roll")))
+        if fix:
+            row["name"], row["rules_text"] = fix
+        # Common PDF glyph split seen in otherwise-correct rows.
+        row["rules_text"] = row.get("rules_text", "").replace("T argets", "Targets")
+    return rows
 
 def parse_consumables(text):
     core=section_between(text,r"Core Set Consumables",r"Additional Consumables")
     add=section_between(text,r"Additional Consumables",None)
-    return parse_numbered_table(core,"core","consumable")+parse_numbered_table(add,"hope-fear","consumable")
+    rows=parse_numbered_table(core,"core","consumable")+parse_numbered_table(add,"hope-fear","consumable")
+    return repair_consumables(rows)
 
 # ---------- BEASTFORMS ----------
 BF_HEADING = re.compile(
