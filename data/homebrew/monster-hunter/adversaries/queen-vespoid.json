@@ -97,6 +97,13 @@
           "text": "Après Crache-venin, si l'attaque touche, l'Opener marque 1 Stress supplémentaire et ne peut pas se déplacer avant la fin de sa prochaine action."
         }
       }
-    }
+    },
+    "noteLinks": [
+      {
+        "label": "Vespoid Minion",
+        "sourceId": "homebrew.monster-hunter.adversary.vespoid-minion",
+        "note": "Appel de l’essaim : invoque trois Vespoid Minions à portée Far."
+      }
+    ]
   }
 }

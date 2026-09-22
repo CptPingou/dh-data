@@ -45,6 +45,11 @@
       "name": "Crocs brisés",
       "rule": "Mâchoire de pierre ne repousse plus la cible. Le Croc de Tetsucabra est disponible au dépeçage.",
       "application": "manual-on-principal"
-    }
+    },
+    "partSchemaVersion": 1,
+    "partId": "head-fangs",
+    "lootRefs": [
+      "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.DCTLootTetsuFang"
+    ]
   }
 }

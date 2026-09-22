@@ -45,6 +45,9 @@
       "name": "Pattes arrière blessées",
       "rule": "Percée souterraine permet toujours de s'enfouir et de ressortir, mais plus de se repositionner immédiatement au contact d'une cible.",
       "application": "manual-on-principal"
-    }
+    },
+    "partSchemaVersion": 1,
+    "partId": "hindlegs",
+    "lootRefs": []
   }
 }

@@ -10,6 +10,15 @@ const FLAG_SCOPE = MODULE_ID;
  * automation is introduced here.
  */
 export const HUNTING_STATUS_EFFECTS = Object.freeze({
+  "mh-wet": Object.freeze({
+    id: "mh-wet",
+    name: "Mouillé",
+    img: "modules/daggerheart-campaign-toolkit/assets/icons/status/wet.svg",
+    category: "hunting",
+    appliesTo: Object.freeze(["character", "adversary"]),
+    description: "La cible est trempée. Cet état peut affecter aussi bien un chasseur qu’un monstre et reste visible tant que la fiction le justifie.",
+    rule: "Les effets et dégâts de type Éclair sont doublés contre une cible Mouillée. L’application du multiplicateur reste arbitrée à la table.",
+  }),
   "mh-broken-fangs": Object.freeze({
     id: "mh-broken-fangs",
     name: "Crocs brisés",
@@ -46,6 +55,7 @@ function configStatus(effect) {
       [FLAG_SCOPE]: {
         hunting: true,
         category: effect.category,
+        appliesTo: effect.appliesTo ?? null,
         description: effect.description,
         rule: effect.rule,
       },
@@ -97,6 +107,7 @@ export async function setHuntingStatus(actorOrUuid, effectId, active = true) {
     await activeEffect.update({
       [`flags.${FLAG_SCOPE}.hunting`]: true,
       [`flags.${FLAG_SCOPE}.category`]: effect.category,
+      [`flags.${FLAG_SCOPE}.appliesTo`]: effect.appliesTo ?? null,
       [`flags.${FLAG_SCOPE}.description`]: effect.description,
       [`flags.${FLAG_SCOPE}.rule`]: effect.rule,
     });
@@ -106,6 +117,8 @@ export async function setHuntingStatus(actorOrUuid, effectId, active = true) {
     actor: actor.uuid,
     effectId: effect.id,
     name: effect.name,
+    category: effect.category,
+    appliesTo: effect.appliesTo ?? null,
     description: effect.description,
     active: actor.statuses?.has?.(effect.id) ?? Boolean(activeEffect),
     rule: effect.rule,
@@ -123,6 +136,8 @@ export async function huntingEffectsStatus(actorOrUuid = null) {
   const registered = Object.values(HUNTING_STATUS_EFFECTS).map(effect => ({
     id: effect.id,
     name: effect.name,
+    category: effect.category,
+    appliesTo: effect.appliesTo ?? null,
     registered: CONFIG.statusEffects?.some(row => row?.id === effect.id) ?? false,
     description: effect.description,
     rule: effect.rule,

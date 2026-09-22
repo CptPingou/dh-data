@@ -13,8 +13,10 @@ import { frenchSourceDebtAudit, frenchSourceDebtSummary } from "./source-fr-debt
 import { autonomousSourceStatus, autonomousSourceDiff, autonomousSourceDiffSummary, syncAutonomousSources, rebuildAutonomousSources } from "./autonomous-source-loader.mjs";
 import "./content-locale-settings.mjs";
 import { importFullMapped as importFullMappedData, fullStatus } from "./full-import.mjs";
-import { importTetsucabra, tetsucabraStatus } from "./pilot-import.mjs";
+import { importCanonicalAdversary, importTetsucabra, tetsucabraStatus } from "./pilot-import.mjs";
 import { registerHuntingStatusEffects, huntingEffectsApi } from "./hunting-effects.mjs";
+import { createMonsterPartsApi } from "./monster-parts.mjs";
+import { createMonsterHunterAdversaryApi } from "./monster-hunter-adversary-template.mjs";
 import { importCampaignFrames, importCampaignFramePilot, campaignFrameStatus } from "./campaign-frame-import.mjs";
 import { semanticAudit } from "./semantic-audit.mjs";
 import { localizationAudit } from "./localization-audit.mjs";
@@ -121,6 +123,8 @@ function registerBloodDomain() {
 const bloodDomainBootstrapped = registerBloodDomain();
 const huntingDomainBootstrapped = registerHuntingDomain();
 const huntingStatusEffectsBootstrapped = registerHuntingStatusEffects();
+const monsterPartsApi = createMonsterPartsApi(huntingEffectsApi);
+const monsterHunterAdversaryApi = createMonsterHunterAdversaryApi({ monsterPartsApi, importCanonicalAdversary });
 
 Hooks.once("init", () => {
   console.log(`${MODULE_ID} | init`);
@@ -134,7 +138,7 @@ Hooks.once("init", () => {
   registerContextualDomainCardBypass();
 
   game.modules.get(MODULE_ID).api = {
-    version: "0.5.50",
+    version: "0.5.52",
     async smokeTest() {
       const systemOk = game.system?.id === "daggerheart";
       const packs = Object.fromEntries([
@@ -163,6 +167,8 @@ Hooks.once("init", () => {
     importTetsucabra,
     tetsucabraStatus,
     huntingEffects: huntingEffectsApi,
+    monsterParts: monsterPartsApi,
+    monsterHunterAdversary: monsterHunterAdversaryApi,
     importCampaignFrames,
     importCampaignFramePilot,
     campaignFrameStatus,

@@ -45,6 +45,9 @@
       "name": "Pattes avant blessées",
       "rule": "Charge tectonique ne provoque plus son déplacement forcé. La réaction conserve son attaque de base.",
       "application": "manual-on-principal"
-    }
+    },
+    "partSchemaVersion": 1,
+    "partId": "forelegs",
+    "lootRefs": []
   }
 }

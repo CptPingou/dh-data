@@ -1477,6 +1477,36 @@ export async function mappingAudit() {
  * syncAutonomousSources(): Foundry is the session runtime, while DH-DATA remains
  * the canonical source.
  */
+async function refreshHuntingNoteLinks(pack) {
+  const docs = await pack.getDocuments();
+  const bySourceId = new Map(
+    docs
+      .map(doc => [doc.flags?.[FLAG_SCOPE]?.sourceId, doc])
+      .filter(([sourceId]) => typeof sourceId === "string" && sourceId)
+  );
+
+  const sectionPattern = /<section data-dct-hunting-links="true">[\s\S]*?<\/section>/g;
+  for (const doc of docs) {
+    const links = doc.flags?.[FLAG_SCOPE]?.hunting?.noteLinks;
+    if (!Array.isArray(links) || !links.length) continue;
+
+    const baseNotes = String(doc.system?.notes ?? "").replace(sectionPattern, "").trim();
+    const rows = links.map(link => {
+      const label = foundry.utils.escapeHTML(String(link?.label ?? "Adversaire lié"));
+      const target = bySourceId.get(String(link?.sourceId ?? ""));
+      const contentLink = target ? `@UUID[${target.uuid}]{${label}}` : label;
+      const note = String(link?.note ?? "").trim();
+      const noteHtml = note ? `<br><small>${foundry.utils.escapeHTML(note)}</small>` : "";
+      return `<li>${contentLink}${noteHtml}</li>`;
+    }).join("");
+    const section = `<section data-dct-hunting-links="true"><h4>Adversaires liés</h4><ul>${rows}</ul></section>`;
+    const nextNotes = [baseNotes, section].filter(Boolean).join("\n");
+    if (nextNotes !== String(doc.system?.notes ?? "")) {
+      await doc.update({ "system.notes": nextNotes });
+    }
+  }
+}
+
 export async function importCanonicalAdversary(sourcePath) {
   if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est réservé au MJ.");
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
@@ -1512,6 +1542,7 @@ export async function importCanonicalAdversary(sourcePath) {
     const previous = docs.filter(doc => doc.flags?.[FLAG_SCOPE]?.sourceId === raw.id);
     for (const doc of previous) await doc.delete();
     const created = await Actor.create(data, { pack: pack.collection });
+    await refreshHuntingNoteLinks(pack);
     ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
     return created;
   } finally {
