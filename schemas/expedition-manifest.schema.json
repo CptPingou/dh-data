@@ -1,0 +1,344 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "expedition-manifest.schema.json",
+  "title": "Daggerheart Expedition Manifest",
+  "description": "Format d'échange explicite entre le Web persistant et Foundry pour préparer, jouer puis retourner une expédition.",
+  "type": "object",
+  "required": [
+    "schema",
+    "expeditionId",
+    "revision",
+    "phase",
+    "authority",
+    "characters",
+    "containers",
+    "ledger"
+  ],
+  "properties": {
+    "schema": {
+      "const": "daggerheart-campaign-toolkit/expedition-manifest@2"
+    },
+    "expeditionId": {
+      "type": "string",
+      "minLength": 1
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "phase": {
+      "enum": [
+        "prepared",
+        "in_session",
+        "returned"
+      ]
+    },
+    "authority": {
+      "enum": [
+        "web",
+        "foundry"
+      ]
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "characterId",
+          "name"
+        ],
+        "properties": {
+          "characterId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "actorUuid": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "containers": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/container"
+      }
+    },
+    "ledger": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/ledgerEntry"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "itemRef": {
+      "type": "object",
+      "required": [
+        "sourceId",
+        "name"
+      ],
+      "properties": {
+        "sourceId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "foundryUuid": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "containerEntry": {
+      "type": "object",
+      "required": [
+        "entryId",
+        "itemRef",
+        "quantity"
+      ],
+      "properties": {
+        "entryId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "itemRef": {
+          "$ref": "#/$defs/itemRef"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "slotId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "container": {
+      "type": "object",
+      "required": [
+        "containerId",
+        "type",
+        "name",
+        "scope",
+        "holderRef",
+        "capacity",
+        "layout",
+        "rules",
+        "contents"
+      ],
+      "properties": {
+        "containerId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "type": {
+          "enum": [
+            "backpack",
+            "caravan"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "scope": {
+          "enum": [
+            "personal",
+            "party",
+            "expedition"
+          ]
+        },
+        "capacity": {
+          "type": "object",
+          "required": [
+            "slots"
+          ],
+          "properties": {
+            "slots": {
+              "type": "integer",
+              "minimum": 0
+            }
+          },
+          "additionalProperties": false
+        },
+        "layout": {
+          "type": "object",
+          "required": [
+            "mode",
+            "slots"
+          ],
+          "properties": {
+            "mode": {
+              "enum": [
+                "list",
+                "grid"
+              ]
+            },
+            "slots": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "slotId"
+                ],
+                "properties": {
+                  "slotId": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "label": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "accepts": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            }
+          },
+          "additionalProperties": false
+        },
+        "rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "ruleId",
+              "text"
+            ],
+            "properties": {
+              "ruleId": {
+                "type": "string",
+                "minLength": 1
+              },
+              "text": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "contents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/containerEntry"
+          }
+        },
+        "holderRef": {
+          "type": "object",
+          "required": [
+            "kind",
+            "id"
+          ],
+          "properties": {
+            "kind": {
+              "enum": [
+                "character",
+                "party",
+                "expedition"
+              ]
+            },
+            "id": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "ledgerEntry": {
+      "type": "object",
+      "required": [
+        "eventId",
+        "kind",
+        "itemRef",
+        "quantity"
+      ],
+      "properties": {
+        "eventId": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "enum": [
+            "consumed",
+            "acquired",
+            "transferred",
+            "lost"
+          ]
+        },
+        "itemRef": {
+          "$ref": "#/$defs/itemRef"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "fromContainerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "toContainerId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "characterId": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "notes": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

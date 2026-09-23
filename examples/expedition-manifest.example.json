@@ -1,0 +1,69 @@
+{
+  "schema": "daggerheart-campaign-toolkit/expedition-manifest@2",
+  "expeditionId": "expedition-demo-001",
+  "revision": 1,
+  "phase": "prepared",
+  "authority": "web",
+  "characters": [
+    {
+      "characterId": "hunter-demo",
+      "name": "Chasseur démo",
+      "actorUuid": null
+    }
+  ],
+  "containers": [
+    {
+      "containerId": "backpack-hunter-demo",
+      "type": "backpack",
+      "name": "Sac à dos du chasseur",
+      "scope": "personal",
+      "capacity": {
+        "slots": 6
+      },
+      "layout": {
+        "mode": "grid",
+        "slots": [
+          {
+            "slotId": "slot-1",
+            "label": null,
+            "accepts": []
+          },
+          {
+            "slotId": "slot-2",
+            "label": null,
+            "accepts": []
+          }
+        ]
+      },
+      "rules": [],
+      "contents": [],
+      "holderRef": {
+        "kind": "character",
+        "id": "hunter-demo"
+      }
+    },
+    {
+      "containerId": "caravan-main",
+      "type": "caravan",
+      "name": "Caravane",
+      "scope": "party",
+      "capacity": {
+        "slots": 24
+      },
+      "layout": {
+        "mode": "grid",
+        "slots": []
+      },
+      "rules": [],
+      "contents": [],
+      "holderRef": {
+        "kind": "party",
+        "id": "party"
+      }
+    }
+  ],
+  "ledger": [],
+  "metadata": {
+    "purpose": "Exemple de contrat Web ↔ Foundry"
+  }
+}

@@ -17,6 +17,12 @@ import { importCanonicalAdversary, importTetsucabra, tetsucabraStatus } from "./
 import { registerHuntingStatusEffects, huntingEffectsApi } from "./hunting-effects.mjs";
 import { createMonsterPartsApi } from "./monster-parts.mjs";
 import { createMonsterHunterAdversaryApi } from "./monster-hunter-adversary-template.mjs";
+import { expeditionManifestApi } from "./expedition-manifest.mjs";
+import { createExpeditionFoundryItemsApi } from "./expedition-foundry-items.mjs";
+import { expeditionWindowApi } from "./expedition-window.mjs";
+import { registerExpeditionManifestPersistence, createExpeditionPersistenceApi } from "./expedition-persistence.mjs";
+import { createExpeditionCommandsApi, expeditionMacroDefinitions } from "./expedition-commands.mjs";
+import { createExpeditionLifecycleApi } from "./expedition-lifecycle.mjs";
 import { importCampaignFrames, importCampaignFramePilot, campaignFrameStatus } from "./campaign-frame-import.mjs";
 import { semanticAudit } from "./semantic-audit.mjs";
 import { localizationAudit } from "./localization-audit.mjs";
@@ -129,6 +135,7 @@ const monsterHunterAdversaryApi = createMonsterHunterAdversaryApi({ monsterParts
 Hooks.once("init", () => {
   console.log(`${MODULE_ID} | init`);
   registerEngagementStateSetting();
+  registerExpeditionManifestPersistence();
   if (!bloodDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.blood) {
     registerBloodDomain();
   }
@@ -137,8 +144,37 @@ Hooks.once("init", () => {
   }
   registerContextualDomainCardBypass();
 
+  const expeditionPersistenceApi = createExpeditionPersistenceApi({
+    validate: expeditionManifestApi.validate,
+    normalize: expeditionManifestApi.normalize,
+  });
+
+  const expeditionFoundryItemsApi = createExpeditionFoundryItemsApi({
+    expeditionManifestApi,
+  });
+
+  const openExpeditionManifest = (manifest, selectedId = null) => expeditionWindowApi.open(manifest, {
+    validate: expeditionManifestApi.validate,
+    normalize: expeditionManifestApi.normalize,
+    transfer: expeditionManifestApi.transfer,
+    unloadToActor: expeditionFoundryItemsApi.unloadToActor,
+    save: expeditionPersistenceApi.save,
+    selectedId,
+  });
+
+  const expeditionLifecycleApi = createExpeditionLifecycleApi({
+    persistenceApi: expeditionPersistenceApi,
+    validate: expeditionManifestApi.validate,
+  });
+
+  const expeditionCommandsApi = createExpeditionCommandsApi({
+    persistenceApi: expeditionPersistenceApi,
+    lifecycleApi: expeditionLifecycleApi,
+    openManifest: openExpeditionManifest,
+  });
+
   game.modules.get(MODULE_ID).api = {
-    version: "0.5.52",
+    version: "0.5.59",
     async smokeTest() {
       const systemOk = game.system?.id === "daggerheart";
       const packs = Object.fromEntries([
@@ -169,6 +205,20 @@ Hooks.once("init", () => {
     huntingEffects: huntingEffectsApi,
     monsterParts: monsterPartsApi,
     monsterHunterAdversary: monsterHunterAdversaryApi,
+    expeditionManifest: Object.freeze({
+      ...expeditionManifestApi,
+      save: expeditionPersistenceApi.save,
+      load: expeditionPersistenceApi.load,
+      list: expeditionPersistenceApi.list,
+      remove: expeditionPersistenceApi.remove,
+      open(manifest, { selectedId = null } = {}) {
+        return openExpeditionManifest(manifest, selectedId);
+      },
+    }),
+    expeditionItems: expeditionFoundryItemsApi,
+    expeditionLifecycle: expeditionLifecycleApi,
+    expeditionCommands: expeditionCommandsApi,
+    expeditionWindow: expeditionWindowApi,
     importCampaignFrames,
     importCampaignFramePilot,
     campaignFrameStatus,
@@ -326,15 +376,30 @@ Hooks.once("ready", async () => {
   if (!pack) return;
   try {
     const index = await pack.getIndex({ fields: ["name"] });
-    if (!index.some((entry) => entry.name === SMOKE_MACRO_NAME)) {
-      await pack.configure({ locked: false });
-      await Macro.create({
+    const definitions = [
+      {
         name: SMOKE_MACRO_NAME,
-        type: "script",
-        scope: "global",
         command: `await game.modules.get("${MODULE_ID}").api.smokeTest();`,
         ownership: { default: 0 },
-      }, { pack: pack.collection });
+      },
+      ...expeditionMacroDefinitions.map((definition) => ({
+        ...definition,
+        ownership: { default: 1 },
+      })),
+    ];
+    const missing = definitions.filter((definition) => !index.some((entry) => entry.name === definition.name));
+
+    if (missing.length) {
+      await pack.configure({ locked: false });
+      for (const definition of missing) {
+        await Macro.create({
+          name: definition.name,
+          type: "script",
+          scope: "global",
+          command: definition.command,
+          ownership: definition.ownership,
+        }, { pack: pack.collection });
+      }
       await pack.configure({ locked: true });
     }
   } catch (error) {
