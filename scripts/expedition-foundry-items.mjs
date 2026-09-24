@@ -1,4 +1,4 @@
-const REF_KIND = "foundry-item";
+﻿const REF_KIND = "foundry-item";
 
 function clone(value) {
   return value == null ? value : structuredClone(value);
@@ -27,6 +27,7 @@ export function foundryItemRef(item) {
     name: item.name ?? "Item",
     type: item.type ?? null,
     img: item.img ?? null,
+    snapshot: clone(item.toObject()),
   };
 }
 
@@ -117,11 +118,19 @@ export function createExpeditionFoundryItemsApi({ expeditionManifestApi } = {}) 
       const entry = (container?.contents ?? []).find((e) => e.entryId === entryId);
       if (!entry) return { unloaded: false, reason: "entry-not-found", manifest };
       const source = await resolveFoundryItemRef(entry.itemRef);
-      if (!source) return { unloaded: false, reason: "foundry-item-not-resolved", manifest };
       const available = Math.max(1, Number(entry.quantity) || 1);
       const qty = quantity == null ? available : Math.max(1, Number(quantity) || 1);
       if (qty > available) return { unloaded: false, reason: "quantity-exceeds-entry", manifest };
-      const data = source.toObject(); delete data._id;
+      let data = null;
+      if (source) {
+        data = source.toObject();
+      } else if (entry.itemRef?.snapshot && typeof entry.itemRef.snapshot === "object") {
+        data = clone(entry.itemRef.snapshot);
+      } else {
+        return { unloaded: false, reason: "foundry-item-not-resolved", manifest };
+      }
+
+      delete data._id;
       if (data.system && Object.prototype.hasOwnProperty.call(data.system, "quantity")) data.system.quantity = qty;
       else if (data.system && Object.prototype.hasOwnProperty.call(data.system, "amount")) data.system.amount = qty;
       const [created] = await actor.createEmbeddedDocuments("Item", [data]);
@@ -154,3 +163,4 @@ export function createExpeditionFoundryItemsApi({ expeditionManifestApi } = {}) 
     },
   });
 }
+

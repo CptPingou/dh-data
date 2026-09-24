@@ -423,3 +423,5 @@ Hooks.once("ready", () => {
     status: toolkitCardPresentationStatus,
   };
 });
+
+import "./item-backpack-menu.mjs";
