@@ -3,6 +3,7 @@
   "title": "Daggerheart — Campaign Toolkit",
   "description": "Module unique pour les compendiums, macros, automatisations et extensions Daggerheart de campagne.",
   "version": "0.4.2",
+  "socket": true,
   "authors": [
     {
       "name": "Campaign Toolkit"

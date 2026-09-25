@@ -1,3 +1,4 @@
+import { installExpeditionInventoryUx } from "./expedition-inventory-ux.mjs";
 import {
   installToolkitCardPresentationBridge,
   toolkitCardPresentation,
@@ -425,3 +426,5 @@ Hooks.once("ready", () => {
 });
 
 import "./item-backpack-menu.mjs";
+
+installExpeditionInventoryUx();

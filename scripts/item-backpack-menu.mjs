@@ -1,3 +1,6 @@
+﻿import { expeditionErrorMessage } from "./expedition-errors.mjs";
+import "./expedition-world-bootstrap.mjs";
+
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const PATCH_MARK = Symbol.for(`${MODULE_ID}.backpackContextMenuPatched`);
 
@@ -78,6 +81,15 @@ async function findActorBackpack(api, actor) {
     const backpack = getManifestContainers(manifest).find((container) => {
       if (container?.type !== "backpack") return false;
 
+      // A stored backpack still belongs to the character, but players
+      // temporarily lose access to it until the GM retrieves it.
+      if (
+        !game.user?.isGM &&
+        container?.presentation?.accessState === "stored"
+      ) {
+        return false;
+      }
+
       const holder = container?.holderRef ?? {};
       return (
         holder.foundryActorUuid === actor.uuid ||
@@ -92,19 +104,180 @@ async function findActorBackpack(api, actor) {
   return null;
 }
 
-function getQuantity(item) {
+function getQuantityInfo(item) {
   const quantity = item?.system?.quantity;
 
-  if (Number.isFinite(quantity)) return Math.max(1, Number(quantity));
-  if (Number.isFinite(quantity?.value)) return Math.max(1, Number(quantity.value));
+  if (Number.isFinite(quantity)) {
+    return {
+      value: Math.max(1, Number(quantity)),
+      updatePath: "system.quantity",
+    };
+  }
 
-  return 1;
+  if (Number.isFinite(quantity?.value)) {
+    return {
+      value: Math.max(1, Number(quantity.value)),
+      updatePath: "system.quantity.value",
+    };
+  }
+
+  const amount = item?.system?.amount;
+
+  if (Number.isFinite(amount)) {
+    return {
+      value: Math.max(1, Number(amount)),
+      updatePath: "system.amount",
+    };
+  }
+
+  if (Number.isFinite(amount?.value)) {
+    return {
+      value: Math.max(1, Number(amount.value)),
+      updatePath: "system.amount.value",
+    };
+  }
+
+  return {
+    value: 1,
+    updatePath: null,
+  };
 }
 
 function cloneManifest(manifest) {
   return foundry?.utils?.deepClone
     ? foundry.utils.deepClone(manifest)
     : structuredClone(manifest);
+}
+
+async function chooseTransferQuantity(item, maximum) {
+  if (maximum <= 1) return 1;
+
+  const DialogV2 = foundry?.applications?.api?.DialogV2;
+
+  if (DialogV2?.prompt) {
+    const result = await DialogV2.prompt({
+      window: {
+        title: `Mettre ${item.name} dans le sac à dos`,
+      },
+      content: `
+        <div class="form-group">
+          <label>Quantité</label>
+          <div class="form-fields">
+            <input
+              type="number"
+              name="quantity"
+              value="${maximum}"
+              min="1"
+              max="${maximum}"
+              step="1"
+              autofocus
+            />
+          </div>
+          <p class="hint">Disponible sur le personnage : ${maximum}</p>
+        </div>
+      `,
+      ok: {
+        label: "Transférer",
+        callback: (_event, button, dialog) => {
+          const form = dialog?.element?.querySelector?.("form");
+          const input = form?.elements?.quantity ?? dialog?.element?.querySelector?.('[name="quantity"]');
+          return Number(input?.value ?? maximum);
+        },
+      },
+      rejectClose: false,
+    });
+
+    if (result == null) return null;
+
+    const quantity = Math.floor(Number(result));
+    if (!Number.isFinite(quantity)) return maximum;
+    if (quantity <= 0) {
+      ui.notifications?.warn("La quantité à transférer doit être supérieure à 0.");
+      return null;
+    }
+    return Math.min(maximum, quantity);
+  }
+
+  const raw = window.prompt(
+    `Quantité de "${item.name}" à mettre dans le sac à dos (1-${maximum}) :`,
+    String(maximum)
+  );
+
+  if (raw == null) return null;
+
+  const quantity = Math.floor(Number(raw));
+  if (!Number.isFinite(quantity)) return maximum;
+  if (quantity <= 0) {
+    ui.notifications?.warn("La quantité à transférer doit être supérieure à 0.");
+    return null;
+  }
+  return Math.min(maximum, quantity);
+}
+
+async function applyActorDebit(item, quantity, quantityInfo) {
+  const available = quantityInfo.value;
+
+  if (quantity >= available || !quantityInfo.updatePath) {
+    await item.delete();
+    return {
+      mode: "deleted",
+      remaining: 0,
+    };
+  }
+
+  const remaining = available - quantity;
+
+  await item.update({
+    [quantityInfo.updatePath]: remaining,
+  });
+
+  return {
+    mode: "decremented",
+    remaining,
+  };
+}
+
+
+async function refreshOpenExpeditionFromTransfer(api, manifest) {
+  const expeditionId = getManifestId(manifest);
+  if (!expeditionId) return;
+
+  let freshManifest = manifest;
+
+  try {
+    freshManifest = await api.expeditionManifest.load(expeditionId);
+  } catch (error) {
+    console.warn(`${MODULE_ID} | could not reload expedition manifest after transfer`, error);
+  }
+
+  const dialogs = [...document.querySelectorAll("dialog.application.dialog")];
+  const expeditionDialog = dialogs.find((dialog) =>
+    /préparer l[’']expédition|prepare expedition/i.test(dialog.textContent ?? "")
+  );
+
+  if (!expeditionDialog) return;
+
+  try {
+    // Reproduce the already validated manual close/open behavior.
+    if (typeof expeditionDialog.close === "function" && expeditionDialog.open) {
+      expeditionDialog.close();
+    }
+
+    // HTMLDialogElement.close() does not remove the node. The expedition
+    // renderer creates a fresh dialog on open(), so the stale one must be
+    // removed explicitly or both remain in the DOM.
+    expeditionDialog.remove();
+
+    // Yield one frame so Foundry's dialog teardown completes before reopening.
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+
+    // Important: open() expects the full manifest object, not expeditionId.
+    if (typeof api?.expeditionManifest?.open === "function") {
+      await api.expeditionManifest.open(freshManifest);
+    }
+  } catch (error) {
+    console.warn(`${MODULE_ID} | expedition dialog reopen after transfer failed`, error);
+  }
 }
 
 async function moveItemToBackpack(item) {
@@ -130,44 +303,65 @@ async function moveItemToBackpack(item) {
   const binding = await findActorBackpack(api, actor);
 
   if (!binding) {
-    ui.notifications?.warn(`Aucun sac à dos d'expédition lié à ${actor.name}.`);
+    ui.notifications?.warn(`Aucun sac à dos d'expédition accessible pour ${actor.name}.`);
     return;
   }
 
+  const quantityInfo = getQuantityInfo(item);
+  const quantity = await chooseTransferQuantity(item, quantityInfo.value);
+
+  if (quantity == null) return;
+
   const { manifest, backpack } = binding;
   const snapshot = cloneManifest(manifest);
+
+  let transferFailureReason = null;
 
   try {
     const result = await api.expeditionItems.loadFromActor(manifest, {
       containerId: backpack.containerId,
       item,
-      quantity: getQuantity(item)
+      quantity,
     });
 
     if (!result?.loaded) {
-      throw new Error("loadFromActor did not confirm the transfer.");
+      transferFailureReason = result?.reason ?? "loadFromActor did not confirm the transfer.";
+      throw new Error(transferFailureReason);
     }
 
     await api.expeditionManifest.save(manifest);
 
     try {
-      await item.delete();
+      const debit = await applyActorDebit(item, quantity, quantityInfo);
+
+      ui.notifications?.info(
+        debit.remaining > 0
+          ? `${quantity} × ${item.name} → sac à dos (${debit.remaining} restant)`
+          : `${quantity} × ${item.name} → sac à dos`
+      );
     } catch (error) {
       await api.expeditionManifest.save(snapshot);
       throw error;
     }
 
-    ui.notifications?.info(`${item.name} → sac à dos`);
-
     Hooks.callAll(`${MODULE_ID}.expeditionChanged`, {
       manifest,
       containerId: backpack.containerId,
       actorUuid: actor.uuid,
-      itemName: item.name
+      itemName: item.name,
+      quantity,
     });
+
+    await refreshOpenExpeditionFromTransfer(api, manifest);
   } catch (error) {
     console.error(`${MODULE_ID} | Actor → backpack transfer failed`, error);
-    ui.notifications?.error(`Impossible de mettre ${item.name} dans le sac à dos.`);
+    ui.notifications?.error(
+      expeditionErrorMessage(transferFailureReason ?? error?.message, {
+        itemName: item.name,
+        containerName: backpack?.name ?? "le sac à dos",
+        actorName: actor.name,
+      })
+    );
   }
 }
 
@@ -199,7 +393,7 @@ function patchSheetClass(SheetClass) {
     configurable: false,
     enumerable: false,
     writable: false,
-    value: true
+    value: true,
   });
 
   proto._getContextMenuCommonOptions = function (...args) {
@@ -236,7 +430,7 @@ function patchSheetClass(SheetClass) {
         }
 
         await moveItemToBackpack(item);
-      }
+      },
     };
 
     const deleteIndex = options.findIndex((option) =>
@@ -265,3 +459,4 @@ Hooks.once("ready", () => {
 
   console.log(`${MODULE_ID} | backpack context menu patched`, { patched });
 });
+

@@ -3,7 +3,7 @@
     "_id": "lVzHjpi0CLULhE1f",
     "name": "Potion de foulée",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-flask-corked-cyan.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre prochain Jet d’Agilité.</p>",
       "quantity": 1,
@@ -72,7 +72,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 1
+        "roll": 1,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "lNtcrkgFGOJNaroE",
+          "nativeName": "Stride Potion",
+          "path": "icons/consumables/potions/potion-flask-corked-cyan.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -80,7 +88,7 @@
     "_id": "WN7dvlPZgC9nuKcb",
     "name": "Potion de vigueur",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-vial-tube-yellow.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre prochain Jet de Force.</p>",
       "quantity": 1,
@@ -149,7 +157,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 2
+        "roll": 2,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "FOPQNqXbiVO0ilYL",
+          "nativeName": "Bolster Potion",
+          "path": "icons/consumables/potions/potion-vial-tube-yellow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -157,7 +173,7 @@
     "_id": "8LzKaPEqAzdTW0cm",
     "name": "Potion de contrôle",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/flask-corked-blue.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre prochain Jet de Finesse.</p>",
       "quantity": 1,
@@ -226,7 +242,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 3
+        "roll": 3,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "eeBhZSGLjuNZuJuI",
+          "nativeName": "Control Potion",
+          "path": "icons/consumables/potions/flask-corked-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -234,7 +258,7 @@
     "_id": "e2cW5Xc3SsXYlpGJ",
     "name": "Potion d’harmonisation",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-conical-corked-purple.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre prochain Jet d’Instinct.</p>",
       "quantity": 1,
@@ -303,7 +327,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 4
+        "roll": 4,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "JGD3M9hBHtVAA8XP",
+          "nativeName": "Attune Potion",
+          "path": "icons/consumables/potions/bottle-conical-corked-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -311,7 +343,7 @@
     "_id": "fn4O8VSXQwRVZA84",
     "name": "Potion de charme",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-tube-corked-blue.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre prochain Jet de Présence.</p>",
       "quantity": 1,
@@ -380,7 +412,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 5
+        "roll": 5,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "CVBbFfOY75YwyQsp",
+          "nativeName": "Charm Potion",
+          "path": "icons/consumables/potions/potion-tube-corked-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -388,7 +428,7 @@
     "_id": "zRt2ITc8kpgzqOjd",
     "name": "Potion d’illumination",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/vial-cork-empty.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre prochain Jet de Connaissance.</p>",
       "quantity": 1,
@@ -457,7 +497,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 6
+        "roll": 6,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "aWHSO2AqDufi7nL4",
+          "nativeName": "Enlighten Potion",
+          "path": "icons/consumables/potions/vial-cork-empty.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -465,7 +513,7 @@
     "_id": "fIGGQXMWwlpkVajF",
     "name": "Potion de soins mineure",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-tube-corked-red.webp",
     "system": {
       "description": "<p>Effacez 1d4 PV.</p>",
       "quantity": 1,
@@ -534,7 +582,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 7
+        "roll": 7,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "tPfKtKRRjv8qdSqy",
+          "nativeName": "Minor Health Potion",
+          "path": "icons/consumables/potions/potion-tube-corked-red.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -542,7 +598,7 @@
     "_id": "z2JOxwpOL24wBhmm",
     "name": "Potion d’endurance mineure",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-tube-corked-green.webp",
     "system": {
       "description": "<p>Effacez 1d4 Stress.</p>",
       "quantity": 1,
@@ -611,7 +667,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 8
+        "roll": 8,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "b6vGSPFWOlzZZDLO",
+          "nativeName": "Minor Stamina Potion",
+          "path": "icons/consumables/potions/potion-tube-corked-green.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -619,7 +683,7 @@
     "_id": "yItxSnPsKrCQDL0F",
     "name": "Venin de Grindletooth",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-conical-corked-labeled-skull-poison-green.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer ce venin sur une arme infligeant des dégâts physiques pour ajouter un d6 à votre prochain jet de dégâts avec cette arme.</p>",
       "quantity": 1,
@@ -688,7 +752,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 9
+        "roll": 9,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "8WkhvSzeOmLdnoLJ",
+          "nativeName": "Grindletooth Venom",
+          "path": "icons/consumables/potions/bottle-conical-corked-labeled-skull-poison-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -696,7 +768,7 @@
     "_id": "nRSUy9E3wtwYPKsy",
     "name": "Feuilles de Varik",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/plants/leaf-serrated-pink.webp",
     "system": {
       "description": "<p>Vous pouvez manger ces deux feuilles pour gagner immédiatement 2 Espoir.</p>",
       "quantity": 1,
@@ -765,7 +837,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 10
+        "roll": 10,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "hvy5BkG3F6iOIXTx",
+          "nativeName": "Varik Leaves",
+          "path": "icons/consumables/plants/leaf-serrated-pink.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -773,7 +853,7 @@
     "_id": "8yhFPDZGOyUwSq0x",
     "name": "Fiole de rosée lunaire",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-ornate-bat-teal.webp",
     "system": {
       "description": "<p>Lorsque vous buvez le contenu de cette fiole, vous pouvez voir dans l’obscurité totale jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -842,7 +922,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 11
+        "roll": 11,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "VqEX5YwK5oL3r1t6",
+          "nativeName": "Vial of Moondrip",
+          "path": "icons/consumables/potions/bottle-ornate-bat-teal.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -850,7 +938,7 @@
     "_id": "zEcpCdwCkXbmygaB",
     "name": "Éclat arcanique instable",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
     "system": {
       "description": "<p>Vous pouvez effectuer un Jet de Finesse pour lancer cet éclat sur un groupe d’adversaires à portée Lointaine. Les cibles contre lesquelles vous réussissez subissent 1d20 dégâts magiques.</p>",
       "quantity": 1,
@@ -919,7 +1007,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 12
+        "roll": 12,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "mUepnLbkvFk0ha4Z",
+          "nativeName": "Unstable Arcane Shard",
+          "path": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -927,7 +1023,7 @@
     "_id": "sPdrsRvastMYHEMB",
     "name": "Potion de stabilité",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-conical-corked-labeled-shell-cyan.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour choisir une action de temps mort supplémentaire.</p>",
       "quantity": 1,
@@ -996,7 +1092,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 13
+        "roll": 13,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "dvL8oaxpEF6jKvYN",
+          "nativeName": "Potion of Stability",
+          "path": "icons/consumables/potions/bottle-conical-corked-labeled-shell-cyan.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1004,7 +1108,7 @@
     "_id": "bIsJhPpkYeyGfkhx",
     "name": "Venin de Grindletooth amélioré",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-jar-corked-labeled-poison-skull-green.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer ce venin sur une arme infligeant des dégâts physiques pour ajouter un d8 à votre prochain jet de dégâts avec cette arme.</p>",
       "quantity": 1,
@@ -1073,7 +1177,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 14
+        "roll": 14,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "BqBWXXe9T07AMV4u",
+          "nativeName": "Improved Grindletooth Venom",
+          "path": "icons/consumables/potions/potion-jar-corked-labeled-poison-skull-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1081,7 +1193,7 @@
     "_id": "tZhbYT5sFV32O2cS",
     "name": "Argile métamorphe",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/stone/ore-chunk-brown.webp",
     "system": {
       "description": "<p>Vous pouvez dépenser 1 Espoir pour utiliser cette argile et modifier suffisamment votre visage pour devenir méconnaissable jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -1150,7 +1262,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 15
+        "roll": 15,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "f1NHVSIHJJCIOaBl",
+          "nativeName": "Morphing Clay",
+          "path": "icons/commodities/stone/ore-chunk-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1158,7 +1278,7 @@
     "_id": "Cptd5WlkkU8xBE6p",
     "name": "Fiole de fumée noire",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
     "system": {
       "description": "<p>Lorsqu’un adversaire vous attaque, utilisez cette fiole et lancez un nombre de d6 égal à votre Agilité. Ajoutez le résultat le plus élevé à votre Esquive contre cette attaque.</p>",
       "quantity": 1,
@@ -1227,7 +1347,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 16
+        "roll": 16,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "Nwv5ydGf0MWnzq1n",
+          "nativeName": "Vial of Darksmoke",
+          "path": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1235,7 +1363,7 @@
     "_id": "A6cQ3HOtg8ibCRC8",
     "name": "Racine bondissante",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/plants/dried-bundle-wrapped-stems-sticks-brown.webp",
     "system": {
       "description": "<p>Mangez cette racine pour bondir une fois jusqu’à portée Lointaine sans avoir à effectuer de jet.</p>",
       "quantity": 1,
@@ -1304,7 +1432,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 17
+        "roll": 17,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "c2putn9apuurJhWX",
+          "nativeName": "Jumping Root",
+          "path": "icons/consumables/plants/dried-bundle-wrapped-stems-sticks-brown.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -1312,7 +1448,7 @@
     "_id": "W1n3JFsC1H1VVg5q",
     "name": "Poudre claquante",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-gold.webp",
     "system": {
       "description": "<p>Marquez 1 Stress et effacez 1 PV.</p>",
       "quantity": 1,
@@ -1381,7 +1517,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 18
+        "roll": 18,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "cg6VtQ0eVZjDdcK0",
+          "nativeName": "Snap Powder",
+          "path": "icons/commodities/materials/bowl-powder-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1389,7 +1533,7 @@
     "_id": "huRwrTARhtWtdxJU",
     "name": "Potion de soins",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-corked-red.webp",
     "system": {
       "description": "<p>Effacez 1d4+1 PV.</p>",
       "quantity": 1,
@@ -1458,7 +1602,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 19
+        "roll": 19,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "Aruc2NLutWuVIjP1",
+          "nativeName": "Health Potion",
+          "path": "icons/consumables/potions/bottle-corked-red.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -1466,7 +1618,7 @@
     "_id": "7Boq91DYha4WUxrV",
     "name": "Potion d’endurance",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-corked-green.webp",
     "system": {
       "description": "<p>Effacez 1d4+1 Stress.</p>",
       "quantity": 1,
@@ -1535,7 +1687,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 20
+        "roll": 20,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "hf3k1POoVSooJyN2",
+          "nativeName": "Stamina Potion",
+          "path": "icons/consumables/potions/bottle-corked-green.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -1543,7 +1703,7 @@
     "_id": "irP6rqhLz4CQuCi4",
     "name": "Suture d’armure",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/skills/trades/textiles-stitching-leather-brown.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser cette suture pour dépenser autant d’Espoir que vous le souhaitez et effacer autant d’emplacements d’Armure.</p>",
       "quantity": 1,
@@ -1612,7 +1772,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 21
+        "roll": 21,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "VlbsCjvvLNfTzNXb",
+          "nativeName": "Armor Stitcher",
+          "path": "icons/skills/trades/textiles-stitching-leather-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1620,7 +1788,7 @@
     "_id": "Oc5jxIRAfgNiCKsF",
     "name": "Onguent branchial",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-blue.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer cet onguent sur votre cou pour respirer sous l’eau pendant un nombre de minutes égal à votre niveau.</p>",
       "quantity": 1,
@@ -1689,7 +1857,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 22
+        "roll": 22,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "Nvbb9mze6o5D0AEg",
+          "nativeName": "Gill Salve",
+          "path": "icons/commodities/materials/bowl-powder-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1697,7 +1873,7 @@
     "_id": "DKffl2ALPxJDG4YG",
     "name": "Parchemin de réplication",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/sundries/scrolls/scroll-worn-beige.webp",
     "system": {
       "description": "<p>En mettant ce parchemin en contact avec un autre, vous pouvez copier parfaitement le contenu du second. Une fois utilisé, ce parchemin devient du papier ordinaire.</p>",
       "quantity": 1,
@@ -1766,7 +1942,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 23
+        "roll": 23,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "yJkwz4AP6yhGo8Vj",
+          "nativeName": "Replication Parchment",
+          "path": "icons/sundries/scrolls/scroll-worn-beige.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -1774,7 +1958,7 @@
     "_id": "2UH18uhCEtUEqy31",
     "name": "Éclat arcanique amélioré",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/gem-faceted-teardrop-blue.webp",
     "system": {
       "description": "<p>Vous pouvez effectuer un Jet de Finesse pour lancer cet éclat sur un groupe d’adversaires à portée Lointaine. Les cibles contre lesquelles vous réussissez subissent 2d20 dégâts magiques.</p>",
       "quantity": 1,
@@ -1843,7 +2027,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 24
+        "roll": 24,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "nQTo6mNoPTEVBtkm",
+          "nativeName": "Improved Arcane Shard",
+          "path": "icons/commodities/gems/gem-faceted-teardrop-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1851,7 +2043,7 @@
     "_id": "h7TPNB9xPv8R7EfX",
     "name": "Potion majeure de foulée",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-jar-capped-teal.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre Agilité jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -1920,7 +2112,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 25
+        "roll": 25,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "yK6eEDUrsPbZA8G0",
+          "nativeName": "Major Stride Potion",
+          "path": "icons/consumables/potions/potion-jar-capped-teal.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -1928,7 +2128,7 @@
     "_id": "1nbBvGEFg2plUtpi",
     "name": "Potion majeure de vigueur",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-jar-corked-orange.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre Force jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -1997,7 +2197,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 26
+        "roll": 26,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "mnyQDRtngWWQeRXF",
+          "nativeName": "Major Bolster Potion",
+          "path": "icons/consumables/potions/potion-jar-corked-orange.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2005,7 +2213,7 @@
     "_id": "D4YBhZqpjThh8YBD",
     "name": "Potion majeure de contrôle",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-round-corked-blue.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre Finesse jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -2074,7 +2282,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 27
+        "roll": 27,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "80s1FLmTLtohZ5GH",
+          "nativeName": "Major Control Potion",
+          "path": "icons/consumables/potions/bottle-round-corked-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2082,7 +2298,7 @@
     "_id": "Z6qlnLmFcFyuDCEw",
     "name": "Potion majeure d’harmonisation",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-round-corked-pink.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre Instinct jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -2151,7 +2367,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 28
+        "roll": 28,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "CCPFm5iXXwvyYYwR",
+          "nativeName": "Major Attune Potion",
+          "path": "icons/consumables/potions/bottle-round-corked-pink.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2159,7 +2383,7 @@
     "_id": "hFcee6dIpUGh4cDE",
     "name": "Potion majeure de charme",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-bottle-corked-blue.webp",
     "system": {
       "description": "<p>Vous gagnez un bonus de +1 à votre Présence jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -2228,7 +2452,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 29
+        "roll": 29,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "IJLAUlQymbSjzsri",
+          "nativeName": "Major Charm Potion",
+          "path": "icons/consumables/potions/potion-bottle-corked-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2305,7 +2537,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 30
+        "roll": 30,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "SDdv1G2veMLKrxcJ",
+          "nativeName": "Major Enlighten Potion",
+          "path": "icons/consumables/potions/bottle-corked-empty.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2313,7 +2553,7 @@
     "_id": "P13K4Vn2NKCbyxWq",
     "name": "Sang du Yorgi",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-tube-corked-bat-gold-red.webp",
     "system": {
       "description": "<p>Vous pouvez boire ce sang pour disparaître de votre position et réapparaître immédiatement en un point visible à portée Très lointaine.</p>",
       "quantity": 1,
@@ -2382,7 +2622,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 31
+        "roll": 31,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "pDGzmczoTlKGmKgd",
+          "nativeName": "Blood of the Yorgi",
+          "path": "icons/consumables/potions/potion-tube-corked-bat-gold-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2390,7 +2638,7 @@
     "_id": "jL3tUJ56Y24jP1dE",
     "name": "Potion secrète de Homet",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/conical-ornate-purple.webp",
     "system": {
       "description": "<p>Après avoir bu cette potion, votre prochaine attaque réussie devient une réussite critique.</p>",
       "quantity": 1,
@@ -2459,7 +2707,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 32
+        "roll": 32,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "VSwa1LpQ9PjZKsWF",
+          "nativeName": "Homet's Secret Potion",
+          "path": "icons/consumables/potions/conical-ornate-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2467,7 +2723,7 @@
     "_id": "vO7KfVwM3a0yrGB3",
     "name": "Salive de Redthorn",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/slime-thick-blue.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer cette salive sur une arme infligeant des dégâts physiques pour ajouter un d12 à votre prochain jet de dégâts avec cette arme.</p>",
       "quantity": 1,
@@ -2536,7 +2792,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 33
+        "roll": 33,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "s2Exl2XFuoOhtIov",
+          "nativeName": "Redthorn Saliva",
+          "path": "icons/commodities/materials/slime-thick-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2544,7 +2808,7 @@
     "_id": "9uCpXHFOOwrj8KAZ",
     "name": "Pierre de canalisation",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/stone/engraved-symbol-water-grey.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser cette pierre pour prendre un sort ou un grimoire de votre réserve, l’utiliser une fois, puis le remettre dans votre réserve.</p>",
       "quantity": 1,
@@ -2613,7 +2877,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 34
+        "roll": 34,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "IKMVQ6VwtapwoUim",
+          "nativeName": "Channelstone",
+          "path": "icons/commodities/stone/engraved-symbol-water-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2621,7 +2893,7 @@
     "_id": "qrNmDAfGJd5RRHXW",
     "name": "Poussière mythique",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-grey.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer cette poussière sur une arme infligeant des dégâts magiques pour ajouter un d12 à votre prochain jet de dégâts avec cette arme.</p>",
       "quantity": 1,
@@ -2690,7 +2962,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 35
+        "roll": 35,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "Zsh2AvZr8EkGtLyw",
+          "nativeName": "Mythic Dust",
+          "path": "icons/commodities/materials/bowl-powder-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2698,7 +2978,7 @@
     "_id": "ayCbTpGo79puO27X",
     "name": "Pâte acide",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-teal.webp",
     "system": {
       "description": "<p>Cette pâte ronge les murs et autres surfaces dans de vifs éclats lumineux.</p>",
       "quantity": 1,
@@ -2767,7 +3047,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 36
+        "roll": 36,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "cfVFmS8vT9dbq9s1",
+          "nativeName": "Acidpaste",
+          "path": "icons/commodities/materials/bowl-powder-teal.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2775,7 +3063,7 @@
     "_id": "VrsS8khNvxTysZUx",
     "name": "Fusée d’Espoir",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/tech/smoke-bomb-purple.webp",
     "system": {
       "description": "<p>Lorsque vous utilisez cette fusée, les alliés à portée Proche lancent un d6 lorsqu’ils dépensent 1 Espoir. Sur un résultat de 6, ils bénéficient de l’effet de cet Espoir sans le dépenser. La fusée dure jusqu’à la fin de la scène.</p>",
       "quantity": 1,
@@ -2844,7 +3132,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 37
+        "roll": 37,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "EhaQCPJ8oiqpRIwB",
+          "nativeName": "Hopehold Flare",
+          "path": "icons/commodities/tech/smoke-bomb-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2852,7 +3148,7 @@
     "_id": "5fxdxJElf0fh3IQY",
     "name": "Éclat arcanique majeur",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/gem-rough-round-blue.webp",
     "system": {
       "description": "<p>Vous pouvez effectuer un Jet de Finesse pour lancer cet éclat sur un groupe d’adversaires à portée Lointaine. Les cibles contre lesquelles vous réussissez subissent 4d20 dégâts magiques.</p>",
       "quantity": 1,
@@ -2921,7 +3217,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 38
+        "roll": 38,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "AA7bmiwv00lshPrC",
+          "nativeName": "Major Arcane Shard",
+          "path": "icons/commodities/gems/gem-rough-round-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -2929,7 +3233,7 @@
     "_id": "HfuHHPzvk4baXo3A",
     "name": "Os-plume",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/bones/bones-stack-worn-brown.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser cet os pour contrôler votre vitesse de chute pendant un nombre de minutes égal à votre niveau.</p>",
       "quantity": 1,
@@ -2998,7 +3302,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 39
+        "roll": 39,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "DpxEMpwfasEBpORU",
+          "nativeName": "Featherbone",
+          "path": "icons/commodities/bones/bones-stack-worn-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3006,7 +3318,7 @@
     "_id": "4CwsN9wY26lwMyrZ",
     "name": "Cercle du Vide",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/magic/unholy/orb-glowing-purple.webp",
     "system": {
       "description": "<p>Marquez 1 Stress pour créer un vide qui s’étend jusqu’à portée Lointaine. Aucune magie ne peut être lancée dans le vide et les créatures qui s’y trouvent sont immunisées aux dégâts magiques.</p>",
       "quantity": 1,
@@ -3075,7 +3387,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 40
+        "roll": 40,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "elsyP6VhHw1JjGSl",
+          "nativeName": "Circle of the Void",
+          "path": "icons/magic/unholy/orb-glowing-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3083,7 +3403,7 @@
     "_id": "aDh8StwTRh7K5lNR",
     "name": "Sève d’Arbre-Soleil",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/drinks/wine-amphora-clay-pink.webp",
     "system": {
       "description": "<p>Consommez cette sève et lancez un d6. Sur 5–6, effacez 2 PV. Sur 2–4, effacez 3 Stress. Sur 1, voyez au-delà du voile de la mort et revenez changé en gagnant une cicatrice.</p>",
       "quantity": 1,
@@ -3152,7 +3472,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 41
+        "roll": 41,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "kwexUzdM9wm1Qums",
+          "nativeName": "Sun Tree Sap",
+          "path": "icons/consumables/drinks/wine-amphora-clay-pink.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -3160,7 +3488,7 @@
     "_id": "ALQZtMb1rD3ax8yf",
     "name": "Poison de Dripfang",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
     "system": {
       "description": "<p>Une créature qui consomme ce poison subit 8d10 dégâts magiques directs.</p>",
       "quantity": 1,
@@ -3229,7 +3557,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 42
+        "roll": 42,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "eU8VpbWB2NHIL47n",
+          "nativeName": "Dripfang Poison",
+          "path": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3237,7 +3573,7 @@
     "_id": "mFo7kz2BdKjac5TG",
     "name": "Potion de soins majeure",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-round-label-cork-red.webp",
     "system": {
       "description": "<p>Effacez 1d4+2 PV.</p>",
       "quantity": 1,
@@ -3306,7 +3642,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 43
+        "roll": 43,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "cM7pHe8bBAxSZ2xR",
+          "nativeName": "Major Health Potion",
+          "path": "icons/consumables/potions/bottle-round-label-cork-red.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -3314,7 +3658,7 @@
     "_id": "SNpJ17fJonFpRVmn",
     "name": "Potion d’endurance majeure",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-round-label-cork-green.webp",
     "system": {
       "description": "<p>Effacez 1d4+2 Stress.</p>",
       "quantity": 1,
@@ -3383,7 +3727,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 44
+        "roll": 44,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "I4cQ03xbxnc81EGa",
+          "nativeName": "Major Stamina Potion",
+          "path": "icons/consumables/potions/bottle-round-label-cork-green.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -3391,7 +3743,7 @@
     "_id": "uFBIhxiEvm8ejDka",
     "name": "Musc d’ogre",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/slime-thick-green.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser ce musc pour empêcher quiconque de vous pister par des moyens ordinaires ou magiques jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -3460,7 +3812,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 45
+        "roll": 45,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "qr1bosjFcUfuwq4B",
+          "nativeName": "Ogre Musk",
+          "path": "icons/commodities/materials/slime-thick-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3468,7 +3828,7 @@
     "_id": "SaHn1S2QFdE9qmi6",
     "name": "Pousse-ailes",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/plants/leaf-broad-blue.webp",
     "system": {
       "description": "<p>Des ailes magiques vous poussent et vous permettent de voler pendant un nombre de minutes égal à votre niveau.</p>",
       "quantity": 1,
@@ -3537,7 +3897,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 46
+        "roll": 46,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "n10vozlmosVR6lo4",
+          "nativeName": "Wingsprout",
+          "path": "icons/consumables/plants/leaf-broad-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3545,7 +3913,7 @@
     "_id": "RGQqzaUcy4pNfEIl",
     "name": "Bocal des voix perdues",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/containers/kitchenware/jug-wrapped-red.webp",
     "system": {
       "description": "<p>Vous pouvez ouvrir ce bocal pour libérer un écho assourdissant de voix pendant un nombre de minutes égal à votre Instinct. Les créatures à portée Lointaine qui ne sont pas préparées au bruit subissent 6d8 dégâts magiques.</p>",
       "quantity": 1,
@@ -3614,7 +3982,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 47
+        "roll": 47,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "yUol6M5b8jsbk9za",
+          "nativeName": "Jar of Lost Voices",
+          "path": "icons/containers/kitchenware/jug-wrapped-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3622,7 +3998,7 @@
     "_id": "nkTgRUEPHcqiJKm4",
     "name": "Thé de fleur-dragon",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
     "system": {
       "description": "<p>Vous pouvez boire ce thé pour déclencher une attaque de souffle enflammé. Effectuez un Jet d’Instinct contre tous les adversaires devant vous à portée Proche. Les cibles contre lesquelles vous réussissez subissent d20 dégâts physiques en utilisant votre Maîtrise.</p>",
       "quantity": 1,
@@ -3691,7 +4067,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 48
+        "roll": 48,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "wM18PWWW2Ami4fBG",
+          "nativeName": "Dragonbloom Tea",
+          "path": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3699,7 +4083,7 @@
     "_id": "RhyAq7cDd9yjLV5j",
     "name": "Graine-pont",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/plants/leaf-old-dried-curled-green.webp",
     "system": {
       "description": "<p>D’épaisses lianes poussent depuis votre position jusqu’à un point de votre choix à portée Lointaine, permettant de grimper le long d’elles ou de les traverser. Elles disparaissent lors de votre prochain repos court.</p>",
       "quantity": 1,
@@ -3768,7 +4152,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 49
+        "roll": 49,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "RrIasiMCt6mqVTps",
+          "nativeName": "Bridge Seed",
+          "path": "icons/consumables/plants/leaf-old-dried-curled-green.webp",
+          "matchedBy": "sourceIdPrefix"
+        }
       }
     }
   },
@@ -3776,7 +4168,7 @@
     "_id": "i2Y1MBOw5smWxnr6",
     "name": "Sève soporifique",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-bulb-corked-labeled-blue.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour dormir l’équivalent d’une nuit complète. À votre réveil, effacez tout votre Stress.</p>",
       "quantity": 1,
@@ -3845,7 +4237,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 50
+        "roll": 50,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "XZavUVlHEvE2srEt",
+          "nativeName": "Sleeping Sap",
+          "path": "icons/consumables/potions/bottle-bulb-corked-labeled-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3853,7 +4253,7 @@
     "_id": "cVE6P6ROZeMJSEqW",
     "name": "Festin de Xuria",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/food/bowl-stew-tofu-potato-red.webp",
     "system": {
       "description": "<p>Vous pouvez manger ce repas pour effacer tous vos PV et votre Stress, puis gagner 1d4 Espoir.</p>",
       "quantity": 1,
@@ -3922,7 +4322,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 51
+        "roll": 51,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "aX6NyxkNzu0LcJpt",
+          "nativeName": "Feast of Xuria",
+          "path": "icons/consumables/food/bowl-stew-tofu-potato-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -3930,7 +4338,7 @@
     "_id": "BEg1nIhwv8ZtD9Ky",
     "name": "Miel liant",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/food/soup-broth-bowl-wooden-yellow.webp",
     "system": {
       "description": "<p>Ce miel permet de coller définitivement deux objets ensemble.</p>",
       "quantity": 1,
@@ -3999,7 +4407,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 52
+        "roll": 52,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "PfQvqopXgvroBklL",
+          "nativeName": "Bonding Honey",
+          "path": "icons/consumables/food/soup-broth-bowl-wooden-yellow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4007,7 +4423,7 @@
     "_id": "TZWQ2yq7u7zq5Jmg",
     "name": "Potion de rétrécissement",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/flask-decorated-label-pink.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour réduire votre taille de moitié jusqu’à ce que vous abandonniez cette forme ou jusqu’à votre prochain repos. Sous cette forme, vous gagnez +2 en Agilité et subissez −1 en Maîtrise.</p>",
       "quantity": 1,
@@ -4076,7 +4492,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 53
+        "roll": 53,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "HGixKenQwhyRAYNk",
+          "nativeName": "Shrinking Potion",
+          "path": "icons/consumables/potions/flask-decorated-label-pink.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4084,7 +4508,7 @@
     "_id": "JYU1KWYVbkV0NCBA",
     "name": "Potion de croissance",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-bottle-corked-labeled-green.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour doubler votre taille jusqu’à ce que vous abandonniez cette forme ou jusqu’à votre prochain repos. Sous cette forme, vous gagnez +2 en Force et +1 en Maîtrise.</p>",
       "quantity": 1,
@@ -4153,7 +4577,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 54
+        "roll": 54,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "fl2f3ees8RFMze9t",
+          "nativeName": "Growing Potion",
+          "path": "icons/consumables/potions/potion-bottle-corked-labeled-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4161,7 +4593,7 @@
     "_id": "30wdztWQoB19sjJ6",
     "name": "Pierre de connaissance",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/treasure/token-engraved-blue-glowing.webp",
     "system": {
       "description": "<p>Si vous mourez en tenant cette pierre, un allié peut prendre une carte de votre équipement pour la placer dans son équipement ou sa réserve. Après ce transfert de connaissance, la pierre tombe en poussière.</p>",
       "quantity": 1,
@@ -4230,7 +4662,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 55
+        "roll": 55,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "nL9IALzm9BNi5oSt",
+          "nativeName": "Knowledge Stone",
+          "path": "icons/commodities/treasure/token-engraved-blue-glowing.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4238,7 +4678,7 @@
     "_id": "hOhuS7ztcjAsgja2",
     "name": "Mousse douce",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/plants/succulent-bundle-green.webp",
     "system": {
       "description": "<p>Vous pouvez consommer cette mousse pendant un repos pour effacer 1d10 PV ou 1d10 Stress.</p>",
       "quantity": 1,
@@ -4307,7 +4747,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 56
+        "roll": 56,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "GrDrRqWgv7gvl9vn",
+          "nativeName": "Sweet Moss",
+          "path": "icons/consumables/plants/succulent-bundle-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4315,7 +4763,7 @@
     "_id": "JS7x66GNzjdtCbGH",
     "name": "Orbe aveuglant",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/magic/light/explosion-star-large-blue-yellow.webp",
     "system": {
       "description": "<p>Vous pouvez activer cet orbe pour produire un éclair de lumière vive. Toutes les cibles à portée Proche deviennent Vulnérables jusqu’à ce qu’elles marquent 1 PV.</p>",
       "quantity": 1,
@@ -4384,7 +4832,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 57
+        "roll": 57,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "eAXHdzA5qNPldOpn",
+          "nativeName": "Blinding Orb",
+          "path": "icons/magic/light/explosion-star-large-blue-yellow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4392,7 +4848,7 @@
     "_id": "ZWKtuWxWXhKOGSxR",
     "name": "Thé de mort",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/drinks/wine-amphora-clay-gray.webp",
     "system": {
       "description": "<p>Après avoir bu ce thé, lorsque vous obtenez une réussite critique sur une attaque, vous tuez instantanément votre cible. Si vous n’obtenez aucune réussite critique sur une attaque avant votre prochain repos long, vous mourez.</p>",
       "quantity": 1,
@@ -4461,7 +4917,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 58
+        "roll": 58,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "xDnJeF1grkmKck8Q",
+          "nativeName": "Death Tea",
+          "path": "icons/consumables/drinks/wine-amphora-clay-gray.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4469,7 +4933,7 @@
     "_id": "SkLD6XuUMdpTwWom",
     "name": "Miroir de Marigold",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/treasure/token-silver-blue.webp",
     "system": {
       "description": "<p>Lorsque vous subissez des dégâts, vous pouvez dépenser 1 Espoir pour les annuler, puis le miroir se brise.</p>",
       "quantity": 1,
@@ -4538,7 +5002,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 59
+        "roll": 59,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "UFQVwgYOUZ88UxcH",
+          "nativeName": "Mirror of Marigold",
+          "path": "icons/commodities/treasure/token-silver-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4546,7 +5018,7 @@
     "_id": "Q2O1BeAjaAQrBd0c",
     "name": "Goutte d’étoile",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/magic/light/projectiles-star-purple.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser cette goutte d’étoile pour invoquer une pluie de comètes qui inflige 8d20 dégâts physiques à toutes les cibles à portée Très lointaine.</p>",
       "quantity": 1,
@@ -4615,7 +5087,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "core",
-        "roll": 60
+        "roll": 60,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "y4c1jrlHrf0wBWOq",
+          "nativeName": "Stardrop",
+          "path": "icons/magic/light/projectiles-star-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4623,7 +5103,7 @@
     "_id": "I2GS3jZQYuccPDbF",
     "name": "Bougie de protection",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/sundries/lights/candle-lit-yellow.webp",
     "system": {
       "description": "<p>Vous pouvez allumer cette bougie pour remplir la zone à portée Proche d’un halo de lumière. Une créature située hors du halo ne peut pas y entrer si elle nourrit de mauvaises intentions envers une créature qui s’y trouve. La bougie brûle pendant une heure.</p>",
       "quantity": 1,
@@ -4692,7 +5172,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 1
+        "roll": 1,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "lyjoUIVjjhd78Sqr",
+          "nativeName": "Warding Candle",
+          "path": "icons/sundries/lights/candle-lit-yellow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4700,7 +5188,7 @@
     "_id": "p7ivO9zBOP6sGx7V",
     "name": "Poussière iridienne",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/powder-red-green-yellow.webp",
     "system": {
       "description": "<p>Cette poudre multicolore adhère à tout et empêche les créatures qui en sont couvertes de devenir Cachées.</p>",
       "quantity": 1,
@@ -4769,7 +5257,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 2
+        "roll": 2,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "ECPyjhxssMU469iv",
+          "nativeName": "Iridian Dust",
+          "path": "icons/commodities/materials/powder-red-green-yellow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4777,7 +5273,7 @@
     "_id": "Jey0IHKzL1SfkIUR",
     "name": "Graine verglasienne",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/gem-faceted-oval-blue.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser cet éclat de glace pour geler instantanément une zone d’eau jusqu’à portée Proche.</p>",
       "quantity": 1,
@@ -4846,7 +5342,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 3
+        "roll": 3,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "302mC6Hg0w5je1AX",
+          "nativeName": "Verglasian Seed",
+          "path": "icons/commodities/gems/gem-faceted-oval-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4854,7 +5358,7 @@
     "_id": "YzqRIaQZ9HFRKyfW",
     "name": "Bézoard de l’échanson",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/slime-thick-orange.webp",
     "system": {
       "description": "<p>Vous pouvez avaler ce bézoard pour devenir immunisé aux poisons jusqu’à votre prochain repos long.</p>",
       "quantity": 1,
@@ -4923,7 +5427,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 4
+        "roll": 4,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "OEfUMLY95eWMogPO",
+          "nativeName": "Cupbearer's Bezoar",
+          "path": "icons/commodities/materials/slime-thick-orange.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -4931,7 +5443,7 @@
     "_id": "VTBnfRYvssKp6GHB",
     "name": "Potion de mante-mousse",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-conical-corked-green.webp",
     "system": {
       "description": "<p>Vous pouvez boire ce thé pour vous fondre parfaitement dans les environnements naturels jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -5000,7 +5512,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 5
+        "roll": 5,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "8wVnkcAUl36CAOMH",
+          "nativeName": "Mossmantle Potion",
+          "path": "icons/consumables/potions/bottle-conical-corked-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5008,7 +5528,7 @@
     "_id": "iFnZ0SCYmEWzqYud",
     "name": "Pastille d’oiseau-lyre",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/treasure/token-silver-blue.webp",
     "system": {
       "description": "<p>Vous pouvez laisser fondre cette pastille dans votre bouche pour imiter parfaitement toute voix que vous avez déjà entendue jusqu’à la fin de la scène.</p>",
       "quantity": 1,
@@ -5077,7 +5597,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 6
+        "roll": 6,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "ojK5ogZD6WJqamaP",
+          "nativeName": "Lyrebird Lozenge",
+          "path": "icons/commodities/treasure/token-silver-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5085,7 +5613,7 @@
     "_id": "Uoeow00Hh4pOIUen",
     "name": "Fiole de chute-plume",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/conical-ornate-purple.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour ignorer les dégâts de chute pendant les 10 prochaines minutes.</p>",
       "quantity": 1,
@@ -5154,7 +5682,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 7
+        "roll": 7,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "pT5amnkvObOegrJr",
+          "nativeName": "Vial of Featherfall",
+          "path": "icons/consumables/potions/conical-ornate-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5162,7 +5698,7 @@
     "_id": "xRugwZeBfhBGgYbz",
     "name": "Salive chimérique",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/liquid-purple.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer cette salive sur une arme infligeant des dégâts physiques pour transformer ses dégâts en dégâts magiques jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -5231,7 +5767,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 8
+        "roll": 8,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "bLvJPYvDYJWtICP2",
+          "nativeName": "Chimeric Saliva",
+          "path": "icons/commodities/materials/liquid-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5239,7 +5783,7 @@
     "_id": "82jDjGubIXrSEUge",
     "name": "Sachet de poussière spatiale",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/containers/bags/sack-leather-purple.webp",
     "system": {
       "description": "<p>Cette poussière rend tout ce qu’elle recouvre plus léger que l’air. Un sachet suffit à couvrir le contenu d’un panier de pique-nique et ses effets durent une heure.</p>",
       "quantity": 1,
@@ -5308,7 +5852,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 9
+        "roll": 9,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "uyybO6oGBE59Eydd",
+          "nativeName": "Packet of Space Dust",
+          "path": "icons/containers/bags/sack-leather-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5316,7 +5868,7 @@
     "_id": "8T0bfENlg33SWJrO",
     "name": "Herbe à pipe",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/plants/leaf-dried-eaten-green.webp",
     "system": {
       "description": "<p>Lorsque vous choisissez l’action de temps mort Effacer du Stress pendant un repos court, vous pouvez fumer cette feuille non intoxicante pour effacer 1 Stress supplémentaire. Tous les autres PJ ayant choisi cette action bénéficient aussi de cet effet.</p>",
       "quantity": 1,
@@ -5385,7 +5937,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 10
+        "roll": 10,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "eBQAxdk4y85I7xQe",
+          "nativeName": "Pipeweed",
+          "path": "icons/consumables/plants/leaf-dried-eaten-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5393,7 +5953,7 @@
     "_id": "4k2BZLCXahRDpzyf",
     "name": "Poudre du voyant des morts",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-teal.webp",
     "system": {
       "description": "<p>Vous pouvez répandre cette poudre sur un cadavre récemment décédé pour invoquer une rémanence spectrale de sa dernière minute de vie.</p>",
       "quantity": 1,
@@ -5462,7 +6022,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 11
+        "roll": 11,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "OGnTVWBqgNJDrOeK",
+          "nativeName": "Deathseer's Powder",
+          "path": "icons/commodities/materials/bowl-powder-teal.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5470,7 +6038,7 @@
     "_id": "cYVfoWdqaTPDoWYV",
     "name": "Sel du pourfendeur",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-gold.webp",
     "system": {
       "description": "<p>Vous pouvez répandre ce sel en ligne le long d’un rebord de fenêtre ou d’un seuil pour créer une barrière magique que les morts-vivants ne peuvent franchir tant que la ligne n’est pas rompue.</p>",
       "quantity": 1,
@@ -5539,7 +6107,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 12
+        "roll": 12,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "0jQGjzdnAlkOu9hb",
+          "nativeName": "Slayer's Salt",
+          "path": "icons/commodities/materials/bowl-powder-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5547,7 +6123,7 @@
     "_id": "UD7ptma9hGxWqNlQ",
     "name": "Lait de Yakamel",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/drinks/coconut-fruit-milk.webp",
     "system": {
       "description": "<p>Après avoir consommé ce lait, la prochaine fois que vous effacez au moins 1 PV, effacez 1 PV supplémentaire.</p>",
       "quantity": 1,
@@ -5616,7 +6192,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 13
+        "roll": 13,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "wmwbo6ogg6ExLozU",
+          "nativeName": "Yakamel Milk",
+          "path": "icons/consumables/drinks/coconut-fruit-milk.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5624,7 +6208,7 @@
     "_id": "oWddWj73j4LLOV2L",
     "name": "Champignon lumimousse",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/mushrooms/umbontae-green.webp",
     "system": {
       "description": "<p>Vous pouvez briser ce champignon en morceaux, qui émettent alors une vive lumière bleue jusqu’à votre prochain repos long.</p>",
       "quantity": 1,
@@ -5693,7 +6277,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 14
+        "roll": 14,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "Qnvfa3o3EaHskRZ7",
+          "nativeName": "Glowmoss Mushroom",
+          "path": "icons/consumables/mushrooms/umbontae-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5701,7 +6293,7 @@
     "_id": "bnLiqCLxl0JY3CD9",
     "name": "Huile de vase rouge",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-bulb-corked-glowing-red.webp",
     "system": {
       "description": "<p>Vous pouvez enduire votre arme de cette huile. Votre prochaine attaque réussie avec cette arme inflige 1d8 dégâts magiques supplémentaires et Embrase temporairement la cible. Tant qu’elle est Embrasée, la cible subit 1d4 dégâts magiques lorsqu’elle prend le spotlight.</p>",
       "quantity": 1,
@@ -5770,7 +6362,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 15
+        "roll": 15,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "3vr1v9tKLW2huI3H",
+          "nativeName": "Red Ooze Oil",
+          "path": "icons/consumables/potions/bottle-bulb-corked-glowing-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5778,7 +6378,7 @@
     "_id": "RW6bvof45Vy2PrCN",
     "name": "Camp instantané",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/containers/boxes/crate-tech-silver-tan.webp",
     "system": {
       "description": "<p>Vous pouvez déplier cette petite boîte mécanique pour former une tente de camping assez grande pour abriter six personnes en sécurité. La tente se replie à la fin de votre prochain repos long.</p>",
       "quantity": 1,
@@ -5847,7 +6447,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 16
+        "roll": 16,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "NjrThlxWMaLZT0Sa",
+          "nativeName": "Instant Camp",
+          "path": "icons/containers/boxes/crate-tech-silver-tan.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -5855,7 +6463,7 @@
     "_id": "6orUiSHlLpglzKZy",
     "name": "Fagot de pattes d’araignée",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/containers/bags/coinpouch-simple-leather-brown.webp",
     "system": {
       "description": "<p>Vous pouvez manger ces pattes d’araignée pour marcher sur les murs jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -5924,7 +6532,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 17
+        "roll": 17,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "8xFCYnLWg6N4kPLC",
+          "nativeName": "Bundle of Spiderlegs",
+          "path": "icons/containers/bags/coinpouch-simple-leather-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6001,7 +6617,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 18
+        "roll": 18,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "1D81W1ECLzGHHyAv",
+          "nativeName": "Ciscan Fog Bottle",
+          "path": "icons/consumables/potions/bottle-corked-empty.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6009,7 +6633,7 @@
     "_id": "WS5KoFlWkcba7G2z",
     "name": "Graine d’épine-claquante",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/plants/thorned-curled-vine-green.webp",
     "system": {
       "description": "<p>Vous pouvez lancer cette graine vers un point visible. Elle explose en un enchevêtrement de lianes qui Entrave temporairement toutes les créatures à portée Proche de ce point.</p>",
       "quantity": 1,
@@ -6078,7 +6702,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 19
+        "roll": 19,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "hHLAEbVkLJeOA9qz",
+          "nativeName": "Snapthorn Seed",
+          "path": "icons/consumables/plants/thorned-curled-vine-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6086,7 +6718,7 @@
     "_id": "CR7q0DivKUfxpEGq",
     "name": "Bouteille de sprite",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/drinks/alcohol-spirits-bottle-green.webp",
     "system": {
       "description": "<p>Lorsque vous marquez votre dernier PV, cette bouteille se brise et libère le Sprite qu’elle contient. Le Sprite efface tous vos PV avant de disparaître du Royaume Mortel.</p>",
       "quantity": 1,
@@ -6155,7 +6787,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 20
+        "roll": 20,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "4VcsFnUD9VHm9ie8",
+          "nativeName": "Sprite Bottle",
+          "path": "icons/consumables/drinks/alcohol-spirits-bottle-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6163,7 +6803,7 @@
     "_id": "Az1yiKdmAZvT0muk",
     "name": "Bombe gravitationnelle",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/metal/plate-mount-round-copper.webp",
     "system": {
       "description": "<p>Vous pouvez lancer cet orbe mécanique de la taille d’une pêche vers un point à portée Lointaine. Il implose et attire toutes les créatures et tous les objets à portée Proche de ce point jusqu’à portée de Mêlée de l’orbe.</p>",
       "quantity": 1,
@@ -6232,7 +6872,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 21
+        "roll": 21,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "bmQOoxTV2l9iTvRi",
+          "nativeName": "Gravity Bomb",
+          "path": "icons/commodities/metal/plate-mount-round-copper.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6240,7 +6888,7 @@
     "_id": "6vuMHx0UHVVhCmgZ",
     "name": "Fleur à ragots",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/flowers/holly-buds-white.webp",
     "system": {
       "description": "<p>Vous pouvez planter cette graine dans le sol. Elle devient instantanément une petite fleur qui enregistre tout ce qu’elle entend pendant une semaine au maximum. Une fois cueillie, la fleur récite en temps réel ce qu’elle a enregistré, puis se flétrit.</p>",
       "quantity": 1,
@@ -6309,7 +6957,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 22
+        "roll": 22,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "BnvXUsVqI8coqj8F",
+          "nativeName": "Gossip Flower",
+          "path": "icons/commodities/flowers/holly-buds-white.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6317,7 +6973,7 @@
     "_id": "P12rg0QikhOLtFLz",
     "name": "Jeton de déplacement",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/treasure/token-brass-round.webp",
     "system": {
       "description": "<p>Vous pouvez avaler ce jeton pour invoquer deux illusions de vous-même que vous pouvez contrôler. Chaque illusion dure jusqu’à ce qu’elle subisse des dégâts ou jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -6386,7 +7042,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 23
+        "roll": 23,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "pGSYSCJhas5crBG2",
+          "nativeName": "Displacement Token",
+          "path": "icons/commodities/treasure/token-brass-round.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6394,7 +7058,7 @@
     "_id": "A9uvOZUsQGSx40xQ",
     "name": "Poussière de guenaude nocturne",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-grey.webp",
     "system": {
       "description": "<p>Vous pouvez souffler cette poussière au visage d’un adversaire pour l’empêcher d’effacer du Stress jusqu’à votre prochain repos long.</p>",
       "quantity": 1,
@@ -6463,7 +7127,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 24
+        "roll": 24,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "wljly6bqiDe3ZmVy",
+          "nativeName": "Night Hag's Dust",
+          "path": "icons/commodities/materials/bowl-powder-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6471,7 +7143,7 @@
     "_id": "mDqF4iQrqVnKGiFc",
     "name": "Fil auto-cousant",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/tools/hand/needle-thread-spool.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser ce fil pour effacer soit 1 PV, soit 2 emplacements d’Armure.</p>",
       "quantity": 1,
@@ -6540,7 +7212,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 25
+        "roll": 25,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "tqpz75mHlO6TeVZU",
+          "nativeName": "Self-Sewing Thread",
+          "path": "icons/tools/hand/needle-thread-spool.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6548,7 +7228,7 @@
     "_id": "eZdSKOIn2U357UBF",
     "name": "Fortune du tailleur de pierre",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/stone/masonry-bricks-brown.webp",
     "system": {
       "description": "<p>Lorsque vous lancez cette brique grise au sol, elle devient immédiatement un mur de pierre solide de 1,8 m de haut, 3 m de large et 60 cm d’épaisseur.</p>",
       "quantity": 1,
@@ -6617,7 +7297,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 26
+        "roll": 26,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "6B6Snn2h3N8g7E3Z",
+          "nativeName": "Stonemason's Fortune",
+          "path": "icons/commodities/stone/masonry-bricks-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6694,7 +7382,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 27
+        "roll": 27,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "0gjQYkFe4JmuEv7b",
+          "nativeName": "Mnemonic Potion",
+          "path": "icons/consumables/potions/bottle-corked-empty.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6702,7 +7398,7 @@
     "_id": "jmQbZojOgZgqtXf7",
     "name": "Onguent de salamandre",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-blue.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer cet onguent sur votre peau pour devenir immunisé à la chaleur jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -6771,7 +7467,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 28
+        "roll": 28,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "eTQJhbNW5i6x79vI",
+          "nativeName": "Salamander Salve",
+          "path": "icons/commodities/materials/bowl-powder-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6779,7 +7483,7 @@
     "_id": "4P2Vg79LxScauRyz",
     "name": "Huile de vase verte",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/glass-orb-marble-green.webp",
     "system": {
       "description": "<p>Vous pouvez enduire votre arme de cette huile. Votre prochaine attaque réussie avec cette arme inflige 1d8 dégâts magiques supplémentaires et Corrode temporairement la cible. Tant qu’elle est Corrodée, la cible subit un malus de −2 à ses seuils de dégâts.</p>",
       "quantity": 1,
@@ -6848,7 +7552,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 29
+        "roll": 29,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "YAJKrrRTqNJvfRqn",
+          "nativeName": "Green Ooze Oil",
+          "path": "icons/commodities/materials/glass-orb-marble-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6856,7 +7568,7 @@
     "_id": "T79CMjwWol2udX3G",
     "name": "Orbe de lumière solaire",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/pearl-fire.webp",
     "system": {
       "description": "<p>Vous pouvez briser cet orbe pour faire apparaître la zone à portée Très lointaine comme éclairée par le soleil en plein jour pendant les prochaines 24 heures.</p>",
       "quantity": 1,
@@ -6925,7 +7637,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 30
+        "roll": 30,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "cdb3AMaxRazFahUL",
+          "nativeName": "Sunlight Orb",
+          "path": "icons/commodities/gems/pearl-fire.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -6933,7 +7653,7 @@
     "_id": "f271fZGyv7AdlHUC",
     "name": "Orbe de lumière lunaire",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/tools/laboratory/alembic-glass-ball-blue.webp",
     "system": {
       "description": "<p>Vous pouvez briser cet orbe pour faire apparaître la zone à portée Très lointaine comme éclairée par la lune en pleine nuit pendant les prochaines 24 heures.</p>",
       "quantity": 1,
@@ -7002,7 +7722,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 31
+        "roll": 31,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "y24kG0S0kVuA7Qsy",
+          "nativeName": "Moonlight Orb",
+          "path": "icons/tools/laboratory/alembic-glass-ball-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7010,7 +7738,7 @@
     "_id": "rbRmpOCUd53pmZCQ",
     "name": "Flacon de Midas",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/flask-corked-yellow-glow.webp",
     "system": {
       "description": "<p>Vous pouvez verser le contenu de ce petit flacon alchimique sur un objet ordinaire pour le transmuter instantanément en une poignée d’or.</p>",
       "quantity": 1,
@@ -7079,7 +7807,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 32
+        "roll": 32,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "IU9cj5UPFPOD8jVH",
+          "nativeName": "Midas Flask",
+          "path": "icons/consumables/potions/flask-corked-yellow-glow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7087,7 +7823,7 @@
     "_id": "6R8XrPlGbmhOgifs",
     "name": "Bâton d’inversion",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/weapons/staves/staff-simple-spiral.webp",
     "system": {
       "description": "<p>Vous pouvez briser ce bâton contre le sol pour inverser une transformation ou un effet magique à portée Lointaine.</p>",
       "quantity": 1,
@@ -7156,7 +7892,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 33
+        "roll": 33,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "joHLyjtZLsG7Uwi3",
+          "nativeName": "Staff of Reversal",
+          "path": "icons/weapons/staves/staff-simple-spiral.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7164,7 +7908,7 @@
     "_id": "RLqmF0awYhJC7OgG",
     "name": "Breuvage du berserker",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-corked-red.webp",
     "system": {
       "description": "<p>Lorsque vous buvez cette rasade, vous gagnez un bonus à votre Force et un malus à votre Finesse et votre Connaissance égaux à votre Instinct (minimum 1). Cet effet dure jusqu’à ce que vous effectuiez un mouvement de mort ou jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -7233,7 +7977,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 34
+        "roll": 34,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "EMHMKPJ2pGgzUyW8",
+          "nativeName": "Berserker's Brew",
+          "path": "icons/consumables/potions/bottle-corked-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7241,7 +7993,7 @@
     "_id": "Qitdye48EZalIytH",
     "name": "Éclat d’emberite",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/gem-rough-cushion-red-white.webp",
     "system": {
       "description": "<p>Choisissez un point à portée Lointaine. Toutes les cibles à portée Proche de ce point doivent réussir un Jet de Réaction (16) ou subir 3d6 dégâts magiques et devenir temporairement Enflammées. Tant qu’elle est Enflammée, une créature lance un d4 chaque fois qu’elle effectue un jet d’action. Sur 1, elle marque 1 PV. Sur 4, elle efface l’état Enflammé.</p>",
       "quantity": 1,
@@ -7310,7 +8062,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 35
+        "roll": 35,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "Iy67pwuveS0tqJ7g",
+          "nativeName": "Emberite Shard",
+          "path": "icons/commodities/gems/gem-rough-cushion-red-white.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7318,7 +8078,7 @@
     "_id": "DD0h4rOvoTohQQA9",
     "name": "Éclat d’arcticite",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
     "system": {
       "description": "<p>Choisissez un point à portée Lointaine. Toutes les cibles à portée Proche de ce point doivent réussir un Jet de Réaction (16) ou subir 3d6 dégâts magiques et devenir temporairement Entravées par la glace.</p>",
       "quantity": 1,
@@ -7387,7 +8147,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 36
+        "roll": 36,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "nSjz413RgiOwfzdb",
+          "nativeName": "Arcticite Shard",
+          "path": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7395,7 +8163,7 @@
     "_id": "Cvdku93FBcl3xtt7",
     "name": "Éclat de fulgurite",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/gems/gem-rough-cushion-purple.webp",
     "system": {
       "description": "<p>Choisissez un point à portée Lointaine. Toutes les cibles à portée Proche de ce point doivent réussir un Jet de Réaction (16) ou subir 3d6 dégâts magiques et marquer 1d4 Stress tandis que des éclairs parcourent la zone.</p>",
       "quantity": 1,
@@ -7464,7 +8232,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 37
+        "roll": 37,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "vrbpqW9l3zf6GPZy",
+          "nativeName": "Fulgurite Shard",
+          "path": "icons/commodities/gems/gem-rough-cushion-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7472,7 +8248,7 @@
     "_id": "nPWln2QTMFWY0xGj",
     "name": "Breuvage du démiurge",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-vial-corked-labeled-purple.webp",
     "system": {
       "description": "<p>Vous pouvez boire ce breuvage pour gagner un bonus de +1 à votre Maîtrise lors de votre prochaine attaque réussie.</p>",
       "quantity": 1,
@@ -7541,7 +8317,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 38
+        "roll": 38,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "W5lLL29DqYFoZuwS",
+          "nativeName": "Demiurge's Draught",
+          "path": "icons/consumables/potions/potion-vial-corked-labeled-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7549,7 +8333,7 @@
     "_id": "HsREPTHFZ4JGGyqo",
     "name": "Thé de griffe de coq",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/drinks/coffee.webp",
     "system": {
       "description": "<p>Vous pouvez boire ce thé pour rafraîchir vos capacités comme si vous aviez pris un repos long.</p>",
       "quantity": 1,
@@ -7618,7 +8402,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 39
+        "roll": 39,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "XnEWhR8OvFZM3G07",
+          "nativeName": "Cockerel Claw Tea",
+          "path": "icons/consumables/drinks/coffee.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7626,7 +8418,7 @@
     "_id": "mvQN6mzl3S3wgP0a",
     "name": "Potion de vigilance",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-flask-corked-cyan.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour gagner un bonus de +1 à votre Esquive jusqu’à ce que vous marquiez 1 PV.</p>",
       "quantity": 1,
@@ -7695,7 +8487,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 40
+        "roll": 40,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "DoUn74xOoGNnKv76",
+          "nativeName": "Potion of Vigilance",
+          "path": "icons/consumables/potions/potion-flask-corked-cyan.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7703,7 +8503,7 @@
     "_id": "3lQB26DxezhXbFRo",
     "name": "Concoction cacophonique",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-bulb-corked-purple.webp",
     "system": {
       "description": "<p>Lorsque vous buvez cette potion, tout ce que vous dites ou faites pendant l’heure suivante devient impossible à raconter pour un témoin. Toute tentative de communiquer ce qu’il a vu, entendu ou perçu devient confuse ou incohérente.</p>",
       "quantity": 1,
@@ -7772,7 +8572,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 41
+        "roll": 41,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "4CDCPkloeXY7kD5H",
+          "nativeName": "Cacophonous Concoction",
+          "path": "icons/consumables/potions/bottle-bulb-corked-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7780,7 +8588,7 @@
     "_id": "24mft1MegvlcufBz",
     "name": "Hydromel de cauchemar",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/flask-ornate-skull-green.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour découvrir la peur la plus profonde de la prochaine personne avec laquelle vous établissez un contact visuel. Lorsque vous le faites, le MJ gagne 1 Peur.</p>",
       "quantity": 1,
@@ -7849,7 +8657,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 42
+        "roll": 42,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "3XLbwx3rBXathr8y",
+          "nativeName": "Nightmare Mead",
+          "path": "icons/consumables/potions/flask-ornate-skull-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7857,7 +8673,7 @@
     "_id": "CqCnOzaEDT0Gfp46",
     "name": "Pieu d’abjuration",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/sundries/survival/stake-rough-heavy-brown.webp",
     "system": {
       "description": "<p>Vous pouvez enfoncer ce pieu dans le sol et faire une proclamation. Jusqu’à votre prochain repos, une créature à portée Lointaine du pieu qui transgresse cette proclamation doit marquer 1 Stress. Le pieu dure jusqu’à votre prochain repos, puis se brise.</p>",
       "quantity": 1,
@@ -7926,7 +8742,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 43
+        "roll": 43,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "43A19TBIuEK2anOf",
+          "nativeName": "Stake of Abjuration",
+          "path": "icons/sundries/survival/stake-rough-heavy-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -7934,7 +8758,7 @@
     "_id": "CYqhUx3dhGrwH6Ho",
     "name": "Linceul du psychopompe",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/cloth/cloth-patterned-teal.webp",
     "system": {
       "description": "<p>Vous pouvez placer ce linceul sur le cadavre d’une créature récemment décédée. Son esprit entre dans le linceul et devient votre assistant spectral jusqu’au prochain lever du soleil, lorsqu’il franchit le voile de la mort en emportant le linceul.</p>",
       "quantity": 1,
@@ -8003,7 +8827,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 44
+        "roll": 44,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "06jHWdf2bSKNU7Gj",
+          "nativeName": "Psychopomp's Shroud",
+          "path": "icons/commodities/cloth/cloth-patterned-teal.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8011,7 +8843,7 @@
     "_id": "HGgI08WuMeIu2Xqd",
     "name": "Fiole d’encre profonde",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-bottle-corked-blue.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette bouteille d’encre pour vous transformer pendant une heure en céphalopode d’une taille proche de la vôtre. Vous gagnez une peau caoutchouteuse, des os souples, la capacité de respirer sous l’eau et de nouveaux membres jusqu’à en avoir huit au total.</p>",
       "quantity": 1,
@@ -8080,7 +8912,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 45
+        "roll": 45,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "j2tN23J2c1FA4IUS",
+          "nativeName": "Phial of Deep Ink",
+          "path": "icons/consumables/potions/potion-bottle-corked-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8088,7 +8928,7 @@
     "_id": "n8FSNqBuBgmpGi6l",
     "name": "Tonique de Mesmer",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-conical-bubbling-blue.webp",
     "system": {
       "description": "<p>Lorsque vous buvez ce tonique, jusqu’à votre prochain repos vous n’entendez plus que les pensées superficielles des créatures à portée Très proche.</p>",
       "quantity": 1,
@@ -8157,7 +8997,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 46
+        "roll": 46,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "2ItBeUYNkiPEPSgc",
+          "nativeName": "Mesmer's Tonic",
+          "path": "icons/consumables/potions/bottle-conical-bubbling-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8165,7 +9013,7 @@
     "_id": "WP2ymQtzJWevNnx0",
     "name": "Potion d’invisibilité",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-round-empty-glass.webp",
     "system": {
       "description": "<p>Vous êtes Caché jusqu’à ce que vous infligiez des dégâts à une autre créature ou jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -8234,7 +9082,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 47
+        "roll": 47,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "bd5DgRHcLN0lP0oI",
+          "nativeName": "Invisibility Potion",
+          "path": "icons/consumables/potions/bottle-round-empty-glass.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8242,7 +9098,7 @@
     "_id": "RBIIdbcGjU5XcAZc",
     "name": "Sérum formoïde",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour devenir un essaim de 16 millions de fourmis jusqu’à la fin de la scène. Vous conservez et pouvez utiliser tout votre équipement, votre loot et vos capacités.</p>",
       "quantity": 1,
@@ -8311,7 +9167,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 48
+        "roll": 48,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "qhpwdNc4mApeKfk7",
+          "nativeName": "Formoid Serum",
+          "path": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8319,7 +9183,7 @@
     "_id": "G1v7zarA5fDc0m9m",
     "name": "Onguent peau-d’acier",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/materials/bowl-powder-pink.webp",
     "system": {
       "description": "<p>Vous pouvez appliquer cet onguent sur votre peau pour gagner un bonus à vos seuils de dégâts égal à votre rang jusqu’à la fin de la scène.</p>",
       "quantity": 1,
@@ -8388,7 +9252,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 49
+        "roll": 49,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "JjMeRG3aAH3steY2",
+          "nativeName": "Steelskin Salve",
+          "path": "icons/commodities/materials/bowl-powder-pink.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8396,7 +9268,7 @@
     "_id": "9s6M0tqO3UiKQZuy",
     "name": "Pomelo du demi-dieu",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/fruit/plum-ripe-yellow.webp",
     "system": {
       "description": "<p>Vous pouvez manger cet agrume pour effacer tous vos PV et votre Stress.</p>",
       "quantity": 1,
@@ -8465,7 +9337,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 50
+        "roll": 50,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "QowgtRfI0AmzGroZ",
+          "nativeName": "Godling's Pomelo",
+          "path": "icons/consumables/fruit/plum-ripe-yellow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8473,7 +9353,7 @@
     "_id": "FeiVyzZpw0NRogYP",
     "name": "Esprit de mue",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/bottle-round-label-cork-purple.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour vous débarrasser de votre couche externe de peau et guérir une cicatrice.</p>",
       "quantity": 1,
@@ -8542,7 +9422,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 51
+        "roll": 51,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "QQjaWV5yQVjxEKdG",
+          "nativeName": "Snakeskin Spirit",
+          "path": "icons/consumables/potions/bottle-round-label-cork-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8550,7 +9438,7 @@
     "_id": "29VORCQOegwPo7o5",
     "name": "Malédiction du mage",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/treasure/gem-framed-spiral-purple.webp",
     "system": {
       "description": "<p>Lorsque vous libérez l’âme emprisonnée de ce lanceur de sorts, vous pouvez lancer un sort d’une carte de votre réserve comme si elle se trouvait dans votre équipement. Cela ne fonctionne pas avec les cartes placées définitivement dans la réserve.</p>",
       "quantity": 1,
@@ -8619,7 +9507,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 52
+        "roll": 52,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "USKNUVdtgl17llZq",
+          "nativeName": "Magic-User's Malison",
+          "path": "icons/commodities/treasure/gem-framed-spiral-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8627,7 +9523,7 @@
     "_id": "jgmjq5N1mRFDzRo5",
     "name": "Séparateur quintessentiel",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/tools/cooking/knife-chef-steel-black.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser cette lame magique pour trancher un lien magique ou métaphysique, comme un enchantement, un contrat, une attache magique ou un serment divin. La lame se brise ensuite.</p>",
       "quantity": 1,
@@ -8696,7 +9592,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 53
+        "roll": 53,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "L5gCE0cJ8Pmyqp7E",
+          "nativeName": "Quintessential Severant",
+          "path": "icons/tools/cooking/knife-chef-steel-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8704,7 +9608,7 @@
     "_id": "5LU2ZVkrclirJwo4",
     "name": "Masque du soi répercuté",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/treasure/mask-bone-white.webp",
     "system": {
       "description": "<p>Vous pouvez porter ce masque lors de votre prochaine montée de niveau pour échanger les valeurs de n’importe lesquels de vos traits. Lorsque vous le faites, le masque devient votre visage permanent.</p>",
       "quantity": 1,
@@ -8773,7 +9677,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 54
+        "roll": 54,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "v6AqLxKEnR59BoUj",
+          "nativeName": "Mask of the Echoed Self",
+          "path": "icons/commodities/treasure/mask-bone-white.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8781,7 +9693,7 @@
     "_id": "YjeHIpGNnTCE7lSt",
     "name": "Cloche du nécropranceur",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/tools/instruments/bell-gold.webp",
     "system": {
       "description": "<p>Vous pouvez briser cette cloche rouillée sans battant contre le sol pour invoquer une monture squelettique qui émerge de terre et vous sert jusqu’au prochain lever du soleil.</p>",
       "quantity": 1,
@@ -8850,7 +9762,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 55
+        "roll": 55,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "9iuovYP8xMpL1fHH",
+          "nativeName": "Necroprancer's Bell",
+          "path": "icons/tools/instruments/bell-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8858,7 +9778,7 @@
     "_id": "1mMZ7pyewWx9ozUY",
     "name": "Manteau draconique",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/commodities/leather/scales-blue.webp",
     "system": {
       "description": "<p>Vous pouvez utiliser cette antique peau de dragon enchantée pour acquérir des caractéristiques draconiques jusqu’à la fin de la scène, lorsque la peau tombe en lambeaux. Jusque-là, vous pouvez voler et gagnez +5 à vos seuils de dégâts et +1 à votre Maîtrise.</p>",
       "quantity": 1,
@@ -8927,7 +9847,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 56
+        "roll": 56,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "7r21aeT3LT8wQypK",
+          "nativeName": "Drakemantle",
+          "path": "icons/commodities/leather/scales-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -8935,7 +9863,7 @@
     "_id": "YAZqy9SQOC2bctTi",
     "name": "Sophisme du joueur",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/sundries/misc/piggybank.webp",
     "system": {
       "description": "<p>Vous pouvez dépenser autant de poignées d’or que vous le souhaitez en les plaçant dans cette tirelire en céramique en forme de cochon. Lorsque vous lancez la tirelire vers un point à portée Lointaine, elle explose et inflige 1d20 dégâts magiques par poignée d’or dépensée à toutes les créatures à portée Proche de ce point. Tout l’or contenu dans la tirelire est détruit.</p>",
       "quantity": 1,
@@ -9004,7 +9932,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 57
+        "roll": 57,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "sgqL3qFiArgCR8oI",
+          "nativeName": "Gambler's Fallacy",
+          "path": "icons/sundries/misc/piggybank.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -9012,7 +9948,7 @@
     "_id": "hNov38nBgnFYZH6X",
     "name": "Tonique cœur-de-lion",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-bottle-corked-stopper-ornate-yellow.webp",
     "system": {
       "description": "<p>Vous pouvez boire ce tonique pour gagner un bonus de +1 à votre Maîtrise jusqu’à ce que vous obteniez un résultat avec Peur.</p>",
       "quantity": 1,
@@ -9081,7 +10017,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 58
+        "roll": 58,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "G0JNdDEqxVDrwmvc",
+          "nativeName": "Lionheart Tonic",
+          "path": "icons/consumables/potions/potion-bottle-corked-stopper-ornate-yellow.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -9089,7 +10033,7 @@
     "_id": "1sbMrP02RlVp8Q1a",
     "name": "Larmes du héros immortel",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/flask-corked-blue.webp",
     "system": {
       "description": "<p>Lorsque vous buvez cette potion, la mort ne peut pas vous toucher jusqu’à votre prochain repos long. Lorsque vous devriez marquer votre dernier PV, au lieu d’effectuer un mouvement de mort, effectuez un dernier jet d’action avant de sombrer dans un sommeil sans rêve jusqu’à ce qu’un allié choisisse l’action de temps mort Soigner les blessures pour effacer vos PV.</p>",
       "quantity": 1,
@@ -9158,7 +10102,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 59
+        "roll": 59,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "gOFwztGSAAH4iLlG",
+          "nativeName": "Tears of the Undying Hero",
+          "path": "icons/consumables/potions/flask-corked-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   },
@@ -9166,7 +10118,7 @@
     "_id": "hpQn0JV9J4LLEEWp",
     "name": "Potion pas-de-plume",
     "type": "consumable",
-    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "img": "icons/consumables/potions/potion-flask-corked-tied-necklace-teal.webp",
     "system": {
       "description": "<p>Vous pouvez boire cette potion pour faire pousser de petites ailes à vos chevilles, qui vous accordent un bonus à votre Esquive égal à votre rang jusqu’à votre prochain repos.</p>",
       "quantity": 1,
@@ -9235,7 +10187,15 @@
         "contentOrigin": "core",
         "sourceNamespace": "daggerheart-srd-2.0",
         "sourceSubset": "hope-fear",
-        "roll": 60
+        "roll": 60,
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.consumables",
+          "nativeId": "6SBC5kHntnJMA0JM",
+          "nativeName": "Featherstep Potion",
+          "path": "icons/consumables/potions/potion-flask-corked-tied-necklace-teal.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     }
   }

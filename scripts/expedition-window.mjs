@@ -364,6 +364,106 @@ export function expeditionWindowContent(manifest, validation = null, selectedId 
   </div>`;
 }
 
+
+function parseExpeditionDrop(event) {
+  const dataTransfer = event?.dataTransfer;
+  if (!dataTransfer) return null;
+
+  try {
+    const payload = JSON.parse(
+      dataTransfer.getData("application/x-dct-expedition-entry") || "null"
+    );
+    if (payload?.entryId && payload?.fromContainerId) {
+      return { kind: "entry", ...payload };
+    }
+  } catch (_error) {}
+
+  try {
+    const payload = JSON.parse(
+      dataTransfer.getData("application/x-dct-foundry-item") || "null"
+    );
+    if (payload?.itemUuid) {
+      return { kind: "item", itemUuid: payload.itemUuid };
+    }
+  } catch (_error) {}
+
+  // Foundry's native drag payload is JSON in text/plain. Accept it too so
+  // normal Item links/documents can be dropped without Toolkit-specific HTML.
+  try {
+    const payload = JSON.parse(dataTransfer.getData("text/plain") || "null");
+    const uuid = payload?.uuid ?? payload?.data?.uuid ?? null;
+    const type = payload?.type ?? payload?.documentName ?? null;
+
+    if (
+      uuid &&
+      (
+        type === "Item" ||
+        String(uuid).startsWith("Item.") ||
+        String(uuid).includes(".Item.")
+      )
+    ) {
+      return { kind: "item", itemUuid: uuid };
+    }
+  } catch (_error) {}
+
+  return null;
+}
+
+async function requestAuthoritativeDrop(manifest, payload, {
+  toContainerId,
+  toSlotId = null,
+} = {}) {
+  const authority = globalThis.dhctExpeditionAuthority;
+
+  if (!authority || typeof authority.request !== "function") {
+    return {
+      green: false,
+      reason: "authority-bridge-unavailable",
+    };
+  }
+
+  if (payload?.kind === "entry") {
+    return authority.request({
+      action: "transfer",
+      expeditionId: manifest?.expeditionId,
+      entryId: payload.entryId,
+      fromContainerId: payload.fromContainerId,
+      toContainerId,
+      toSlotId,
+    });
+  }
+
+  if (payload?.kind === "item") {
+    return authority.request({
+      action: "acquire-item",
+      expeditionId: manifest?.expeditionId,
+      itemUuid: payload.itemUuid,
+      quantity: 1,
+      toContainerId,
+      toSlotId,
+    });
+  }
+
+  return { green: false, reason: "unsupported-drop-payload" };
+}
+
+function authorityErrorMessage(reason) {
+  switch (reason) {
+    case "no-active-gm":
+      return "Aucun MJ connecté pour valider ce transfert.";
+    case "container-access-denied":
+      return "Tu n’as pas accès à ce conteneur.";
+    case "authority-timeout":
+      return "Le MJ n’a pas répondu à la demande de transfert.";
+    case "item-not-found":
+      return "L’objet déposé est introuvable.";
+    case "authority-bridge-unavailable":
+      return "Le pont d’autorité MJ n’est pas disponible.";
+    default:
+      return reason ? `Transfert refusé — ${reason}.` : "Transfert refusé.";
+  }
+}
+
 export async function openExpeditionWindow(inputManifest, { validate = null, normalize = null, transfer = null, unloadToActor = null, save = null, selectedId = null } = {}) {
   // Keep the caller's manifest as the live session object. `normalize()` may
   // return a clone (and does for @2), which previously made drag/drop mutate
@@ -456,14 +556,34 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
         row.classList.remove("is-drop-target");
         if (typeof transfer !== "function") return;
 
-        let payload = null;
-        try {
-          payload = JSON.parse(event.dataTransfer?.getData("application/x-dct-expedition-entry") || "null");
-        } catch (_) {}
-        if (!payload?.entryId || !payload?.fromContainerId) return;
+        const payload = parseExpeditionDrop(event);
+        if (!payload) return;
 
         const toContainerId = row.dataset.containerId;
-        const result = transfer(manifest, { ...payload, toContainerId });
+
+        if (!game.user?.isGM || payload.kind === "item") {
+          const result = await requestAuthoritativeDrop(manifest, payload, {
+            toContainerId,
+          });
+
+          if (!result?.green) {
+            ui.notifications.warn(`Campaign Toolkit : ${authorityErrorMessage(result?.reason)}`);
+            return;
+          }
+
+          ui.notifications.info(
+            payload.kind === "item"
+              ? `Campaign Toolkit : ${result.itemName ?? "objet"} déposé et validé par le MJ.`
+              : "Campaign Toolkit : transfert validé par le MJ."
+          );
+          return;
+        }
+
+        const result = transfer(manifest, {
+          entryId: payload.entryId,
+          fromContainerId: payload.fromContainerId,
+          toContainerId,
+        });
         if (!result?.moved) {
           if (result?.reason && result.reason !== "same-container") {
             ui.notifications.warn(`Campaign Toolkit : transfert refusé — ${result.reason}.`);
@@ -502,15 +622,37 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
         slot.classList.remove("is-drop-target");
         if (typeof transfer !== "function") return;
 
-        let payload = null;
-        try {
-          payload = JSON.parse(event.dataTransfer?.getData("application/x-dct-expedition-entry") || "null");
-        } catch (_) {}
-        if (!payload?.entryId || !payload?.fromContainerId) return;
+        const payload = parseExpeditionDrop(event);
+        if (!payload) return;
 
         const toContainerId = slot.dataset.dropContainerId;
         const toSlotId = slot.dataset.slotId;
-        const result = transfer(manifest, { ...payload, toContainerId, toSlotId });
+
+        if (!game.user?.isGM || payload.kind === "item") {
+          const result = await requestAuthoritativeDrop(manifest, payload, {
+            toContainerId,
+            toSlotId,
+          });
+
+          if (!result?.green) {
+            ui.notifications.warn(`Campaign Toolkit : ${authorityErrorMessage(result?.reason)}`);
+            return;
+          }
+
+          ui.notifications.info(
+            payload.kind === "item"
+              ? `Campaign Toolkit : ${result.itemName ?? "objet"} déposé et validé par le MJ.`
+              : "Campaign Toolkit : transfert validé par le MJ."
+          );
+          return;
+        }
+
+        const result = transfer(manifest, {
+          entryId: payload.entryId,
+          fromContainerId: payload.fromContainerId,
+          toContainerId,
+          toSlotId,
+        });
         if (!result?.moved) {
           if (result?.reason && !["same-container", "same-slot"].includes(result.reason)) {
             ui.notifications.warn(`Campaign Toolkit : transfert refusé — ${result.reason}.`);
@@ -645,7 +787,7 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
 }
 
 export const expeditionWindowApi = Object.freeze({
-  version: 14,
+  version: 15,
   content: expeditionWindowContent,
   open: openExpeditionWindow,
 });

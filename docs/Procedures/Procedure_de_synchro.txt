@@ -1,0 +1,16 @@
+Sur le PC boulot, le flux sera désormais simplement :
+
+git pull
+
+puis ton robocopy vers le module Foundry, puis :
+
+powershell -ExecutionPolicy Bypass `
+  -File ".\tools\verify-p2.10f.2b.ps1"
+
+Et si les compendia sont vides sur une machine neuve, côté Foundry :
+
+const api = game.modules.get("daggerheart-campaign-toolkit").api;
+await api.syncAutonomousSources();
+await api.autonomousSourceStatus();
+
+On a enfin un workflow où Git conserve la fonctionnalité, DH Data reste source d’autorité, et le module Foundry redevient uniquement une cible de déploiement.

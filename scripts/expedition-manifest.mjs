@@ -125,7 +125,18 @@ export function validateExpeditionManifest(input) {
       if (!nonEmpty(entry?.entryId)) errors.push(`container ${id}: entryId is required`);
       if (!nonEmpty(entry?.itemRef?.sourceId)) errors.push(`container ${id}/${entry?.entryId ?? "?"}: itemRef.sourceId is required`);
       if (!nonEmpty(entry?.itemRef?.name)) errors.push(`container ${id}/${entry?.entryId ?? "?"}: itemRef.name is required`);
-      if (!Number.isInteger(entry?.quantity) || entry.quantity < 1) errors.push(`container ${id}/${entry?.entryId ?? "?"}: quantity must be >= 1`);
+      const lifecycleState = entry?.itemRef?.lifecycle?.state ?? "legacy";
+      const terminalLifecycle =
+        lifecycleState === "consumed" || lifecycleState === "deleted";
+      const minimumQuantity = terminalLifecycle ? 0 : 1;
+      if (
+        !Number.isInteger(entry?.quantity) ||
+        entry.quantity < minimumQuantity
+      ) {
+        errors.push(
+          `container ${id}/${entry?.entryId ?? "?"}: quantity must be >= ${minimumQuantity}`
+        );
+      }
       if (entry?.slotId != null && !slotSet.has(entry.slotId)) errors.push(`container ${id}/${entry?.entryId ?? "?"}: unknown slot ${entry.slotId}`);
     }
   }
@@ -236,7 +247,14 @@ export function canTransferExpeditionEntry(manifest, {
   if (!rule.green) return rule;
 
   const capacity = to.capacity?.slots ?? 0;
-  if (usedSlotsForTransfer(to) >= capacity) {
+  if ((to.contents ?? []).filter((candidate) => {
+      const state = candidate?.itemRef?.lifecycle?.state ?? "legacy";
+      return (
+        Number(candidate?.quantity) > 0 &&
+        state !== "consumed" &&
+        state !== "deleted"
+      );
+    }).length >= capacity) {
     return { green: false, reason: `${to.name} est plein (${usedSlotsForTransfer(to)}/${capacity} slots)` };
   }
 
@@ -367,6 +385,63 @@ export function acquireExpeditionEntry(manifest, {
     slotId: null,
   };
 
+  // P2.10h.3 backpack stack merge
+  // Merge only when both entries carry snapshots and their mechanical data
+  // are identical once volatile identity/quantity fields are removed.
+  const stackSnapshotKey = (itemRef) => {
+    const snapshot = itemRef?.snapshot;
+    if (!snapshot || typeof snapshot !== "object") return null;
+
+    const normalized = clone(snapshot);
+    delete normalized._id;
+    delete normalized._stats;
+    delete normalized.sort;
+    delete normalized.folder;
+
+    if (normalized.system && typeof normalized.system === "object") {
+      if (Object.prototype.hasOwnProperty.call(normalized.system, "quantity")) {
+        delete normalized.system.quantity;
+      }
+      if (Object.prototype.hasOwnProperty.call(normalized.system, "amount")) {
+        delete normalized.system.amount;
+      }
+    }
+
+    return JSON.stringify(normalized);
+  };
+
+  const candidateStackKey = stackSnapshotKey(candidate.itemRef);
+  const existingStack =
+    candidateStackKey == null
+      ? null
+      : (container.contents ?? []).find((existing) => {
+          if (existing?.itemRef?.sourceId !== candidate.itemRef?.sourceId) return false;
+          return stackSnapshotKey(existing.itemRef) === candidateStackKey;
+        });
+
+  if (existingStack) {
+    existingStack.quantity =
+      Math.max(1, Number(existingStack.quantity) || 1) + qty;
+
+    manifest.revision = Math.max(1, Number(manifest.revision) || 1) + 1;
+
+    const ledgerEvent = appendExpeditionLedgerEvent(manifest, {
+      kind: "acquired",
+      entryId: existingStack.entryId,
+      itemRef: existingStack.itemRef,
+      quantity: qty,
+      toContainerId: containerId,
+      note,
+    });
+
+    return {
+      acquired: true,
+      merged: true,
+      entry: existingStack,
+      ledgerEvent,
+      manifest,
+    };
+  }
   // Reuse the same capacity/rule preflight as transfers by staging a temporary source.
   const tempId = "__expedition-acquire__";
   const stagedCandidate = clone(candidate);
@@ -487,3 +562,4 @@ export const expeditionManifestApi = Object.freeze({
   consume: consumeExpeditionEntry,
   lose: loseExpeditionEntry,
 });
+

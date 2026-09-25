@@ -2,7 +2,7 @@
   {
     "name": "Armure fortifiée complète",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-steel.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -202,7 +202,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "7emTSt6nhZuTlvt5",
+          "nativeName": "Full Fortified Armor",
+          "path": "icons/equipment/chest/breastplate-layered-steel.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "21tGXn4UOA0PLB7a"
@@ -210,7 +218,7 @@
   {
     "name": "Armure à attelles de Wyrdwood",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-studded-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -362,7 +370,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "VD08FahK2W2zXoBK",
+          "nativeName": "Wyrdwood Splint Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-studded-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "2ZMivspJMIkh6C0y"
@@ -370,7 +386,7 @@
   {
     "name": "Armure de plates complète",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-collared-steel.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -576,7 +592,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "UdUJNa31WxFW2noa",
+          "nativeName": "Full Plate Armor",
+          "path": "icons/equipment/chest/breastplate-collared-steel.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "2tmdw3AFPV4FNfYG"
@@ -792,7 +816,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "1e5cQdnJL5HlxtKK",
+          "nativeName": "Resonant Harness",
+          "path": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "4HVl7db1H87dRosH"
@@ -800,7 +832,7 @@
   {
     "name": "Amélioré : Brigandine",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-leather-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1000,7 +1032,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "2ObDhrPlWlsfmnz2",
+          "nativeName": "Improved Brigandine Armor",
+          "path": "icons/equipment/chest/breastplate-banded-leather-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "4mNW8auc91xwAOab"
@@ -1008,7 +1048,7 @@
   {
     "name": "Habit en fil d’orage",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/hand/gauntlet-armored-leather-steel-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1160,7 +1200,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "zU1R9WrVCvQcxJ17",
+          "nativeName": "Stormthread Habit",
+          "path": "icons/equipment/hand/gauntlet-armored-leather-steel-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "53yZmt2G7od6xLZB"
@@ -1168,7 +1216,7 @@
   {
     "name": "Amélioré : Gambison",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1368,7 +1416,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "jphnMZjnS2FkOH3s",
+          "nativeName": "Improved Gambeson Armor",
+          "path": "icons/equipment/chest/breastplate-quilted-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "5kpc7zImZnUm8n9D"
@@ -1376,7 +1432,7 @@
   {
     "name": "Amélioré : Armure de cuir",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1513,7 +1569,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "t91M61pSCMKStTNt",
+          "nativeName": "Improved Leather Armor",
+          "path": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "67DFCLglxesG3pJp"
@@ -1521,7 +1585,7 @@
   {
     "name": "Gambison",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/vest-leather-tattered-white.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1721,7 +1785,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "yJFp1bfpecDcStVK",
+          "nativeName": "Gambeson Armor",
+          "path": "icons/equipment/chest/vest-leather-tattered-white.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "6gHECeWuhBvXHGLo"
@@ -1729,7 +1801,7 @@
   {
     "name": "Amélioré : Armure de plates complète",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1935,7 +2007,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "9f7RozpPTqrzJS1m",
+          "nativeName": "Improved Full Plate Armor",
+          "path": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "716jpleN9Z6pSNFR"
@@ -1943,7 +2023,7 @@
   {
     "name": "Armure raffinée de Bellamoi",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-gold.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -2143,7 +2223,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "WuoVwZA53XRAIt6d",
+          "nativeName": "Bellamoi Fine Armor",
+          "path": "icons/equipment/chest/breastplate-layered-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "76rfhsJMk6GBJpJa"
@@ -2151,7 +2239,7 @@
   {
     "name": "Cape de Monett",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/coat-collared-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -2303,7 +2391,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "AQzU2RsqS5V5bd1v",
+          "nativeName": "Monett's Cloak",
+          "path": "icons/equipment/chest/coat-collared-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "7j1G5AEwG0UYMRkw"
@@ -2311,7 +2407,7 @@
   {
     "name": "Robes de mage",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-layered-white.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -2517,7 +2613,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "rWDk8ovwnBrBwWRR",
+          "nativeName": "Mage Robes",
+          "path": "icons/equipment/chest/robe-layered-white.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "8iQoUZHRdpkxALtM"
@@ -2525,7 +2629,7 @@
   {
     "name": "Légendaire : Armure à bandes",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-studded-black.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -2725,7 +2829,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "Fi3gY51MTzHa4gl6",
+          "nativeName": "Legendary Banded Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-studded-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "9Ts6GMBnIwQdH1hH"
@@ -2733,7 +2845,7 @@
   {
     "name": "Armure tissée de braises",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -2885,7 +2997,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "bcQUh4QG3qFX0Vx6",
+          "nativeName": "Emberwoven Armor",
+          "path": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "A0BhUOLoSurGc09b"
@@ -2893,7 +3013,7 @@
   {
     "name": "Cuirasse en peau de troll",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/commodities/biological/shell-ridged-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -3045,7 +3165,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "TeMjFTO8sOULN30r",
+          "nativeName": "Trollhide Cuirass",
+          "path": "icons/commodities/biological/shell-ridged-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "Aixu3ADNcgYG5RIn"
@@ -3053,7 +3181,7 @@
   {
     "name": "Plate héroïque consacrée",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -3205,7 +3333,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "ukIkx5TCBUlgleBw",
+          "nativeName": "Hallowed Heroplate",
+          "path": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "BnwgyzZKDYXisleh"
@@ -3213,7 +3349,7 @@
   {
     "name": "Armure de corail forgée des profondeurs",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-sculpted-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -3413,7 +3549,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "b3NKjjgkQjBgmpWZ",
+          "nativeName": "Deep-Forged Coral Armor",
+          "path": "icons/equipment/chest/breastplate-sculpted-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "DMFysmpivWrrNO8g"
@@ -3421,7 +3565,7 @@
   {
     "name": "Armure souple de Tyris",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-layered-purple.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -3573,7 +3717,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "PSW3BxCGmtLeWOxM",
+          "nativeName": "Tyris Soft Armor",
+          "path": "icons/equipment/chest/robe-layered-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "DQWCyndFarrQMULI"
@@ -3581,7 +3733,7 @@
   {
     "name": "Amélioré : Armure à bandes",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -3781,7 +3933,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "qPxlM4h0VzblCEdd",
+          "nativeName": "Improved Banded Armor",
+          "path": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "DwXZ0aZbfkoWKS42"
@@ -3789,7 +3949,7 @@
   {
     "name": "Armure Bladefare",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -3989,7 +4149,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "mNN6pvcsS10ChrWF",
+          "nativeName": "Bladefare Armor",
+          "path": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "E56l4PGc626DulLa"
@@ -3997,7 +4165,7 @@
   {
     "name": "Armure de Rosewild",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-leather-purple.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -4149,7 +4317,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "tN8kAeBvNKM3EBFo",
+          "nativeName": "Rosewild Armor",
+          "path": "icons/equipment/chest/breastplate-banded-leather-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "EOSZfEcyDSwqF974"
@@ -4157,7 +4333,7 @@
   {
     "name": "Exosquelette forgé de runes",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/tech-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -4369,7 +4545,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "AHazopFnwVenDXqW",
+          "nativeName": "Rune-Forged Exosuit",
+          "path": "icons/equipment/chest/tech-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "IZXLb6xf3lqjeJII"
@@ -4377,7 +4561,7 @@
   {
     "name": "Armure de plates en pierre de sang",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-steel-black.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -4529,7 +4713,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "QUNaQ3f6U2rxu21f",
+          "nativeName": "Bloodstone Plate Armor",
+          "path": "icons/equipment/chest/breastplate-layered-steel-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "In2SBbf6AbavP0C8"
@@ -4537,7 +4729,7 @@
   {
     "name": "Armure de cuir",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -4674,7 +4866,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "nibfdNtp2PtxvbVz",
+          "nativeName": "Leather Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "JVoHPgPZh4qfKPUU"
@@ -4682,7 +4882,7 @@
   {
     "name": "Avancé : Armure de plates complète",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-steel-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -4888,7 +5088,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "crIbCb9NZ4K0VpoU",
+          "nativeName": "Advanced Full Plate Armor",
+          "path": "icons/equipment/chest/breastplate-layered-steel-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "JeljSnm4kjIGgPgC"
@@ -4896,7 +5104,7 @@
   {
     "name": "Armure d’écailles de dragon",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-rivited-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -5048,7 +5256,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "mdQ69eFHyAQUDmE7",
+          "nativeName": "Dragonscale Armor",
+          "path": "icons/equipment/chest/breastplate-rivited-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "Jfy64K5pLQv2FqLd"
@@ -5056,7 +5272,7 @@
   {
     "name": "Légendaire : Armure d’écailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -5256,7 +5472,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "SV7ukfVR9mhhY0E9",
+          "nativeName": "Legendary Scale Mail Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "Kbg4jUyGL5k34YEM"
@@ -5264,7 +5488,7 @@
   {
     "name": "Armure d’opale Veritas",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-collared-steel-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -5416,7 +5640,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "OvzgUTYy2RCN85vV",
+          "nativeName": "Veritas Opal Armor",
+          "path": "icons/equipment/chest/breastplate-collared-steel-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "LCvvcoDu9zwXF8WS"
@@ -5424,7 +5656,7 @@
   {
     "name": "Légendaire : Cotte de mailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -5624,7 +5856,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "EsIN5OLKe9ZYFNXZ",
+          "nativeName": "Legendary Chainmail Armor",
+          "path": "icons/equipment/chest/breastplate-banded-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "LMCNRHBEcwBiNSGQ"
@@ -5632,7 +5872,7 @@
   {
     "name": "Armure d’os de Harrow",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-gorget-steel.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -5784,7 +6024,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "dvyQeUVRLc9y6rnt",
+          "nativeName": "Harrowbone Armor",
+          "path": "icons/equipment/chest/breastplate-gorget-steel.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "NGHX5aF6pc2YjReh"
@@ -5792,7 +6040,7 @@
   {
     "name": "Légendaire : Brigandine",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-collared-leather-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -5992,7 +6240,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "9wOawkTonaRY4Sw2",
+          "nativeName": "Legendary Brigandine Armor",
+          "path": "icons/equipment/chest/breastplate-collared-leather-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "NHJk4fWznWj2dJ3b"
@@ -6000,7 +6256,7 @@
   {
     "name": "Avancé : Robes de mage",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-layered-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -6206,7 +6462,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "gNuhJUzazz3mKWkU",
+          "nativeName": "Advanced Mage Robes",
+          "path": "icons/equipment/chest/robe-layered-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "Nlx0ke29s0LbeU19"
@@ -6214,7 +6478,7 @@
   {
     "name": "Cotte de mailles du Sauveur",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -6450,7 +6714,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "8X16lJQ3xltTwynm",
+          "nativeName": "Savior Chainmail",
+          "path": "icons/equipment/chest/breastplate-layered-leather-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "OvbbREP0DldL3m0x"
@@ -6458,7 +6730,7 @@
   {
     "name": "Manteau du Garde-faucon",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-gold.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -6610,7 +6882,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "ZZfLZ0uTzROddFoj",
+          "nativeName": "Hawkguard's Mantle",
+          "path": "icons/equipment/chest/breastplate-layered-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "PFuTbHAKaoHjAXm2"
@@ -6618,7 +6898,7 @@
   {
     "name": "Armure de canalisation",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-collared-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -6818,7 +7098,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "vMJxEWz1srfwMsoj",
+          "nativeName": "Channeling Armor",
+          "path": "icons/equipment/chest/robe-collared-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "PXGJiGr5DDYpzvNg"
@@ -6826,7 +7114,7 @@
   {
     "name": "Tunique en soie d’araignée",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/creatures/webs/webthin-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -7026,7 +7314,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "IuzkxBqeAqomNfxZ",
+          "nativeName": "Spidersilk Tunic",
+          "path": "icons/creatures/webs/webthin-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "SSz3wYv4eiFAUJuc"
@@ -7034,7 +7330,7 @@
   {
     "name": "Cotte de mailles elundrienne",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-sculpted-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -7235,7 +7531,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "Q6LxmtFetDDkoZVZ",
+          "nativeName": "Elundrian Chain Armor",
+          "path": "icons/equipment/chest/breastplate-sculpted-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "V2EWtt5Rj7X36CnD"
@@ -7243,7 +7547,7 @@
   {
     "name": "Amélioré : Cotte de mailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -7443,7 +7747,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "K5WkjS0NGqHYmhU3",
+          "nativeName": "Improved Chainmail Armor",
+          "path": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "VaAS01ivUekUS0eb"
@@ -7451,7 +7763,7 @@
   {
     "name": "Runes de fortification",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/magic/symbols/rune-sigil-red-orange.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -7603,7 +7915,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "P4qAEDJUoNLgVRsA",
+          "nativeName": "Runes of Fortification",
+          "path": "icons/magic/symbols/rune-sigil-red-orange.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "Vz0zjM8OBhGeX4Rn"
@@ -7611,7 +7931,7 @@
   {
     "name": "Avancé : Armure à bandes",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-steel-studded.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -7811,7 +8131,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "ar3hG23czKmfUYW9",
+          "nativeName": "Advanced Banded Armor",
+          "path": "icons/equipment/chest/breastplate-banded-steel-studded.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "W736rQRhDjnLbln0"
@@ -7819,7 +8147,7 @@
   {
     "name": "Parure astrale",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-blue-gold.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -7971,7 +8299,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "pRMYSsBa1T5NcKZZ",
+          "nativeName": "Astral Raiment",
+          "path": "icons/equipment/chest/breastplate-layered-leather-blue-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "WvQ34y0GQxjdPEFz"
@@ -7979,7 +8315,7 @@
   {
     "name": "Amélioré : Robes de mage",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-layered-teal.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -8185,7 +8521,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "qks7PQ7xkP2Kwedr",
+          "nativeName": "Improved Mage Robes",
+          "path": "icons/equipment/chest/robe-layered-teal.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "XreEtEE43b5KRwHT"
@@ -8193,7 +8537,7 @@
   {
     "name": "Laminaire liée aux dieux",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-collared-steel-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -8345,7 +8689,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "hG0g8lMEGcEtDxKO",
+          "nativeName": "Godbound Laminar",
+          "path": "icons/equipment/chest/breastplate-collared-steel-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "XtjNNAUHozH6i7pv"
@@ -8353,7 +8705,7 @@
   {
     "name": "Plate solaire dorée",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -8505,7 +8857,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "G3NnXEXmT6m2Mr9z",
+          "nativeName": "Gilded Sunplate",
+          "path": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "YFDIXf3b6WR7ZPaY"
@@ -8513,7 +8873,7 @@
   {
     "name": "Atours de Granminster",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/coat-collared-studded-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -8718,7 +9078,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "Fm6sgfz4fYJCvPiS",
+          "nativeName": "Granminster's Finery",
+          "path": "icons/equipment/chest/coat-collared-studded-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "YNiw9eB1aLcqj74J"
@@ -8726,7 +9094,7 @@
   {
     "name": "Cuirasse d’Arbrefer",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-brown-silver.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -8934,7 +9302,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "tzZntboNtHL5C6VM",
+          "nativeName": "Irontree Breastplate Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-brown-silver.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "YmVsm7mFKGxYITey"
@@ -8942,7 +9318,7 @@
   {
     "name": "Dreadplate forgée du Cercle",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/tech-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -9094,7 +9470,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "HXqjJxHUqWCv1N3W",
+          "nativeName": "Circle-Forged Dreadplate",
+          "path": "icons/equipment/chest/tech-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "Z9nhKd71VluGM6TH"
@@ -9102,7 +9486,7 @@
   {
     "name": "Armure à bandes",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/bullet-proof-vest-kevlar.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -9302,7 +9686,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "ViqJEm8v9XJWPsj4",
+          "nativeName": "Banded Armor",
+          "path": "icons/equipment/chest/bullet-proof-vest-kevlar.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "ZQ7X8spjhSJo6lLk"
@@ -9310,7 +9702,7 @@
   {
     "name": "Armure flottante runetane",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-black.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -9462,7 +9854,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "tHlBUDQC24YMZqd6",
+          "nativeName": "Runetan Floating Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "ZefjgMW9PBgBXmcm"
@@ -9470,7 +9870,7 @@
   {
     "name": "Légendaire : Armure de plates complète",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-steel-blue-gold.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -9676,7 +10076,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "SXWjUR2aUR6bYvdl",
+          "nativeName": "Legendary Full Plate Armor",
+          "path": "icons/equipment/chest/breastplate-layered-steel-blue-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "a4pXtONC1JT7tfxs"
@@ -9684,7 +10092,7 @@
   {
     "name": "Cotte de soie Dunamis",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-layered-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -9836,7 +10244,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "hAY6UgdGT7dj22Pr",
+          "nativeName": "Dunamis Silkchain",
+          "path": "icons/equipment/chest/robe-layered-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "alZz3VMeQzmcp25m"
@@ -9981,7 +10397,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "Tptgl5WOj76TyFn7",
+          "nativeName": "Legendary Leather Armor",
+          "path": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "bgxiwJqVe6P55GSX"
@@ -9989,7 +10413,7 @@
   {
     "name": "Avancé : Armure de cuir",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -10126,7 +10550,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "itSOp2GCyem0f7oM",
+          "nativeName": "Advanced Leather Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "cE4VcTIh3SIkoqS1"
@@ -10134,7 +10566,7 @@
   {
     "name": "Avancé : Cotte de mailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -10334,7 +10766,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "LzLOJ9EVaHWAjoq9",
+          "nativeName": "Advanced Chainmail Armor",
+          "path": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "cLRTghTYbYzCm07L"
@@ -10342,7 +10782,7 @@
   {
     "name": "Avancé : Brigandine",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -10542,7 +10982,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "z4K0YjsgwkkAruTr",
+          "nativeName": "Advanced Brigandine Armor",
+          "path": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "cPD0RDxyEB13JYtt"
@@ -10550,7 +10998,7 @@
   {
     "name": "Robes d’enchanteur",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-collared-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -10702,7 +11150,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "z8dQR56ZNXmRE0w9",
+          "nativeName": "Enchanter's Robes",
+          "path": "icons/equipment/chest/robe-collared-blue.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "dCpUjA9SZjgD3fye"
@@ -10710,7 +11166,7 @@
   {
     "name": "Armure de plates hérissée",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-steel-studded.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -10916,7 +11372,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "QjwsIhXKqnlvRBMv",
+          "nativeName": "Spiked Plate Armor",
+          "path": "icons/equipment/chest/breastplate-banded-steel-studded.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "dHdDwrlgONhQE8l0"
@@ -10924,7 +11388,7 @@
   {
     "name": "Cape en tissage de trèfle",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/coat-collared-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -11076,7 +11540,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "OegNW8TsqVdccwGM",
+          "nativeName": "Cloverweave Cloak",
+          "path": "icons/equipment/chest/coat-collared-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "fCw3HdRTsvNBcRV7"
@@ -11084,7 +11556,7 @@
   {
     "name": "Cotte de mailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-scale-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -11284,7 +11756,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "haULhuEg37zUUvhb",
+          "nativeName": "Chainmail Armor",
+          "path": "icons/equipment/chest/breastplate-scale-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "hWpN800ft8NOvZaQ"
@@ -11292,7 +11772,7 @@
   {
     "name": "Linceul en tissage sombre",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-black.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -11444,7 +11924,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "HLAgfHHCJjdqnYPC",
+          "nativeName": "Darkweave Shroud",
+          "path": "icons/equipment/chest/breastplate-layered-leather-black.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "hecBwrhETiekwthA"
@@ -11452,7 +11940,7 @@
   {
     "name": "Légendaire : Robes de mage",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/robe-collared-pink.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -11658,7 +12146,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "OGIBjQJEYv6uq0DA",
+          "nativeName": "Legendary Mage Robes",
+          "path": "icons/equipment/chest/robe-collared-pink.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "j45grHzQMQ7KcOz8"
@@ -11666,7 +12162,7 @@
   {
     "name": "Légendaire : Gambison",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-layered-leather-blue-gold.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -11866,7 +12362,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "c6tMXz4rPf9ioQrf",
+          "nativeName": "Legendary Gambeson Armor",
+          "path": "icons/equipment/chest/breastplate-layered-leather-blue-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "mLdxwGpH1gSf3pWk"
@@ -11874,7 +12378,7 @@
   {
     "name": "Lamellaire du Garde-ciel",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-purple.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -12074,7 +12578,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "2icJGsEO0BUwZvHe",
+          "nativeName": "Skywarden's Lamellar",
+          "path": "icons/equipment/chest/breastplate-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "nhfCtfqwxYvO44aI"
@@ -12082,7 +12594,7 @@
   {
     "name": "Brigandine",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-collared-leather-grey.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -12282,7 +12794,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "uL6AvEhXGaFlzjjS",
+          "nativeName": "Brigandine Armor",
+          "path": "icons/equipment/chest/breastplate-collared-leather-grey.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "pKEY7jc6r8slS9Fk"
@@ -12290,7 +12810,7 @@
   {
     "name": "Armure d’écailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -12490,7 +13010,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "hfueRvwhlpTbtHmK",
+          "nativeName": "Scale Mail Armor",
+          "path": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "pXwk3cvlY7UnIgLk"
@@ -12498,7 +13026,7 @@
   {
     "name": "Avancé : Gambison",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-purple.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -12698,7 +13226,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "epkAmlZVk7HOfUUT",
+          "nativeName": "Advanced Gambeson Armor",
+          "path": "icons/equipment/chest/breastplate-purple.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "r6MXayipcezQNQ1o"
@@ -12706,7 +13242,7 @@
   {
     "name": "Avancé : Armure d’écailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-rivited-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -12906,7 +13442,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "z6C6ll1T4G476zKv",
+          "nativeName": "Advanced Scale Mail Armor",
+          "path": "icons/equipment/chest/breastplate-rivited-red.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "w09pq2tObfhxOZbG"
@@ -12914,7 +13458,7 @@
   {
     "name": "Amélioré : Armure d’écailles",
     "type": "armor",
-    "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+    "img": "icons/equipment/chest/breastplate-sculpted-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -13114,7 +13658,15 @@
         "kind": "armor",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "core",
-        "sourceNamespace": "daggerheart-srd-2.0"
+        "sourceNamespace": "daggerheart-srd-2.0",
+        "artworkSource": {
+          "kind": "foundryborne-native",
+          "pack": "daggerheart.armors",
+          "nativeId": "JJ08yuuFq3NjjMRV",
+          "nativeName": "Improved Scale Mail Armor",
+          "path": "icons/equipment/chest/breastplate-sculpted-green.webp",
+          "matchedBy": "sourceIdSlug"
+        }
       }
     },
     "_id": "wm9D24FsyN08B1aM"

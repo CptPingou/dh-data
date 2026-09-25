@@ -4,7 +4,7 @@ const MODULE_ID = "daggerheart-campaign-toolkit";
 const PILOT_URL = `modules/${MODULE_ID}/data/pilot.json`;
 const CLASS_PRESENTATION_URL = `modules/${MODULE_ID}/data/class-presentation.json`;
 const FLAG_SCOPE = MODULE_ID;
-const PILOT_MAPPING_VERSION = "P2.3.4e-fix2c";
+const PILOT_MAPPING_VERSION = "P2.10k.3-mh-adversary-repair";
 const FALLBACK_CLASS_IMAGE = "icons/svg/mystery-man.svg";
 
 let classPresentationPromise = null;
@@ -1092,7 +1092,7 @@ function huntingNotesHtml(raw) {
   }
 
   if (Array.isArray(hunting.loot) && hunting.loot.length) {
-    lines.push("<h4>Parties et butin</h4>");
+    lines.push("<h4>Composants / Récolte</h4>");
     lines.push("<ul>");
     for (const loot of hunting.loot) {
       const part = esc(loot?.part ?? "Butin");
@@ -1507,6 +1507,118 @@ async function refreshHuntingNoteLinks(pack) {
   }
 }
 
+
+function managedAdversarySourceId(doc) {
+  const value = doc?.flags?.[FLAG_SCOPE]?.sourceId;
+  return typeof value === "string" && value.trim() ? value.trim() : null;
+}
+
+function adversaryKeeperScore(doc) {
+  const itemCount = doc?.items?.size ?? doc?.items?.length ?? 0;
+  const notesLength = String(doc?.system?.notes ?? "").length;
+  const modified = Number(doc?._stats?.modifiedTime ?? 0);
+  return (itemCount * 1_000_000_000) + (notesLength * 1_000) + modified;
+}
+
+export async function dedupeCanonicalAdversaries(pack = null) {
+  if (!game.user?.isGM) {
+    throw new Error("La déduplication des adversaires Toolkit est réservée au MJ.");
+  }
+
+  const targetPack =
+    pack ??
+    game.packs.get(`${MODULE_ID}.dh-adversaries`);
+
+  if (!targetPack) {
+    throw new Error("Compendium Toolkit dh-adversaries absent.");
+  }
+
+  const wasLocked = Boolean(targetPack.locked);
+  if (wasLocked) await targetPack.configure({ locked: false });
+
+  try {
+    const docs = await targetPack.getDocuments();
+    const groups = new Map();
+
+    for (const doc of docs) {
+      const sourceId = managedAdversarySourceId(doc);
+      if (!sourceId) continue;
+      const list = groups.get(sourceId) ?? [];
+      list.push(doc);
+      groups.set(sourceId, list);
+    }
+
+    const deleted = [];
+    const kept = [];
+
+    for (const [sourceId, matches] of groups) {
+      if (matches.length < 2) continue;
+
+      matches.sort((a, b) => adversaryKeeperScore(b) - adversaryKeeperScore(a));
+      const keeper = matches[0];
+      const extras = matches.slice(1);
+
+      kept.push({
+        sourceId,
+        id: keeper.id,
+        name: keeper.name,
+        items: keeper.items?.size ?? keeper.items?.length ?? 0,
+      });
+
+      for (const extra of extras) {
+        deleted.push({
+          sourceId,
+          id: extra.id,
+          name: extra.name,
+          items: extra.items?.size ?? extra.items?.length ?? 0,
+        });
+        await extra.delete();
+      }
+    }
+
+    if (deleted.length) {
+      console.table(deleted);
+      console.info(`${MODULE_ID} | adversary duplicates removed`, {
+        deleted: deleted.length,
+        kept,
+      });
+    }
+
+    return {
+      green: true,
+      duplicateGroups: kept.length,
+      deleted: deleted.length,
+      kept,
+    };
+  } finally {
+    if (wasLocked) await targetPack.configure({ locked: true });
+  }
+}
+
+const canonicalAdversaryImportLocks = new Map();
+
+async function withCanonicalAdversaryImportLock(sourceId, operation) {
+  const key = String(sourceId ?? "");
+  const previous = canonicalAdversaryImportLocks.get(key) ?? Promise.resolve();
+
+  let release;
+  const current = new Promise(resolve => {
+    release = resolve;
+  });
+  canonicalAdversaryImportLocks.set(key, previous.then(() => current));
+
+  await previous;
+
+  try {
+    return await operation();
+  } finally {
+    release();
+    if (canonicalAdversaryImportLocks.get(key) === current) {
+      canonicalAdversaryImportLocks.delete(key);
+    }
+  }
+}
+
 export async function importCanonicalAdversary(sourcePath) {
   if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est réservé au MJ.");
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
@@ -1519,35 +1631,48 @@ export async function importCanonicalAdversary(sourcePath) {
   const raw = await response.json();
   if (raw?.kind !== "adversary" || !raw?.id) throw new Error(`${cleanPath} n'est pas un adversaire canonique valide.`);
 
-  const entry = {
-    kind: "adversary",
-    key: raw.id,
-    corpus: raw?.source?.corpus ?? "homebrew",
-    source_path: cleanPath,
-    data: raw,
-  };
-  const data = await buildActor(entry);
-  data.flags ??= {};
-  data.flags[FLAG_SCOPE] ??= {};
-  data.flags[FLAG_SCOPE].managed = true;
-  data.flags[FLAG_SCOPE].kind = "adversary";
-  data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
-  data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
+  return withCanonicalAdversaryImportLock(raw.id, async () => {
+    const entry = {
+      kind: "adversary",
+      key: raw.id,
+      corpus: raw?.source?.corpus ?? "homebrew",
+      source_path: cleanPath,
+      data: raw,
+    };
+    const data = await buildActor(entry);
+    data.flags ??= {};
+    data.flags[FLAG_SCOPE] ??= {};
+    data.flags[FLAG_SCOPE].managed = true;
+    data.flags[FLAG_SCOPE].kind = "adversary";
+    data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
+    data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
 
-  const pack = game.packs.get(`${MODULE_ID}.dh-adversaries`);
-  if (!pack) throw new Error("Compendium Toolkit dh-adversaries absent.");
-  await pack.configure({ locked: false });
-  try {
-    const docs = await pack.getDocuments();
-    const previous = docs.filter(doc => doc.flags?.[FLAG_SCOPE]?.sourceId === raw.id);
-    for (const doc of previous) await doc.delete();
-    const created = await Actor.create(data, { pack: pack.collection });
-    await refreshHuntingNoteLinks(pack);
-    ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
-    return created;
-  } finally {
-    await pack.configure({ locked: true });
-  }
+    const pack = game.packs.get(`${MODULE_ID}.dh-adversaries`);
+    if (!pack) throw new Error("Compendium Toolkit dh-adversaries absent.");
+
+    const wasLocked = Boolean(pack.locked);
+    if (wasLocked) await pack.configure({ locked: false });
+
+    try {
+      // Delete every previous copy with the same canonical sourceId. The lock
+      // above prevents two simultaneous imports from racing between delete/create.
+      const docs = await pack.getDocuments();
+      const previous = docs.filter(doc => managedAdversarySourceId(doc) === raw.id);
+      for (const doc of previous) await doc.delete();
+
+      const created = await Actor.create(data, { pack: pack.collection });
+
+      // Defense in depth for duplicates already left in the pack by an older
+      // import path/version.
+      await dedupeCanonicalAdversaries(pack);
+      await refreshHuntingNoteLinks(pack);
+
+      ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
+      return created;
+    } finally {
+      if (wasLocked) await pack.configure({ locked: true });
+    }
+  });
 }
 
 const TETSUCABRA_ACTOR_SOURCES = [
@@ -1556,6 +1681,46 @@ const TETSUCABRA_ACTOR_SOURCES = [
   "data/homebrew/monster-hunter/adversaries/tetsucabra-part-forelegs.json",
   "data/homebrew/monster-hunter/adversaries/tetsucabra-part-hindlegs.json",
 ];
+
+
+const MONSTER_HUNTER_ADVERSARY_SOURCES = [
+  ...TETSUCABRA_ACTOR_SOURCES,
+  "data/homebrew/monster-hunter/adversaries/queen-vespoid.json",
+  "data/homebrew/monster-hunter/adversaries/vespoid-minion.json",
+];
+
+export async function importMonsterHunterAdversaries() {
+  if (!game.user?.isGM) {
+    throw new Error("L'import Monster Hunter Toolkit est réservé au MJ.");
+  }
+
+  const actors = [];
+
+  for (const sourcePath of MONSTER_HUNTER_ADVERSARY_SOURCES) {
+    actors.push(await importCanonicalAdversary(sourcePath));
+  }
+
+  const dedupe = await dedupeCanonicalAdversaries();
+
+  const result = {
+    green: true,
+    imported: actors.length,
+    actors: actors.map(actor => ({
+      id: actor.id,
+      name: actor.name,
+      sourceId: managedAdversarySourceId(actor),
+      embeddedFeatures: actor.items?.size ?? actor.items?.length ?? 0,
+      hasLoot:
+        Array.isArray(actor.flags?.[FLAG_SCOPE]?.hunting?.loot) &&
+        actor.flags[FLAG_SCOPE].hunting.loot.length > 0,
+    })),
+    dedupe,
+  };
+
+  console.table(result.actors);
+  console.log(`${MODULE_ID} | Monster Hunter adversaries imported`, result);
+  return result;
+}
 
 export async function importTetsucabra() {
   const actors = [];

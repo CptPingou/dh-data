@@ -1,0 +1,5119 @@
+{
+  "schema": "daggerheart-campaign-toolkit/native-item-artwork-map@1",
+  "generatedAt": "2026-09-24T07:20:47.483Z",
+  "system": {
+    "id": "daggerheart",
+    "version": "2.9.4"
+  },
+  "module": {
+    "id": "daggerheart-campaign-toolkit",
+    "version": "0.4.2"
+  },
+  "count": 635,
+  "packs": {
+    "weapons": {
+      "packId": "daggerheart.weapons",
+      "present": true,
+      "entries": [
+        {
+          "id": "00Cz6w2hSlb4ccrR",
+          "uuid": "Compendium.daggerheart.weapons.Item.00Cz6w2hSlb4ccrR",
+          "name": "Improved Shadowblade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flanged-lightning.webp",
+          "sourceId": null
+        },
+        {
+          "id": "01izMUSJcAUo79IX",
+          "uuid": "Compendium.daggerheart.weapons.Item.01izMUSJcAUo79IX",
+          "name": "Advanced Whip",
+          "type": "weapon",
+          "img": "icons/weapons/misc/whip-red-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0HmhnZnv1I6uX69c",
+          "uuid": "Compendium.daggerheart.weapons.Item.0HmhnZnv1I6uX69c",
+          "name": "Legendary Hallowed Axe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-battle-worn-eye.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0Hn5RQP1zXKCAxq9",
+          "uuid": "Compendium.daggerheart.weapons.Item.0Hn5RQP1zXKCAxq9",
+          "name": "Throwing Knives",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/knife-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0XpSBYXxtywvBFQi",
+          "uuid": "Compendium.daggerheart.weapons.Item.0XpSBYXxtywvBFQi",
+          "name": "Yutari Bloodbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/longbow-recurve-leather-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0knd0ijjH4b6Fnbe",
+          "uuid": "Compendium.daggerheart.weapons.Item.0knd0ijjH4b6Fnbe",
+          "name": "Advanced Enchanted Chakram",
+          "type": "weapon",
+          "img": "icons/commodities/metal/fragments-steel-ring.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0lAkBEUvbM9Osmqb",
+          "uuid": "Compendium.daggerheart.weapons.Item.0lAkBEUvbM9Osmqb",
+          "name": "Hammer of Exota",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-double-glowing-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0t0clWlZgJ7oXZNM",
+          "uuid": "Compendium.daggerheart.weapons.Item.0t0clWlZgJ7oXZNM",
+          "name": "Improved Offhand Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/fist-knuckles-stone.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0thN0BpN05KT8Avx",
+          "uuid": "Compendium.daggerheart.weapons.Item.0thN0BpN05KT8Avx",
+          "name": "Advanced Small Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-double-engraved-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "14abPqQcROJfDChR",
+          "uuid": "Compendium.daggerheart.weapons.Item.14abPqQcROJfDChR",
+          "name": "Legendary Longsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-engraved.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1AuMNiJz96Ez9fur",
+          "uuid": "Compendium.daggerheart.weapons.Item.1AuMNiJz96Ez9fur",
+          "name": "Legendary Halberd",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/halberd-crescent-glowing.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1G6xX2QL9O0Rsgz7",
+          "uuid": "Compendium.daggerheart.weapons.Item.1G6xX2QL9O0Rsgz7",
+          "name": "Legendary Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-ornamental-winged.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1N1jggda5DfdzdMj",
+          "uuid": "Compendium.daggerheart.weapons.Item.1N1jggda5DfdzdMj",
+          "name": "Siphoning Gauntlets",
+          "type": "weapon",
+          "img": "icons/equipment/hand/glove-spiked-leather-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1R4uzOpWD8bkYRUm",
+          "uuid": "Compendium.daggerheart.weapons.Item.1R4uzOpWD8bkYRUm",
+          "name": "Hammer of Wrath",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-double-studded.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1ZciqG7vIKLYpKsP",
+          "uuid": "Compendium.daggerheart.weapons.Item.1ZciqG7vIKLYpKsP",
+          "name": "Legendary Quarterstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-orante-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1cwWNt4sqlgA8gCT",
+          "uuid": "Compendium.daggerheart.weapons.Item.1cwWNt4sqlgA8gCT",
+          "name": "Broadsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1jOJHHKdtk3s2jaY",
+          "uuid": "Compendium.daggerheart.weapons.Item.1jOJHHKdtk3s2jaY",
+          "name": "Swinging Ropeblade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-hooked-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1nztpLzoHGfbKf5x",
+          "uuid": "Compendium.daggerheart.weapons.Item.1nztpLzoHGfbKf5x",
+          "name": "Legendary Battleaxe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-double-engraved-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "21CYHEkNQBzKDrKF",
+          "uuid": "Compendium.daggerheart.weapons.Item.21CYHEkNQBzKDrKF",
+          "name": "Legendary Rope Dart",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-simple-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2Fbf2cxLfbdGkU4I",
+          "uuid": "Compendium.daggerheart.weapons.Item.2Fbf2cxLfbdGkU4I",
+          "name": "Casting Sword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flanged-lightning.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2Khzuj768yoWN9QK",
+          "uuid": "Compendium.daggerheart.weapons.Item.2Khzuj768yoWN9QK",
+          "name": "Advanced Scepter",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-forest-hooked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2wKH8UalLK4UDYHV",
+          "uuid": "Compendium.daggerheart.weapons.Item.2wKH8UalLK4UDYHV",
+          "name": "Rocket Maul",
+          "type": "weapon",
+          "img": "icons/skills/melee/strike-hammer-destructive-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "32nYyMaeDWaakSxz",
+          "uuid": "Compendium.daggerheart.weapons.Item.32nYyMaeDWaakSxz",
+          "name": "Legendary Hand Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/handcrossbow-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3D7dl8odrgR89rDE",
+          "uuid": "Compendium.daggerheart.weapons.Item.3D7dl8odrgR89rDE",
+          "name": "Enchanted Shillelagh",
+          "type": "weapon",
+          "img": "icons/weapons/clubs/club-bone-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3HGs0AgVrdIBTaKG",
+          "uuid": "Compendium.daggerheart.weapons.Item.3HGs0AgVrdIBTaKG",
+          "name": "Advanced Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-ornamental-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3T3o9zfe61t22L1H",
+          "uuid": "Compendium.daggerheart.weapons.Item.3T3o9zfe61t22L1H",
+          "name": "Improved Grappler",
+          "type": "weapon",
+          "img": "icons/weapons/sickles/sickle-hooked-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3vti3xfo0wJND7ew",
+          "uuid": "Compendium.daggerheart.weapons.Item.3vti3xfo0wJND7ew",
+          "name": "Floating Bladeshards",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-broad-serrated-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3whiedn0jBMNRdIb",
+          "uuid": "Compendium.daggerheart.weapons.Item.3whiedn0jBMNRdIb",
+          "name": "Hand Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-white-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4UzxqfkwF8gDSdu7",
+          "uuid": "Compendium.daggerheart.weapons.Item.4UzxqfkwF8gDSdu7",
+          "name": "Advanced Greatstaff",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-carved-stone-shard.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4e5pWxi2qohuGsWh",
+          "uuid": "Compendium.daggerheart.weapons.Item.4e5pWxi2qohuGsWh",
+          "name": "Legendary Spear",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/spear-flared-worn-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4fQpVfQ3NVwTHStA",
+          "uuid": "Compendium.daggerheart.weapons.Item.4fQpVfQ3NVwTHStA",
+          "name": "Returning Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-broad-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4maJHuMTgjBHX1Ij",
+          "uuid": "Compendium.daggerheart.weapons.Item.4maJHuMTgjBHX1Ij",
+          "name": "Advanced Scimitar",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-guard-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "55NwHIIZHUeKSE3M",
+          "uuid": "Compendium.daggerheart.weapons.Item.55NwHIIZHUeKSE3M",
+          "name": "Improved Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "5faflfNz20cFW1EM",
+          "uuid": "Compendium.daggerheart.weapons.Item.5faflfNz20cFW1EM",
+          "name": "Bladed Whip",
+          "type": "weapon",
+          "img": "icons/weapons/misc/whip-red-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6D4MKcr4GUfv3LDa",
+          "uuid": "Compendium.daggerheart.weapons.Item.6D4MKcr4GUfv3LDa",
+          "name": "Bec de Corbin",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-war-rounding.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6ZWl6ARfvYBaAMwY",
+          "uuid": "Compendium.daggerheart.weapons.Item.6ZWl6ARfvYBaAMwY",
+          "name": "Improved Shortbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/shortbow-recurve-bone.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6bkbw4Ap644KZGvJ",
+          "uuid": "Compendium.daggerheart.weapons.Item.6bkbw4Ap644KZGvJ",
+          "name": "Steelforged Halberd",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/halberd-crescent-wood.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6d9B2b5X2d2U56jt",
+          "uuid": "Compendium.daggerheart.weapons.Item.6d9B2b5X2d2U56jt",
+          "name": "Improved Wand",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-gem-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6gFvOFTE97QZ74Zr",
+          "uuid": "Compendium.daggerheart.weapons.Item.6gFvOFTE97QZ74Zr",
+          "name": "Ghostblade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-evil-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6subq9ZgtKcnHB6u",
+          "uuid": "Compendium.daggerheart.weapons.Item.6subq9ZgtKcnHB6u",
+          "name": "Black Powder Serpentine",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "70ysaFJDREwTgvZa",
+          "uuid": "Compendium.daggerheart.weapons.Item.70ysaFJDREwTgvZa",
+          "name": "Greatsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-crossguard-barbed.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7Db8gq9j5iHWA37p",
+          "uuid": "Compendium.daggerheart.weapons.Item.7Db8gq9j5iHWA37p",
+          "name": "Advanced Offhand Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/fist-knuckles-spiked-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7knsbFzLyNEgFK4K",
+          "uuid": "Compendium.daggerheart.weapons.Item.7knsbFzLyNEgFK4K",
+          "name": "Improved Rune Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/heater-emossed-spiral-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7vvhVl4TDJHtjpFK",
+          "uuid": "Compendium.daggerheart.weapons.Item.7vvhVl4TDJHtjpFK",
+          "name": "Advanced Grappler",
+          "type": "weapon",
+          "img": "icons/weapons/sickles/sickle-blue-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7zNMhpWFYULpOCCw",
+          "uuid": "Compendium.daggerheart.weapons.Item.7zNMhpWFYULpOCCw",
+          "name": "Improved Rope Dart",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-simple-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "813nH6tqOjBEvJMV",
+          "uuid": "Compendium.daggerheart.weapons.Item.813nH6tqOjBEvJMV",
+          "name": "Scimitar",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "833yZWe1aJGxUH0M",
+          "uuid": "Compendium.daggerheart.weapons.Item.833yZWe1aJGxUH0M",
+          "name": "Improved Scimitar",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-guard-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8GWoISr6blBG04fg",
+          "uuid": "Compendium.daggerheart.weapons.Item.8GWoISr6blBG04fg",
+          "name": "Arcane Rifle",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8Lipw3RRKDgBVP0p",
+          "uuid": "Compendium.daggerheart.weapons.Item.8Lipw3RRKDgBVP0p",
+          "name": "Advanced Warhammer",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-double-engraved-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8Z5QrThfwkYPXNco",
+          "uuid": "Compendium.daggerheart.weapons.Item.8Z5QrThfwkYPXNco",
+          "name": "Widogast Pendant",
+          "type": "weapon",
+          "img": "icons/equipment/neck/amulet-geometric-blue-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8fI83sPiphLrFTEV",
+          "uuid": "Compendium.daggerheart.weapons.Item.8fI83sPiphLrFTEV",
+          "name": "Legendary Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/glove-spiked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9r1Ah2X49BoYjduH",
+          "uuid": "Compendium.daggerheart.weapons.Item.9r1Ah2X49BoYjduH",
+          "name": "Legendary Enchanted Chakram",
+          "type": "weapon",
+          "img": "icons/commodities/metal/fragments-steel-ring.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9xkB3MWXahrsVP4N",
+          "uuid": "Compendium.daggerheart.weapons.Item.9xkB3MWXahrsVP4N",
+          "name": "Advanced Longsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "A28WL9E2lJ3iLZHW",
+          "uuid": "Compendium.daggerheart.weapons.Item.A28WL9E2lJ3iLZHW",
+          "name": "Legendary Round Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/round-wooden-boss-steel-yellow-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "A3kISypsGh9MNndo",
+          "uuid": "Compendium.daggerheart.weapons.Item.A3kISypsGh9MNndo",
+          "name": "Fighting Cloak",
+          "type": "weapon",
+          "img": "icons/commodities/cloth/cloth-bolt-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "A7fiGMpCTZxecElO",
+          "uuid": "Compendium.daggerheart.weapons.Item.A7fiGMpCTZxecElO",
+          "name": "Vorpal Shard",
+          "type": "weapon",
+          "img": "icons/commodities/gems/gem-faceted-teardrop-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ADQ8kuCcRnHVWUcT",
+          "uuid": "Compendium.daggerheart.weapons.Item.ADQ8kuCcRnHVWUcT",
+          "name": "Eldritch Vambrace",
+          "type": "weapon",
+          "img": "icons/equipment/hand/tech-gauntlet-white-heavy.webp",
+          "sourceId": null
+        },
+        {
+          "id": "AOCUK2L4JgPD8FtY",
+          "uuid": "Compendium.daggerheart.weapons.Item.AOCUK2L4JgPD8FtY",
+          "name": "Improved Arcane Rifle",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "AXYN3a2sYXaNhtYX",
+          "uuid": "Compendium.daggerheart.weapons.Item.AXYN3a2sYXaNhtYX",
+          "name": "Legendary Fighting Cloak",
+          "type": "weapon",
+          "img": "icons/equipment/chest/coat-collared-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "AokqTusPzn0hghkE",
+          "uuid": "Compendium.daggerheart.weapons.Item.AokqTusPzn0hghkE",
+          "name": "Black Powder Revolver",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-pistol-brass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ApZzGZQWlDOWID7y",
+          "uuid": "Compendium.daggerheart.weapons.Item.ApZzGZQWlDOWID7y",
+          "name": "Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/knuckles-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BEmAR60PM3ZaiNXa",
+          "uuid": "Compendium.daggerheart.weapons.Item.BEmAR60PM3ZaiNXa",
+          "name": "Improved Quarterstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-simple-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BakN97v4jTePcXiZ",
+          "uuid": "Compendium.daggerheart.weapons.Item.BakN97v4jTePcXiZ",
+          "name": "Legendary Rapier",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-jeweled-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BdLfy5i488VZgkjP",
+          "uuid": "Compendium.daggerheart.weapons.Item.BdLfy5i488VZgkjP",
+          "name": "Midas Scythe",
+          "type": "weapon",
+          "img": "icons/weapons/sickles/scythe-bone-green-fire.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BiyXKX2Mo1TQbKgk",
+          "uuid": "Compendium.daggerheart.weapons.Item.BiyXKX2Mo1TQbKgk",
+          "name": "Advanced Hallowed Axe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-battle-skull-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Bm5jlRxmF5Yn72DV",
+          "uuid": "Compendium.daggerheart.weapons.Item.Bm5jlRxmF5Yn72DV",
+          "name": "War Dart",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-double-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BtCm2RhWEfs00g38",
+          "uuid": "Compendium.daggerheart.weapons.Item.BtCm2RhWEfs00g38",
+          "name": "Firestaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-engraved-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BuMfupnCzHbziQ8o",
+          "uuid": "Compendium.daggerheart.weapons.Item.BuMfupnCzHbziQ8o",
+          "name": "Advanced Light-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/LightWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "C22glLmoQUNrKJ7W",
+          "uuid": "Compendium.daggerheart.weapons.Item.C22glLmoQUNrKJ7W",
+          "name": "Improved Brightsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-gold-holy.webp",
+          "sourceId": null
+        },
+        {
+          "id": "C5wSGglR8e0euQnY",
+          "uuid": "Compendium.daggerheart.weapons.Item.C5wSGglR8e0euQnY",
+          "name": "Devouring Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-double-skull-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "C8gQn7onAc9wsrCs",
+          "uuid": "Compendium.daggerheart.weapons.Item.C8gQn7onAc9wsrCs",
+          "name": "Advanced Halberd",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/halberd-crescent-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "C9aWpK1shVMWP4m5",
+          "uuid": "Compendium.daggerheart.weapons.Item.C9aWpK1shVMWP4m5",
+          "name": "Tower Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/oval-wooden-boss-bronze.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CWrbnethuILXrEpA",
+          "uuid": "Compendium.daggerheart.weapons.Item.CWrbnethuILXrEpA",
+          "name": "Cutlass",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-worn-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CmtWqw6DwoePnX7W",
+          "uuid": "Compendium.daggerheart.weapons.Item.CmtWqw6DwoePnX7W",
+          "name": "Whip",
+          "type": "weapon",
+          "img": "icons/weapons/misc/whip-red-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "D3Be5TzOLF4T08De",
+          "uuid": "Compendium.daggerheart.weapons.Item.D3Be5TzOLF4T08De",
+          "name": "Offhand Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/fist-knuckles-spiked-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "D3SbNvNJZAFuzfhg",
+          "uuid": "Compendium.daggerheart.weapons.Item.D3SbNvNJZAFuzfhg",
+          "name": "Legendary Shortstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-engraved-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DEKB75Vz2SW76Y4g",
+          "uuid": "Compendium.daggerheart.weapons.Item.DEKB75Vz2SW76Y4g",
+          "name": "Twisted Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-curved-guard-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DT1lcITh681IiDoC",
+          "uuid": "Compendium.daggerheart.weapons.Item.DT1lcITh681IiDoC",
+          "name": "Javelins",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/javelin-hooked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DWLkswhluXuMy3bB",
+          "uuid": "Compendium.daggerheart.weapons.Item.DWLkswhluXuMy3bB",
+          "name": "Legendary Hand Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-red-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DdJFKHZ6UqG1X2oR",
+          "uuid": "Compendium.daggerheart.weapons.Item.DdJFKHZ6UqG1X2oR",
+          "name": "Singing Sword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/shortsword-broad-engraved.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DlinEBGZfIlvreO3",
+          "uuid": "Compendium.daggerheart.weapons.Item.DlinEBGZfIlvreO3",
+          "name": "Improved Round Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/round-wooden-reinforced-boss-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DspK6DRi6AjobBqQ",
+          "uuid": "Compendium.daggerheart.weapons.Item.DspK6DRi6AjobBqQ",
+          "name": "Void Needle",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-simple-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DvImRaqS9aW4WWSn",
+          "uuid": "Compendium.daggerheart.weapons.Item.DvImRaqS9aW4WWSn",
+          "name": "Rope Dart",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-simple-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "E9QDh5o9eQ1Qx0kH",
+          "uuid": "Compendium.daggerheart.weapons.Item.E9QDh5o9eQ1Qx0kH",
+          "name": "Ricochet Axes",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-battle-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EG6mZhr3ib56r974",
+          "uuid": "Compendium.daggerheart.weapons.Item.EG6mZhr3ib56r974",
+          "name": "Runes of Ruination",
+          "type": "weapon",
+          "img": "icons/magic/symbols/mask-yellow-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ESRFti01kkNdi1Y4",
+          "uuid": "Compendium.daggerheart.weapons.Item.ESRFti01kkNdi1Y4",
+          "name": "Infinite Staff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EWYp0UcRA2g0hT8t",
+          "uuid": "Compendium.daggerheart.weapons.Item.EWYp0UcRA2g0hT8t",
+          "name": "Advanced Runelock Pistol",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-pistol-flintlock.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EaivcnHXjPcQr4OM",
+          "uuid": "Compendium.daggerheart.weapons.Item.EaivcnHXjPcQr4OM",
+          "name": "Tinker's Hammer",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-double-sledge-engraved.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EmFTp9wzT6MHSaNz",
+          "uuid": "Compendium.daggerheart.weapons.Item.EmFTp9wzT6MHSaNz",
+          "name": "Buckler",
+          "type": "weapon",
+          "img": "icons/equipment/shield/heater-wooden-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EsFsgaEUdJJRCklS",
+          "uuid": "Compendium.daggerheart.weapons.Item.EsFsgaEUdJJRCklS",
+          "name": "Legendary Scimitar",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-guard-wood.webp",
+          "sourceId": null
+        },
+        {
+          "id": "F9PETfCQGwczBPif",
+          "uuid": "Compendium.daggerheart.weapons.Item.F9PETfCQGwczBPif",
+          "name": "Improved Halberd",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/halberd-crescent-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "FPX4ouDrxXiQ5MDf",
+          "uuid": "Compendium.daggerheart.weapons.Item.FPX4ouDrxXiQ5MDf",
+          "name": "Improved Greatsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-crossguard-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "FcbvY1ydbNVMjKvk",
+          "uuid": "Compendium.daggerheart.weapons.Item.FcbvY1ydbNVMjKvk",
+          "name": "Advanced Battleaxe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-double-engraved-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Fk69R40svV0kanZD",
+          "uuid": "Compendium.daggerheart.weapons.Item.Fk69R40svV0kanZD",
+          "name": "Curved Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-curved-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "FtsQGwOg3r8uUCST",
+          "uuid": "Compendium.daggerheart.weapons.Item.FtsQGwOg3r8uUCST",
+          "name": "Returning Axe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/shortaxe-worn-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "G7rH31KQ5eEZXcv0",
+          "uuid": "Compendium.daggerheart.weapons.Item.G7rH31KQ5eEZXcv0",
+          "name": "Ego Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-runed-glowing.webp",
+          "sourceId": null
+        },
+        {
+          "id": "GZh345N8fmuS4Jeh",
+          "uuid": "Compendium.daggerheart.weapons.Item.GZh345N8fmuS4Jeh",
+          "name": "Scepter",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-blue-jewel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Gcv63k64TPyOHADo",
+          "uuid": "Compendium.daggerheart.weapons.Item.Gcv63k64TPyOHADo",
+          "name": "Legendary Katana",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-katana-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Gi26Zk9VqlAAgx3E",
+          "uuid": "Compendium.daggerheart.weapons.Item.Gi26Zk9VqlAAgx3E",
+          "name": "Meridian Cutlass",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-gold-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "GmTg3Fdne1UPNs8t",
+          "uuid": "Compendium.daggerheart.weapons.Item.GmTg3Fdne1UPNs8t",
+          "name": "Legendary Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-jeweled-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "GnllSqInVOWFX3qW",
+          "uuid": "Compendium.daggerheart.weapons.Item.GnllSqInVOWFX3qW",
+          "name": "Shadowblade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flanged-lightning.webp",
+          "sourceId": null
+        },
+        {
+          "id": "HBoBo6aPc32Sp23n",
+          "uuid": "Compendium.daggerheart.weapons.Item.HBoBo6aPc32Sp23n",
+          "name": "Möbius Orb",
+          "type": "weapon",
+          "img": "icons/commodities/treasure/gem-framed-spiral-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "HWGeZQxnutfiYUF4",
+          "uuid": "Compendium.daggerheart.weapons.Item.HWGeZQxnutfiYUF4",
+          "name": "Improved Katana",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-katana.webp",
+          "sourceId": null
+        },
+        {
+          "id": "I1nDGpulg29GpWOW",
+          "uuid": "Compendium.daggerheart.weapons.Item.I1nDGpulg29GpWOW",
+          "name": "Thistlebow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/longbow-gold-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IGSI6Ez0NhbC6NsL",
+          "uuid": "Compendium.daggerheart.weapons.Item.IGSI6Ez0NhbC6NsL",
+          "name": "Improved Throwing Knives",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/knife-engraved-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IZ4CWNxfuM46JeCN",
+          "uuid": "Compendium.daggerheart.weapons.Item.IZ4CWNxfuM46JeCN",
+          "name": "Legendary Scepter",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-orb-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "InQoh8mZPnwarQkX",
+          "uuid": "Compendium.daggerheart.weapons.Item.InQoh8mZPnwarQkX",
+          "name": "Advanced Glowing Rings",
+          "type": "weapon",
+          "img": "icons/equipment/finger/ring-band-engraved-spirals-wood.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IneW8aOnetrUsM8r",
+          "uuid": "Compendium.daggerheart.weapons.Item.IneW8aOnetrUsM8r",
+          "name": "Soldier's Pike",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/spear-hooked-spike.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IoMVDz92WVvfGGdc",
+          "uuid": "Compendium.daggerheart.weapons.Item.IoMVDz92WVvfGGdc",
+          "name": "Bloodstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-orb-steel-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IrtUj0UntBMNn49G",
+          "uuid": "Compendium.daggerheart.weapons.Item.IrtUj0UntBMNn49G",
+          "name": "Legendary Grappler",
+          "type": "weapon",
+          "img": "icons/weapons/sickles/sickle-hooked-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IsMet0lIMWoSfqYd",
+          "uuid": "Compendium.daggerheart.weapons.Item.IsMet0lIMWoSfqYd",
+          "name": "Advanced Focus Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-white-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ItWisJFNGMNWeaCV",
+          "uuid": "Compendium.daggerheart.weapons.Item.ItWisJFNGMNWeaCV",
+          "name": "Wand",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-gem-violet.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Iv8BZM1R24QMT72M",
+          "uuid": "Compendium.daggerheart.weapons.Item.Iv8BZM1R24QMT72M",
+          "name": "Longsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JMVPiFhDLwIYZCbI",
+          "uuid": "Compendium.daggerheart.weapons.Item.JMVPiFhDLwIYZCbI",
+          "name": "Enchanted Lute",
+          "type": "weapon",
+          "img": "icons/tools/instruments/lute-gold-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JdWcn9W1edhAEInL",
+          "uuid": "Compendium.daggerheart.weapons.Item.JdWcn9W1edhAEInL",
+          "name": "Elder Bow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/longbow-recurve-skull-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JpSlJvDR0X8VFDns",
+          "uuid": "Compendium.daggerheart.weapons.Item.JpSlJvDR0X8VFDns",
+          "name": "Advanced Shortbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/shortbow-recurve-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "KxFne76d7cak15dO",
+          "uuid": "Compendium.daggerheart.weapons.Item.KxFne76d7cak15dO",
+          "name": "Advanced Rapier",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-jeweled-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "L5KeCtrs768PmYWW",
+          "uuid": "Compendium.daggerheart.weapons.Item.L5KeCtrs768PmYWW",
+          "name": "Improved Heavy-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/HeavyWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "LCuTrYXi4lhg6LqW",
+          "uuid": "Compendium.daggerheart.weapons.Item.LCuTrYXi4lhg6LqW",
+          "name": "Improved Greatstaff",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-carved-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "LDOzJ72iAWShxnf3",
+          "uuid": "Compendium.daggerheart.weapons.Item.LDOzJ72iAWShxnf3",
+          "name": "Advanced Twisted Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-crooked-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "LFPH8nD2f4Blv3AM",
+          "uuid": "Compendium.daggerheart.weapons.Item.LFPH8nD2f4Blv3AM",
+          "name": "Improved Rapier",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-jeweled-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "LRCNRIWaS7Akio1t",
+          "uuid": "Compendium.daggerheart.weapons.Item.LRCNRIWaS7Akio1t",
+          "name": "Legendary Whipsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flamberge.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Lquj9WY3GLEd2gUE",
+          "uuid": "Compendium.daggerheart.weapons.Item.Lquj9WY3GLEd2gUE",
+          "name": "Improved Hatchet",
+          "type": "weapon",
+          "img": "icons/weapons/axes/shortaxe-hammer-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Lsvocst8aGqkBj7g",
+          "uuid": "Compendium.daggerheart.weapons.Item.Lsvocst8aGqkBj7g",
+          "name": "Advanced Hand Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-slotted.webp",
+          "sourceId": null
+        },
+        {
+          "id": "M5CywMAyPKGgebsJ",
+          "uuid": "Compendium.daggerheart.weapons.Item.M5CywMAyPKGgebsJ",
+          "name": "Advanced Longbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/longbow-leather-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MAC6YWTo4lzSotQc",
+          "uuid": "Compendium.daggerheart.weapons.Item.MAC6YWTo4lzSotQc",
+          "name": "Advanced Greatsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-crossguard-engraved-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MHFwmKDp5H1iaYEY",
+          "uuid": "Compendium.daggerheart.weapons.Item.MHFwmKDp5H1iaYEY",
+          "name": "Improved Fighting Cloak",
+          "type": "weapon",
+          "img": "icons/commodities/cloth/cloth-worn-leaf-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MTG07z1KX5QTxcod",
+          "uuid": "Compendium.daggerheart.weapons.Item.MTG07z1KX5QTxcod",
+          "name": "Collapsible Baton",
+          "type": "weapon",
+          "img": "icons/weapons/maces/mace-round-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MXBpbqQsZFln4rZk",
+          "uuid": "Compendium.daggerheart.weapons.Item.MXBpbqQsZFln4rZk",
+          "name": "Greatbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/bow-ornamental-silver-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MaJIROht7A9LxIZx",
+          "uuid": "Compendium.daggerheart.weapons.Item.MaJIROht7A9LxIZx",
+          "name": "Legendary Tower Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/kite-wooden-sigil-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Mn8ja5Oi1sXvvPSk",
+          "uuid": "Compendium.daggerheart.weapons.Item.Mn8ja5Oi1sXvvPSk",
+          "name": "Improved Shortstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MyGz8nd5sieRQ7zl",
+          "uuid": "Compendium.daggerheart.weapons.Item.MyGz8nd5sieRQ7zl",
+          "name": "Hand Cannon",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "N5amhkxR1xn3B7r2",
+          "uuid": "Compendium.daggerheart.weapons.Item.N5amhkxR1xn3B7r2",
+          "name": "Improved Glowing Rings",
+          "type": "weapon",
+          "img": "icons/equipment/finger/ring-band-engraved-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "N9P695V5KKlJbAY5",
+          "uuid": "Compendium.daggerheart.weapons.Item.N9P695V5KKlJbAY5",
+          "name": "Improved Arcane-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/ArcaneWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "NacNonjbzyoVMNhI",
+          "uuid": "Compendium.daggerheart.weapons.Item.NacNonjbzyoVMNhI",
+          "name": "Improved Longbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/longbow-recurve-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "O1w8KPYH85ZS8X64",
+          "uuid": "Compendium.daggerheart.weapons.Item.O1w8KPYH85ZS8X64",
+          "name": "Spiked Bow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/bow-recurve-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OSfGNf9RQMbwf0Wm",
+          "uuid": "Compendium.daggerheart.weapons.Item.OSfGNf9RQMbwf0Wm",
+          "name": "Legendary Hatchet",
+          "type": "weapon",
+          "img": "icons/weapons/axes/shortaxe-worn-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OcKeLJxvmdT81VBc",
+          "uuid": "Compendium.daggerheart.weapons.Item.OcKeLJxvmdT81VBc",
+          "name": "Improved Broadsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OfOzQbs4hg6QbfTG",
+          "uuid": "Compendium.daggerheart.weapons.Item.OfOzQbs4hg6QbfTG",
+          "name": "Advanced Tower Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/kite-wooden-thistle-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OxsEmffWriiQmqJK",
+          "uuid": "Compendium.daggerheart.weapons.Item.OxsEmffWriiQmqJK",
+          "name": "Sledge Axe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-battle-heavy-jagged.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OymmLywAhtBbjYjP",
+          "uuid": "Compendium.daggerheart.weapons.Item.OymmLywAhtBbjYjP",
+          "name": "Segmented Staff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-mended.webp",
+          "sourceId": null
+        },
+        {
+          "id": "P6Mw0SNcbLzsUGsl",
+          "uuid": "Compendium.daggerheart.weapons.Item.P6Mw0SNcbLzsUGsl",
+          "name": "Razor Wire",
+          "type": "weapon",
+          "img": "icons/commodities/metal/chain-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PC5EyEIq7NWBV0n5",
+          "uuid": "Compendium.daggerheart.weapons.Item.PC5EyEIq7NWBV0n5",
+          "name": "Arcane Gauntlets",
+          "type": "weapon",
+          "img": "icons/equipment/hand/glove-tooled-leather-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PLcIKxRe6Cz4nfpZ",
+          "uuid": "Compendium.daggerheart.weapons.Item.PLcIKxRe6Cz4nfpZ",
+          "name": "Legendary Brightsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-gold-holy.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PQACczSghZIVTdgZ",
+          "uuid": "Compendium.daggerheart.weapons.Item.PQACczSghZIVTdgZ",
+          "name": "Advanced Hand Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-hook-white-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PReWrfuPjoNQuieo",
+          "uuid": "Compendium.daggerheart.weapons.Item.PReWrfuPjoNQuieo",
+          "name": "Legendary Glowing Rings",
+          "type": "weapon",
+          "img": "icons/equipment/finger/ring-bone-teeth.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PwDFeMAKBnWYzzIB",
+          "uuid": "Compendium.daggerheart.weapons.Item.PwDFeMAKBnWYzzIB",
+          "name": "Advanced Katana",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-katana-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Px3Rh3kIvAqyISxJ",
+          "uuid": "Compendium.daggerheart.weapons.Item.Px3Rh3kIvAqyISxJ",
+          "name": "Legendary Small Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-crooked-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QA1yUoB3UCO3ZWhQ",
+          "uuid": "Compendium.daggerheart.weapons.Item.QA1yUoB3UCO3ZWhQ",
+          "name": "Advanced Hatchet",
+          "type": "weapon",
+          "img": "icons/weapons/axes/shortaxe-engraved-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QEvgVoz9xKBSKsGi",
+          "uuid": "Compendium.daggerheart.weapons.Item.QEvgVoz9xKBSKsGi",
+          "name": "Braveshield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/kite-wooden-dragon-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QZrWAkprA2tL2MOI",
+          "uuid": "Compendium.daggerheart.weapons.Item.QZrWAkprA2tL2MOI",
+          "name": "Bravesword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-crossguard-embossed-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QagT47tp01Smsmbx",
+          "uuid": "Compendium.daggerheart.weapons.Item.QagT47tp01Smsmbx",
+          "name": "Hatchet",
+          "type": "weapon",
+          "img": "icons/weapons/axes/shortaxe-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QyBZ5NxM8F9nCL9s",
+          "uuid": "Compendium.daggerheart.weapons.Item.QyBZ5NxM8F9nCL9s",
+          "name": "Improved Longsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-red-jewel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "RAIaoMi6iO1PKIlK",
+          "uuid": "Compendium.daggerheart.weapons.Item.RAIaoMi6iO1PKIlK",
+          "name": "Hand Sling",
+          "type": "weapon",
+          "img": "icons/weapons/slings/slingshot-wood.webp",
+          "sourceId": null
+        },
+        {
+          "id": "RPBABgpMFJK9YNQh",
+          "uuid": "Compendium.daggerheart.weapons.Item.RPBABgpMFJK9YNQh",
+          "name": "Advanced Brightsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-gold-holy.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Rpyz0jbFJ1SwqfyD",
+          "uuid": "Compendium.daggerheart.weapons.Item.Rpyz0jbFJ1SwqfyD",
+          "name": "Legendary Cutlass",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-guard.webp",
+          "sourceId": null
+        },
+        {
+          "id": "RsDsy7tIhrhaAQQc",
+          "uuid": "Compendium.daggerheart.weapons.Item.RsDsy7tIhrhaAQQc",
+          "name": "Legendary Mace",
+          "type": "weapon",
+          "img": "icons/weapons/maces/mace-spiked-steel-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "S0O1eZWhSWCeBD57",
+          "uuid": "Compendium.daggerheart.weapons.Item.S0O1eZWhSWCeBD57",
+          "name": "Blackblood Tendril",
+          "type": "weapon",
+          "img": "icons/commodities/biological/tentacle-thorned-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "S6nB0CNlzdU05o5U",
+          "uuid": "Compendium.daggerheart.weapons.Item.S6nB0CNlzdU05o5U",
+          "name": "Legendary Heavy-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/HeavyWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SFqganS8Du4aEKjQ",
+          "uuid": "Compendium.daggerheart.weapons.Item.SFqganS8Du4aEKjQ",
+          "name": "Knuckle Claws",
+          "type": "weapon",
+          "img": "icons/skills/melee/blade-tips-triple-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SKNwkW23eVQjN4Zy",
+          "uuid": "Compendium.daggerheart.weapons.Item.SKNwkW23eVQjN4Zy",
+          "name": "Improved Returning Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/shortsword-hooked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SLFrK0WmldPo0shz",
+          "uuid": "Compendium.daggerheart.weapons.Item.SLFrK0WmldPo0shz",
+          "name": "Blunderbuss",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-blunderbuss-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ScjTkb9qrndhlk9S",
+          "uuid": "Compendium.daggerheart.weapons.Item.ScjTkb9qrndhlk9S",
+          "name": "Improved Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-straight-stone.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SxcblanBvqaest3A",
+          "uuid": "Compendium.daggerheart.weapons.Item.SxcblanBvqaest3A",
+          "name": "Primer Shard",
+          "type": "weapon",
+          "img": "icons/commodities/treasure/token-gold-gem-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "T5exRCqOXhrjSYnI",
+          "uuid": "Compendium.daggerheart.weapons.Item.T5exRCqOXhrjSYnI",
+          "name": "Advanced Shortstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-hook.webp",
+          "sourceId": null
+        },
+        {
+          "id": "TF85tKJetUjLwh54",
+          "uuid": "Compendium.daggerheart.weapons.Item.TF85tKJetUjLwh54",
+          "name": "Spear",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/spear-flared-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "TMrUzVC3KvcHmdt8",
+          "uuid": "Compendium.daggerheart.weapons.Item.TMrUzVC3KvcHmdt8",
+          "name": "Ilmari's Rifle",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "TREpAv9pWVrZbwMc",
+          "uuid": "Compendium.daggerheart.weapons.Item.TREpAv9pWVrZbwMc",
+          "name": "Gunblade",
+          "type": "weapon",
+          "img": "icons/weapons/guns/rifle-fluted.webp",
+          "sourceId": null
+        },
+        {
+          "id": "TVPCWnSELOVBv6G1",
+          "uuid": "Compendium.daggerheart.weapons.Item.TVPCWnSELOVBv6G1",
+          "name": "Sword of Light & Flame",
+          "type": "weapon",
+          "img": "icons/skills/melee/strike-blade-hooked-orange-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "U6bYGiG1NqvBbMzE",
+          "uuid": "Compendium.daggerheart.weapons.Item.U6bYGiG1NqvBbMzE",
+          "name": "Starmetal Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-flanged.webp",
+          "sourceId": null
+        },
+        {
+          "id": "U8gfyvxoHm024inM",
+          "uuid": "Compendium.daggerheart.weapons.Item.U8gfyvxoHm024inM",
+          "name": "Knuckle Blades",
+          "type": "weapon",
+          "img": "icons/equipment/hand/gauntlet-tooled-steel-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "UEZa5P7YyHelPx8r",
+          "uuid": "Compendium.daggerheart.weapons.Item.UEZa5P7YyHelPx8r",
+          "name": "Cane Sword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-cane.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Utt1GpoH1fhaTOtN",
+          "uuid": "Compendium.daggerheart.weapons.Item.Utt1GpoH1fhaTOtN",
+          "name": "Legendary Longbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/bow-ornamental-carved-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Vayg7CnRTFBrunjM",
+          "uuid": "Compendium.daggerheart.weapons.Item.Vayg7CnRTFBrunjM",
+          "name": "Hallowed Axe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-broad-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "VpvBLIW3ilRr5cSA",
+          "uuid": "Compendium.daggerheart.weapons.Item.VpvBLIW3ilRr5cSA",
+          "name": "Soul Chain",
+          "type": "weapon",
+          "img": "icons/magic/unholy/hand-claw-fire-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "VwcOgqnzjf9LBj2S",
+          "uuid": "Compendium.daggerheart.weapons.Item.VwcOgqnzjf9LBj2S",
+          "name": "Gilded Falchion",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-worn-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "VzzjS5BjASNYKaqc",
+          "uuid": "Compendium.daggerheart.weapons.Item.VzzjS5BjASNYKaqc",
+          "name": "Advanced Shadowblade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flanged-lightning.webp",
+          "sourceId": null
+        },
+        {
+          "id": "W9ymfEDck2icfvla",
+          "uuid": "Compendium.daggerheart.weapons.Item.W9ymfEDck2icfvla",
+          "name": "Legendary Warhammer",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-double-engraved-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "WQYrz7LfARoiV7hl",
+          "uuid": "Compendium.daggerheart.weapons.Item.WQYrz7LfARoiV7hl",
+          "name": "Demon's Edge",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-serrated.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Wcdbf6yS3LEt7nsg",
+          "uuid": "Compendium.daggerheart.weapons.Item.Wcdbf6yS3LEt7nsg",
+          "name": "Legendary Whip",
+          "type": "weapon",
+          "img": "icons/weapons/misc/whip-red-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Wiw0SSLwwYxCVNpq",
+          "uuid": "Compendium.daggerheart.weapons.Item.Wiw0SSLwwYxCVNpq",
+          "name": "Focus Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-rough-white-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "WreMYiH5uhVDaoVw",
+          "uuid": "Compendium.daggerheart.weapons.Item.WreMYiH5uhVDaoVw",
+          "name": "Advanced Mace",
+          "type": "weapon",
+          "img": "icons/weapons/maces/mace-spiked-steel-wood.webp",
+          "sourceId": null
+        },
+        {
+          "id": "WtQAGz0TUgz8Xg70",
+          "uuid": "Compendium.daggerheart.weapons.Item.WtQAGz0TUgz8Xg70",
+          "name": "Advanced Broadsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-embossed-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "X1nSSQb64b8inJg3",
+          "uuid": "Compendium.daggerheart.weapons.Item.X1nSSQb64b8inJg3",
+          "name": "Improved Runelock Pistol",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-pistol-flintlock.webp",
+          "sourceId": null
+        },
+        {
+          "id": "X5x3sC7v2f3L9sjL",
+          "uuid": "Compendium.daggerheart.weapons.Item.X5x3sC7v2f3L9sjL",
+          "name": "Advanced Dualstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XEDRkuw3BhMoVBn9",
+          "uuid": "Compendium.daggerheart.weapons.Item.XEDRkuw3BhMoVBn9",
+          "name": "Improved Hand Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-simple-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XKBmBUEoGLdLcuqQ",
+          "uuid": "Compendium.daggerheart.weapons.Item.XKBmBUEoGLdLcuqQ",
+          "name": "Mage Orb",
+          "type": "weapon",
+          "img": "icons/commodities/gems/pearl-purple-smooth.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XQR4yGeYBtdu5sQz",
+          "uuid": "Compendium.daggerheart.weapons.Item.XQR4yGeYBtdu5sQz",
+          "name": "War Pick",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-war-spiked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XRChepscgr75Uug7",
+          "uuid": "Compendium.daggerheart.weapons.Item.XRChepscgr75Uug7",
+          "name": "Arcane-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/ArcaneWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XRlUeXn4nAqS8Dzp",
+          "uuid": "Compendium.daggerheart.weapons.Item.XRlUeXn4nAqS8Dzp",
+          "name": "Bladed Star",
+          "type": "weapon",
+          "img": "icons/weapons/thrown/shuriken-triple-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XW2FKsZKPEev9QLw",
+          "uuid": "Compendium.daggerheart.weapons.Item.XW2FKsZKPEev9QLw",
+          "name": "Echo Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-broad-serrated-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XjPQjhRCH08VUIbr",
+          "uuid": "Compendium.daggerheart.weapons.Item.XjPQjhRCH08VUIbr",
+          "name": "Heavy-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/HeavyWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Xt8tVSn5Fu6ly6LF",
+          "uuid": "Compendium.daggerheart.weapons.Item.Xt8tVSn5Fu6ly6LF",
+          "name": "Legendary Light-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/LightWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "YcS1rHgfnSlla8Xf",
+          "uuid": "Compendium.daggerheart.weapons.Item.YcS1rHgfnSlla8Xf",
+          "name": "Axe of Fortunis",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-double-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "YfVs6Se903az4Yet",
+          "uuid": "Compendium.daggerheart.weapons.Item.YfVs6Se903az4Yet",
+          "name": "Longbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/longbow-recurve-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Yk8pTEmyLLi4095S",
+          "uuid": "Compendium.daggerheart.weapons.Item.Yk8pTEmyLLi4095S",
+          "name": "Greatstaff",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-gem-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "YmTXwjVpXrnKTVso",
+          "uuid": "Compendium.daggerheart.weapons.Item.YmTXwjVpXrnKTVso",
+          "name": "Advanced Rune Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/heater-stone-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ZGMykIDd2vqwACMF",
+          "uuid": "Compendium.daggerheart.weapons.Item.ZGMykIDd2vqwACMF",
+          "name": "Whipsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flamberge.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ZJsetdHKV77ygtCE",
+          "uuid": "Compendium.daggerheart.weapons.Item.ZJsetdHKV77ygtCE",
+          "name": "Improved Light-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/LightWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ZXh1GQahBiODfSTC",
+          "uuid": "Compendium.daggerheart.weapons.Item.ZXh1GQahBiODfSTC",
+          "name": "Warhammer",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-double-engraved.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Zg6IutksQVOqAg8K",
+          "uuid": "Compendium.daggerheart.weapons.Item.Zg6IutksQVOqAg8K",
+          "name": "Impact Gauntlet",
+          "type": "weapon",
+          "img": "icons/equipment/hand/gauntlet-armored-red-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ZrRGNjGCgZTTfgDG",
+          "uuid": "Compendium.daggerheart.weapons.Item.ZrRGNjGCgZTTfgDG",
+          "name": "Wand of Essek",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-gem-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "aXUIWaTDOYbp7aMa",
+          "uuid": "Compendium.daggerheart.weapons.Item.aXUIWaTDOYbp7aMa",
+          "name": "Legendary Runelock Pistol",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-pistol-flintlock.webp",
+          "sourceId": null
+        },
+        {
+          "id": "acPGwIaUhx3R0mTq",
+          "uuid": "Compendium.daggerheart.weapons.Item.acPGwIaUhx3R0mTq",
+          "name": "Scepter of Elias",
+          "type": "weapon",
+          "img": "icons/weapons/maces/mace-skull-ram.webp",
+          "sourceId": null
+        },
+        {
+          "id": "av9MsZ7cdQFnVPy3",
+          "uuid": "Compendium.daggerheart.weapons.Item.av9MsZ7cdQFnVPy3",
+          "name": "Improved Whipsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flamberge.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ayhbVOYel64OfAf0",
+          "uuid": "Compendium.daggerheart.weapons.Item.ayhbVOYel64OfAf0",
+          "name": "Legendary Twisted Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-crooked-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bMgJ1MBDbcr5H6nZ",
+          "uuid": "Compendium.daggerheart.weapons.Item.bMgJ1MBDbcr5H6nZ",
+          "name": "Severed Dragon Claw",
+          "type": "weapon",
+          "img": "icons/creatures/claws/claw-scaled-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bPqZJxtIbSpp6QV4",
+          "uuid": "Compendium.daggerheart.weapons.Item.bPqZJxtIbSpp6QV4",
+          "name": "Chained Scythe",
+          "type": "weapon",
+          "img": "icons/weapons/sickles/scythe-wrapped-worn-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bW3xw5S9DbaLCN3E",
+          "uuid": "Compendium.daggerheart.weapons.Item.bW3xw5S9DbaLCN3E",
+          "name": "Powered Gauntlet",
+          "type": "weapon",
+          "img": "icons/equipment/hand/gauntlet-armored-leather-teal-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bsb5aoDGXyAAExkB",
+          "uuid": "Compendium.daggerheart.weapons.Item.bsb5aoDGXyAAExkB",
+          "name": "Advanced Rope Dart",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-simple-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bw9WO9lxkM9bWZxQ",
+          "uuid": "Compendium.daggerheart.weapons.Item.bw9WO9lxkM9bWZxQ",
+          "name": "Advanced Cutlass",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-guard-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bxt3NsbMqTSdI5ab",
+          "uuid": "Compendium.daggerheart.weapons.Item.bxt3NsbMqTSdI5ab",
+          "name": "Improved Tower Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/pavise-wooden-seahorse-blue-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bzXbKmU27hs1eVkB",
+          "uuid": "Compendium.daggerheart.weapons.Item.bzXbKmU27hs1eVkB",
+          "name": "Storm God's Greataxe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-double-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cKQCDyM2UopDL9zF",
+          "uuid": "Compendium.daggerheart.weapons.Item.cKQCDyM2UopDL9zF",
+          "name": "Mace",
+          "type": "weapon",
+          "img": "icons/weapons/maces/mace-studded-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cVbepsU3c9Ql3Y4y",
+          "uuid": "Compendium.daggerheart.weapons.Item.cVbepsU3c9Ql3Y4y",
+          "name": "Blitz Hammer",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-drilling-spiked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cfgMziqiiOdkTTJe",
+          "uuid": "Compendium.daggerheart.weapons.Item.cfgMziqiiOdkTTJe",
+          "name": "Gravity Arbalest",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/handcrossbow-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cjGZpXCoshEqi1FI",
+          "uuid": "Compendium.daggerheart.weapons.Item.cjGZpXCoshEqi1FI",
+          "name": "Shortsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/shortsword-guard-brass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ctTgFfMbM3YtmsYU",
+          "uuid": "Compendium.daggerheart.weapons.Item.ctTgFfMbM3YtmsYU",
+          "name": "Gilded Bow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/shortbow-recurve-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cw7HG1Z7hp7OOLD0",
+          "uuid": "Compendium.daggerheart.weapons.Item.cw7HG1Z7hp7OOLD0",
+          "name": "Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-loaded-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "dEumq3BIZBk5xYTk",
+          "uuid": "Compendium.daggerheart.weapons.Item.dEumq3BIZBk5xYTk",
+          "name": "Legendary Shortsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/shortsword-broad-engraved.webp",
+          "sourceId": null
+        },
+        {
+          "id": "dSIYc8RYX4el8IXg",
+          "uuid": "Compendium.daggerheart.weapons.Item.dSIYc8RYX4el8IXg",
+          "name": "Legendary Throwing Knives",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-twin-curved-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ddRjXnp2vbohu7rJ",
+          "uuid": "Compendium.daggerheart.weapons.Item.ddRjXnp2vbohu7rJ",
+          "name": "Improved Cutlass",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-guard-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eCEf5ysz8Eq0ma9u",
+          "uuid": "Compendium.daggerheart.weapons.Item.eCEf5ysz8Eq0ma9u",
+          "name": "Casting Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eCVgwpuPOwG5jV0H",
+          "uuid": "Compendium.daggerheart.weapons.Item.eCVgwpuPOwG5jV0H",
+          "name": "Cyrurgien's Scalpel",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-straight-thin-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eRfEi6a3Pb2dDrLP",
+          "uuid": "Compendium.daggerheart.weapons.Item.eRfEi6a3Pb2dDrLP",
+          "name": "Improved Focus Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-red-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eT2Qwb0RdrLX2hH1",
+          "uuid": "Compendium.daggerheart.weapons.Item.eT2Qwb0RdrLX2hH1",
+          "name": "Advanced Heavy-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/HeavyWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "f7hhHlZ5nL3AhYEM",
+          "uuid": "Compendium.daggerheart.weapons.Item.f7hhHlZ5nL3AhYEM",
+          "name": "Improved Dualstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "f9zRMK2bHuJ90Gqz",
+          "uuid": "Compendium.daggerheart.weapons.Item.f9zRMK2bHuJ90Gqz",
+          "name": "Displacement Razor",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-guard-split-eyes.webp",
+          "sourceId": null
+        },
+        {
+          "id": "fJHKMxZokVP34MCi",
+          "uuid": "Compendium.daggerheart.weapons.Item.fJHKMxZokVP34MCi",
+          "name": "Extended Polearm",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/pike-flared-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "fbDYUja3ll9vCtrB",
+          "uuid": "Compendium.daggerheart.weapons.Item.fbDYUja3ll9vCtrB",
+          "name": "Battleaxe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-double-jagged-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ftTp8VlsBQ1r4LFD",
+          "uuid": "Compendium.daggerheart.weapons.Item.ftTp8VlsBQ1r4LFD",
+          "name": "Improved Whip",
+          "type": "weapon",
+          "img": "icons/weapons/misc/whip-red-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "g0N4M8oEQX0vs7tU",
+          "uuid": "Compendium.daggerheart.weapons.Item.g0N4M8oEQX0vs7tU",
+          "name": "Legendary Casting Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-glowing-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "g0dQGIQONpSoYtOa",
+          "uuid": "Compendium.daggerheart.weapons.Item.g0dQGIQONpSoYtOa",
+          "name": "Runelock Pistol",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-pistol-flintlock.webp",
+          "sourceId": null
+        },
+        {
+          "id": "gA2tiET9VHGhwMoO",
+          "uuid": "Compendium.daggerheart.weapons.Item.gA2tiET9VHGhwMoO",
+          "name": "Legendary Arcane-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/ArcaneWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "gD15rWRlYoLN91PF",
+          "uuid": "Compendium.daggerheart.weapons.Item.gD15rWRlYoLN91PF",
+          "name": "Brightsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-gold-holy.webp",
+          "sourceId": null
+        },
+        {
+          "id": "gv82jmiMn6bmHmci",
+          "uuid": "Compendium.daggerheart.weapons.Item.gv82jmiMn6bmHmci",
+          "name": "Clockwork Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-golden-bolt.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hXR56fTKwZ6s1obs",
+          "uuid": "Compendium.daggerheart.weapons.Item.hXR56fTKwZ6s1obs",
+          "name": "Advanced Arcane Gauntlets",
+          "type": "weapon",
+          "img": "icons/equipment/hand/glove-tooled-leather-red-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hiEOGF2reabGLUoi",
+          "uuid": "Compendium.daggerheart.weapons.Item.hiEOGF2reabGLUoi",
+          "name": "Advanced Round Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/round-wooden-boss-gold-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hpKzXkr33yxA8bKh",
+          "uuid": "Compendium.daggerheart.weapons.Item.hpKzXkr33yxA8bKh",
+          "name": "Legendary Focus Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-horned-white-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "i5urj6MQORFev4qK",
+          "uuid": "Compendium.daggerheart.weapons.Item.i5urj6MQORFev4qK",
+          "name": "Improved Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/fist-knuckles-spiked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "i8CqVTzqoRoCewNe",
+          "uuid": "Compendium.daggerheart.weapons.Item.i8CqVTzqoRoCewNe",
+          "name": "Retractable Saber",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-worn-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "iEzPscUc18GuFoB6",
+          "uuid": "Compendium.daggerheart.weapons.Item.iEzPscUc18GuFoB6",
+          "name": "Grappler",
+          "type": "weapon",
+          "img": "icons/weapons/sickles/sickle-hooked-wood.webp",
+          "sourceId": null
+        },
+        {
+          "id": "iStO0BbeMTTR0rQi",
+          "uuid": "Compendium.daggerheart.weapons.Item.iStO0BbeMTTR0rQi",
+          "name": "Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-straight-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "iaGnlUkShBgdeMo0",
+          "uuid": "Compendium.daggerheart.weapons.Item.iaGnlUkShBgdeMo0",
+          "name": "Light-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/LightWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ijWppQzSOqVCb3rE",
+          "uuid": "Compendium.daggerheart.weapons.Item.ijWppQzSOqVCb3rE",
+          "name": "Labrys Axe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-battle-jagged.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ijodu5yNBoMxpkHV",
+          "uuid": "Compendium.daggerheart.weapons.Item.ijodu5yNBoMxpkHV",
+          "name": "Aantari Bow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/shortbow-leaves-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "iq6IwvqchkJO0IOH",
+          "uuid": "Compendium.daggerheart.weapons.Item.iq6IwvqchkJO0IOH",
+          "name": "Legendary Offhand Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/fist-knuckles-brass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "j5Pt1thLfcvopBij",
+          "uuid": "Compendium.daggerheart.weapons.Item.j5Pt1thLfcvopBij",
+          "name": "Improved Spear",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/spear-flared-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "j7kp36jaetfn5jb3",
+          "uuid": "Compendium.daggerheart.weapons.Item.j7kp36jaetfn5jb3",
+          "name": "Legendary Shortbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/shortbow-recurve-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "j8cdNeIUYxxzFVji",
+          "uuid": "Compendium.daggerheart.weapons.Item.j8cdNeIUYxxzFVji",
+          "name": "Dualstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-simple-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jDtvEabkHY1GFgfc",
+          "uuid": "Compendium.daggerheart.weapons.Item.jDtvEabkHY1GFgfc",
+          "name": "Legendary Greatstaff",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-carved-fire.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jGykNGQiKm63tCiE",
+          "uuid": "Compendium.daggerheart.weapons.Item.jGykNGQiKm63tCiE",
+          "name": "Magus Revolver",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-pistol-flintlock-metal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jMEukC3VpNDz5AOD",
+          "uuid": "Compendium.daggerheart.weapons.Item.jMEukC3VpNDz5AOD",
+          "name": "Improved Hand Runes",
+          "type": "weapon",
+          "img": "icons/magic/symbols/rune-sigil-rough-white-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jRNJ6Td4HD4tnzVc",
+          "uuid": "Compendium.daggerheart.weapons.Item.jRNJ6Td4HD4tnzVc",
+          "name": "Lance",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/spear-flared-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jU9jWIardjtdAQcs",
+          "uuid": "Compendium.daggerheart.weapons.Item.jU9jWIardjtdAQcs",
+          "name": "Advanced Wand",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-gem-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jcgagJ7GGljD8YbP",
+          "uuid": "Compendium.daggerheart.weapons.Item.jcgagJ7GGljD8YbP",
+          "name": "Advanced Whipsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flamberge.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jlLtgK468rO5IssR",
+          "uuid": "Compendium.daggerheart.weapons.Item.jlLtgK468rO5IssR",
+          "name": "Talon Blades",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-flanged.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jmRtj4MwJCuSQUx7",
+          "uuid": "Compendium.daggerheart.weapons.Item.jmRtj4MwJCuSQUx7",
+          "name": "Legendary Arcane Rifle",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "kENTDpa1hr5LDhIT",
+          "uuid": "Compendium.daggerheart.weapons.Item.kENTDpa1hr5LDhIT",
+          "name": "Improved Arcane Gauntlets",
+          "type": "weapon",
+          "img": "icons/equipment/hand/glove-studded-leather-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "kMiQsmN915TpcUJI",
+          "uuid": "Compendium.daggerheart.weapons.Item.kMiQsmN915TpcUJI",
+          "name": "Ethereal Zweihänder",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-runed-glowing.webp",
+          "sourceId": null
+        },
+        {
+          "id": "lXbtuAYtlxtXsyf9",
+          "uuid": "Compendium.daggerheart.weapons.Item.lXbtuAYtlxtXsyf9",
+          "name": "Fury Gem",
+          "type": "weapon",
+          "img": "icons/weapons/clubs/club-spiked-glowing.webp",
+          "sourceId": null
+        },
+        {
+          "id": "lZtzz2BmJZkXCFXk",
+          "uuid": "Compendium.daggerheart.weapons.Item.lZtzz2BmJZkXCFXk",
+          "name": "Advanced Fighting Cloak",
+          "type": "weapon",
+          "img": "icons/equipment/chest/coat-collared-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "la3sAWgnvadc4NvP",
+          "uuid": "Compendium.daggerheart.weapons.Item.la3sAWgnvadc4NvP",
+          "name": "Advanced Arcane-Frame Wheelchair",
+          "type": "weapon",
+          "img": "systems/daggerheart/assets/icons/documents/items/ArcaneWheelchair.webp",
+          "sourceId": null
+        },
+        {
+          "id": "m90xP486Xvp9EFZN",
+          "uuid": "Compendium.daggerheart.weapons.Item.m90xP486Xvp9EFZN",
+          "name": "Arc Wand",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-carved-fire.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mLbmYF15wm1kckMk",
+          "uuid": "Compendium.daggerheart.weapons.Item.mLbmYF15wm1kckMk",
+          "name": "Spellbound Bangles",
+          "type": "weapon",
+          "img": "icons/equipment/wrist/bracer-studded-copper.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mcj3CPkcSSDdAcBB",
+          "uuid": "Compendium.daggerheart.weapons.Item.mcj3CPkcSSDdAcBB",
+          "name": "Legendary Returning Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/scimitar-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mlIj88p1wcQNjEDG",
+          "uuid": "Compendium.daggerheart.weapons.Item.mlIj88p1wcQNjEDG",
+          "name": "Quarterstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-simple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mrioysDjNQEIE8hN",
+          "uuid": "Compendium.daggerheart.weapons.Item.mrioysDjNQEIE8hN",
+          "name": "Advanced Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-simple-violet.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mxwWKDujgsRcZWPT",
+          "uuid": "Compendium.daggerheart.weapons.Item.mxwWKDujgsRcZWPT",
+          "name": "Round Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/buckler-wooden-boss-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "n0qB948TRIJ8nRtP",
+          "uuid": "Compendium.daggerheart.weapons.Item.n0qB948TRIJ8nRtP",
+          "name": "Adder's Fang",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-poisoned-curved-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "n1oPTk5czTIGTkVj",
+          "uuid": "Compendium.daggerheart.weapons.Item.n1oPTk5czTIGTkVj",
+          "name": "Blessed Anlace",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-magical-glowing-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nMuF8ZDZ2aXZVTg6",
+          "uuid": "Compendium.daggerheart.weapons.Item.nMuF8ZDZ2aXZVTg6",
+          "name": "Improved Small Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-jeweled-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nXjuBa215H1sTUK3",
+          "uuid": "Compendium.daggerheart.weapons.Item.nXjuBa215H1sTUK3",
+          "name": "Dual-Ended Sword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/swords-sharp-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nuTwQsR2XTOsVfbR",
+          "uuid": "Compendium.daggerheart.weapons.Item.nuTwQsR2XTOsVfbR",
+          "name": "Rune Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/heater-embossed-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nxGUpuHLmuKdKsDC",
+          "uuid": "Compendium.daggerheart.weapons.Item.nxGUpuHLmuKdKsDC",
+          "name": "Improved Battleaxe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-double-engraved-runes.webp",
+          "sourceId": null
+        },
+        {
+          "id": "o3rsLvImcLAx5TvD",
+          "uuid": "Compendium.daggerheart.weapons.Item.o3rsLvImcLAx5TvD",
+          "name": "Legendary Dualstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "oqoS55ZzmFnC6V4N",
+          "uuid": "Compendium.daggerheart.weapons.Item.oqoS55ZzmFnC6V4N",
+          "name": "Advanced Arcane Rifle",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "p3nz5CaGUoyuGVg0",
+          "uuid": "Compendium.daggerheart.weapons.Item.p3nz5CaGUoyuGVg0",
+          "name": "Advanced Shortsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/shortsword-guard-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "p9tdjQr2AZP19RYm",
+          "uuid": "Compendium.daggerheart.weapons.Item.p9tdjQr2AZP19RYm",
+          "name": "Shortbow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/shortbow-leather.webp",
+          "sourceId": null
+        },
+        {
+          "id": "pK6dsNABKKp1CIGN",
+          "uuid": "Compendium.daggerheart.weapons.Item.pK6dsNABKKp1CIGN",
+          "name": "Advanced Spear",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/spear-flared-worn-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "pxaN4ZK4eqKrjtWj",
+          "uuid": "Compendium.daggerheart.weapons.Item.pxaN4ZK4eqKrjtWj",
+          "name": "Improved Warhammer",
+          "type": "weapon",
+          "img": "icons/weapons/hammers/hammer-double-engraved-ruby.webp",
+          "sourceId": null
+        },
+        {
+          "id": "q382JqMkqLaaFLIr",
+          "uuid": "Compendium.daggerheart.weapons.Item.q382JqMkqLaaFLIr",
+          "name": "Keeper's Staff",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-gem-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "qT7FfmauAumOjJoq",
+          "uuid": "Compendium.daggerheart.weapons.Item.qT7FfmauAumOjJoq",
+          "name": "Halberd",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/halberd-engraved-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "rLQqUhtDXphRwS49",
+          "uuid": "Compendium.daggerheart.weapons.Item.rLQqUhtDXphRwS49",
+          "name": "Improved Twisted Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-curved-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "rSyBNRwemBVuTo3H",
+          "uuid": "Compendium.daggerheart.weapons.Item.rSyBNRwemBVuTo3H",
+          "name": "Improved Shortsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/shortsword-broad-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "sIGXA4KMeYBUjcEO",
+          "uuid": "Compendium.daggerheart.weapons.Item.sIGXA4KMeYBUjcEO",
+          "name": "Advanced Returning Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-crossguard-flanged.webp",
+          "sourceId": null
+        },
+        {
+          "id": "sg2W5XLnKduRaxL8",
+          "uuid": "Compendium.daggerheart.weapons.Item.sg2W5XLnKduRaxL8",
+          "name": "Bladed Fan",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/knife-fan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tFlxfwZtBOFFMK3j",
+          "uuid": "Compendium.daggerheart.weapons.Item.tFlxfwZtBOFFMK3j",
+          "name": "Advanced Brass Knuckles",
+          "type": "weapon",
+          "img": "icons/weapons/fist/fist-knuckles-spiked-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tGWGWeNeEhnjTzif",
+          "uuid": "Compendium.daggerheart.weapons.Item.tGWGWeNeEhnjTzif",
+          "name": "Staff of Augma",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-blue-jewel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tP6vmnrmTq2h5sj7",
+          "uuid": "Compendium.daggerheart.weapons.Item.tP6vmnrmTq2h5sj7",
+          "name": "Wand of Enthrallment",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-skull-feathers.webp",
+          "sourceId": null
+        },
+        {
+          "id": "taAZDkDCpeNgxhnn",
+          "uuid": "Compendium.daggerheart.weapons.Item.taAZDkDCpeNgxhnn",
+          "name": "Parrying Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-ritual-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tj26lbNkwy8bORF4",
+          "uuid": "Compendium.daggerheart.weapons.Item.tj26lbNkwy8bORF4",
+          "name": "Improved Scepter",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-crescent-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "u9fkV1hfjZ6OWX9W",
+          "uuid": "Compendium.daggerheart.weapons.Item.u9fkV1hfjZ6OWX9W",
+          "name": "Advanced Throwing Knives",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-twin-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "uK1RhtYAsDeoPNGx",
+          "uuid": "Compendium.daggerheart.weapons.Item.uK1RhtYAsDeoPNGx",
+          "name": "Fusion Gloves",
+          "type": "weapon",
+          "img": "icons/equipment/hand/gauntlet-plate-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "uSyHzVERPRRQif2S",
+          "uuid": "Compendium.daggerheart.weapons.Item.uSyHzVERPRRQif2S",
+          "name": "Advanced Casting Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-notched-blackened.webp",
+          "sourceId": null
+        },
+        {
+          "id": "umADDPYCaykXDc1v",
+          "uuid": "Compendium.daggerheart.weapons.Item.umADDPYCaykXDc1v",
+          "name": "Legendary Arcane Gauntlets",
+          "type": "weapon",
+          "img": "icons/equipment/hand/gauntlet-armored-leather-steel-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vAy5fho5zm1bL7Pk",
+          "uuid": "Compendium.daggerheart.weapons.Item.vAy5fho5zm1bL7Pk",
+          "name": "Improved Enchanted Chakram",
+          "type": "weapon",
+          "img": "icons/commodities/metal/fragments-steel-ring.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vHDHG3STcxTEfYAM",
+          "uuid": "Compendium.daggerheart.weapons.Item.vHDHG3STcxTEfYAM",
+          "name": "Shortstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-simple-carved.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vt7KdwDdPHJKHcFt",
+          "uuid": "Compendium.daggerheart.weapons.Item.vt7KdwDdPHJKHcFt",
+          "name": "Legendary Shadowblade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-flanged-lightning.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vzyzFwLUniWZV1rt",
+          "uuid": "Compendium.daggerheart.weapons.Item.vzyzFwLUniWZV1rt",
+          "name": "Spiked Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/targe-wooden-boss-steel-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wFOXMN2uiX4j6Gd9",
+          "uuid": "Compendium.daggerheart.weapons.Item.wFOXMN2uiX4j6Gd9",
+          "name": "Improved Hallowed Axe",
+          "type": "weapon",
+          "img": "icons/weapons/axes/axe-broad-hooked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wG9f5NpCwSbaLy8t",
+          "uuid": "Compendium.daggerheart.weapons.Item.wG9f5NpCwSbaLy8t",
+          "name": "Glowing Rings",
+          "type": "weapon",
+          "img": "icons/equipment/finger/ring-band-studded.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wHWKdgOayBwRB8R3",
+          "uuid": "Compendium.daggerheart.weapons.Item.wHWKdgOayBwRB8R3",
+          "name": "Crystal Spear",
+          "type": "weapon",
+          "img": "icons/weapons/polearms/spear-flared-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wKklDxs5nkzILNp4",
+          "uuid": "Compendium.daggerheart.weapons.Item.wKklDxs5nkzILNp4",
+          "name": "Small Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-straight-cracked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wPjg0LufJH9vUfVM",
+          "uuid": "Compendium.daggerheart.weapons.Item.wPjg0LufJH9vUfVM",
+          "name": "Legendary Wand",
+          "type": "weapon",
+          "img": "icons/weapons/wands/wand-gem-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "x3DzIAi2drwE5bCt",
+          "uuid": "Compendium.daggerheart.weapons.Item.x3DzIAi2drwE5bCt",
+          "name": "Arquebus",
+          "type": "weapon",
+          "img": "icons/weapons/guns/gun-blunderbuss-bronze.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xEUOz7gIfw3eTD1r",
+          "uuid": "Compendium.daggerheart.weapons.Item.xEUOz7gIfw3eTD1r",
+          "name": "Legendary Rune Shield",
+          "type": "weapon",
+          "img": "icons/equipment/shield/heater-steel-segmented-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xHpu0U3qcx81aKR6",
+          "uuid": "Compendium.daggerheart.weapons.Item.xHpu0U3qcx81aKR6",
+          "name": "Splintershaft Bow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/bow-ornamental-carved-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xK7Qo8WuldU8BhY0",
+          "uuid": "Compendium.daggerheart.weapons.Item.xK7Qo8WuldU8BhY0",
+          "name": "Rime Scepter",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-ornate-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xKnGSccF7x5GIK0E",
+          "uuid": "Compendium.daggerheart.weapons.Item.xKnGSccF7x5GIK0E",
+          "name": "Improved Casting Dagger",
+          "type": "weapon",
+          "img": "icons/weapons/daggers/dagger-double-engraved-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xLJ5RRpUoTRmAC3G",
+          "uuid": "Compendium.daggerheart.weapons.Item.xLJ5RRpUoTRmAC3G",
+          "name": "Flickerfly Blade",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-hooked.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xm1yU7k58fMgXxRR",
+          "uuid": "Compendium.daggerheart.weapons.Item.xm1yU7k58fMgXxRR",
+          "name": "Double Flail",
+          "type": "weapon",
+          "img": "icons/weapons/maces/flail-triple-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "y3hfTPfZhMognyaJ",
+          "uuid": "Compendium.daggerheart.weapons.Item.y3hfTPfZhMognyaJ",
+          "name": "Legendary Broadsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-guard-bronze.webp",
+          "sourceId": null
+        },
+        {
+          "id": "y5eF0ORiMmJLlKvz",
+          "uuid": "Compendium.daggerheart.weapons.Item.y5eF0ORiMmJLlKvz",
+          "name": "Platinum Estoc",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-guard.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ykF3jouxHZ6YR8Bg",
+          "uuid": "Compendium.daggerheart.weapons.Item.ykF3jouxHZ6YR8Bg",
+          "name": "Finehair Bow",
+          "type": "weapon",
+          "img": "icons/weapons/bows/longbow-gold-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ykuXSEA6GLjrApt3",
+          "uuid": "Compendium.daggerheart.weapons.Item.ykuXSEA6GLjrApt3",
+          "name": "Katana",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-katana.webp",
+          "sourceId": null
+        },
+        {
+          "id": "z6yEdFYQJ5IzgTX3",
+          "uuid": "Compendium.daggerheart.weapons.Item.z6yEdFYQJ5IzgTX3",
+          "name": "War Scythe",
+          "type": "weapon",
+          "img": "icons/weapons/sickles/scythe-wrapped-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zGm6Wa1fGF6cECY5",
+          "uuid": "Compendium.daggerheart.weapons.Item.zGm6Wa1fGF6cECY5",
+          "name": "Urok Broadsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-flamberge.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zJtm2f9ZFKZRtCRg",
+          "uuid": "Compendium.daggerheart.weapons.Item.zJtm2f9ZFKZRtCRg",
+          "name": "Advanced Quarterstaff",
+          "type": "weapon",
+          "img": "icons/weapons/staves/staff-orb-feather.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zMZ46F9VR7zdTxb9",
+          "uuid": "Compendium.daggerheart.weapons.Item.zMZ46F9VR7zdTxb9",
+          "name": "Legendary Greatsword",
+          "type": "weapon",
+          "img": "icons/weapons/swords/greatsword-crossguard-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zSLx52U4Yltqx8F1",
+          "uuid": "Compendium.daggerheart.weapons.Item.zSLx52U4Yltqx8F1",
+          "name": "Improved Mace",
+          "type": "weapon",
+          "img": "icons/weapons/maces/mace-spiked-wood-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zdFjT5qchP9X4TjA",
+          "uuid": "Compendium.daggerheart.weapons.Item.zdFjT5qchP9X4TjA",
+          "name": "Enchanted Chakram",
+          "type": "weapon",
+          "img": "icons/commodities/metal/fragments-steel-ring.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zkAgEW6zMkRZalEm",
+          "uuid": "Compendium.daggerheart.weapons.Item.zkAgEW6zMkRZalEm",
+          "name": "Rapier",
+          "type": "weapon",
+          "img": "icons/weapons/swords/sword-jeweled-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zxKt6qXe7uZB6ljm",
+          "uuid": "Compendium.daggerheart.weapons.Item.zxKt6qXe7uZB6ljm",
+          "name": "Hand Crossbow",
+          "type": "weapon",
+          "img": "icons/weapons/crossbows/crossbow-simple-red.webp",
+          "sourceId": null
+        }
+      ]
+    },
+    "armor": {
+      "packId": "daggerheart.armors",
+      "present": true,
+      "entries": [
+        {
+          "id": "1e5cQdnJL5HlxtKK",
+          "uuid": "Compendium.daggerheart.armors.Item.1e5cQdnJL5HlxtKK",
+          "name": "Resonant Harness",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2ObDhrPlWlsfmnz2",
+          "uuid": "Compendium.daggerheart.armors.Item.2ObDhrPlWlsfmnz2",
+          "name": "Improved Brigandine Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2icJGsEO0BUwZvHe",
+          "uuid": "Compendium.daggerheart.armors.Item.2icJGsEO0BUwZvHe",
+          "name": "Skywarden's Lamellar",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7emTSt6nhZuTlvt5",
+          "uuid": "Compendium.daggerheart.armors.Item.7emTSt6nhZuTlvt5",
+          "name": "Full Fortified Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8X16lJQ3xltTwynm",
+          "uuid": "Compendium.daggerheart.armors.Item.8X16lJQ3xltTwynm",
+          "name": "Savior Chainmail",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9f7RozpPTqrzJS1m",
+          "uuid": "Compendium.daggerheart.armors.Item.9f7RozpPTqrzJS1m",
+          "name": "Improved Full Plate Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-cuirass-steel-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9wOawkTonaRY4Sw2",
+          "uuid": "Compendium.daggerheart.armors.Item.9wOawkTonaRY4Sw2",
+          "name": "Legendary Brigandine Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-collared-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "AHazopFnwVenDXqW",
+          "uuid": "Compendium.daggerheart.armors.Item.AHazopFnwVenDXqW",
+          "name": "Rune-Forged Exosuit",
+          "type": "armor",
+          "img": "icons/equipment/chest/tech-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "AQzU2RsqS5V5bd1v",
+          "uuid": "Compendium.daggerheart.armors.Item.AQzU2RsqS5V5bd1v",
+          "name": "Monett's Cloak",
+          "type": "armor",
+          "img": "icons/equipment/chest/coat-collared-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EsIN5OLKe9ZYFNXZ",
+          "uuid": "Compendium.daggerheart.armors.Item.EsIN5OLKe9ZYFNXZ",
+          "name": "Legendary Chainmail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Fi3gY51MTzHa4gl6",
+          "uuid": "Compendium.daggerheart.armors.Item.Fi3gY51MTzHa4gl6",
+          "name": "Legendary Banded Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-studded-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Fm6sgfz4fYJCvPiS",
+          "uuid": "Compendium.daggerheart.armors.Item.Fm6sgfz4fYJCvPiS",
+          "name": "Granminster's Finery",
+          "type": "armor",
+          "img": "icons/equipment/chest/coat-collared-studded-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "G3NnXEXmT6m2Mr9z",
+          "uuid": "Compendium.daggerheart.armors.Item.G3NnXEXmT6m2Mr9z",
+          "name": "Gilded Sunplate",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "HLAgfHHCJjdqnYPC",
+          "uuid": "Compendium.daggerheart.armors.Item.HLAgfHHCJjdqnYPC",
+          "name": "Darkweave Shroud",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "HXqjJxHUqWCv1N3W",
+          "uuid": "Compendium.daggerheart.armors.Item.HXqjJxHUqWCv1N3W",
+          "name": "Circle-Forged Dreadplate",
+          "type": "armor",
+          "img": "icons/equipment/chest/tech-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IuzkxBqeAqomNfxZ",
+          "uuid": "Compendium.daggerheart.armors.Item.IuzkxBqeAqomNfxZ",
+          "name": "Spidersilk Tunic",
+          "type": "armor",
+          "img": "icons/creatures/webs/webthin-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JJ08yuuFq3NjjMRV",
+          "uuid": "Compendium.daggerheart.armors.Item.JJ08yuuFq3NjjMRV",
+          "name": "Improved Scale Mail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-sculpted-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "K5WkjS0NGqHYmhU3",
+          "uuid": "Compendium.daggerheart.armors.Item.K5WkjS0NGqHYmhU3",
+          "name": "Improved Chainmail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "LzLOJ9EVaHWAjoq9",
+          "uuid": "Compendium.daggerheart.armors.Item.LzLOJ9EVaHWAjoq9",
+          "name": "Advanced Chainmail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OGIBjQJEYv6uq0DA",
+          "uuid": "Compendium.daggerheart.armors.Item.OGIBjQJEYv6uq0DA",
+          "name": "Legendary Mage Robes",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-collared-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OegNW8TsqVdccwGM",
+          "uuid": "Compendium.daggerheart.armors.Item.OegNW8TsqVdccwGM",
+          "name": "Cloverweave Cloak",
+          "type": "armor",
+          "img": "icons/equipment/chest/coat-collared-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OvzgUTYy2RCN85vV",
+          "uuid": "Compendium.daggerheart.armors.Item.OvzgUTYy2RCN85vV",
+          "name": "Veritas Opal Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-collared-steel-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "P4qAEDJUoNLgVRsA",
+          "uuid": "Compendium.daggerheart.armors.Item.P4qAEDJUoNLgVRsA",
+          "name": "Runes of Fortification",
+          "type": "armor",
+          "img": "icons/magic/symbols/rune-sigil-red-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PSW3BxCGmtLeWOxM",
+          "uuid": "Compendium.daggerheart.armors.Item.PSW3BxCGmtLeWOxM",
+          "name": "Tyris Soft Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-layered-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Q6LxmtFetDDkoZVZ",
+          "uuid": "Compendium.daggerheart.armors.Item.Q6LxmtFetDDkoZVZ",
+          "name": "Elundrian Chain Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-sculpted-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QUNaQ3f6U2rxu21f",
+          "uuid": "Compendium.daggerheart.armors.Item.QUNaQ3f6U2rxu21f",
+          "name": "Bloodstone Plate Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-steel-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QjwsIhXKqnlvRBMv",
+          "uuid": "Compendium.daggerheart.armors.Item.QjwsIhXKqnlvRBMv",
+          "name": "Spiked Plate Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-steel-studded.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SV7ukfVR9mhhY0E9",
+          "uuid": "Compendium.daggerheart.armors.Item.SV7ukfVR9mhhY0E9",
+          "name": "Legendary Scale Mail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SXWjUR2aUR6bYvdl",
+          "uuid": "Compendium.daggerheart.armors.Item.SXWjUR2aUR6bYvdl",
+          "name": "Legendary Full Plate Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-steel-blue-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "TeMjFTO8sOULN30r",
+          "uuid": "Compendium.daggerheart.armors.Item.TeMjFTO8sOULN30r",
+          "name": "Trollhide Cuirass",
+          "type": "armor",
+          "img": "icons/commodities/biological/shell-ridged-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Tptgl5WOj76TyFn7",
+          "uuid": "Compendium.daggerheart.armors.Item.Tptgl5WOj76TyFn7",
+          "name": "Legendary Leather Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-gilded-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "UdUJNa31WxFW2noa",
+          "uuid": "Compendium.daggerheart.armors.Item.UdUJNa31WxFW2noa",
+          "name": "Full Plate Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-collared-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "VD08FahK2W2zXoBK",
+          "uuid": "Compendium.daggerheart.armors.Item.VD08FahK2W2zXoBK",
+          "name": "Wyrdwood Splint Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-studded-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ViqJEm8v9XJWPsj4",
+          "uuid": "Compendium.daggerheart.armors.Item.ViqJEm8v9XJWPsj4",
+          "name": "Banded Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/bullet-proof-vest-kevlar.webp",
+          "sourceId": null
+        },
+        {
+          "id": "WuoVwZA53XRAIt6d",
+          "uuid": "Compendium.daggerheart.armors.Item.WuoVwZA53XRAIt6d",
+          "name": "Bellamoi Fine Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ZZfLZ0uTzROddFoj",
+          "uuid": "Compendium.daggerheart.armors.Item.ZZfLZ0uTzROddFoj",
+          "name": "Hawkguard's Mantle",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ar3hG23czKmfUYW9",
+          "uuid": "Compendium.daggerheart.armors.Item.ar3hG23czKmfUYW9",
+          "name": "Advanced Banded Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-steel-studded.webp",
+          "sourceId": null
+        },
+        {
+          "id": "b3NKjjgkQjBgmpWZ",
+          "uuid": "Compendium.daggerheart.armors.Item.b3NKjjgkQjBgmpWZ",
+          "name": "Deep-Forged Coral Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-sculpted-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bcQUh4QG3qFX0Vx6",
+          "uuid": "Compendium.daggerheart.armors.Item.bcQUh4QG3qFX0Vx6",
+          "name": "Emberwoven Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-gilded-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "c6tMXz4rPf9ioQrf",
+          "uuid": "Compendium.daggerheart.armors.Item.c6tMXz4rPf9ioQrf",
+          "name": "Legendary Gambeson Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-blue-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "crIbCb9NZ4K0VpoU",
+          "uuid": "Compendium.daggerheart.armors.Item.crIbCb9NZ4K0VpoU",
+          "name": "Advanced Full Plate Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-steel-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "dvyQeUVRLc9y6rnt",
+          "uuid": "Compendium.daggerheart.armors.Item.dvyQeUVRLc9y6rnt",
+          "name": "Harrowbone Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-gorget-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "epkAmlZVk7HOfUUT",
+          "uuid": "Compendium.daggerheart.armors.Item.epkAmlZVk7HOfUUT",
+          "name": "Advanced Gambeson Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "gNuhJUzazz3mKWkU",
+          "uuid": "Compendium.daggerheart.armors.Item.gNuhJUzazz3mKWkU",
+          "name": "Advanced Mage Robes",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-layered-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hAY6UgdGT7dj22Pr",
+          "uuid": "Compendium.daggerheart.armors.Item.hAY6UgdGT7dj22Pr",
+          "name": "Dunamis Silkchain",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-layered-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hG0g8lMEGcEtDxKO",
+          "uuid": "Compendium.daggerheart.armors.Item.hG0g8lMEGcEtDxKO",
+          "name": "Godbound Laminar",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-collared-steel-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "haULhuEg37zUUvhb",
+          "uuid": "Compendium.daggerheart.armors.Item.haULhuEg37zUUvhb",
+          "name": "Chainmail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-scale-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hfueRvwhlpTbtHmK",
+          "uuid": "Compendium.daggerheart.armors.Item.hfueRvwhlpTbtHmK",
+          "name": "Scale Mail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-steel-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "itSOp2GCyem0f7oM",
+          "uuid": "Compendium.daggerheart.armors.Item.itSOp2GCyem0f7oM",
+          "name": "Advanced Leather Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "jphnMZjnS2FkOH3s",
+          "uuid": "Compendium.daggerheart.armors.Item.jphnMZjnS2FkOH3s",
+          "name": "Improved Gambeson Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-quilted-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mNN6pvcsS10ChrWF",
+          "uuid": "Compendium.daggerheart.armors.Item.mNN6pvcsS10ChrWF",
+          "name": "Bladefare Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mdQ69eFHyAQUDmE7",
+          "uuid": "Compendium.daggerheart.armors.Item.mdQ69eFHyAQUDmE7",
+          "name": "Dragonscale Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nibfdNtp2PtxvbVz",
+          "uuid": "Compendium.daggerheart.armors.Item.nibfdNtp2PtxvbVz",
+          "name": "Leather Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "pRMYSsBa1T5NcKZZ",
+          "uuid": "Compendium.daggerheart.armors.Item.pRMYSsBa1T5NcKZZ",
+          "name": "Astral Raiment",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-blue-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "qPxlM4h0VzblCEdd",
+          "uuid": "Compendium.daggerheart.armors.Item.qPxlM4h0VzblCEdd",
+          "name": "Improved Banded Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-metal-scaled-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "qks7PQ7xkP2Kwedr",
+          "uuid": "Compendium.daggerheart.armors.Item.qks7PQ7xkP2Kwedr",
+          "name": "Improved Mage Robes",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-layered-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "rWDk8ovwnBrBwWRR",
+          "uuid": "Compendium.daggerheart.armors.Item.rWDk8ovwnBrBwWRR",
+          "name": "Mage Robes",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-layered-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "t91M61pSCMKStTNt",
+          "uuid": "Compendium.daggerheart.armors.Item.t91M61pSCMKStTNt",
+          "name": "Improved Leather Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tHlBUDQC24YMZqd6",
+          "uuid": "Compendium.daggerheart.armors.Item.tHlBUDQC24YMZqd6",
+          "name": "Runetan Floating Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tN8kAeBvNKM3EBFo",
+          "uuid": "Compendium.daggerheart.armors.Item.tN8kAeBvNKM3EBFo",
+          "name": "Rosewild Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-leather-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tzZntboNtHL5C6VM",
+          "uuid": "Compendium.daggerheart.armors.Item.tzZntboNtHL5C6VM",
+          "name": "Irontree Breastplate Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-layered-leather-brown-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "uL6AvEhXGaFlzjjS",
+          "uuid": "Compendium.daggerheart.armors.Item.uL6AvEhXGaFlzjjS",
+          "name": "Brigandine Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-collared-leather-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ukIkx5TCBUlgleBw",
+          "uuid": "Compendium.daggerheart.armors.Item.ukIkx5TCBUlgleBw",
+          "name": "Hallowed Heroplate",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-collared-steel-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vMJxEWz1srfwMsoj",
+          "uuid": "Compendium.daggerheart.armors.Item.vMJxEWz1srfwMsoj",
+          "name": "Channeling Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-collared-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "yJFp1bfpecDcStVK",
+          "uuid": "Compendium.daggerheart.armors.Item.yJFp1bfpecDcStVK",
+          "name": "Gambeson Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/vest-leather-tattered-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "z4K0YjsgwkkAruTr",
+          "uuid": "Compendium.daggerheart.armors.Item.z4K0YjsgwkkAruTr",
+          "name": "Advanced Brigandine Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-banded-simple-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "z6C6ll1T4G476zKv",
+          "uuid": "Compendium.daggerheart.armors.Item.z6C6ll1T4G476zKv",
+          "name": "Advanced Scale Mail Armor",
+          "type": "armor",
+          "img": "icons/equipment/chest/breastplate-rivited-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "z8dQR56ZNXmRE0w9",
+          "uuid": "Compendium.daggerheart.armors.Item.z8dQR56ZNXmRE0w9",
+          "name": "Enchanter's Robes",
+          "type": "armor",
+          "img": "icons/equipment/chest/robe-collared-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zU1R9WrVCvQcxJ17",
+          "uuid": "Compendium.daggerheart.armors.Item.zU1R9WrVCvQcxJ17",
+          "name": "Stormthread Habit",
+          "type": "armor",
+          "img": "icons/equipment/hand/gauntlet-armored-leather-steel-blue.webp",
+          "sourceId": null
+        }
+      ]
+    },
+    "consumables": {
+      "packId": "daggerheart.consumables",
+      "present": true,
+      "entries": [
+        {
+          "id": "06jHWdf2bSKNU7Gj",
+          "uuid": "Compendium.daggerheart.consumables.Item.06jHWdf2bSKNU7Gj",
+          "name": "Psychopomp's Shroud",
+          "type": "consumable",
+          "img": "icons/commodities/cloth/cloth-patterned-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0gjQYkFe4JmuEv7b",
+          "uuid": "Compendium.daggerheart.consumables.Item.0gjQYkFe4JmuEv7b",
+          "name": "Mnemonic Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-corked-empty.webp",
+          "sourceId": null
+        },
+        {
+          "id": "0jQGjzdnAlkOu9hb",
+          "uuid": "Compendium.daggerheart.consumables.Item.0jQGjzdnAlkOu9hb",
+          "name": "Slayer's Salt",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1D81W1ECLzGHHyAv",
+          "uuid": "Compendium.daggerheart.consumables.Item.1D81W1ECLzGHHyAv",
+          "name": "Ciscan Fog Bottle",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-corked-empty.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2ItBeUYNkiPEPSgc",
+          "uuid": "Compendium.daggerheart.consumables.Item.2ItBeUYNkiPEPSgc",
+          "name": "Mesmer's Tonic",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-conical-bubbling-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "302mC6Hg0w5je1AX",
+          "uuid": "Compendium.daggerheart.consumables.Item.302mC6Hg0w5je1AX",
+          "name": "Verglasian Seed",
+          "type": "consumable",
+          "img": "icons/commodities/gems/gem-faceted-oval-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3XLbwx3rBXathr8y",
+          "uuid": "Compendium.daggerheart.consumables.Item.3XLbwx3rBXathr8y",
+          "name": "Nightmare Mead",
+          "type": "consumable",
+          "img": "icons/consumables/potions/flask-ornate-skull-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3vr1v9tKLW2huI3H",
+          "uuid": "Compendium.daggerheart.consumables.Item.3vr1v9tKLW2huI3H",
+          "name": "Red Ooze Oil",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-bulb-corked-glowing-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "43A19TBIuEK2anOf",
+          "uuid": "Compendium.daggerheart.consumables.Item.43A19TBIuEK2anOf",
+          "name": "Stake of Abjuration",
+          "type": "consumable",
+          "img": "icons/sundries/survival/stake-rough-heavy-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4CDCPkloeXY7kD5H",
+          "uuid": "Compendium.daggerheart.consumables.Item.4CDCPkloeXY7kD5H",
+          "name": "Cacophonous Concoction",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-bulb-corked-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4VcsFnUD9VHm9ie8",
+          "uuid": "Compendium.daggerheart.consumables.Item.4VcsFnUD9VHm9ie8",
+          "name": "Sprite Bottle",
+          "type": "consumable",
+          "img": "icons/consumables/drinks/alcohol-spirits-bottle-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6B6Snn2h3N8g7E3Z",
+          "uuid": "Compendium.daggerheart.consumables.Item.6B6Snn2h3N8g7E3Z",
+          "name": "Stonemason's Fortune",
+          "type": "consumable",
+          "img": "icons/commodities/stone/masonry-bricks-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6SBC5kHntnJMA0JM",
+          "uuid": "Compendium.daggerheart.consumables.Item.6SBC5kHntnJMA0JM",
+          "name": "Featherstep Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-flask-corked-tied-necklace-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7r21aeT3LT8wQypK",
+          "uuid": "Compendium.daggerheart.consumables.Item.7r21aeT3LT8wQypK",
+          "name": "Drakemantle",
+          "type": "consumable",
+          "img": "icons/commodities/leather/scales-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "80s1FLmTLtohZ5GH",
+          "uuid": "Compendium.daggerheart.consumables.Item.80s1FLmTLtohZ5GH",
+          "name": "Major Control Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-round-corked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8WkhvSzeOmLdnoLJ",
+          "uuid": "Compendium.daggerheart.consumables.Item.8WkhvSzeOmLdnoLJ",
+          "name": "Grindletooth Venom",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-conical-corked-labeled-skull-poison-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8wVnkcAUl36CAOMH",
+          "uuid": "Compendium.daggerheart.consumables.Item.8wVnkcAUl36CAOMH",
+          "name": "Mossmantle Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-conical-corked-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "8xFCYnLWg6N4kPLC",
+          "uuid": "Compendium.daggerheart.consumables.Item.8xFCYnLWg6N4kPLC",
+          "name": "Bundle of Spiderlegs",
+          "type": "consumable",
+          "img": "icons/containers/bags/coinpouch-simple-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9iuovYP8xMpL1fHH",
+          "uuid": "Compendium.daggerheart.consumables.Item.9iuovYP8xMpL1fHH",
+          "name": "Necroprancer's Bell",
+          "type": "consumable",
+          "img": "icons/tools/instruments/bell-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "AA7bmiwv00lshPrC",
+          "uuid": "Compendium.daggerheart.consumables.Item.AA7bmiwv00lshPrC",
+          "name": "Major Arcane Shard",
+          "type": "consumable",
+          "img": "icons/commodities/gems/gem-rough-round-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Aruc2NLutWuVIjP1",
+          "uuid": "Compendium.daggerheart.consumables.Item.Aruc2NLutWuVIjP1",
+          "name": "Health Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-corked-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BnvXUsVqI8coqj8F",
+          "uuid": "Compendium.daggerheart.consumables.Item.BnvXUsVqI8coqj8F",
+          "name": "Gossip Flower",
+          "type": "consumable",
+          "img": "icons/commodities/flowers/holly-buds-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BqBWXXe9T07AMV4u",
+          "uuid": "Compendium.daggerheart.consumables.Item.BqBWXXe9T07AMV4u",
+          "name": "Improved Grindletooth Venom",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-jar-corked-labeled-poison-skull-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CCPFm5iXXwvyYYwR",
+          "uuid": "Compendium.daggerheart.consumables.Item.CCPFm5iXXwvyYYwR",
+          "name": "Major Attune Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-round-corked-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CVBbFfOY75YwyQsp",
+          "uuid": "Compendium.daggerheart.consumables.Item.CVBbFfOY75YwyQsp",
+          "name": "Charm Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-tube-corked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DoUn74xOoGNnKv76",
+          "uuid": "Compendium.daggerheart.consumables.Item.DoUn74xOoGNnKv76",
+          "name": "Potion of Vigilance",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-flask-corked-cyan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "DpxEMpwfasEBpORU",
+          "uuid": "Compendium.daggerheart.consumables.Item.DpxEMpwfasEBpORU",
+          "name": "Featherbone",
+          "type": "consumable",
+          "img": "icons/commodities/bones/bones-stack-worn-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ECPyjhxssMU469iv",
+          "uuid": "Compendium.daggerheart.consumables.Item.ECPyjhxssMU469iv",
+          "name": "Iridian Dust",
+          "type": "consumable",
+          "img": "icons/commodities/materials/powder-red-green-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EMHMKPJ2pGgzUyW8",
+          "uuid": "Compendium.daggerheart.consumables.Item.EMHMKPJ2pGgzUyW8",
+          "name": "Berserker's Brew",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-corked-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "EhaQCPJ8oiqpRIwB",
+          "uuid": "Compendium.daggerheart.consumables.Item.EhaQCPJ8oiqpRIwB",
+          "name": "Hopehold Flare",
+          "type": "consumable",
+          "img": "icons/commodities/tech/smoke-bomb-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "FOPQNqXbiVO0ilYL",
+          "uuid": "Compendium.daggerheart.consumables.Item.FOPQNqXbiVO0ilYL",
+          "name": "Bolster Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-vial-tube-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "G0JNdDEqxVDrwmvc",
+          "uuid": "Compendium.daggerheart.consumables.Item.G0JNdDEqxVDrwmvc",
+          "name": "Lionheart Tonic",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-bottle-corked-stopper-ornate-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "GrDrRqWgv7gvl9vn",
+          "uuid": "Compendium.daggerheart.consumables.Item.GrDrRqWgv7gvl9vn",
+          "name": "Sweet Moss",
+          "type": "consumable",
+          "img": "icons/consumables/plants/succulent-bundle-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "HGixKenQwhyRAYNk",
+          "uuid": "Compendium.daggerheart.consumables.Item.HGixKenQwhyRAYNk",
+          "name": "Shrinking Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/flask-decorated-label-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "I4cQ03xbxnc81EGa",
+          "uuid": "Compendium.daggerheart.consumables.Item.I4cQ03xbxnc81EGa",
+          "name": "Major Stamina Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-round-label-cork-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IJLAUlQymbSjzsri",
+          "uuid": "Compendium.daggerheart.consumables.Item.IJLAUlQymbSjzsri",
+          "name": "Major Charm Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-bottle-corked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IKMVQ6VwtapwoUim",
+          "uuid": "Compendium.daggerheart.consumables.Item.IKMVQ6VwtapwoUim",
+          "name": "Channelstone",
+          "type": "consumable",
+          "img": "icons/commodities/stone/engraved-symbol-water-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "IU9cj5UPFPOD8jVH",
+          "uuid": "Compendium.daggerheart.consumables.Item.IU9cj5UPFPOD8jVH",
+          "name": "Midas Flask",
+          "type": "consumable",
+          "img": "icons/consumables/potions/flask-corked-yellow-glow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Iy67pwuveS0tqJ7g",
+          "uuid": "Compendium.daggerheart.consumables.Item.Iy67pwuveS0tqJ7g",
+          "name": "Emberite Shard",
+          "type": "consumable",
+          "img": "icons/commodities/gems/gem-rough-cushion-red-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JGD3M9hBHtVAA8XP",
+          "uuid": "Compendium.daggerheart.consumables.Item.JGD3M9hBHtVAA8XP",
+          "name": "Attune Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-conical-corked-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JjMeRG3aAH3steY2",
+          "uuid": "Compendium.daggerheart.consumables.Item.JjMeRG3aAH3steY2",
+          "name": "Steelskin Salve",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "L5gCE0cJ8Pmyqp7E",
+          "uuid": "Compendium.daggerheart.consumables.Item.L5gCE0cJ8Pmyqp7E",
+          "name": "Quintessential Severant",
+          "type": "consumable",
+          "img": "icons/tools/cooking/knife-chef-steel-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "NjrThlxWMaLZT0Sa",
+          "uuid": "Compendium.daggerheart.consumables.Item.NjrThlxWMaLZT0Sa",
+          "name": "Instant Camp",
+          "type": "consumable",
+          "img": "icons/containers/boxes/crate-tech-silver-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Nvbb9mze6o5D0AEg",
+          "uuid": "Compendium.daggerheart.consumables.Item.Nvbb9mze6o5D0AEg",
+          "name": "Gill Salve",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Nwv5ydGf0MWnzq1n",
+          "uuid": "Compendium.daggerheart.consumables.Item.Nwv5ydGf0MWnzq1n",
+          "name": "Vial of Darksmoke",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OEfUMLY95eWMogPO",
+          "uuid": "Compendium.daggerheart.consumables.Item.OEfUMLY95eWMogPO",
+          "name": "Cupbearer's Bezoar",
+          "type": "consumable",
+          "img": "icons/commodities/materials/slime-thick-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OGnTVWBqgNJDrOeK",
+          "uuid": "Compendium.daggerheart.consumables.Item.OGnTVWBqgNJDrOeK",
+          "name": "Deathseer's Powder",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PRtw3OSktTtTSkJ6",
+          "uuid": "Compendium.daggerheart.consumables.Item.PRtw3OSktTtTSkJ6",
+          "name": "Concoction",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-jar-corked-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PfQvqopXgvroBklL",
+          "uuid": "Compendium.daggerheart.consumables.Item.PfQvqopXgvroBklL",
+          "name": "Bonding Honey",
+          "type": "consumable",
+          "img": "icons/consumables/food/soup-broth-bowl-wooden-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QQjaWV5yQVjxEKdG",
+          "uuid": "Compendium.daggerheart.consumables.Item.QQjaWV5yQVjxEKdG",
+          "name": "Snakeskin Spirit",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-round-label-cork-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Qnvfa3o3EaHskRZ7",
+          "uuid": "Compendium.daggerheart.consumables.Item.Qnvfa3o3EaHskRZ7",
+          "name": "Glowmoss Mushroom",
+          "type": "consumable",
+          "img": "icons/consumables/mushrooms/umbontae-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QowgtRfI0AmzGroZ",
+          "uuid": "Compendium.daggerheart.consumables.Item.QowgtRfI0AmzGroZ",
+          "name": "Godling's Pomelo",
+          "type": "consumable",
+          "img": "icons/consumables/fruit/plum-ripe-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "RrIasiMCt6mqVTps",
+          "uuid": "Compendium.daggerheart.consumables.Item.RrIasiMCt6mqVTps",
+          "name": "Bridge Seed",
+          "type": "consumable",
+          "img": "icons/consumables/plants/leaf-old-dried-curled-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SDdv1G2veMLKrxcJ",
+          "uuid": "Compendium.daggerheart.consumables.Item.SDdv1G2veMLKrxcJ",
+          "name": "Major Enlighten Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-corked-empty.webp",
+          "sourceId": null
+        },
+        {
+          "id": "UFQVwgYOUZ88UxcH",
+          "uuid": "Compendium.daggerheart.consumables.Item.UFQVwgYOUZ88UxcH",
+          "name": "Mirror of Marigold",
+          "type": "consumable",
+          "img": "icons/commodities/treasure/token-silver-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "USKNUVdtgl17llZq",
+          "uuid": "Compendium.daggerheart.consumables.Item.USKNUVdtgl17llZq",
+          "name": "Magic-User's Malison",
+          "type": "consumable",
+          "img": "icons/commodities/treasure/gem-framed-spiral-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "VSwa1LpQ9PjZKsWF",
+          "uuid": "Compendium.daggerheart.consumables.Item.VSwa1LpQ9PjZKsWF",
+          "name": "Homet's Secret Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/conical-ornate-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "VlbsCjvvLNfTzNXb",
+          "uuid": "Compendium.daggerheart.consumables.Item.VlbsCjvvLNfTzNXb",
+          "name": "Armor Stitcher",
+          "type": "consumable",
+          "img": "icons/skills/trades/textiles-stitching-leather-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "VqEX5YwK5oL3r1t6",
+          "uuid": "Compendium.daggerheart.consumables.Item.VqEX5YwK5oL3r1t6",
+          "name": "Vial of Moondrip",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-ornate-bat-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "W5lLL29DqYFoZuwS",
+          "uuid": "Compendium.daggerheart.consumables.Item.W5lLL29DqYFoZuwS",
+          "name": "Demiurge's Draught",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-vial-corked-labeled-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XZavUVlHEvE2srEt",
+          "uuid": "Compendium.daggerheart.consumables.Item.XZavUVlHEvE2srEt",
+          "name": "Sleeping Sap",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-bulb-corked-labeled-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XnEWhR8OvFZM3G07",
+          "uuid": "Compendium.daggerheart.consumables.Item.XnEWhR8OvFZM3G07",
+          "name": "Cockerel Claw Tea",
+          "type": "consumable",
+          "img": "icons/consumables/drinks/coffee.webp",
+          "sourceId": null
+        },
+        {
+          "id": "YAJKrrRTqNJvfRqn",
+          "uuid": "Compendium.daggerheart.consumables.Item.YAJKrrRTqNJvfRqn",
+          "name": "Green Ooze Oil",
+          "type": "consumable",
+          "img": "icons/commodities/materials/glass-orb-marble-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Zsh2AvZr8EkGtLyw",
+          "uuid": "Compendium.daggerheart.consumables.Item.Zsh2AvZr8EkGtLyw",
+          "name": "Mythic Dust",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "aWHSO2AqDufi7nL4",
+          "uuid": "Compendium.daggerheart.consumables.Item.aWHSO2AqDufi7nL4",
+          "name": "Enlighten Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/vial-cork-empty.webp",
+          "sourceId": null
+        },
+        {
+          "id": "aX6NyxkNzu0LcJpt",
+          "uuid": "Compendium.daggerheart.consumables.Item.aX6NyxkNzu0LcJpt",
+          "name": "Feast of Xuria",
+          "type": "consumable",
+          "img": "icons/consumables/food/bowl-stew-tofu-potato-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "b6vGSPFWOlzZZDLO",
+          "uuid": "Compendium.daggerheart.consumables.Item.b6vGSPFWOlzZZDLO",
+          "name": "Minor Stamina Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-tube-corked-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bLvJPYvDYJWtICP2",
+          "uuid": "Compendium.daggerheart.consumables.Item.bLvJPYvDYJWtICP2",
+          "name": "Chimeric Saliva",
+          "type": "consumable",
+          "img": "icons/commodities/materials/liquid-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bd5DgRHcLN0lP0oI",
+          "uuid": "Compendium.daggerheart.consumables.Item.bd5DgRHcLN0lP0oI",
+          "name": "Invisibility Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-round-empty-glass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bmQOoxTV2l9iTvRi",
+          "uuid": "Compendium.daggerheart.consumables.Item.bmQOoxTV2l9iTvRi",
+          "name": "Gravity Bomb",
+          "type": "consumable",
+          "img": "icons/commodities/metal/plate-mount-round-copper.webp",
+          "sourceId": null
+        },
+        {
+          "id": "c2putn9apuurJhWX",
+          "uuid": "Compendium.daggerheart.consumables.Item.c2putn9apuurJhWX",
+          "name": "Jumping Root",
+          "type": "consumable",
+          "img": "icons/consumables/plants/dried-bundle-wrapped-stems-sticks-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cM7pHe8bBAxSZ2xR",
+          "uuid": "Compendium.daggerheart.consumables.Item.cM7pHe8bBAxSZ2xR",
+          "name": "Major Health Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-round-label-cork-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cdb3AMaxRazFahUL",
+          "uuid": "Compendium.daggerheart.consumables.Item.cdb3AMaxRazFahUL",
+          "name": "Sunlight Orb",
+          "type": "consumable",
+          "img": "icons/commodities/gems/pearl-fire.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cfVFmS8vT9dbq9s1",
+          "uuid": "Compendium.daggerheart.consumables.Item.cfVFmS8vT9dbq9s1",
+          "name": "Acidpaste",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cg6VtQ0eVZjDdcK0",
+          "uuid": "Compendium.daggerheart.consumables.Item.cg6VtQ0eVZjDdcK0",
+          "name": "Snap Powder",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "dvL8oaxpEF6jKvYN",
+          "uuid": "Compendium.daggerheart.consumables.Item.dvL8oaxpEF6jKvYN",
+          "name": "Potion of Stability",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-conical-corked-labeled-shell-cyan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eAXHdzA5qNPldOpn",
+          "uuid": "Compendium.daggerheart.consumables.Item.eAXHdzA5qNPldOpn",
+          "name": "Blinding Orb",
+          "type": "consumable",
+          "img": "icons/magic/light/explosion-star-large-blue-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eBQAxdk4y85I7xQe",
+          "uuid": "Compendium.daggerheart.consumables.Item.eBQAxdk4y85I7xQe",
+          "name": "Pipeweed",
+          "type": "consumable",
+          "img": "icons/consumables/plants/leaf-dried-eaten-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eTQJhbNW5i6x79vI",
+          "uuid": "Compendium.daggerheart.consumables.Item.eTQJhbNW5i6x79vI",
+          "name": "Salamander Salve",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eU8VpbWB2NHIL47n",
+          "uuid": "Compendium.daggerheart.consumables.Item.eU8VpbWB2NHIL47n",
+          "name": "Dripfang Poison",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eeBhZSGLjuNZuJuI",
+          "uuid": "Compendium.daggerheart.consumables.Item.eeBhZSGLjuNZuJuI",
+          "name": "Control Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/flask-corked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "elsyP6VhHw1JjGSl",
+          "uuid": "Compendium.daggerheart.consumables.Item.elsyP6VhHw1JjGSl",
+          "name": "Circle of the Void",
+          "type": "consumable",
+          "img": "icons/magic/unholy/orb-glowing-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "f1NHVSIHJJCIOaBl",
+          "uuid": "Compendium.daggerheart.consumables.Item.f1NHVSIHJJCIOaBl",
+          "name": "Morphing Clay",
+          "type": "consumable",
+          "img": "icons/commodities/stone/ore-chunk-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "fl2f3ees8RFMze9t",
+          "uuid": "Compendium.daggerheart.consumables.Item.fl2f3ees8RFMze9t",
+          "name": "Growing Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-bottle-corked-labeled-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "gOFwztGSAAH4iLlG",
+          "uuid": "Compendium.daggerheart.consumables.Item.gOFwztGSAAH4iLlG",
+          "name": "Tears of the Undying Hero",
+          "type": "consumable",
+          "img": "icons/consumables/potions/flask-corked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hHLAEbVkLJeOA9qz",
+          "uuid": "Compendium.daggerheart.consumables.Item.hHLAEbVkLJeOA9qz",
+          "name": "Snapthorn Seed",
+          "type": "consumable",
+          "img": "icons/consumables/plants/thorned-curled-vine-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hf3k1POoVSooJyN2",
+          "uuid": "Compendium.daggerheart.consumables.Item.hf3k1POoVSooJyN2",
+          "name": "Stamina Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-corked-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hvy5BkG3F6iOIXTx",
+          "uuid": "Compendium.daggerheart.consumables.Item.hvy5BkG3F6iOIXTx",
+          "name": "Varik Leaves",
+          "type": "consumable",
+          "img": "icons/consumables/plants/leaf-serrated-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "j2tN23J2c1FA4IUS",
+          "uuid": "Compendium.daggerheart.consumables.Item.j2tN23J2c1FA4IUS",
+          "name": "Phial of Deep Ink",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-bottle-corked-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "joHLyjtZLsG7Uwi3",
+          "uuid": "Compendium.daggerheart.consumables.Item.joHLyjtZLsG7Uwi3",
+          "name": "Staff of Reversal",
+          "type": "consumable",
+          "img": "icons/weapons/staves/staff-simple-spiral.webp",
+          "sourceId": null
+        },
+        {
+          "id": "kwexUzdM9wm1Qums",
+          "uuid": "Compendium.daggerheart.consumables.Item.kwexUzdM9wm1Qums",
+          "name": "Sun Tree Sap",
+          "type": "consumable",
+          "img": "icons/consumables/drinks/wine-amphora-clay-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "lNtcrkgFGOJNaroE",
+          "uuid": "Compendium.daggerheart.consumables.Item.lNtcrkgFGOJNaroE",
+          "name": "Stride Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-flask-corked-cyan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "lyjoUIVjjhd78Sqr",
+          "uuid": "Compendium.daggerheart.consumables.Item.lyjoUIVjjhd78Sqr",
+          "name": "Warding Candle",
+          "type": "consumable",
+          "img": "icons/sundries/lights/candle-lit-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mUepnLbkvFk0ha4Z",
+          "uuid": "Compendium.daggerheart.consumables.Item.mUepnLbkvFk0ha4Z",
+          "name": "Unstable Arcane Shard",
+          "type": "consumable",
+          "img": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mnyQDRtngWWQeRXF",
+          "uuid": "Compendium.daggerheart.consumables.Item.mnyQDRtngWWQeRXF",
+          "name": "Major Bolster Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-jar-corked-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "n10vozlmosVR6lo4",
+          "uuid": "Compendium.daggerheart.consumables.Item.n10vozlmosVR6lo4",
+          "name": "Wingsprout",
+          "type": "consumable",
+          "img": "icons/consumables/plants/leaf-broad-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nL9IALzm9BNi5oSt",
+          "uuid": "Compendium.daggerheart.consumables.Item.nL9IALzm9BNi5oSt",
+          "name": "Knowledge Stone",
+          "type": "consumable",
+          "img": "icons/commodities/treasure/token-engraved-blue-glowing.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nQTo6mNoPTEVBtkm",
+          "uuid": "Compendium.daggerheart.consumables.Item.nQTo6mNoPTEVBtkm",
+          "name": "Improved Arcane Shard",
+          "type": "consumable",
+          "img": "icons/commodities/gems/gem-faceted-teardrop-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nSjz413RgiOwfzdb",
+          "uuid": "Compendium.daggerheart.consumables.Item.nSjz413RgiOwfzdb",
+          "name": "Arcticite Shard",
+          "type": "consumable",
+          "img": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ojK5ogZD6WJqamaP",
+          "uuid": "Compendium.daggerheart.consumables.Item.ojK5ogZD6WJqamaP",
+          "name": "Lyrebird Lozenge",
+          "type": "consumable",
+          "img": "icons/commodities/treasure/token-silver-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "pDGzmczoTlKGmKgd",
+          "uuid": "Compendium.daggerheart.consumables.Item.pDGzmczoTlKGmKgd",
+          "name": "Blood of the Yorgi",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-tube-corked-bat-gold-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "pGSYSCJhas5crBG2",
+          "uuid": "Compendium.daggerheart.consumables.Item.pGSYSCJhas5crBG2",
+          "name": "Displacement Token",
+          "type": "consumable",
+          "img": "icons/commodities/treasure/token-brass-round.webp",
+          "sourceId": null
+        },
+        {
+          "id": "pT5amnkvObOegrJr",
+          "uuid": "Compendium.daggerheart.consumables.Item.pT5amnkvObOegrJr",
+          "name": "Vial of Featherfall",
+          "type": "consumable",
+          "img": "icons/consumables/potions/conical-ornate-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "qhpwdNc4mApeKfk7",
+          "uuid": "Compendium.daggerheart.consumables.Item.qhpwdNc4mApeKfk7",
+          "name": "Formoid Serum",
+          "type": "consumable",
+          "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "qr1bosjFcUfuwq4B",
+          "uuid": "Compendium.daggerheart.consumables.Item.qr1bosjFcUfuwq4B",
+          "name": "Ogre Musk",
+          "type": "consumable",
+          "img": "icons/commodities/materials/slime-thick-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "s2Exl2XFuoOhtIov",
+          "uuid": "Compendium.daggerheart.consumables.Item.s2Exl2XFuoOhtIov",
+          "name": "Redthorn Saliva",
+          "type": "consumable",
+          "img": "icons/commodities/materials/slime-thick-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "sgqL3qFiArgCR8oI",
+          "uuid": "Compendium.daggerheart.consumables.Item.sgqL3qFiArgCR8oI",
+          "name": "Gambler's Fallacy",
+          "type": "consumable",
+          "img": "icons/sundries/misc/piggybank.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tPfKtKRRjv8qdSqy",
+          "uuid": "Compendium.daggerheart.consumables.Item.tPfKtKRRjv8qdSqy",
+          "name": "Minor Health Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-tube-corked-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tqpz75mHlO6TeVZU",
+          "uuid": "Compendium.daggerheart.consumables.Item.tqpz75mHlO6TeVZU",
+          "name": "Self-Sewing Thread",
+          "type": "consumable",
+          "img": "icons/tools/hand/needle-thread-spool.webp",
+          "sourceId": null
+        },
+        {
+          "id": "uyybO6oGBE59Eydd",
+          "uuid": "Compendium.daggerheart.consumables.Item.uyybO6oGBE59Eydd",
+          "name": "Packet of Space Dust",
+          "type": "consumable",
+          "img": "icons/containers/bags/sack-leather-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "v6AqLxKEnR59BoUj",
+          "uuid": "Compendium.daggerheart.consumables.Item.v6AqLxKEnR59BoUj",
+          "name": "Mask of the Echoed Self",
+          "type": "consumable",
+          "img": "icons/commodities/treasure/mask-bone-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vrbpqW9l3zf6GPZy",
+          "uuid": "Compendium.daggerheart.consumables.Item.vrbpqW9l3zf6GPZy",
+          "name": "Fulgurite Shard",
+          "type": "consumable",
+          "img": "icons/commodities/gems/gem-rough-cushion-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wM18PWWW2Ami4fBG",
+          "uuid": "Compendium.daggerheart.consumables.Item.wM18PWWW2Ami4fBG",
+          "name": "Dragonbloom Tea",
+          "type": "consumable",
+          "img": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wljly6bqiDe3ZmVy",
+          "uuid": "Compendium.daggerheart.consumables.Item.wljly6bqiDe3ZmVy",
+          "name": "Night Hag's Dust",
+          "type": "consumable",
+          "img": "icons/commodities/materials/bowl-powder-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "wmwbo6ogg6ExLozU",
+          "uuid": "Compendium.daggerheart.consumables.Item.wmwbo6ogg6ExLozU",
+          "name": "Yakamel Milk",
+          "type": "consumable",
+          "img": "icons/consumables/drinks/coconut-fruit-milk.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xDnJeF1grkmKck8Q",
+          "uuid": "Compendium.daggerheart.consumables.Item.xDnJeF1grkmKck8Q",
+          "name": "Death Tea",
+          "type": "consumable",
+          "img": "icons/consumables/drinks/wine-amphora-clay-gray.webp",
+          "sourceId": null
+        },
+        {
+          "id": "y24kG0S0kVuA7Qsy",
+          "uuid": "Compendium.daggerheart.consumables.Item.y24kG0S0kVuA7Qsy",
+          "name": "Moonlight Orb",
+          "type": "consumable",
+          "img": "icons/tools/laboratory/alembic-glass-ball-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "y4c1jrlHrf0wBWOq",
+          "uuid": "Compendium.daggerheart.consumables.Item.y4c1jrlHrf0wBWOq",
+          "name": "Stardrop",
+          "type": "consumable",
+          "img": "icons/magic/light/projectiles-star-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "yJkwz4AP6yhGo8Vj",
+          "uuid": "Compendium.daggerheart.consumables.Item.yJkwz4AP6yhGo8Vj",
+          "name": "Replication Parchment",
+          "type": "consumable",
+          "img": "icons/sundries/scrolls/scroll-worn-beige.webp",
+          "sourceId": null
+        },
+        {
+          "id": "yK6eEDUrsPbZA8G0",
+          "uuid": "Compendium.daggerheart.consumables.Item.yK6eEDUrsPbZA8G0",
+          "name": "Major Stride Potion",
+          "type": "consumable",
+          "img": "icons/consumables/potions/potion-jar-capped-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "yUol6M5b8jsbk9za",
+          "uuid": "Compendium.daggerheart.consumables.Item.yUol6M5b8jsbk9za",
+          "name": "Jar of Lost Voices",
+          "type": "consumable",
+          "img": "icons/containers/kitchenware/jug-wrapped-red.webp",
+          "sourceId": null
+        }
+      ]
+    },
+    "loot": {
+      "packId": "daggerheart.loot",
+      "present": true,
+      "entries": [
+        {
+          "id": "0e8FMOaUGOJHdalZ",
+          "uuid": "Compendium.daggerheart.loot.Item.0e8FMOaUGOJHdalZ",
+          "name": "Whisperstep Anklet",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-cabochon-spiral-gold-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1A81VlHXrWPwtUF0",
+          "uuid": "Compendium.daggerheart.loot.Item.1A81VlHXrWPwtUF0",
+          "name": "Rings of Friendship",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-fish-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1MnroDYoDbw2AQxZ",
+          "uuid": "Compendium.daggerheart.loot.Item.1MnroDYoDbw2AQxZ",
+          "name": "Gourmet Granules",
+          "type": "loot",
+          "img": "icons/commodities/materials/bowl-powder-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "1TLpFsp3PLDsqoTw",
+          "uuid": "Compendium.daggerheart.loot.Item.1TLpFsp3PLDsqoTw",
+          "name": "Minor Stamina Potion Recipe",
+          "type": "loot",
+          "img": "icons/sundries/scrolls/scroll-bound-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2ULPgNyqCrxea0v0",
+          "uuid": "Compendium.daggerheart.loot.Item.2ULPgNyqCrxea0v0",
+          "name": "Shard of Memory",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-rough-navette-purple-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2gaZtAAs0KRtAE7c",
+          "uuid": "Compendium.daggerheart.loot.Item.2gaZtAAs0KRtAE7c",
+          "name": "Knockback Bracelets",
+          "type": "loot",
+          "img": "icons/equipment/wrist/bracer-reinforced.webp",
+          "sourceId": null
+        },
+        {
+          "id": "2kv7bVMaveULmJIE",
+          "uuid": "Compendium.daggerheart.loot.Item.2kv7bVMaveULmJIE",
+          "name": "Crucible Frames",
+          "type": "loot",
+          "img": "icons/tools/scribal/spectacles-glasses.webp",
+          "sourceId": null
+        },
+        {
+          "id": "3t5jyhCi2hs6YJMg",
+          "uuid": "Compendium.daggerheart.loot.Item.3t5jyhCi2hs6YJMg",
+          "name": "Temporal Sanctuary",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-worn-yang-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4STt98biZwjFoKOe",
+          "uuid": "Compendium.daggerheart.loot.Item.4STt98biZwjFoKOe",
+          "name": "Arcane Cloak",
+          "type": "loot",
+          "img": "icons/equipment/back/cloak-layered-green-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "4qUp8YWnsgi7ws8Q",
+          "uuid": "Compendium.daggerheart.loot.Item.4qUp8YWnsgi7ws8Q",
+          "name": "Timekeeper's Pendant",
+          "type": "loot",
+          "img": "icons/equipment/neck/amulet-round-gold-green-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "5YZls8XH3MB7twNa",
+          "uuid": "Compendium.daggerheart.loot.Item.5YZls8XH3MB7twNa",
+          "name": "Mythic Dust Recipe",
+          "type": "loot",
+          "img": "icons/sundries/scrolls/scroll-bound-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "6TfnwNWZJTiR0194",
+          "uuid": "Compendium.daggerheart.loot.Item.6TfnwNWZJTiR0194",
+          "name": "Kingfisher's Net",
+          "type": "loot",
+          "img": "icons/tools/fishing/net-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7xDQMVBapm45BrcP",
+          "uuid": "Compendium.daggerheart.loot.Item.7xDQMVBapm45BrcP",
+          "name": "Self-Tying Rope",
+          "type": "loot",
+          "img": "icons/sundries/survival/rope-wrapped-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "7yywua9TmQ4WP5WH",
+          "uuid": "Compendium.daggerheart.loot.Item.7yywua9TmQ4WP5WH",
+          "name": "Valorstone",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-engraved-spiral-grey-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "80vWRBNeMZ7JXa9F",
+          "uuid": "Compendium.daggerheart.loot.Item.80vWRBNeMZ7JXa9F",
+          "name": "Ghoulskin Gloves",
+          "type": "loot",
+          "img": "icons/equipment/hand/glove-cuffed-leather-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9DcFR75tsnBYIp6Z",
+          "uuid": "Compendium.daggerheart.loot.Item.9DcFR75tsnBYIp6Z",
+          "name": "Hopekeeper Locket",
+          "type": "loot",
+          "img": "icons/equipment/neck/amulet-round-engraved-spiral-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9P9jqGSlxVCbTdLe",
+          "uuid": "Compendium.daggerheart.loot.Item.9P9jqGSlxVCbTdLe",
+          "name": "Charm Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-runed-wyn-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9VKYSBQxN9XFWlAm",
+          "uuid": "Compendium.daggerheart.loot.Item.9VKYSBQxN9XFWlAm",
+          "name": "Flickerfly Pendant",
+          "type": "loot",
+          "img": "icons/equipment/neck/choker-rough-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "9zgvj1CQaOmvdodC",
+          "uuid": "Compendium.daggerheart.loot.Item.9zgvj1CQaOmvdodC",
+          "name": "Hollowbark Horn",
+          "type": "loot",
+          "img": "icons/commodities/treasure/horn-carved-banded.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ABuNwIdACvsxSyNP",
+          "uuid": "Compendium.daggerheart.loot.Item.ABuNwIdACvsxSyNP",
+          "name": "Force Disc",
+          "type": "loot",
+          "img": "icons/commodities/stone/stone-chunk-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "AHqRDhPuWAdecutZ",
+          "uuid": "Compendium.daggerheart.loot.Item.AHqRDhPuWAdecutZ",
+          "name": "Communion Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-engraved-spiral-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ARuv48PWUGJGBC4n",
+          "uuid": "Compendium.daggerheart.loot.Item.ARuv48PWUGJGBC4n",
+          "name": "Woven Net",
+          "type": "loot",
+          "img": "icons/tools/fishing/net-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "BeEFlJ3Q1jnmH2nn",
+          "uuid": "Compendium.daggerheart.loot.Item.BeEFlJ3Q1jnmH2nn",
+          "name": "Gravewarden's Bell",
+          "type": "loot",
+          "img": "icons/tools/instruments/bell-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "C2lZrVCqXZ09t7U5",
+          "uuid": "Compendium.daggerheart.loot.Item.C2lZrVCqXZ09t7U5",
+          "name": "Warp Pendant",
+          "type": "loot",
+          "img": "icons/equipment/neck/pendant-runed-hagalz-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CGzjBpHJRG8KSt5Y",
+          "uuid": "Compendium.daggerheart.loot.Item.CGzjBpHJRG8KSt5Y",
+          "name": "Gecko Gloves",
+          "type": "loot",
+          "img": "icons/equipment/hand/glove-ring-leather-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CiXwelozmBDcPY48",
+          "uuid": "Compendium.daggerheart.loot.Item.CiXwelozmBDcPY48",
+          "name": "Glider",
+          "type": "loot",
+          "img": "icons/commodities/leather/leather-patch-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CrvJ7vb4s40YgEcy",
+          "uuid": "Compendium.daggerheart.loot.Item.CrvJ7vb4s40YgEcy",
+          "name": "Gem of Precision",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-rough-cushion-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "CyefGILogUehSTe0",
+          "uuid": "Compendium.daggerheart.loot.Item.CyefGILogUehSTe0",
+          "name": "Gadiman's Backpack",
+          "type": "loot",
+          "img": "icons/containers/bags/pack-leather-black-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "E7iVLwAEHiTccm3A",
+          "uuid": "Compendium.daggerheart.loot.Item.E7iVLwAEHiTccm3A",
+          "name": "Nighthawker's Ring",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-band-thin-silver-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ERL0eMaAW1Akx6Nn",
+          "uuid": "Compendium.daggerheart.loot.Item.ERL0eMaAW1Akx6Nn",
+          "name": "Phobophage's Circlet",
+          "type": "loot",
+          "img": "icons/commodities/treasure/crown-gold-laurel-wreath.webp",
+          "sourceId": null
+        },
+        {
+          "id": "F4hoRfvVdZq5bhhI",
+          "uuid": "Compendium.daggerheart.loot.Item.F4hoRfvVdZq5bhhI",
+          "name": "Paragon's Chain",
+          "type": "loot",
+          "img": "icons/equipment/neck/choker-chain-thin-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "FXwxp9lScDnjA1Yl",
+          "uuid": "Compendium.daggerheart.loot.Item.FXwxp9lScDnjA1Yl",
+          "name": "Traveler's Bell",
+          "type": "loot",
+          "img": "icons/tools/instruments/bell-brass-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "FfJISMzYATaPQPLc",
+          "uuid": "Compendium.daggerheart.loot.Item.FfJISMzYATaPQPLc",
+          "name": "Stride Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-runed-ing-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "G0RktbmtnuAlKCRH",
+          "uuid": "Compendium.daggerheart.loot.Item.G0RktbmtnuAlKCRH",
+          "name": "Corrector Sprite",
+          "type": "loot",
+          "img": "icons/magic/light/orbs-smoke-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "GK0z0U4xxxOgQPC3",
+          "uuid": "Compendium.daggerheart.loot.Item.GK0z0U4xxxOgQPC3",
+          "name": "Rings of Alliance",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-cabochon-silver-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Gf9ux8Vo2LGfEr6e",
+          "uuid": "Compendium.daggerheart.loot.Item.Gf9ux8Vo2LGfEr6e",
+          "name": "Cheater's Coin",
+          "type": "loot",
+          "img": "icons/commodities/currency/coin-inset-swirl-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "GkmATIuemyFtQX1D",
+          "uuid": "Compendium.daggerheart.loot.Item.GkmATIuemyFtQX1D",
+          "name": "Manacles",
+          "type": "loot",
+          "img": "icons/sundries/survival/cuffs-shackles-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "HCvcAu3sdHCspGMP",
+          "uuid": "Compendium.daggerheart.loot.Item.HCvcAu3sdHCspGMP",
+          "name": "Dual Flask",
+          "type": "loot",
+          "img": "icons/consumables/potions/round-decorated-snake-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "HE6Ka3DD2jdreiVO",
+          "uuid": "Compendium.daggerheart.loot.Item.HE6Ka3DD2jdreiVO",
+          "name": "Quillshawl",
+          "type": "loot",
+          "img": "icons/commodities/cloth/ribbon-bow-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "I63LTFD6GXHgyGpR",
+          "uuid": "Compendium.daggerheart.loot.Item.I63LTFD6GXHgyGpR",
+          "name": "Piercing Arrows",
+          "type": "loot",
+          "img": "icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Iedjw1LVWEozVh0J",
+          "uuid": "Compendium.daggerheart.loot.Item.Iedjw1LVWEozVh0J",
+          "name": "Infinite Bag",
+          "type": "loot",
+          "img": "icons/containers/bags/pack-engraved-leather-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "J8pp36Kta0WZ5n72",
+          "uuid": "Compendium.daggerheart.loot.Item.J8pp36Kta0WZ5n72",
+          "name": "Augur's Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/puzzle-triangle-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JKh1fnnBNgse8HyG",
+          "uuid": "Compendium.daggerheart.loot.Item.JKh1fnnBNgse8HyG",
+          "name": "Boots of Supple Mystique",
+          "type": "loot",
+          "img": "icons/equipment/feet/shoes-rounded-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "JsPYzrqpITqGj23I",
+          "uuid": "Compendium.daggerheart.loot.Item.JsPYzrqpITqGj23I",
+          "name": "Lorekeeper",
+          "type": "loot",
+          "img": "icons/sundries/books/book-backed-wood-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "K1ysGnTpNyxPu5Au",
+          "uuid": "Compendium.daggerheart.loot.Item.K1ysGnTpNyxPu5Au",
+          "name": "Ring of Silence",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-ball-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "KZ6EMEXj3sBl69Ko",
+          "uuid": "Compendium.daggerheart.loot.Item.KZ6EMEXj3sBl69Ko",
+          "name": "Loaded Dice",
+          "type": "loot",
+          "img": "icons/sundries/gaming/dice-runed-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "KzRYiDcJeVHPXf8d",
+          "uuid": "Compendium.daggerheart.loot.Item.KzRYiDcJeVHPXf8d",
+          "name": "Molepaw Mittens",
+          "type": "loot",
+          "img": "icons/equipment/hand/glove-armored-leather-worn-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "LYiCqC7yYu60be4X",
+          "uuid": "Compendium.daggerheart.loot.Item.LYiCqC7yYu60be4X",
+          "name": "Two-Faced Aegis Brooch",
+          "type": "loot",
+          "img": "icons/commodities/currency/coin-engraved-moon-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "LZrG6CFiSjpLA2F1",
+          "uuid": "Compendium.daggerheart.loot.Item.LZrG6CFiSjpLA2F1",
+          "name": "Speaking Orbs",
+          "type": "loot",
+          "img": "icons/commodities/materials/glass-orb-blue-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MHtVtO1J2ikzvRgZ",
+          "uuid": "Compendium.daggerheart.loot.Item.MHtVtO1J2ikzvRgZ",
+          "name": "Caltrops",
+          "type": "loot",
+          "img": "icons/containers/bags/coinpouch-simple-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MeEg57T6MKpw3sme",
+          "uuid": "Compendium.daggerheart.loot.Item.MeEg57T6MKpw3sme",
+          "name": "Alistair's Torch",
+          "type": "loot",
+          "img": "icons/sundries/lights/torch-brown-lit.webp",
+          "sourceId": null
+        },
+        {
+          "id": "MhCo8i0cRXzdnXbA",
+          "uuid": "Compendium.daggerheart.loot.Item.MhCo8i0cRXzdnXbA",
+          "name": "Vial of Darksmoke Recipe",
+          "type": "loot",
+          "img": "icons/sundries/scrolls/scroll-bound-black-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Mn1eo2Mdtu1kzyxB",
+          "uuid": "Compendium.daggerheart.loot.Item.Mn1eo2Mdtu1kzyxB",
+          "name": "Arcane Prism",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-faceted-trillion-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "NgvmrJYKpA2PrRSo",
+          "uuid": "Compendium.daggerheart.loot.Item.NgvmrJYKpA2PrRSo",
+          "name": "Lakestrider Boots",
+          "type": "loot",
+          "img": "icons/equipment/feet/shoes-collared-leather-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "OhdOU8yLpq6Wj4jl",
+          "uuid": "Compendium.daggerheart.loot.Item.OhdOU8yLpq6Wj4jl",
+          "name": "Namer's Oracle",
+          "type": "loot",
+          "img": "icons/sundries/gaming/dice-runed-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "P6Hhrc69G0X6Mpg4",
+          "uuid": "Compendium.daggerheart.loot.Item.P6Hhrc69G0X6Mpg4",
+          "name": "Iron Dagger Pendant",
+          "type": "loot",
+          "img": "icons/equipment/neck/necklace-simple-engraved-stone.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PAZL4sEq7UB5sLsA",
+          "uuid": "Compendium.daggerheart.loot.Item.PAZL4sEq7UB5sLsA",
+          "name": "Reliquary of the Sightless Saint",
+          "type": "loot",
+          "img": "icons/commodities/treasure/totem-wood-face-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PQxvxAVBbkt0TleC",
+          "uuid": "Compendium.daggerheart.loot.Item.PQxvxAVBbkt0TleC",
+          "name": "Minor Health Potion Recipe",
+          "type": "loot",
+          "img": "icons/sundries/scrolls/scroll-bound-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Pj17cvdJ1XG1jv6I",
+          "uuid": "Compendium.daggerheart.loot.Item.Pj17cvdJ1XG1jv6I",
+          "name": "Glamour Stone",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-engraved-purple-glowing.webp",
+          "sourceId": null
+        },
+        {
+          "id": "PkmTZXRMZL022O75",
+          "uuid": "Compendium.daggerheart.loot.Item.PkmTZXRMZL022O75",
+          "name": "Elusive Amulet",
+          "type": "loot",
+          "img": "icons/equipment/neck/pendant-rough-silver-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QGYPNBIufpBguwjC",
+          "uuid": "Compendium.daggerheart.loot.Item.QGYPNBIufpBguwjC",
+          "name": "Premium Bedroll",
+          "type": "loot",
+          "img": "icons/sundries/survival/bedroll-blue-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QNtzJSVENww63THa",
+          "uuid": "Compendium.daggerheart.loot.Item.QNtzJSVENww63THa",
+          "name": "Phoenix Feather",
+          "type": "loot",
+          "img": "icons/commodities/materials/feather-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "QPGBDItjrRhXU6iJ",
+          "uuid": "Compendium.daggerheart.loot.Item.QPGBDItjrRhXU6iJ",
+          "name": "Control Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-runed-sigel-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "RcYICit5t9dnMhzi",
+          "uuid": "Compendium.daggerheart.loot.Item.RcYICit5t9dnMhzi",
+          "name": "Grapnel",
+          "type": "loot",
+          "img": "icons/weapons/thrown/shuriken-triple-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SAAnEAeXDnhBbLjB",
+          "uuid": "Compendium.daggerheart.loot.Item.SAAnEAeXDnhBbLjB",
+          "name": "Honing Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-runed-nyd-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "SxfSavCJXnj7gSIm",
+          "uuid": "Compendium.daggerheart.loot.Item.SxfSavCJXnj7gSIm",
+          "name": "Zephyr's Jar",
+          "type": "loot",
+          "img": "icons/containers/kitchenware/jug-bottle-clay-brown-gold-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "TbgeT9ZxKHqFqJSN",
+          "uuid": "Compendium.daggerheart.loot.Item.TbgeT9ZxKHqFqJSN",
+          "name": "Gem of Insight",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-rough-cushion-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "TjB0iNuD9IDZhCOu",
+          "uuid": "Compendium.daggerheart.loot.Item.TjB0iNuD9IDZhCOu",
+          "name": "Blackwing Quill",
+          "type": "loot",
+          "img": "icons/tools/scribal/ink-quill-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "V25uXkAQvK3hUta4",
+          "uuid": "Compendium.daggerheart.loot.Item.V25uXkAQvK3hUta4",
+          "name": "Companion Case",
+          "type": "loot",
+          "img": "icons/containers/chest/chest-reinforced-steel-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "X6RMkIt89wf7qX2E",
+          "uuid": "Compendium.daggerheart.loot.Item.X6RMkIt89wf7qX2E",
+          "name": "Fire Jar",
+          "type": "loot",
+          "img": "icons/containers/kitchenware/jug-wrapped-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XrpNqMnZBOFPBhc4",
+          "uuid": "Compendium.daggerheart.loot.Item.XrpNqMnZBOFPBhc4",
+          "name": "Collar of Ascendancy",
+          "type": "loot",
+          "img": "icons/sundries/misc/pet-collar-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "XyrBFqsVDHgrRpVk",
+          "uuid": "Compendium.daggerheart.loot.Item.XyrBFqsVDHgrRpVk",
+          "name": "Collapsible Pole",
+          "type": "loot",
+          "img": "icons/commodities/tech/pipe-metal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "YGxlijXbEIT4UDZf",
+          "uuid": "Compendium.daggerheart.loot.Item.YGxlijXbEIT4UDZf",
+          "name": "Enchanter's Loupe",
+          "type": "loot",
+          "img": "icons/tools/scribal/magnifying-glass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "Zt9K4eHv2etzau6v",
+          "uuid": "Compendium.daggerheart.loot.Item.Zt9K4eHv2etzau6v",
+          "name": "Elven Spyglass",
+          "type": "loot",
+          "img": "icons/tools/navigation/spyglass-telescope-brass.webp",
+          "sourceId": null
+        },
+        {
+          "id": "aUqRifqR5JXXa1dN",
+          "uuid": "Compendium.daggerheart.loot.Item.aUqRifqR5JXXa1dN",
+          "name": "Ring of Resistance",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-shield-silver.webp",
+          "sourceId": null
+        },
+        {
+          "id": "bZyT7Qw7iafswlTY",
+          "uuid": "Compendium.daggerheart.loot.Item.bZyT7Qw7iafswlTY",
+          "name": "Box of Many Goods",
+          "type": "loot",
+          "img": "icons/containers/boxes/crate-heavy-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "cTYvyaSKBxosM9Y9",
+          "uuid": "Compendium.daggerheart.loot.Item.cTYvyaSKBxosM9Y9",
+          "name": "Airblade Charm",
+          "type": "loot",
+          "img": "icons/equipment/neck/amulet-carved-stone-spiral-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "eRd5Gk7J7hPCqp11",
+          "uuid": "Compendium.daggerheart.loot.Item.eRd5Gk7J7hPCqp11",
+          "name": "Portal Seed",
+          "type": "loot",
+          "img": "icons/commodities/treasure/egg-ornate-green-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "edkNgwy4xghZreBa",
+          "uuid": "Compendium.daggerheart.loot.Item.edkNgwy4xghZreBa",
+          "name": "Skeleton Key",
+          "type": "loot",
+          "img": "icons/sundries/misc/key-ornate-iron-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "fEd9wEKp1AwG6nio",
+          "uuid": "Compendium.daggerheart.loot.Item.fEd9wEKp1AwG6nio",
+          "name": "Eclipse Coin",
+          "type": "loot",
+          "img": "icons/commodities/currency/coin-engraved-waves-copper.webp",
+          "sourceId": null
+        },
+        {
+          "id": "fLXPb6LWb2NdS3L7",
+          "uuid": "Compendium.daggerheart.loot.Item.fLXPb6LWb2NdS3L7",
+          "name": "Portal Frames",
+          "type": "loot",
+          "img": "icons/commodities/treasure/gem-framed-spiral-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "fVhsN8pSVE9t7wjP",
+          "uuid": "Compendium.daggerheart.loot.Item.fVhsN8pSVE9t7wjP",
+          "name": "Map of Revelation",
+          "type": "loot",
+          "img": "icons/tools/navigation/map-marked-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "gFzkUGCjkRJtyoe9",
+          "uuid": "Compendium.daggerheart.loot.Item.gFzkUGCjkRJtyoe9",
+          "name": "Belt of Unity",
+          "type": "loot",
+          "img": "icons/equipment/waist/belt-buckle-ornate-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "gsUDP90d4SRtLEUn",
+          "uuid": "Compendium.daggerheart.loot.Item.gsUDP90d4SRtLEUn",
+          "name": "Charging Quiver",
+          "type": "loot",
+          "img": "icons/containers/ammunition/arrows-quiver-grey-gold.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hMu9It3ThCLCXuCA",
+          "uuid": "Compendium.daggerheart.loot.Item.hMu9It3ThCLCXuCA",
+          "name": "Gem of Audacity",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-rough-cushion-pink-yellow.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hNCCPH0wV2GLFKT6",
+          "uuid": "Compendium.daggerheart.loot.Item.hNCCPH0wV2GLFKT6",
+          "name": "Brooch",
+          "type": "loot",
+          "img": "icons/commodities/treasure/brooch-jewel-gold-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "hhdFEfPzAcTGL8QR",
+          "uuid": "Compendium.daggerheart.loot.Item.hhdFEfPzAcTGL8QR",
+          "name": "Thief's Compass",
+          "type": "loot",
+          "img": "icons/tools/navigation/compass-worn-copper.webp",
+          "sourceId": null
+        },
+        {
+          "id": "iZ89q3CsjITHcuVs",
+          "uuid": "Compendium.daggerheart.loot.Item.iZ89q3CsjITHcuVs",
+          "name": "Wildrider's Saddle",
+          "type": "loot",
+          "img": "icons/commodities/leather/leather-buckle-steel-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "kE0lB97shhgr3DuE",
+          "uuid": "Compendium.daggerheart.loot.Item.kE0lB97shhgr3DuE",
+          "name": "Mandragorian Torch",
+          "type": "loot",
+          "img": "icons/sundries/lights/torch-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "kKl1YqFQASZWlcal",
+          "uuid": "Compendium.daggerheart.loot.Item.kKl1YqFQASZWlcal",
+          "name": "Hero's Helm",
+          "type": "loot",
+          "img": "icons/equipment/head/helm-barbute-brass-steel.webp",
+          "sourceId": null
+        },
+        {
+          "id": "kn71qCQY0DnjmQBJ",
+          "uuid": "Compendium.daggerheart.loot.Item.kn71qCQY0DnjmQBJ",
+          "name": "Ring of Unbreakable Resolve",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-faceted-gold-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "lGIk9vBNz0jvskXD",
+          "uuid": "Compendium.daggerheart.loot.Item.lGIk9vBNz0jvskXD",
+          "name": "Clay Companion",
+          "type": "loot",
+          "img": "icons/commodities/gems/pearl-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "m3EpxlDgxn2tCDDR",
+          "uuid": "Compendium.daggerheart.loot.Item.m3EpxlDgxn2tCDDR",
+          "name": "Bolster Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-runed-radr-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "mYYeonjHFDgoUKAi",
+          "uuid": "Compendium.daggerheart.loot.Item.mYYeonjHFDgoUKAi",
+          "name": "Sorcerer's Hat",
+          "type": "loot",
+          "img": "icons/equipment/head/hat-pointed-leather-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "meZiyR86vH97h8pJ",
+          "uuid": "Compendium.daggerheart.loot.Item.meZiyR86vH97h8pJ",
+          "name": "Gloves of Alacrity",
+          "type": "loot",
+          "img": "icons/equipment/hand/glove-simple-leather-brown-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nQ0dhnzdqm8pz9Fp",
+          "uuid": "Compendium.daggerheart.loot.Item.nQ0dhnzdqm8pz9Fp",
+          "name": "Ball Bearings",
+          "type": "loot",
+          "img": "icons/containers/bags/sack-cloth-heavy-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "nnj12RiFanq7s5zv",
+          "uuid": "Compendium.daggerheart.loot.Item.nnj12RiFanq7s5zv",
+          "name": "Suspended Rod",
+          "type": "loot",
+          "img": "icons/commodities/tech/pipe-metal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "o5cWoYVRjaGdFRb6",
+          "uuid": "Compendium.daggerheart.loot.Item.o5cWoYVRjaGdFRb6",
+          "name": "Dagginae's Obsidian Slate",
+          "type": "loot",
+          "img": "icons/sundries/documents/document-worn-symbol-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "o9aFNNwFJkEeyWel",
+          "uuid": "Compendium.daggerheart.loot.Item.o9aFNNwFJkEeyWel",
+          "name": "Insomniac's Periapt",
+          "type": "loot",
+          "img": "icons/equipment/neck/necklace-simple-carved-spiral-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "oB9zqrcM1jCKBK6U",
+          "uuid": "Compendium.daggerheart.loot.Item.oB9zqrcM1jCKBK6U",
+          "name": "Iron Veil",
+          "type": "loot",
+          "img": "icons/equipment/head/hood-chain-worn.webp",
+          "sourceId": null
+        },
+        {
+          "id": "oMd78vhL2x2NO8Mg",
+          "uuid": "Compendium.daggerheart.loot.Item.oMd78vhL2x2NO8Mg",
+          "name": "Bloodstone",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-engraved-eye-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "p2yy61uKsyIsl8cU",
+          "uuid": "Compendium.daggerheart.loot.Item.p2yy61uKsyIsl8cU",
+          "name": "Empty Chest",
+          "type": "loot",
+          "img": "icons/containers/chest/chest-simple-box-gold-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "qgjb2uYxqLwp4JHM",
+          "uuid": "Compendium.daggerheart.loot.Item.qgjb2uYxqLwp4JHM",
+          "name": "Box of Dragon Dust",
+          "type": "loot",
+          "img": "icons/containers/boxes/crate-tech-red.webp",
+          "sourceId": null
+        },
+        {
+          "id": "qhzvGqgRLeTCAHGH",
+          "uuid": "Compendium.daggerheart.loot.Item.qhzvGqgRLeTCAHGH",
+          "name": "Returning Ring",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-band-engraved-teal.webp",
+          "sourceId": null
+        },
+        {
+          "id": "rEfqo2aKAGcG1h1j",
+          "uuid": "Compendium.daggerheart.loot.Item.rEfqo2aKAGcG1h1j",
+          "name": "Furball Bag",
+          "type": "loot",
+          "img": "icons/containers/bags/pouch-leather-pink.webp",
+          "sourceId": null
+        },
+        {
+          "id": "rJN3uu8KSC3CELzw",
+          "uuid": "Compendium.daggerheart.loot.Item.rJN3uu8KSC3CELzw",
+          "name": "Titan's Girdle",
+          "type": "loot",
+          "img": "icons/equipment/waist/belt-thick-bossed.webp",
+          "sourceId": null
+        },
+        {
+          "id": "rtSInNPc4B3ChBUZ",
+          "uuid": "Compendium.daggerheart.loot.Item.rtSInNPc4B3ChBUZ",
+          "name": "Gem of Might",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-rough-brilliant-green.webp",
+          "sourceId": null
+        },
+        {
+          "id": "tgFFMxpuRSiRrrEB",
+          "uuid": "Compendium.daggerheart.loot.Item.tgFFMxpuRSiRrrEB",
+          "name": "Calming Pendant",
+          "type": "loot",
+          "img": "icons/equipment/neck/amulet-round-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "ua351S7CsH22X1x2",
+          "uuid": "Compendium.daggerheart.loot.Item.ua351S7CsH22X1x2",
+          "name": "Gem of Sagacity",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-rough-cushion-purple.webp",
+          "sourceId": null
+        },
+        {
+          "id": "v4PIoCCEjeE3acys",
+          "uuid": "Compendium.daggerheart.loot.Item.v4PIoCCEjeE3acys",
+          "name": "Piper Whistle",
+          "type": "loot",
+          "img": "icons/tools/instruments/pipe-flue-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "v758j4FwNVAurhYK",
+          "uuid": "Compendium.daggerheart.loot.Item.v758j4FwNVAurhYK",
+          "name": "Bag of Ficklesand",
+          "type": "loot",
+          "img": "icons/containers/bags/pouch-cloth-tan.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vGHO8frU0XsfPBQY",
+          "uuid": "Compendium.daggerheart.loot.Item.vGHO8frU0XsfPBQY",
+          "name": "Escher's Mirrorball",
+          "type": "loot",
+          "img": "icons/commodities/gems/pearl-swirl-blue.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vK6bKyQTT3m8WvMh",
+          "uuid": "Compendium.daggerheart.loot.Item.vK6bKyQTT3m8WvMh",
+          "name": "Attune Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-runed-spiral-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vSGx1f9SYUiA29L3",
+          "uuid": "Compendium.daggerheart.loot.Item.vSGx1f9SYUiA29L3",
+          "name": "Enlighten Relic",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-runed-os-grey.webp",
+          "sourceId": null
+        },
+        {
+          "id": "vgwamE2rjHL2BJ95",
+          "uuid": "Compendium.daggerheart.loot.Item.vgwamE2rjHL2BJ95",
+          "name": "Windup Toy",
+          "type": "loot",
+          "img": "icons/commodities/treasure/statue-carved-figurehead.webp",
+          "sourceId": null
+        },
+        {
+          "id": "w7TqGqwJCyy5Wp6u",
+          "uuid": "Compendium.daggerheart.loot.Item.w7TqGqwJCyy5Wp6u",
+          "name": "Rings of Camaraderie",
+          "type": "loot",
+          "img": "icons/equipment/finger/ring-band-copper.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xwZiqqwNYUJMiWjZ",
+          "uuid": "Compendium.daggerheart.loot.Item.xwZiqqwNYUJMiWjZ",
+          "name": "Silee's Folding Knife",
+          "type": "loot",
+          "img": "icons/weapons/daggers/knife-engraved-black.webp",
+          "sourceId": null
+        },
+        {
+          "id": "xxDDzhcODh98kcTC",
+          "uuid": "Compendium.daggerheart.loot.Item.xxDDzhcODh98kcTC",
+          "name": "Soul-Twin Circlets",
+          "type": "loot",
+          "img": "icons/commodities/treasure/trinket-wing-white.webp",
+          "sourceId": null
+        },
+        {
+          "id": "y7zABzR0Q2fRskTw",
+          "uuid": "Compendium.daggerheart.loot.Item.y7zABzR0Q2fRskTw",
+          "name": "Greatstone",
+          "type": "loot",
+          "img": "icons/commodities/treasure/token-etched-h-brown.webp",
+          "sourceId": null
+        },
+        {
+          "id": "yrAGYlDyoe4OYl7d",
+          "uuid": "Compendium.daggerheart.loot.Item.yrAGYlDyoe4OYl7d",
+          "name": "Homing Compasses",
+          "type": "loot",
+          "img": "icons/tools/navigation/compass-worn-copper.webp",
+          "sourceId": null
+        },
+        {
+          "id": "zecFwBUSWtB3HW8X",
+          "uuid": "Compendium.daggerheart.loot.Item.zecFwBUSWtB3HW8X",
+          "name": "Gem of Alacrity",
+          "type": "loot",
+          "img": "icons/commodities/gems/gem-rough-ball-purple.webp",
+          "sourceId": null
+        }
+      ]
+    }
+  }
+}
