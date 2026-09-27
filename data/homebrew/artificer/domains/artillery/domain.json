@@ -1,0 +1,24 @@
+{
+  "id": "artillery",
+  "kind": "domain",
+  "name": "Artillery",
+  "description": null,
+  "source": {
+    "corpus": "heart-of-daggers-artillery-artificer",
+    "version": "source-extraction-2026-09-25",
+    "status": "homebrew"
+  },
+  "canonical": true,
+  "levels_present": [
+    1,
+    2,
+    3,
+    4
+  ],
+  "card_count": 9,
+  "integration": {
+    "description_status": "missing-in-source",
+    "icon_status": "not-yet-extracted",
+    "higher_levels_status": "not-present-in-supplied-source"
+  }
+}

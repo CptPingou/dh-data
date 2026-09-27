@@ -1,6 +1,26 @@
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_KEY = "contextualCard";
 const HUNTING_DOMAIN_ID = "hunting";
+const HUNT_DOMAIN_ID = "hunt";
+const ARTILLERY_DOMAIN_ID = "artillery";
+
+const ARTILLERY_DOMAIN_DEFINITION = Object.freeze({
+  id: ARTILLERY_DOMAIN_ID,
+  label: "Artillery",
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/artillery.png",
+  description:
+    "Artillery est le domaine de la puissance de feu, du contrôle de zone et des attaques à fort impact.",
+  color: "#8a5a24",
+});
+
+const HUNT_DOMAIN_DEFINITION = Object.freeze({
+  id: HUNT_DOMAIN_ID,
+  label: "Chasse",
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/hunt.png",
+  description:
+    "La Chasse est le domaine de l’observation, de la préparation et de la coordination contre des créatures dangereuses.",
+  color: "#6b5b3e",
+});
 
 let patched = false;
 
@@ -35,6 +55,46 @@ function isToolkitManagedDomainCard(model) {
   // Legacy compatibility for the pre-family contextual Hunting implementation.
   const marker = contextualMarkerFromModel(model);
   return marker?.contextual === true && marker?.domainId === HUNTING_DOMAIN_ID;
+}
+
+
+
+export function registerArtilleryDomain() {
+  const domains = CONFIG?.DH?.DOMAIN?.domains;
+  if (!domains) {
+    console.error(
+      `${MODULE_ID} | unable to register Artillery domain: CONFIG.DH.DOMAIN.domains unavailable`,
+    );
+    return false;
+  }
+
+  if (!domains[ARTILLERY_DOMAIN_ID]) {
+    domains[ARTILLERY_DOMAIN_ID] = {
+      ...ARTILLERY_DOMAIN_DEFINITION,
+    };
+  }
+
+  console.log(`${MODULE_ID} | Artillery domain registered`);
+  return true;
+}
+
+export function registerHuntDomain() {
+  const domains = CONFIG?.DH?.DOMAIN?.domains;
+  if (!domains) {
+    console.error(
+      `${MODULE_ID} | unable to register Hunt domain: CONFIG.DH.DOMAIN.domains unavailable`,
+    );
+    return false;
+  }
+
+  if (!domains[HUNT_DOMAIN_ID]) {
+    domains[HUNT_DOMAIN_ID] = {
+      ...HUNT_DOMAIN_DEFINITION,
+    };
+  }
+
+  console.log(`${MODULE_ID} | Hunt domain registered`);
+  return true;
 }
 
 export function registerHuntingDomain() {

@@ -4,7 +4,7 @@ const MODULE_ID = "daggerheart-campaign-toolkit";
 const PILOT_URL = `modules/${MODULE_ID}/data/pilot.json`;
 const CLASS_PRESENTATION_URL = `modules/${MODULE_ID}/data/class-presentation.json`;
 const FLAG_SCOPE = MODULE_ID;
-const PILOT_MAPPING_VERSION = "P2.10k.3-mh-adversary-repair";
+const PILOT_MAPPING_VERSION = "P2.3.4e-fix2c";
 const FALLBACK_CLASS_IMAGE = "icons/svg/mystery-man.svg";
 
 let classPresentationPromise = null;
@@ -89,7 +89,11 @@ function sanitizeEmbeddedActorData(data) {
 
 function baseDescription(raw) {
   const content = raw?.content ?? {};
-  const desc = textValue(content.rules_text) || textValue(content) || textValue(raw?.description);
+  const desc =
+    textValue(content.rules_text) ||
+    textValue(content) ||
+    textValue(raw?.rules_text) ||
+    textValue(raw?.description);
   if (!desc) return "";
   // Canonical DH-DATA may deliberately carry sanitized rich text (notably
   // class/class-feature prose bootstrapped from the SRD Foundry source).
@@ -116,12 +120,240 @@ const DOMAIN_ICON_KEYS = new Set([
   "sage",
   "splendor",
   "valor",
+  "hunt",
+  "artillery",
 ]);
 
 function domainIcon(domain) {
   const key = normalizedChoice(domain);
   if (!key || !DOMAIN_ICON_KEYS.has(key)) return null;
+  if (key === ARTILLERY_DOMAIN_ID) return ARTILLERY_DOMAIN_DEFINITION.src;
   return `${DOMAIN_ICON_BASE}/${key}.png`;
+}
+
+
+const HUNT_DOMAIN_ID = "hunt";
+const HUNT_CARD_ROLE_SCHEMA_VERSION = 1;
+
+const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
+  "Appui défensif": {
+    combatRole: "support",
+    huntRole: null,
+  },
+  "Conversion": {
+    combatRole: "finisher",
+    huntRole: null,
+  },
+  "Couverture": {
+    combatRole: "support",
+    huntRole: null,
+  },
+  "Cuistot": {
+    combatRole: null,
+    huntRole: "preparation",
+  },
+  "Diversion": {
+    combatRole: "support",
+    huntRole: null,
+  },
+  "Extracteur": {
+    combatRole: null,
+    huntRole: "extraction",
+  },
+  "Feinte d’approche": {
+    combatRole: "opener",
+    huntRole: null,
+  },
+  "Frappe d’épuisement": {
+    combatRole: "finisher",
+    huntRole: null,
+  },
+  "Frappe de rupture": {
+    combatRole: "finisher",
+    huntRole: null,
+  },
+  "Frappe mutilante": {
+    combatRole: "finisher",
+    huntRole: null,
+  },
+  "Guidage du finisher": {
+    combatRole: "support",
+    huntRole: null,
+  },
+  "Naturaliste": {
+    combatRole: null,
+    huntRole: "knowledge",
+  },
+  "Ouverture": {
+    combatRole: "opener",
+    huntRole: null,
+  },
+  "Ouverture précise": {
+    combatRole: "opener",
+    huntRole: null,
+  },
+  "Provocation": {
+    combatRole: "opener",
+    huntRole: null,
+  },
+  "Tacticien": {
+    combatRole: "support",
+    huntRole: "logistics",
+  },
+  "Traqueur": {
+    combatRole: null,
+    huntRole: "tracking",
+  },
+});
+
+const LEGACY_HUNT_CARD_NAMES = Object.freeze([
+  "Appui défensif",
+  "Conversion",
+  "Couverture",
+  "Cuistot",
+  "Diversion",
+  "Extracteur",
+  "Feinte d’approche",
+  "Frappe d’épuisement",
+  "Frappe de rupture",
+  "Frappe mutilante",
+  "Guidage du finisher",
+  "Naturaliste",
+  "Ouverture",
+  "Ouverture précise",
+  "Provocation",
+  "Tacticien",
+  "Traqueur",
+]);
+
+function normalizedHuntCardName(value) {
+  return String(value ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’‘`´]/g, "'")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLocaleLowerCase();
+}
+
+const LEGACY_HUNT_CARD_NAME_KEYS = new Set(
+  LEGACY_HUNT_CARD_NAMES.map(normalizedHuntCardName)
+);
+
+function isLegacyHuntCardName(name) {
+  return LEGACY_HUNT_CARD_NAME_KEYS.has(normalizedHuntCardName(name));
+}
+
+const ARTILLERY_DOMAIN_ID = "artillery";
+
+const ARTILLERY_DOMAIN_DEFINITION = Object.freeze({
+  id: ARTILLERY_DOMAIN_ID,
+  label: "Artillery",
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/artillery.png",
+  description:
+    "Artillery est le domaine de la puissance de feu, du contrôle de zone et des attaques à fort impact.",
+  color: "#8a5a24",
+});
+
+export async function ensureArtilleryDomain() {
+  if (!game.user?.isGM) {
+    throw new Error("L’enregistrement du domaine Artillery est réservé au MJ.");
+  }
+
+  const settingKey = CONFIG?.DH?.SETTINGS?.gameSettings?.Homebrew;
+  if (!settingKey) {
+    throw new Error("Foundryborne Homebrew setting key introuvable.");
+  }
+
+  const current = foundry.utils.deepClone(
+    game.settings.get(CONFIG.DH.id, settingKey) ?? {}
+  );
+
+  current.domains ??= {};
+  const previous = current.domains[ARTILLERY_DOMAIN_ID] ?? null;
+  const changed =
+    !previous ||
+    previous.id !== ARTILLERY_DOMAIN_DEFINITION.id ||
+    previous.label !== ARTILLERY_DOMAIN_DEFINITION.label ||
+    previous.src !== ARTILLERY_DOMAIN_DEFINITION.src ||
+    previous.description !== ARTILLERY_DOMAIN_DEFINITION.description ||
+    previous.color !== ARTILLERY_DOMAIN_DEFINITION.color;
+
+  if (changed) {
+    current.domains[ARTILLERY_DOMAIN_ID] = {
+      ...ARTILLERY_DOMAIN_DEFINITION,
+    };
+    await game.settings.set(CONFIG.DH.id, settingKey, current);
+  }
+
+  const allAfter = CONFIG?.DH?.DOMAIN?.allDomains?.() ?? {};
+  const registered =
+    allAfter[ARTILLERY_DOMAIN_ID] ??
+    current.domains[ARTILLERY_DOMAIN_ID] ??
+    CONFIG?.DH?.DOMAIN?.domains?.[ARTILLERY_DOMAIN_ID] ??
+    null;
+
+  return {
+    green: Boolean(registered),
+    changed,
+    reloadRecommended: changed && !allAfter[ARTILLERY_DOMAIN_ID],
+    domain: registered,
+  };
+}
+
+const HUNT_DOMAIN_DEFINITION = Object.freeze({
+  id: HUNT_DOMAIN_ID,
+  label: "Chasse",
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/hunt.png",
+  description:
+    "La Chasse est le domaine de l’observation, de la préparation et de la coordination contre des créatures dangereuses.",
+  color: "#6b5b3e",
+});
+
+export async function ensureHuntDomain() {
+  if (!game.user?.isGM) {
+    throw new Error("L’enregistrement du domaine Chasse est réservé au MJ.");
+  }
+
+  const settingKey = CONFIG?.DH?.SETTINGS?.gameSettings?.Homebrew;
+  if (!settingKey) {
+    throw new Error("Foundryborne Homebrew setting key introuvable.");
+  }
+
+  const current = foundry.utils.deepClone(
+    game.settings.get(CONFIG.DH.id, settingKey) ?? {}
+  );
+
+  current.domains ??= {};
+  const previous = current.domains[HUNT_DOMAIN_ID] ?? null;
+  const changed =
+    !previous ||
+    previous.id !== HUNT_DOMAIN_DEFINITION.id ||
+    previous.label !== HUNT_DOMAIN_DEFINITION.label ||
+    previous.src !== HUNT_DOMAIN_DEFINITION.src ||
+    previous.description !== HUNT_DOMAIN_DEFINITION.description ||
+    previous.color !== HUNT_DOMAIN_DEFINITION.color;
+
+  if (changed) {
+    current.domains[HUNT_DOMAIN_ID] = {
+      ...HUNT_DOMAIN_DEFINITION,
+    };
+    await game.settings.set(CONFIG.DH.id, settingKey, current);
+  }
+
+  const allAfter = CONFIG?.DH?.DOMAIN?.allDomains?.() ?? {};
+  const registered =
+    allAfter[HUNT_DOMAIN_ID] ??
+    current.domains[HUNT_DOMAIN_ID] ??
+    CONFIG?.DH?.DOMAIN?.domains?.[HUNT_DOMAIN_ID] ??
+    null;
+
+  return {
+    green: Boolean(registered),
+    changed,
+    reloadRecommended: changed && !allAfter[HUNT_DOMAIN_ID],
+    domain: registered,
+  };
 }
 
 function normalizedToken(value) {
@@ -726,6 +958,802 @@ function recordEquipmentFeatureDisposition(data, kind, feature, key, status, ext
   });
 }
 
+
+const ARTILLERY_AUTOMATION_VERSION = "P2.11c.6e";
+
+function artilleryBaseAction({
+  id = foundry.utils.randomID(),
+  name,
+  description = "",
+  type = "effect",
+  img = ARTILLERY_DOMAIN_DEFINITION.src,
+  range = "",
+  targetAmount = null,
+  stressCost = 0,
+  usesMax = "",
+  recovery = null,
+  consumeOnSuccess = false,
+}) {
+  return {
+    type,
+    _id: id,
+    systemPath: "actions",
+    description,
+    chatDisplay: true,
+    actionType: "action",
+    cost: stressCost > 0
+      ? [{
+          key: "stress",
+          value: stressCost,
+          scalable: false,
+          step: null,
+          itemId: null,
+          consumeOnSuccess: false,
+        }]
+      : [],
+    uses: {
+      value: null,
+      max: usesMax,
+      recovery,
+      consumeOnSuccess,
+    },
+    target: { type: "any", amount: targetAmount },
+    effects: [],
+    name,
+    img,
+    range,
+    baseAction: false,
+    originItem: { type: "itemCollection" },
+    triggers: [],
+    areas: [],
+  };
+}
+
+function artilleryAttackAction(options = {}) {
+  const action = artilleryBaseAction({ ...options, type: "attack" });
+  action.damage = { main: null, resources: {} };
+  action.roll = {
+    type: options.rollType ?? null,
+    trait: null,
+    difficulty: options.rollDifficulty ?? null,
+    bonus: null,
+    advState: "neutral",
+    diceRolling: {
+      multiplier: "prof",
+      flatMultiplier: 1,
+      dice: "d6",
+      compare: null,
+      treshold: null,
+    },
+    useDefault: false,
+  };
+  action.save = {
+    trait: options.saveTrait ?? null,
+    difficulty: options.saveDifficulty ?? null,
+    damageMod: options.saveDamageMod ?? "none",
+  };
+  return action;
+}
+
+
+function artilleryHealingAction({
+  name,
+  description = "",
+  img = ARTILLERY_DOMAIN_DEFINITION.src,
+  stress = 0,
+  usesMax = "",
+  recovery = null,
+}) {
+  const action = artilleryBaseAction({
+    name,
+    description,
+    type: "healing",
+    img,
+    range: "self",
+    targetAmount: null,
+    usesMax,
+    recovery,
+    consumeOnSuccess: false,
+  });
+
+  action.target = { type: "self", amount: null };
+  action.damage = {
+    main: null,
+    resources: {
+      stress: {
+        value: {
+          custom: { enabled: true, formula: String(stress) },
+          multiplier: "prof",
+          flatMultiplier: 1,
+          dice: "d6",
+          bonus: null,
+        },
+        applyTo: "stress",
+        base: false,
+        resultBased: false,
+        valueAlt: {
+          multiplier: "prof",
+          flatMultiplier: 1,
+          dice: "d6",
+          bonus: null,
+          custom: { enabled: false, formula: "" },
+        },
+        fullRestore: false,
+        itemId: null,
+      },
+    },
+  };
+  action.roll = {
+    type: null,
+    trait: null,
+    difficulty: null,
+    bonus: null,
+    advState: "neutral",
+    diceRolling: {
+      multiplier: "prof",
+      flatMultiplier: 1,
+      dice: "d6",
+      compare: null,
+      treshold: null,
+    },
+    useDefault: false,
+  };
+
+  return action;
+}
+
+function artilleryDamage({ dice, count = 1, bonus = 0, damageType = "physical" }) {
+  return {
+    value: {
+      custom: { enabled: false, formula: "" },
+      multiplier: "flat",
+      flatMultiplier: count,
+      dice,
+      bonus,
+    },
+    applyTo: "hitPoints",
+    type: [damageType],
+    base: false,
+    resultBased: false,
+    valueAlt: {
+      multiplier: "prof",
+      flatMultiplier: 1,
+      dice: "d6",
+      bonus: null,
+      custom: { enabled: false, formula: "" },
+    },
+    includeBase: false,
+    direct: false,
+    fullRestore: false,
+    itemId: null,
+  };
+}
+
+function artilleryProneEffect(description) {
+  return {
+    name: "À terre",
+    img: "icons/svg/falling.svg",
+    transfer: false,
+    _id: foundry.utils.randomID(),
+    type: "base",
+    system: {
+      changes: [],
+      duration: { type: "temporary", description: "" },
+      rangeDependence: null,
+      stacking: null,
+      targetDispositions: [],
+    },
+    disabled: false,
+    duration: {
+      value: null,
+      units: "seconds",
+      expiry: null,
+      expired: false,
+    },
+    description,
+    tint: "#ffffff",
+    statuses: ["prone"],
+    sort: 0,
+    flags: {},
+    start: null,
+    showIcon: 1,
+    folder: null,
+    origin: null,
+  };
+}
+
+function addArtilleryEffectToAction(data, action, effect, { onSave = false } = {}) {
+  data.effects ??= [];
+  data.effects.push(effect);
+  action.effects ??= [];
+  action.effects.push({ _id: effect._id, onSave });
+}
+
+
+function serializedActions(value) {
+  if (Array.isArray(value)) return [...value];
+  if (value?.contents) return [...value.contents];
+  if (value instanceof Map) return [...value.values()];
+  if (value && typeof value === "object") return Object.values(value);
+  return [];
+}
+
+let nativeDomainActionSpecimenPromise = null;
+async function nativeDomainActionSpecimens() {
+  if (nativeDomainActionSpecimenPromise) return nativeDomainActionSpecimenPromise;
+
+  nativeDomainActionSpecimenPromise = (async () => {
+    const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+    if (!pack) throw new Error("Compendium Toolkit dh-domain-cards absent.");
+
+    const specimens = {
+      attack: null,
+      effect: null,
+      damage: null,
+      healing: null,
+      proneEffect: null,
+      transferEffect: null,
+      actionContainer: "array",
+    };
+
+    const docs = await pack.getDocuments();
+    specimens.transferEffect = nativeTransferEffectSpecimen(docs);
+
+    for (const doc of docs) {
+      // Never use the Artillery cards we are currently rebuilding as schema
+      // specimens. We want already-valid Foundryborne 2.9.4 data.
+      if (normalizedChoice(doc.system?.domain) === ARTILLERY_DOMAIN_ID) continue;
+
+      const raw = doc.toObject();
+      const sourceActions = raw?.system?.actions;
+      if (sourceActions && !Array.isArray(sourceActions) && typeof sourceActions === "object") {
+        specimens.actionContainer = "object";
+      }
+
+      for (const action of serializedActions(sourceActions)) {
+        const type = normalizedChoice(action?.type);
+        if (type && Object.prototype.hasOwnProperty.call(specimens, type) && !specimens[type]) {
+          specimens[type] = foundry.utils.deepClone(action);
+        }
+        if (
+          type === "attack" &&
+          !specimens.attack &&
+          action?.roll &&
+          action?.save &&
+          action?.damage
+        ) {
+          specimens.attack = foundry.utils.deepClone(action);
+        }
+      }
+
+      for (const effect of Array.isArray(raw?.effects) ? raw.effects : []) {
+        if (
+          !specimens.proneEffect &&
+          Array.isArray(effect?.statuses) &&
+          effect.statuses.includes("prone")
+        ) {
+          specimens.proneEffect = foundry.utils.deepClone(effect);
+        }
+      }
+
+      if (specimens.attack && specimens.healing && specimens.proneEffect) break;
+    }
+
+    if (!specimens.attack) {
+      throw new Error("Aucun specimen natif d'Action attack trouvé dans dh-domain-cards.");
+    }
+
+    console.info(`${MODULE_ID} | P2.11c.4a2 native Artillery specimens`, {
+      attack: Boolean(specimens.attack),
+      effect: Boolean(specimens.effect),
+      damage: Boolean(specimens.damage),
+      healing: Boolean(specimens.healing),
+      proneEffect: Boolean(specimens.proneEffect),
+      transferEffect: Boolean(specimens.transferEffect),
+      actionContainer: specimens.actionContainer,
+    });
+
+    return specimens;
+  })();
+
+  return nativeDomainActionSpecimenPromise;
+}
+
+
+function nativeTransferEffectSpecimen(docs) {
+  for (const doc of docs) {
+    if (normalizedChoice(doc.system?.domain) === ARTILLERY_DOMAIN_ID) continue;
+    const raw = doc.toObject();
+    for (const effect of Array.isArray(raw?.effects) ? raw.effects : []) {
+      if (
+        effect?.type === "base" &&
+        effect?.system &&
+        Array.isArray(effect.system.changes)
+      ) {
+        return foundry.utils.deepClone(effect);
+      }
+    }
+  }
+  return null;
+}
+
+function artilleryEffectDraft({
+  name,
+  description = "",
+  changes = [],
+  transfer = true,
+  disabled = false,
+  img = ARTILLERY_DOMAIN_DEFINITION.src,
+}) {
+  return {
+    name,
+    img,
+    transfer,
+    _id: foundry.utils.randomID(),
+    type: "base",
+    system: {
+      changes,
+      duration: {
+        description: "",
+      },
+      rangeDependence: null,
+      stacking: null,
+      targetDispositions: [],
+    },
+    disabled,
+    duration: {
+      value: null,
+      units: "seconds",
+      expiry: null,
+      expired: false,
+    },
+    description,
+    tint: "#ffffff",
+    statuses: [],
+    sort: 0,
+    flags: {},
+    start: null,
+    showIcon: 1,
+    folder: null,
+    origin: null,
+  };
+}
+
+function hydrateNativeEffect(specimen, draft) {
+  if (!specimen) return draft;
+
+  const clone = foundry.utils.deepClone(specimen);
+  const id = draft?._id ?? foundry.utils.randomID();
+  clone._id = id;
+
+  const merged = foundry.utils.mergeObject(
+    clone,
+    foundry.utils.deepClone(draft),
+    {
+      inplace: false,
+      overwrite: true,
+      recursive: true,
+    }
+  );
+
+  merged._id = id;
+  merged.origin = null;
+  return merged;
+}
+
+function hydrateNativeAction(specimen, draft) {
+  const clone = foundry.utils.deepClone(specimen);
+  const id = draft?._id ?? foundry.utils.randomID();
+
+  clone._id = id;
+
+  // Merge onto a known-valid Foundryborne ActionField source so fields added or
+  // made mandatory by 2.9.4 are retained instead of guessed by the Toolkit.
+  const merged = foundry.utils.mergeObject(
+    clone,
+    foundry.utils.deepClone(draft),
+    {
+      inplace: false,
+      overwrite: true,
+      recursive: true,
+    }
+  );
+
+  merged._id = id;
+  merged.systemPath = "actions";
+  merged.baseAction = false;
+  merged.originItem ??= { type: "itemCollection" };
+  merged.triggers ??= [];
+  merged.areas ??= [];
+  merged.effects ??= [];
+  merged.cost ??= [];
+  merged.uses ??= {
+    value: null,
+    max: "",
+    recovery: null,
+    consumeOnSuccess: false,
+  };
+
+  return merged;
+}
+
+function hydrateNativeProneEffect(specimen, draft) {
+  if (!specimen) return draft;
+
+  const clone = foundry.utils.deepClone(specimen);
+  const id = draft?._id ?? foundry.utils.randomID();
+  clone._id = id;
+
+  const merged = foundry.utils.mergeObject(
+    clone,
+    foundry.utils.deepClone(draft),
+    {
+      inplace: false,
+      overwrite: true,
+      recursive: true,
+    }
+  );
+
+  merged._id = id;
+  merged.statuses = ["prone"];
+  merged.origin = null;
+  return merged;
+}
+
+async function applyArtilleryDomainCardAutomation(data, raw) {
+  const sourceId = String(raw?.id ?? "");
+  if (!sourceId.startsWith("homebrew.artificer.domain-card.artillery.")) return null;
+
+  const nativeSpecimens = await nativeDomainActionSpecimens();
+
+  data.flags ??= {};
+  data.flags[FLAG_SCOPE] ??= {};
+  data.flags[FLAG_SCOPE].artilleryAutomation = {
+    version: ARTILLERY_AUTOMATION_VERSION,
+    status: "text-only",
+  };
+
+  const actionMap = {};
+  const register = (action) => {
+    actionMap[action._id] = action;
+    return action;
+  };
+
+  if (sourceId.endsWith(".concussive-shot")) {
+    const action = register(artilleryAttackAction({
+      name: "Décharge concussive",
+      description:
+        "<p>Après une attaque réussie, marquez 1 Stress. La cible est repoussée d’un cran de portée et effectue un jet de Réaction d’Agilité (12). En cas d’échec, elle est mise À terre. Si un adversaire est mis À terre ainsi, il marque aussi 1 Stress.</p><p><em>Le recul et le Stress de la cible restent à appliquer manuellement.</em></p>",
+      img: "icons/magic/sonic/explosion-shock-wave-teal.webp",
+      targetAmount: 1,
+      stressCost: 1,
+      saveTrait: "agility",
+      saveDifficulty: 12,
+    }));
+    action.roll.type = null;
+    const prone = hydrateNativeProneEffect(
+      nativeSpecimens.proneEffect,
+      artilleryProneEffect(
+        "<p>Échec au jet de Réaction d’Agilité (12) de Tir concussif.</p>"
+      )
+    );
+    addArtilleryEffectToAction(data, action, prone, { onSave: false });
+
+    data.flags[FLAG_SCOPE].artilleryAutomation = {
+      version: ARTILLERY_AUTOMATION_VERSION,
+      status: "partial-native",
+      automated: ["stress-cost", "agility-reaction-12", "prone-on-failed-save"],
+      manual: ["forced-movement-one-range-step", "target-stress-if-adversary-and-prone"],
+    };
+  }
+
+  if (sourceId.endsWith(".shockwave")) {
+    const action = register(artilleryAttackAction({
+      name: "Onde de choc",
+      description:
+        "<p>Effectuez un jet d’Incantation contre une cible à portée Lointaine. En cas de réussite, les adversaires à portée Très proche de la cible effectuent un jet de Réaction d’Agilité (13). Ils subissent 1d6+2 dégâts physiques dans tous les cas ; ceux qui échouent sont également mis À terre.</p>",
+      img: "icons/magic/earth/projectile-stone-landslide.webp",
+      range: "far",
+      rollType: "spellcast",
+      saveTrait: "agility",
+      saveDifficulty: 13,
+      saveDamageMod: "none",
+    }));
+    action.damage.main = artilleryDamage({
+      dice: "d6",
+      count: 1,
+      bonus: 2,
+      damageType: "physical",
+    });
+    action.areas = [{
+      name: "Onde de choc",
+      type: "placed",
+      shape: "emanation",
+      size: "veryClose",
+      effects: [],
+      hasHole: false,
+    }];
+    const prone = hydrateNativeProneEffect(
+      nativeSpecimens.proneEffect,
+      artilleryProneEffect(
+        "<p>Échec au jet de Réaction d’Agilité (13) d’Onde de choc.</p>"
+      )
+    );
+    addArtilleryEffectToAction(data, action, prone, { onSave: false });
+
+    data.flags[FLAG_SCOPE].artilleryAutomation = {
+      version: ARTILLERY_AUTOMATION_VERSION,
+      status: "native",
+      automated: [
+        "spellcast-roll",
+        "far-range",
+        "very-close-area",
+        "physical-damage-1d6+2",
+        "agility-reaction-13",
+        "prone-on-failed-save",
+      ],
+      manual: [],
+    };
+  }
+
+  if (sourceId.endsWith(".carpet-bomb")) {
+    const action = register(artilleryAttackAction({
+      name: "Bombardement en tapis",
+      description:
+        "<p>Une fois par repos long, effectuez un jet d’Incantation contre un point à portée Lointaine. En cas de réussite, tous les adversaires dans une zone Très proche subissent 3d10+5 dégâts physiques et effectuent un jet de Réaction d’Agilité (15). Ceux qui échouent sont mis À terre.</p><p><strong>Réussite critique :</strong> étendez manuellement la zone à portée Proche.</p>",
+      img: "icons/magic/fire/projectile-meteor-salvo-strong-red.webp",
+      range: "far",
+      rollType: "spellcast",
+      saveTrait: "agility",
+      saveDifficulty: 15,
+      saveDamageMod: "none",
+      usesMax: "1",
+      recovery: "longRest",
+      consumeOnSuccess: false,
+    }));
+    action.damage.main = artilleryDamage({
+      dice: "d10",
+      count: 3,
+      bonus: 5,
+      damageType: "physical",
+    });
+    action.areas = [{
+      name: "Bombardement en tapis",
+      type: "placed",
+      shape: "emanation",
+      size: "veryClose",
+      effects: [],
+      hasHole: false,
+    }];
+    const prone = hydrateNativeProneEffect(
+      nativeSpecimens.proneEffect,
+      artilleryProneEffect(
+        "<p>Échec au jet de Réaction d’Agilité (15) de Bombardement en tapis.</p>"
+      )
+    );
+    addArtilleryEffectToAction(data, action, prone, { onSave: false });
+
+    data.flags[FLAG_SCOPE].artilleryAutomation = {
+      version: ARTILLERY_AUTOMATION_VERSION,
+      status: "partial-native",
+      automated: [
+        "spellcast-roll",
+        "far-range",
+        "very-close-area",
+        "physical-damage-3d10+5",
+        "agility-reaction-15",
+        "prone-on-failed-save",
+        "one-per-long-rest",
+      ],
+      manual: ["critical-success-expand-area-to-close"],
+    };
+  }
+
+
+
+  if (sourceId.endsWith(".battle-rhythm")) {
+    register(
+      artilleryBaseAction({
+        name: "Moment de calme",
+        description:
+          "<p>Une fois par repos, pendant un moment de calme entre deux vagues, effacez 2 Stress et gagnez 1 Cob Round.</p>",
+        type: "effect",
+        img: ARTILLERY_DOMAIN_DEFINITION.src,
+        range: "self",
+        targetAmount: null,
+        usesMax: "1",
+        recovery: "shortRest",
+        consumeOnSuccess: false,
+      })
+    );
+
+    data.flags[FLAG_SCOPE].artilleryAutomation = {
+      version: ARTILLERY_AUTOMATION_VERSION,
+      status: "runtime-authoritative",
+      automated: [
+        "critical-attack-clear-1-stress-runtime",
+        "calm-clear-2-stress-runtime",
+        "calm-gain-1-cob-round-runtime",
+        "one-per-rest-native",
+      ],
+      manual: [],
+      runtimeApi: "artificerResource",
+    };
+  }
+
+  if (sourceId.endsWith(".decisive-strike")) {
+    register(
+      artilleryBaseAction({
+        name: "Armer Frappe décisive",
+        description:
+          "<p>Une fois par repos long, avant votre prochain jet d’attaque, dépensez tous vos Cob Rounds. Le prochain jet d’attaque gagne +1 et +2d6 dégâts par Cob Round dépensé. En cas de réussite, la cible ne peut pas effectuer de Réactions jusqu’au début de votre prochaine action.</p>",
+        type: "effect",
+        img: ARTILLERY_DOMAIN_DEFINITION.src,
+        range: "self",
+        targetAmount: null,
+        usesMax: "1",
+        recovery: "longRest",
+        consumeOnSuccess: false,
+      })
+    );
+
+    data.flags[FLAG_SCOPE].artilleryAutomation = {
+      version: ARTILLERY_AUTOMATION_VERSION,
+      status: "partial-runtime",
+      automated: [
+        "spend-all-cob-rounds-runtime",
+        "next-attack-bonus-plus-one-per-cob-runtime-effect",
+        "next-damage-plus-2d6-per-cob-manual-chat",
+        "effect-consumed-on-next-attack",
+        "one-per-long-rest-native",
+      ],
+      manual: [
+        "successful-target-cannot-react-until-start-of-next-action",
+      ],
+      runtimeApi: "artificerResource",
+    };
+  }
+
+  if (sourceId.endsWith(".heavy-volley")) {
+    const effect = hydrateNativeEffect(
+      nativeSpecimens.transferEffect,
+      artilleryEffectDraft({
+        name: "Volée lourde",
+        description:
+          "<p>Ajoute un dé aux jets de dégâts : d6 au Tier 1, d8 au Tier 2, d10 au Tier 3, d12 au Tier 4.</p><p><em>P2.11c.4b automatise nativement le bonus Tier 1 ; le changement de taille du dé avec le Tier reste suivi par le flag Toolkit jusqu’à ce qu’un hook de scaling sûr soit validé.</em></p>",
+        transfer: true,
+        disabled: false,
+        img: "icons/skills/ranged/arrows-flying-salvo-blue.webp",
+        changes: [
+          {
+            key: "system.bonuses.damage.physical.dice",
+            type: "add",
+            value: "d6",
+            priority: null,
+            phase: "initial",
+          },
+          {
+            key: "system.bonuses.damage.magical.dice",
+            type: "add",
+            value: "d6",
+            priority: null,
+            phase: "initial",
+          },
+        ],
+      })
+    );
+    data.effects ??= [];
+    data.effects.push(effect);
+
+    data.flags[FLAG_SCOPE].artilleryAutomation = {
+      version: ARTILLERY_AUTOMATION_VERSION,
+      status: "partial-native",
+      automated: ["tier-1-extra-d6-physical", "tier-1-extra-d6-magical"],
+      manual: ["tier-scaling-d6-d8-d10-d12"],
+      tierScaling: {
+        1: "d6",
+        2: "d8",
+        3: "d10",
+        4: "d12",
+      },
+    };
+  }
+
+  if (sourceId.endsWith(".siege-stance")) {
+    const stance = hydrateNativeEffect(
+      nativeSpecimens.transferEffect,
+      artilleryEffectDraft({
+        name: "Posture de siège",
+        description:
+          "<p>Tant que la posture est active : +2 aux jets d’attaque et +1d8 aux jets de dégâts. Vous ne pouvez pas être déplacé contre votre volonté. La posture prend fin dès que vous vous déplacez.</p><p><em>L’immunité au déplacement forcé et la fin automatique au mouvement restent manuelles dans P2.11c.4b.</em></p>",
+        transfer: false,
+        disabled: false,
+        img: "icons/skills/ranged/cannon-barrel-firing-orange.webp",
+        changes: [
+          {
+            key: "system.bonuses.roll.attack.bonus",
+            type: "add",
+            value: 2,
+            priority: null,
+            phase: "initial",
+          },
+          {
+            key: "system.bonuses.damage.physical.dice",
+            type: "add",
+            value: "d8",
+            priority: null,
+            phase: "initial",
+          },
+          {
+            key: "system.bonuses.damage.magical.dice",
+            type: "add",
+            value: "d8",
+            priority: null,
+            phase: "initial",
+          },
+        ],
+      })
+    );
+    data.effects ??= [];
+    data.effects.push(stance);
+
+    const action = register(
+      artilleryBaseAction({
+        name: "Adopter la posture de siège",
+        description:
+          "<p>Une fois par repos, adoptez la Posture de siège : +2 aux attaques et +1d8 dégâts tant que vous ne vous déplacez pas.</p>",
+        type: "effect",
+        img: "icons/skills/ranged/cannon-barrel-firing-orange.webp",
+        usesMax: "1",
+        recovery: "shortRest",
+        consumeOnSuccess: false,
+      })
+    );
+    action.effects = [{ _id: stance._id, onSave: false }];
+
+    data.flags[FLAG_SCOPE].artilleryAutomation = {
+      version: ARTILLERY_AUTOMATION_VERSION,
+      status: "partial-native",
+      automated: [
+        "one-per-rest",
+        "attack-bonus-2",
+        "extra-d8-physical",
+        "extra-d8-magical",
+        "apply-siege-stance-effect",
+      ],
+      manual: [
+        "forced-movement-immunity",
+        "remove-effect-when-actor-moves",
+      ],
+    };
+  }
+
+  if (!Object.keys(actionMap).length) return data.flags[FLAG_SCOPE].artilleryAutomation;
+
+  const hydratedActions = Object.values(actionMap).map((draft) => {
+    const type = normalizedChoice(draft?.type);
+    const specimen =
+      nativeSpecimens[type] ??
+      nativeSpecimens.attack;
+    return hydrateNativeAction(specimen, draft);
+  });
+
+  // Preserve the same source container shape as existing valid domain cards in
+  // this exact Foundryborne runtime.
+  data.system.actions =
+    nativeSpecimens.actionContainer === "object"
+      ? Object.fromEntries(hydratedActions.map((action) => [action._id, action]))
+      : hydratedActions;
+
+  data.flags[FLAG_SCOPE].artilleryAutomation.specimen = {
+    actionContainer: nativeSpecimens.actionContainer,
+    nativeAttack: true,
+    nativeProne: Boolean(nativeSpecimens.proneEffect),
+  };
+
+  return data.flags[FLAG_SCOPE].artilleryAutomation;
+}
+
 export async function buildItem(entry) {
   const raw = entry.data;
   const r = rules(raw);
@@ -889,7 +1917,9 @@ export async function buildItem(entry) {
 
       const icon = domainIcon(domain);
       if (icon) data.img = icon;
-      else gaps.push("img.domain");
+      else if (normalizedChoice(domain) === HUNT_DOMAIN_ID) {
+        data.img = HUNT_DOMAIN_DEFINITION.src;
+      } else gaps.push("img.domain");
     }
 
     const level = Number(r.level ?? raw?.level);
@@ -904,6 +1934,10 @@ export async function buildItem(entry) {
     const cardType = normalizedChoice(r.card_type ?? r.cardType ?? raw?.card_type);
     if (["ability", "spell", "grimoire"].includes(cardType)) data.system.type = cardType;
     else if (cardType) gaps.push("system.type");
+
+    if (normalizedChoice(data.system.domain) === ARTILLERY_DOMAIN_ID) {
+      await applyArtilleryDomainCardAutomation(data, raw);
+    }
   }
 
   if (entry.kind === "weapon" || entry.kind === "armor") {
@@ -1092,7 +2126,7 @@ function huntingNotesHtml(raw) {
   }
 
   if (Array.isArray(hunting.loot) && hunting.loot.length) {
-    lines.push("<h4>Composants / Récolte</h4>");
+    lines.push("<h4>Parties et butin</h4>");
     lines.push("<ul>");
     for (const loot of hunting.loot) {
       const part = esc(loot?.part ?? "Butin");
@@ -1471,6 +2505,1721 @@ export async function mappingAudit() {
   return rows;
 }
 
+
+export async function importCanonicalDomainCard(sourcePath) {
+  if (!game.user?.isGM) {
+    throw new Error("L’import d’une carte de domaine Toolkit est réservé au MJ.");
+  }
+
+  const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
+  if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
+    throw new Error(`Chemin de carte de domaine non autorisé: ${cleanPath}`);
+  }
+
+  const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, {
+    cache: "no-store",
+  });
+  if (!response.ok) {
+    throw new Error(`${cleanPath} introuvable (${response.status}).`);
+  }
+
+  const raw = await response.json();
+  if (raw?.kind !== "domain_card" || !raw?.id) {
+    throw new Error(`${cleanPath} n’est pas une carte de domaine canonique valide.`);
+  }
+
+  if (normalizedChoice(raw?.domain) === HUNT_DOMAIN_ID) {
+    const registration = await ensureHuntDomain();
+    if (!registration.green) {
+      throw new Error("Le domaine Chasse n’a pas pu être enregistré dans Foundryborne.");
+    }
+  }
+  if (normalizedChoice(raw?.domain) === ARTILLERY_DOMAIN_ID) {
+    const registration = await ensureArtilleryDomain();
+    if (!registration.green) {
+      throw new Error("Le domaine Artillery n’a pas pu être enregistré dans Foundryborne.");
+    }
+  }
+
+  const entry = {
+    kind: "domain_card",
+    key: raw.id,
+    corpus: raw?.source?.corpus ?? "homebrew",
+    source_path: cleanPath,
+    data: raw,
+  };
+
+  const data = await buildItem(entry);
+  data.flags ??= {};
+  data.flags[FLAG_SCOPE] ??= {};
+  data.flags[FLAG_SCOPE].managed = true;
+  data.flags[FLAG_SCOPE].kind = "domain_card";
+  data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
+  data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
+
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) {
+    throw new Error("Compendium Toolkit dh-domain-cards absent.");
+  }
+
+  await pack.configure({ locked: false });
+  try {
+    const docs = await pack.getDocuments();
+    const previous = docs.filter(
+      (doc) => doc.flags?.[FLAG_SCOPE]?.sourceId === raw.id
+    );
+
+    for (const doc of previous) {
+      await doc.delete();
+    }
+
+    const created = await Item.create(data, {
+      pack: pack.collection,
+    });
+
+    ui.notifications.info(
+      `Campaign Toolkit : ${created.name} importée dans dh-domain-cards.`
+    );
+
+    return created;
+  } finally {
+    await pack.configure({ locked: true });
+  }
+}
+
+
+
+
+export async function normalizeHuntCardIcons() {
+  if (!game.user?.isGM) {
+    throw new Error("La normalisation des icônes Chasse est réservée au MJ.");
+  }
+
+  const domain = await ensureHuntDomain();
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) {
+    throw new Error("Compendium Toolkit dh-domain-cards absent.");
+  }
+
+  let packChanged = 0;
+  let actorChanged = 0;
+
+  await pack.configure({ locked: false });
+  try {
+    const docs = await pack.getDocuments();
+    for (const doc of docs) {
+      if (
+        doc.type === "domainCard" &&
+        normalizedChoice(doc.system?.domain) === HUNT_DOMAIN_ID &&
+        doc.img !== HUNT_DOMAIN_DEFINITION.src
+      ) {
+        await doc.update({ img: HUNT_DOMAIN_DEFINITION.src });
+        packChanged += 1;
+      }
+    }
+  } finally {
+    await pack.configure({ locked: true });
+  }
+
+  for (const actor of game.actors ?? []) {
+    const updates = actor.items
+      .filter(
+        (item) =>
+          item.type === "domainCard" &&
+          normalizedChoice(item.system?.domain) === HUNT_DOMAIN_ID &&
+          item.img !== HUNT_DOMAIN_DEFINITION.src
+      )
+      .map((item) => ({
+        _id: item.id,
+        img: HUNT_DOMAIN_DEFINITION.src,
+      }));
+
+    if (updates.length) {
+      await actor.updateEmbeddedDocuments("Item", updates);
+      actorChanged += updates.length;
+    }
+  }
+
+  const result = {
+    green: true,
+    icon: HUNT_DOMAIN_DEFINITION.src,
+    domainChanged: domain.changed,
+    packChanged,
+    actorChanged,
+    changed: domain.changed || packChanged > 0 || actorChanged > 0,
+  };
+
+  console.log(`${MODULE_ID} | P2.11b.1 Hunt icon normalized`, result);
+  ui.notifications.info(
+    `Campaign Toolkit : icône Chasse synchronisée (${packChanged} compendium, ${actorChanged} personnage(s)).`
+  );
+  return result;
+}
+
+export async function huntIconStatus() {
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) return { green: false, reason: "dh-domain-cards absent" };
+
+  const docs = await pack.getDocuments();
+  const packCards = docs.filter(
+    (doc) =>
+      doc.type === "domainCard" &&
+      normalizedChoice(doc.system?.domain) === HUNT_DOMAIN_ID
+  );
+
+  const actorCards = [];
+  for (const actor of game.actors ?? []) {
+    for (const item of actor.items ?? []) {
+      if (
+        item.type === "domainCard" &&
+        normalizedChoice(item.system?.domain) === HUNT_DOMAIN_ID
+      ) {
+        actorCards.push({
+          actor: actor.name,
+          actorId: actor.id,
+          item: item.name,
+          itemId: item.id,
+          img: item.img,
+          green: item.img === HUNT_DOMAIN_DEFINITION.src,
+        });
+      }
+    }
+  }
+
+  const allDomains = CONFIG?.DH?.DOMAIN?.allDomains?.() ?? {};
+  const configDomain = allDomains[HUNT_DOMAIN_ID] ?? CONFIG?.DH?.DOMAIN?.domains?.[HUNT_DOMAIN_ID] ?? null;
+
+  const rows = packCards.map((doc) => ({
+    scope: "compendium",
+    owner: "dh-domain-cards",
+    name: doc.name,
+    id: doc.id,
+    img: doc.img,
+    green: doc.img === HUNT_DOMAIN_DEFINITION.src,
+  })).concat(actorCards.map((row) => ({
+    scope: "actor",
+    owner: row.actor,
+    name: row.item,
+    id: row.itemId,
+    img: row.img,
+    green: row.green,
+  })));
+
+  const result = {
+    green:
+      configDomain?.src === HUNT_DOMAIN_DEFINITION.src &&
+      rows.every((row) => row.green),
+    icon: HUNT_DOMAIN_DEFINITION.src,
+    domainIcon: configDomain?.src ?? null,
+    compendiumCards: packCards.length,
+    actorCards: actorCards.length,
+    invalid: rows.filter((row) => !row.green),
+    rows,
+  };
+
+  console.table(rows);
+  return result;
+}
+
+
+export async function normalizeHuntCardRoles() {
+  if (!game.user?.isGM) {
+    throw new Error("La normalisation des rôles Chasse est réservée au MJ.");
+  }
+
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) {
+    throw new Error("Compendium Toolkit dh-domain-cards absent.");
+  }
+
+  const docs = await pack.getDocuments();
+  const changes = [];
+  const missing = [];
+
+  await pack.configure({ locked: false });
+  try {
+    for (const [expectedName, roles] of Object.entries(HUNT_CARD_ROLE_CONTRACT)) {
+      const key = normalizedHuntCardName(expectedName);
+      const candidates = docs.filter(
+        (doc) =>
+          normalizedHuntCardName(doc.name) === key &&
+          normalizedChoice(doc.system?.domain) === HUNT_DOMAIN_ID
+      );
+
+      if (candidates.length !== 1) {
+        missing.push({
+          name: expectedName,
+          found: candidates.length,
+        });
+        continue;
+      }
+
+      const doc = candidates[0];
+      const current =
+        doc.flags?.[FLAG_SCOPE]?.huntingCardRoles ?? {};
+
+      const next = {
+        schemaVersion: HUNT_CARD_ROLE_SCHEMA_VERSION,
+        combatRole: roles.combatRole,
+        huntRole: roles.huntRole,
+      };
+
+      if (
+        current.schemaVersion === next.schemaVersion &&
+        current.combatRole === next.combatRole &&
+        current.huntRole === next.huntRole
+      ) {
+        continue;
+      }
+
+      await doc.update({
+        [`flags.${FLAG_SCOPE}.huntingCardRoles`]: next,
+      });
+
+      changes.push({
+        id: doc.id,
+        name: doc.name,
+        combatRole: next.combatRole,
+        huntRole: next.huntRole,
+      });
+    }
+  } finally {
+    await pack.configure({ locked: true });
+  }
+
+  const result = {
+    green: missing.length === 0,
+    expected: Object.keys(HUNT_CARD_ROLE_CONTRACT).length,
+    changed: changes.length,
+    missing,
+    changes,
+  };
+
+  console.table(
+    Object.entries(HUNT_CARD_ROLE_CONTRACT).map(([name, roles]) => ({
+      name,
+      combatRole: roles.combatRole,
+      huntRole: roles.huntRole,
+    }))
+  );
+  console.log(`${MODULE_ID} | P2.11a.4 Hunt card roles`, result);
+
+  if (result.green) {
+    ui.notifications.info(
+      `Campaign Toolkit : rôles Chasse normalisés (${changes.length} modification(s)).`
+    );
+  } else {
+    ui.notifications.warn(
+      `Campaign Toolkit : rôles Chasse incomplets (${missing.length} anomalie(s)).`
+    );
+  }
+
+  return result;
+}
+
+export async function huntCardRoleStatus() {
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) {
+    return { green: false, reason: "dh-domain-cards absent" };
+  }
+
+  const docs = await pack.getDocuments();
+  const rows = Object.entries(HUNT_CARD_ROLE_CONTRACT).map(([expectedName, roles]) => {
+    const key = normalizedHuntCardName(expectedName);
+    const candidates = docs.filter(
+      (doc) =>
+        normalizedHuntCardName(doc.name) === key &&
+        normalizedChoice(doc.system?.domain) === HUNT_DOMAIN_ID
+    );
+
+    const doc = candidates.length === 1 ? candidates[0] : null;
+    const stored = doc?.flags?.[FLAG_SCOPE]?.huntingCardRoles ?? null;
+
+    return {
+      expectedName,
+      found: Boolean(doc),
+      id: doc?.id ?? null,
+      domain: doc?.system?.domain ?? null,
+      combatRole: stored?.combatRole ?? null,
+      huntRole: stored?.huntRole ?? null,
+      expectedCombatRole: roles.combatRole,
+      expectedHuntRole: roles.huntRole,
+      schemaVersion: stored?.schemaVersion ?? null,
+      green:
+        Boolean(doc) &&
+        stored?.schemaVersion === HUNT_CARD_ROLE_SCHEMA_VERSION &&
+        stored?.combatRole === roles.combatRole &&
+        stored?.huntRole === roles.huntRole,
+    };
+  });
+
+  const result = {
+    green: rows.every((row) => row.green),
+    expected: rows.length,
+    valid: rows.filter((row) => row.green).length,
+    combat: {
+      opener: rows.filter((row) => row.combatRole === "opener").length,
+      finisher: rows.filter((row) => row.combatRole === "finisher").length,
+      support: rows.filter((row) => row.combatRole === "support").length,
+      none: rows.filter((row) => row.combatRole == null).length,
+    },
+    hunt: {
+      preparation: rows.filter((row) => row.huntRole === "preparation").length,
+      extraction: rows.filter((row) => row.huntRole === "extraction").length,
+      knowledge: rows.filter((row) => row.huntRole === "knowledge").length,
+      logistics: rows.filter((row) => row.huntRole === "logistics").length,
+      tracking: rows.filter((row) => row.huntRole === "tracking").length,
+      none: rows.filter((row) => row.huntRole == null).length,
+    },
+    rows,
+  };
+
+  console.table(rows);
+  return result;
+}
+
+
+export async function migrateLegacyHuntCards() {
+  if (!game.user?.isGM) {
+    throw new Error("La migration Valor → Chasse est réservée au MJ.");
+  }
+
+  const domain = await ensureHuntDomain();
+  if (!domain.green) {
+    throw new Error("Le domaine Chasse n’est pas disponible.");
+  }
+
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) {
+    throw new Error("Compendium Toolkit dh-domain-cards absent.");
+  }
+
+  const docs = await pack.getDocuments();
+
+  const isMonsterHunterLegacyCard = (doc) => {
+    if (!isLegacyHuntCardName(doc.name)) return false;
+
+    // Runtime compendium rows produced by the older homebrew rail do not
+    // necessarily carry sourcePath/sourceId provenance flags. The historical
+    // discriminator we *do* have is the temporary domain assignment itself:
+    // Monster Hunter cards lived in Valor. Once migrated, they live in Hunt.
+    //
+    // This also safely excludes same-name core cards such as Bone/Tacticien.
+    const domain = normalizedChoice(doc.system?.domain);
+    return domain === "valor" || domain === HUNT_DOMAIN_ID;
+  };
+
+  const candidates = docs.filter(isMonsterHunterLegacyCard);
+
+  const byName = new Map(
+    candidates.map((doc) => [normalizedHuntCardName(doc.name), doc])
+  );
+
+  const missing = LEGACY_HUNT_CARD_NAMES.filter(
+    (name) => !byName.has(normalizedHuntCardName(name))
+  );
+
+  const wrongDomain = [];
+  const alreadyHunt = [];
+  const migrated = [];
+
+  await pack.configure({ locked: false });
+
+  try {
+    for (const name of LEGACY_HUNT_CARD_NAMES) {
+      const doc = byName.get(normalizedHuntCardName(name));
+      if (!doc) continue;
+
+      const currentDomain = normalizedChoice(doc.system?.domain);
+
+      if (currentDomain === HUNT_DOMAIN_ID) {
+        alreadyHunt.push(doc.name);
+        continue;
+      }
+
+      if (currentDomain !== "valor") {
+        wrongDomain.push({
+          name: doc.name,
+          domain: doc.system?.domain ?? null,
+        });
+        continue;
+      }
+
+      const update = {
+        "system.domain": HUNT_DOMAIN_ID,
+      };
+
+      const currentImg = String(doc.img ?? "");
+      if (
+        !currentImg ||
+        /(?:^|\/)domains\/valor\.(?:png|webp|svg)$/i.test(currentImg) ||
+        currentImg === "icons/svg/item-bag.svg"
+      ) {
+        update.img = HUNT_DOMAIN_DEFINITION.src;
+      }
+
+      await doc.update(update);
+
+      migrated.push({
+        id: doc.id,
+        name: doc.name,
+        sourceId: doc.flags?.[FLAG_SCOPE]?.sourceId ?? null,
+        from: currentDomain,
+        to: HUNT_DOMAIN_ID,
+      });
+    }
+  } finally {
+    await pack.configure({ locked: true });
+  }
+
+  const result = {
+    green: missing.length === 0 && wrongDomain.length === 0,
+    expected: LEGACY_HUNT_CARD_NAMES.length,
+    found: candidates.length,
+    migrated: migrated.length,
+    alreadyHunt: alreadyHunt.length,
+    missing,
+    wrongDomain,
+    cards: migrated,
+  };
+
+  console.table(
+    [
+      ...migrated.map((card) => ({
+        name: card.name,
+        status: "migrated",
+        from: card.from,
+        to: card.to,
+        sourceId: card.sourceId,
+      })),
+      ...alreadyHunt.map((name) => ({
+        name,
+        status: "already-hunt",
+        from: "hunt",
+        to: "hunt",
+        sourceId:
+          byName.get(normalizedHuntCardName(name))?.flags?.[FLAG_SCOPE]?.sourceId ??
+          null,
+      })),
+      ...wrongDomain.map((row) => ({
+        name: row.name,
+        status: "wrong-domain",
+        from: row.domain,
+        to: "hunt",
+        sourceId:
+          byName.get(normalizedHuntCardName(row.name))?.flags?.[FLAG_SCOPE]?.sourceId ??
+          null,
+      })),
+      ...missing.map((name) => ({
+        name,
+        status: "missing",
+        from: null,
+        to: "hunt",
+        sourceId: null,
+      })),
+    ]
+  );
+
+  console.log(`${MODULE_ID} | P2.11a.2 legacy Hunt migration`, result);
+
+  if (result.green) {
+    ui.notifications.info(
+      `Campaign Toolkit : ${LEGACY_HUNT_CARD_NAMES.length} cartes Chasse validées (${migrated.length} migrées).`
+    );
+  } else {
+    ui.notifications.warn(
+      `Campaign Toolkit : migration Chasse incomplète — ${missing.length} absente(s), ${wrongDomain.length} domaine(s) inattendu(s).`
+    );
+  }
+
+  return result;
+}
+
+export async function huntMigrationStatus() {
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) {
+    return { green: false, reason: "dh-domain-cards absent" };
+  }
+
+  const docs = await pack.getDocuments();
+
+  const isMonsterHunterLegacyCard = (doc) => {
+    const domain = normalizedChoice(doc.system?.domain);
+    return domain === "valor" || domain === HUNT_DOMAIN_ID;
+  };
+
+  const rows = LEGACY_HUNT_CARD_NAMES.map((name) => {
+    const key = normalizedHuntCardName(name);
+
+    // Prefer the migrated Hunt row if both variants somehow coexist, then
+    // fall back to the legacy Valor row.
+    const matching = docs.filter(
+      (candidate) =>
+        isMonsterHunterLegacyCard(candidate) &&
+        normalizedHuntCardName(candidate.name) === key
+    );
+
+    const doc =
+      matching.find(
+        (candidate) => normalizedChoice(candidate.system?.domain) === HUNT_DOMAIN_ID
+      ) ??
+      matching.find(
+        (candidate) => normalizedChoice(candidate.system?.domain) === "valor"
+      ) ??
+      null;
+
+    return {
+      expectedName: name,
+      found: Boolean(doc),
+      id: doc?.id ?? null,
+      name: doc?.name ?? null,
+      domain: doc?.system?.domain ?? null,
+      level: doc?.system?.level ?? null,
+      recallCost: doc?.system?.recallCost ?? null,
+      cardType: doc?.system?.type ?? null,
+      sourceId: doc?.flags?.[FLAG_SCOPE]?.sourceId ?? null,
+    };
+  });
+
+  const green = rows.every(
+    (row) => row.found && normalizedChoice(row.domain) === HUNT_DOMAIN_ID
+  );
+
+  console.table(rows);
+  return {
+    green,
+    expected: LEGACY_HUNT_CARD_NAMES.length,
+    found: rows.filter((row) => row.found).length,
+    hunt: rows.filter(
+      (row) => normalizedChoice(row.domain) === HUNT_DOMAIN_ID
+    ).length,
+    rows,
+  };
+}
+
+
+const ARTIFICER_CLASS_SOURCE =
+  "data/homebrew/artificer/classes/artificer.json";
+const ARTIFICER_SUBCLASS_SOURCES = Object.freeze([
+  "data/homebrew/artificer/subclasses/armorer.json",
+  "data/homebrew/artificer/subclasses/battle-smith.json",
+]);
+const ARTILLERY_CARD_SOURCE =
+  "data/homebrew/artificer/domains/artillery/domain-cards.json";
+
+async function loadCanonicalHomebrewJson(sourcePath) {
+  const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
+  if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
+    throw new Error(`Chemin homebrew non autorisé: ${cleanPath}`);
+  }
+  const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, {
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error(`${cleanPath} introuvable (${response.status}).`);
+  return {
+    cleanPath,
+    payload: await response.json(),
+  };
+}
+
+function neutralRichText(text) {
+  const value = String(text ?? "").trim();
+  if (!value) return "";
+  return `<p>${foundry.utils.escapeHTML(value)}</p>`;
+}
+
+function sourceFeatureRecords(raw, sourcePath) {
+  const records = [];
+
+  if (raw?.kind === "class") {
+    if (raw?.hope_feature?.name && raw?.hope_feature?.text) {
+      records.push({
+        name: raw.hope_feature.name,
+        text: raw.hope_feature.text,
+        linkType: "hope",
+        tier: null,
+        featureType: "hope",
+      });
+    }
+    for (const feature of raw?.features ?? []) {
+      if (!feature?.name || !feature?.text) continue;
+      records.push({
+        name: feature.name,
+        text: feature.text,
+        linkType: "class",
+        tier: null,
+        featureType: "class",
+      });
+    }
+  }
+
+  if (raw?.kind === "subclass") {
+    for (const feature of raw?.features ?? []) {
+      if (!feature?.name || !feature?.text) continue;
+      records.push({
+        name: feature.name,
+        text: feature.text,
+        linkType: normalizedChoice(feature.tier),
+        tier: normalizedChoice(feature.tier),
+        featureType: "subclass",
+      });
+    }
+  }
+
+  return records.map((record, index) => ({
+    ...record,
+    index,
+    sourcePath,
+  }));
+}
+
+async function upsertHomebrewFeature(parentRaw, record) {
+  const pack = game.packs.get(`${MODULE_ID}.dh-features`);
+  if (!pack) throw new Error("Compendium Toolkit dh-features absent.");
+
+  const feature = {
+    name: record.name,
+    text: record.text,
+    type: "passive",
+  };
+  const data = await buildLinkedSourceFeature(
+    feature,
+    parentRaw,
+    record.sourcePath,
+    record.index,
+    record.linkType,
+  );
+
+  data.system.description = neutralRichText(record.text);
+  data.flags ??= {};
+  data.flags[FLAG_SCOPE] ??= {};
+  data.flags[FLAG_SCOPE].managed = true;
+  data.flags[FLAG_SCOPE].kind = "class_feature";
+  data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
+  data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
+  data.flags[FLAG_SCOPE].sourceFeatureType = record.featureType;
+  data.flags[FLAG_SCOPE].sourceFeatureTier = record.tier;
+
+  const sourceId = data.flags?.[FLAG_SCOPE]?.sourceId;
+  const docs = await pack.getDocuments();
+  for (const previous of docs.filter(
+    (doc) => doc.flags?.[FLAG_SCOPE]?.sourceId === sourceId
+  )) {
+    await previous.delete();
+  }
+  return Item.create(data, { pack: pack.collection });
+}
+
+function serializeItemLinkSpecimen(value) {
+  if (!value || typeof value !== "object") return null;
+
+  // Foundryborne exposes ItemLink entries as DataModel-like runtime objects.
+  // Mutating a deep-cloned runtime object is not sufficient: its resolved
+  // `item` reference can still point at the specimen source. Always collapse
+  // the specimen to its source payload first.
+  const serialized =
+    value?.toObject?.() ??
+    value?._source ??
+    foundry.utils.deepClone(value);
+
+  if (!serialized || typeof serialized !== "object") return null;
+
+  const link = foundry.utils.deepClone(serialized);
+
+  // `item` is a runtime-resolved document reference, never canonical link data.
+  if ("item" in link) delete link.item;
+
+  return link;
+}
+
+async function nativeLinkSpecimen(ownerType, wantedType) {
+  const wanted = normalizedChoice(wantedType);
+  const packId = ownerType === "class" ? "dh-classes" : "dh-subclasses";
+  const pack = game.packs.get(`${MODULE_ID}.${packId}`);
+
+  // Use an already-valid Toolkit link as schema specimen, but serialize it
+  // before remapping so no resolved Item document from the source class leaks.
+  if (pack) {
+    const docs = await pack.getDocuments();
+    for (const doc of docs) {
+      const links = Array.isArray(doc.system?.features)
+        ? doc.system.features
+        : [];
+      const match = links.find(
+        (link) => normalizedChoice(link?.type) === wanted
+      );
+      if (match) {
+        const serialized = serializeItemLinkSpecimen(match);
+        if (serialized) return serialized;
+      }
+    }
+  }
+
+  // Fallback for future Foundryborne versions where the blank schema template
+  // exposes the ItemLink shape directly.
+  const specimen = await nativeTemplate("Item", ownerType);
+  const links = Array.isArray(specimen?.system?.features)
+    ? specimen.system.features
+    : [];
+  const match = links.find(
+    (link) => normalizedChoice(link?.type) === wanted
+  );
+  if (match) {
+    const serialized = serializeItemLinkSpecimen(match);
+    if (serialized) return serialized;
+  }
+
+  throw new Error(
+    `Aucun ItemLink specimen disponible pour ${ownerType}:${wantedType}.`
+  );
+}
+
+function remapItemLink(specimen, doc, wantedType) {
+  const link = serializeItemLinkSpecimen(specimen);
+  if (!link) {
+    throw new Error(`Aucun ItemLink specimen disponible pour ${wantedType}.`);
+  }
+
+  let mapped = false;
+
+  // Foundryborne 2.10.5 ItemLink source schema observed at runtime:
+  // { uuid, type } with `item` exposed only as a resolved getter.
+  // Prefer uuid explicitly and overwrite it unconditionally when supported.
+  if ("uuid" in link) {
+    link.uuid = doc.uuid;
+    mapped = true;
+  }
+
+  for (const key of ["itemUuid", "value"]) {
+    if (key in link && typeof link[key] === "string") {
+      link[key] = doc.uuid;
+      mapped = true;
+    }
+  }
+
+  for (const key of ["id", "itemId"]) {
+    if (key in link) {
+      link[key] = doc.id;
+      mapped = true;
+    }
+  }
+
+  if ("type" in link) link.type = wantedType;
+  if ("name" in link && typeof link.name === "string") link.name = doc.name;
+  if ("label" in link && typeof link.label === "string") link.label = doc.name;
+
+  // Never persist a resolved document from the specimen.
+  if ("item" in link) delete link.item;
+
+  if (!mapped) {
+    throw new Error(
+      `ItemLink specimen ${wantedType} sans identifiant exploitable: ${JSON.stringify(link)}`
+    );
+  }
+
+  // Fail early if the canonical UUID was not actually remapped.
+  if ("uuid" in link && link.uuid !== doc.uuid) {
+    throw new Error(
+      `ItemLink ${wantedType} mal remappé: ${link.uuid} != ${doc.uuid}`
+    );
+  }
+
+  return link;
+}
+
+async function linkedFeaturePayload(ownerType, records, docs) {
+  const links = [];
+  for (let i = 0; i < records.length; i += 1) {
+    const specimen = await nativeLinkSpecimen(ownerType, records[i].linkType);
+    links.push(remapItemLink(specimen, docs[i], records[i].linkType));
+  }
+  return links;
+}
+
+async function remapNativeDocumentReference(ownerType, fieldName, targetDoc) {
+  const specimen = await nativeTemplate("Item", ownerType);
+  const value = specimen?.system?.[fieldName];
+
+  if (typeof value === "string") return targetDoc.uuid;
+  if (value && typeof value === "object") {
+    const clone = foundry.utils.deepClone(value);
+    let mapped = false;
+    for (const key of ["uuid", "itemUuid"]) {
+      if (key in clone) {
+        clone[key] = targetDoc.uuid;
+        mapped = true;
+      }
+    }
+    for (const key of ["id", "itemId"]) {
+      if (key in clone) {
+        clone[key] = targetDoc.id;
+        mapped = true;
+      }
+    }
+    if (mapped) return clone;
+  }
+
+  // Current Foundryborne accepts UUID-backed class references; fail loudly if
+  // that assumption changes rather than inheriting another subclass's class.
+  return targetDoc.uuid;
+}
+
+async function upsertCanonicalItem(raw, sourcePath, packId, finalizeData = null) {
+  const entry = {
+    kind: raw.kind,
+    key: raw.id,
+    corpus: raw?.source?.corpus ?? "homebrew",
+    source_path: sourcePath,
+    data: raw,
+  };
+  const data = await buildItem(entry);
+
+  data.flags ??= {};
+  data.flags[FLAG_SCOPE] ??= {};
+  data.flags[FLAG_SCOPE].managed = true;
+  data.flags[FLAG_SCOPE].kind = raw.kind;
+  data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
+  data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
+
+  if (typeof finalizeData === "function") {
+    await finalizeData(data);
+  }
+
+  const pack = game.packs.get(`${MODULE_ID}.${packId}`);
+  if (!pack) throw new Error(`Compendium Toolkit ${packId} absent.`);
+
+  const docs = await pack.getDocuments();
+  for (const previous of docs.filter(
+    (doc) => doc.flags?.[FLAG_SCOPE]?.sourceId === raw.id
+  )) {
+    await previous.delete();
+  }
+  return Item.create(data, { pack: pack.collection });
+}
+
+async function importArtificerClass() {
+  const { cleanPath, payload: raw } = await loadCanonicalHomebrewJson(
+    ARTIFICER_CLASS_SOURCE
+  );
+  if (raw?.kind !== "class" || !raw?.id) {
+    throw new Error(`${cleanPath} n’est pas une classe canonique valide.`);
+  }
+
+  // Our integration decision is Codex + Artillery. Register Artillery before
+  // validating the class document.
+  await ensureArtilleryDomain();
+
+  const featureRecords = sourceFeatureRecords(raw, cleanPath);
+  const featureDocs = [];
+  for (const record of featureRecords) {
+    featureDocs.push(await upsertHomebrewFeature(raw, record));
+  }
+
+  const links = await linkedFeaturePayload("class", featureRecords, featureDocs);
+
+  const classDoc = await upsertCanonicalItem(
+    raw,
+    cleanPath,
+    "dh-classes",
+    async (data) => {
+      data.system.features = links;
+      data.flags[FLAG_SCOPE].sourceDomainDecision = {
+        selected: ["codex", "artillery"],
+        conflictingSource: ["codex", "magitech"],
+        status: "homebrew-decision",
+      };
+    },
+  );
+
+  return { classDoc, featureDocs };
+}
+
+async function importArtificerSubclass(sourcePath, classDoc) {
+  const { cleanPath, payload: raw } = await loadCanonicalHomebrewJson(sourcePath);
+  if (raw?.kind !== "subclass" || !raw?.id) {
+    throw new Error(`${cleanPath} n’est pas une sous-classe canonique valide.`);
+  }
+
+  const featureRecords = sourceFeatureRecords(raw, cleanPath);
+  const featureDocs = [];
+  for (const record of featureRecords) {
+    featureDocs.push(await upsertHomebrewFeature(raw, record));
+  }
+
+  const links = await linkedFeaturePayload("subclass", featureRecords, featureDocs);
+  const linkedClass = await remapNativeDocumentReference(
+    "subclass",
+    "linkedClass",
+    classDoc
+  );
+
+  const subclassDoc = await upsertCanonicalItem(
+    raw,
+    cleanPath,
+    "dh-subclasses",
+    async (data) => {
+      data.system.features = links;
+      data.system.linkedClass = linkedClass;
+    },
+  );
+
+  return { subclassDoc, featureDocs };
+}
+
+async function importArtilleryCards() {
+  const { cleanPath, payload } = await loadCanonicalHomebrewJson(
+    ARTILLERY_CARD_SOURCE
+  );
+  if (!Array.isArray(payload) || payload.length !== 9) {
+    throw new Error(`${cleanPath} doit contenir exactement 9 cartes Artillery.`);
+  }
+
+  await ensureArtilleryDomain();
+  const created = [];
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) throw new Error("Compendium Toolkit dh-domain-cards absent.");
+
+  const docs = await pack.getDocuments();
+  for (const raw of payload) {
+    if (
+      raw?.kind !== "domain_card" ||
+      !raw?.id ||
+      normalizedChoice(raw?.domain) !== ARTILLERY_DOMAIN_ID
+    ) {
+      throw new Error(`Carte Artillery canonique invalide: ${raw?.name ?? raw?.id}`);
+    }
+
+    for (const previous of docs.filter(
+      (doc) => doc.flags?.[FLAG_SCOPE]?.sourceId === raw.id
+    )) {
+      await previous.delete();
+    }
+
+    const entry = {
+      kind: "domain_card",
+      key: raw.id,
+      corpus: raw?.source?.corpus ?? "homebrew",
+      source_path: cleanPath,
+      data: raw,
+    };
+    const data = await buildItem(entry);
+    data.flags ??= {};
+    data.flags[FLAG_SCOPE] ??= {};
+    data.flags[FLAG_SCOPE].managed = true;
+    data.flags[FLAG_SCOPE].kind = "domain_card";
+    data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
+    data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
+    created.push(await Item.create(data, { pack: pack.collection }));
+  }
+
+  return created;
+}
+
+
+function artillerySourceId(item) {
+  const sourceId = item?.flags?.[FLAG_SCOPE]?.sourceId;
+  return typeof sourceId === "string" &&
+    sourceId.startsWith("homebrew.artificer.domain-card.artillery.")
+    ? sourceId
+    : null;
+}
+
+function actionSyncKey(action) {
+  return [
+    String(action?.name ?? "").trim().toLowerCase(),
+    String(action?.type ?? "").trim().toLowerCase(),
+  ].join("::");
+}
+
+function preserveOwnedActionUseValues(sourceActions, ownedActions) {
+  const source = foundry.utils.deepClone(sourceActions ?? {});
+  const ownedByKey = new Map();
+
+  for (const action of serializedActions(ownedActions)) {
+    const key = actionSyncKey(action);
+    if (!key || key === "::") continue;
+    ownedByKey.set(key, action);
+  }
+
+  const apply = (action) => {
+    const previous = ownedByKey.get(actionSyncKey(action));
+    if (
+      previous?.uses &&
+      action?.uses &&
+      previous.uses.value !== undefined &&
+      previous.uses.value !== null
+    ) {
+      action.uses.value = previous.uses.value;
+    }
+    return action;
+  };
+
+  if (Array.isArray(source)) return source.map(apply);
+
+  if (source && typeof source === "object") {
+    for (const [key, action] of Object.entries(source)) {
+      source[key] = apply(action);
+    }
+  }
+
+  return source;
+}
+
+function ownedArtilleryCardUpdateData(sourceDoc, ownedDoc) {
+  const source = sourceDoc.toObject();
+  const owned = ownedDoc.toObject();
+  const sourceSystem = foundry.utils.deepClone(source.system ?? {});
+  const ownedSystem = owned.system ?? {};
+
+  // Runtime/session state belongs to the Actor copy, not the compendium.
+  // Keep current use counters while accepting source max/recovery/action data.
+  if ("actions" in sourceSystem) {
+    sourceSystem.actions = preserveOwnedActionUseValues(
+      sourceSystem.actions,
+      ownedSystem.actions
+    );
+  }
+
+  // If a future Artillery card gains a native resource, keep only its current
+  // value while still syncing the source schema/max.
+  if (
+    sourceSystem.resource &&
+    ownedSystem.resource &&
+    ownedSystem.resource.value !== undefined
+  ) {
+    sourceSystem.resource.value = ownedSystem.resource.value;
+  }
+
+  // Preserve known sheet-placement/runtime selectors when present on the Actor
+  // copy. They are character state rather than canonical card definition.
+  for (const key of [
+    "inVault",
+    "vault",
+    "loadout",
+    "equipped",
+    "active",
+    "selected",
+    "prepared",
+  ]) {
+    if (Object.prototype.hasOwnProperty.call(ownedSystem, key)) {
+      sourceSystem[key] = foundry.utils.deepClone(ownedSystem[key]);
+    }
+  }
+
+  return {
+    name: source.name,
+    img: source.img,
+    system: sourceSystem,
+    [`flags.${FLAG_SCOPE}`]: foundry.utils.deepClone(
+      source.flags?.[FLAG_SCOPE] ?? {}
+    ),
+  };
+}
+
+async function replaceOwnedCardEffects(sourceDoc, ownedDoc) {
+  const currentIds = [...(ownedDoc.effects ?? [])].map((effect) => effect.id);
+  if (currentIds.length) {
+    await ownedDoc.deleteEmbeddedDocuments("ActiveEffect", currentIds);
+  }
+
+  const sourceEffects = (sourceDoc.toObject().effects ?? []).map((effect) => {
+    const clone = foundry.utils.deepClone(effect);
+    delete clone._stats;
+    return clone;
+  });
+
+  if (sourceEffects.length) {
+    await ownedDoc.createEmbeddedDocuments(
+      "ActiveEffect",
+      sourceEffects,
+      { keepId: true }
+    );
+  }
+
+  return sourceEffects.length;
+}
+
+export async function syncOwnedArtilleryCards({ cards = null } = {}) {
+  if (!game.user?.isGM) {
+    throw new Error("La synchronisation des cartes Artillery possédées est réservée au MJ.");
+  }
+
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) throw new Error("Compendium Toolkit dh-domain-cards absent.");
+
+  const sourceDocs = Array.isArray(cards) && cards.length
+    ? cards
+    : await pack.getDocuments();
+
+  const sourceById = new Map();
+  for (const sourceDoc of sourceDocs) {
+    const sourceId = artillerySourceId(sourceDoc);
+    if (sourceId) sourceById.set(sourceId, sourceDoc);
+  }
+
+  const rows = [];
+  let actorsScanned = 0;
+  let cardsFound = 0;
+  let cardsUpdated = 0;
+  let effectsReplaced = 0;
+
+  for (const actor of game.actors ?? []) {
+    actorsScanned += 1;
+
+    for (const ownedDoc of actor.items ?? []) {
+      const sourceId = artillerySourceId(ownedDoc);
+      if (!sourceId) continue;
+
+      cardsFound += 1;
+      const sourceDoc = sourceById.get(sourceId);
+      if (!sourceDoc) {
+        rows.push({
+          actor: actor.name,
+          item: ownedDoc.name,
+          sourceId,
+          green: false,
+          reason: "source-card-missing",
+        });
+        continue;
+      }
+
+      const updateData = ownedArtilleryCardUpdateData(sourceDoc, ownedDoc);
+      await ownedDoc.update(updateData);
+      const effectCount = await replaceOwnedCardEffects(sourceDoc, ownedDoc);
+
+      cardsUpdated += 1;
+      effectsReplaced += effectCount;
+      rows.push({
+        actor: actor.name,
+        item: ownedDoc.name,
+        sourceId,
+        green: true,
+        effects: effectCount,
+      });
+    }
+  }
+
+  const missing = rows.filter((row) => !row.green);
+  const result = {
+    green: missing.length === 0,
+    actorsScanned,
+    cardsFound,
+    cardsUpdated,
+    effectsReplaced,
+    missing,
+    rows,
+  };
+
+  console.info(`${MODULE_ID} | owned Artillery cards sync`, result);
+
+  if (result.green) {
+    ui.notifications?.info?.(
+      `Campaign Toolkit : ${cardsUpdated} carte(s) Artillery possédée(s) synchronisée(s).`
+    );
+  } else {
+    ui.notifications?.warn?.(
+      `Campaign Toolkit : synchronisation Artillery partielle (${missing.length} source(s) manquante(s)).`
+    );
+  }
+
+  return result;
+}
+
+
+function domainFolderLabel(domain) {
+  const key = normalizedChoice(domain);
+  const configured =
+    CONFIG?.DH?.DOMAIN?.allDomains?.()?.[key] ??
+    CONFIG?.DH?.DOMAIN?.domains?.[key] ??
+    null;
+
+  if (configured?.label) {
+    const localized = game.i18n?.localize?.(configured.label);
+    if (localized && localized !== configured.label) return localized;
+    return configured.label;
+  }
+
+  const labels = {
+    artillery: "Artillery",
+    hunt: "Chasse",
+    hunting: "Hunting",
+    blood: "Blood",
+  };
+  return labels[key] ?? key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+async function compendiumFolders(pack) {
+  if (pack?.folders?.contents) return [...pack.folders.contents];
+  if (Array.isArray(pack?.folders)) return [...pack.folders];
+
+  // Fallback for Foundry versions where the pack does not expose a direct
+  // collection but Folder documents can still be queried by compendium.
+  return game.folders?.filter?.(
+    (folder) => folder.pack === pack.collection
+  ) ?? [];
+}
+
+async function ensureDomainCardFolder(pack, domain) {
+  const key = normalizedChoice(domain);
+  if (!key) return null;
+
+  const existing = (await compendiumFolders(pack)).find(
+    (folder) =>
+      folder.type === "Item" &&
+      folder.flags?.[FLAG_SCOPE]?.domainCardFolder === key
+  );
+  if (existing) return existing;
+
+  // Also adopt an existing same-name Item folder instead of duplicating it.
+  const label = domainFolderLabel(key);
+  const sameName = (await compendiumFolders(pack)).find(
+    (folder) => folder.type === "Item" && folder.name === label
+  );
+  if (sameName) {
+    await sameName.update({
+      [`flags.${FLAG_SCOPE}.domainCardFolder`]: key,
+    });
+    return sameName;
+  }
+
+  return Folder.create(
+    {
+      name: label,
+      type: "Item",
+      sorting: "a",
+      flags: {
+        [FLAG_SCOPE]: {
+          domainCardFolder: key,
+          managed: true,
+        },
+      },
+    },
+    { pack: pack.collection }
+  );
+}
+
+
+export async function artilleryAutomationStatus() {
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) return { green: false, reason: "dh-domain-cards absent" };
+
+  const docs = await pack.getDocuments();
+  const expected = new Map([
+    ["homebrew.artificer.domain-card.artillery.concussive-shot", { status: "partial-native", requiresAction: true, requiresEffect: true }],
+    ["homebrew.artificer.domain-card.artillery.shockwave", { status: "native", requiresAction: true, requiresEffect: true }],
+    ["homebrew.artificer.domain-card.artillery.carpet-bomb", { status: "partial-native", requiresAction: true, requiresEffect: true }],
+    ["homebrew.artificer.domain-card.artillery.heavy-volley", { status: "partial-native", requiresAction: false, requiresEffect: true }],
+    ["homebrew.artificer.domain-card.artillery.siege-stance", { status: "partial-native", requiresAction: true, requiresEffect: true }],
+    ["homebrew.artificer.domain-card.artillery.battle-rhythm", { status: "runtime-authoritative", requiresAction: true, requiresEffect: false }],
+    ["homebrew.artificer.domain-card.artillery.decisive-strike", { status: "partial-runtime", requiresAction: true, requiresEffect: false }],
+  ]);
+
+  const rows = [];
+  for (const [sourceId, expectation] of expected) {
+    const expectedStatus = expectation.status;
+    const doc = docs.find(
+      (candidate) => candidate.flags?.[FLAG_SCOPE]?.sourceId === sourceId
+    ) ?? null;
+    const automation = doc?.flags?.[FLAG_SCOPE]?.artilleryAutomation ?? null;
+    const actions = doc?.system?.actions ?? [];
+    const actionRows = serializedActions(actions);
+    const rawActions = serializedActions(doc?.toObject()?.system?.actions);
+    const actionCount = Math.max(actionRows.length, rawActions.length);
+    const runtimeEffects = Array.isArray(doc?.toObject()?.effects)
+      ? doc.toObject().effects
+      : [];
+    const effectCount = runtimeEffects.length;
+
+    rows.push({
+      sourceId,
+      name: doc?.name ?? null,
+      expectedStatus,
+      status: automation?.status ?? null,
+      version: automation?.version ?? null,
+      actions: actionCount,
+      runtimeActions: actionRows.length,
+      rawActions: rawActions.length,
+      effects: effectCount,
+      actionNames: (actionRows.length ? actionRows : rawActions)
+        .map((action) => action?.name ?? null)
+        .filter(Boolean),
+      effectNames: runtimeEffects.map((effect) => effect?.name ?? null).filter(Boolean),
+      specimenContainer: automation?.specimen?.actionContainer ?? null,
+      ok:
+        Boolean(doc) &&
+        automation?.version === ARTILLERY_AUTOMATION_VERSION &&
+        automation?.status === expectedStatus &&
+        (!expectation.requiresAction || actionCount > 0) &&
+        (!expectation.requiresEffect || effectCount > 0),
+    });
+  }
+
+  console.table(rows);
+  const result = {
+    green: rows.every((row) => row.ok),
+    expected: rows.length,
+    valid: rows.filter((row) => row.ok).length,
+    rows,
+  };
+  console.log(`${MODULE_ID} | P2.11c.6e Artillery automation status`, result);
+  return result;
+}
+
+export async function organizeDomainCardsByDomain() {
+  if (!game.user?.isGM) {
+    throw new Error("Le classement des cartes de Domaine est réservé au MJ.");
+  }
+
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) throw new Error("Compendium Toolkit dh-domain-cards absent.");
+
+  await pack.configure({ locked: false });
+  try {
+    const docs = await pack.getDocuments();
+    const domains = [
+      ...new Set(
+        docs
+          .map((doc) => normalizedChoice(doc.system?.domain))
+          .filter(Boolean)
+      ),
+    ].sort();
+
+    const folders = new Map();
+    for (const domain of domains) {
+      folders.set(domain, await ensureDomainCardFolder(pack, domain));
+    }
+
+    let changed = 0;
+    const rows = [];
+    for (const doc of docs) {
+      const domain = normalizedChoice(doc.system?.domain);
+      if (!domain) {
+        rows.push({
+          name: doc.name,
+          domain: null,
+          folder: null,
+          changed: false,
+        });
+        continue;
+      }
+
+      const folder = folders.get(domain);
+      const currentFolderId =
+        typeof doc.folder === "string"
+          ? doc.folder
+          : doc.folder?.id ?? doc.folder?._id ?? null;
+      const targetFolderId = folder?.id ?? folder?._id ?? null;
+      const needsUpdate = Boolean(targetFolderId) && currentFolderId !== targetFolderId;
+
+      if (needsUpdate) {
+        await doc.update({ folder: targetFolderId });
+        changed += 1;
+      }
+
+      rows.push({
+        name: doc.name,
+        domain,
+        folder: folder?.name ?? null,
+        changed: needsUpdate,
+      });
+    }
+
+    console.table(
+      domains.map((domain) => ({
+        domain,
+        folder: folders.get(domain)?.name ?? null,
+        cards: rows.filter((row) => row.domain === domain).length,
+      }))
+    );
+
+    const result = {
+      green:
+        rows
+          .filter((row) => row.domain)
+          .every((row) => Boolean(row.folder)),
+      domains: domains.length,
+      cards: docs.length,
+      changed,
+      folders: domains.map((domain) => ({
+        domain,
+        name: folders.get(domain)?.name ?? null,
+        id: folders.get(domain)?.id ?? null,
+      })),
+      unclassified: rows.filter((row) => !row.domain).map((row) => row.name),
+    };
+
+    console.log(`${MODULE_ID} | domain-card folders`, result);
+    return result;
+  } finally {
+    await pack.configure({ locked: true });
+  }
+}
+
+export async function domainCardFolderStatus() {
+  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+  if (!pack) return { green: false, reason: "dh-domain-cards absent" };
+
+  const docs = await pack.getDocuments();
+  const folders = await compendiumFolders(pack);
+  const managedFolders = folders.filter(
+    (folder) => folder.flags?.[FLAG_SCOPE]?.domainCardFolder
+  );
+
+  const rows = docs.map((doc) => {
+    const domain = normalizedChoice(doc.system?.domain);
+    const folderId =
+      typeof doc.folder === "string"
+        ? doc.folder
+        : doc.folder?.id ?? doc.folder?._id ?? null;
+    const folder = folders.find((candidate) => candidate.id === folderId) ?? null;
+    return {
+      name: doc.name,
+      domain,
+      folder: folder?.name ?? null,
+      folderDomain: folder?.flags?.[FLAG_SCOPE]?.domainCardFolder ?? null,
+      ok:
+        !domain ||
+        folder?.flags?.[FLAG_SCOPE]?.domainCardFolder === domain,
+    };
+  });
+
+  const result = {
+    green: rows.every((row) => row.ok),
+    cards: rows.length,
+    domains: [...new Set(rows.map((row) => row.domain).filter(Boolean))].length,
+    folders: managedFolders.length,
+    invalid: rows.filter((row) => !row.ok),
+    unclassified: rows.filter((row) => !row.domain).map((row) => row.name),
+  };
+
+  if (result.invalid.length) console.table(result.invalid);
+  console.log(`${MODULE_ID} | domain-card folder status`, result);
+  return result;
+}
+
+export async function artificerArtilleryStatus() {
+  const classPack = game.packs.get(`${MODULE_ID}.dh-classes`);
+  const subclassPack = game.packs.get(`${MODULE_ID}.dh-subclasses`);
+  const featurePack = game.packs.get(`${MODULE_ID}.dh-features`);
+  const domainPack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
+
+  if (!classPack || !subclassPack || !featurePack || !domainPack) {
+    return { green: false, reason: "un ou plusieurs compendiums Toolkit sont absents" };
+  }
+
+  const [classes, subclasses, features, cards] = await Promise.all([
+    classPack.getDocuments(),
+    subclassPack.getDocuments(),
+    featurePack.getDocuments(),
+    domainPack.getDocuments(),
+  ]);
+
+  const classDoc = classes.find(
+    (doc) => doc.flags?.[FLAG_SCOPE]?.sourceId === "homebrew.artificer.class.artificer"
+  ) ?? null;
+
+  const subclassIds = [
+    "homebrew.artificer.subclass.armorer",
+    "homebrew.artificer.subclass.battle-smith",
+  ];
+  const subclassDocs = subclassIds.map(
+    (sourceId) => subclasses.find(
+      (doc) => doc.flags?.[FLAG_SCOPE]?.sourceId === sourceId
+    ) ?? null
+  );
+
+  const artilleryCards = cards.filter(
+    (doc) =>
+      normalizedChoice(doc.system?.domain) === ARTILLERY_DOMAIN_ID &&
+      String(doc.flags?.[FLAG_SCOPE]?.sourceId ?? "").startsWith(
+        "homebrew.artificer.domain-card.artillery."
+      )
+  );
+
+  const ownedFeatures = features.filter(
+    (doc) =>
+      String(doc.flags?.[FLAG_SCOPE]?.parentSourceId ?? "").startsWith(
+        "homebrew.artificer."
+      )
+  );
+
+  const domain =
+    CONFIG?.DH?.DOMAIN?.allDomains?.()?.[ARTILLERY_DOMAIN_ID] ??
+    CONFIG?.DH?.DOMAIN?.domains?.[ARTILLERY_DOMAIN_ID] ??
+    null;
+
+  const rows = artilleryCards
+    .map((doc) => ({
+      kind: "domainCard",
+      name: doc.name,
+      domain: doc.system?.domain ?? null,
+      level: doc.system?.level ?? null,
+      recall: doc.system?.recallCost ?? null,
+      type: doc.system?.type ?? null,
+      sourceId: doc.flags?.[FLAG_SCOPE]?.sourceId ?? null,
+    }))
+    .sort((a, b) => (a.level - b.level) || a.name.localeCompare(b.name));
+
+  console.table(rows);
+
+  const result = {
+    green:
+      Boolean(domain) &&
+      Boolean(classDoc) &&
+      subclassDocs.every(Boolean) &&
+      artilleryCards.length === 9 &&
+      ownedFeatures.length === 10 &&
+      Array.isArray(classDoc?.system?.features) &&
+      classDoc.system.features.length === 3 &&
+      subclassDocs.every(
+        (doc) => Array.isArray(doc?.system?.features) && doc.system.features.length >= 3
+      ),
+    domain: domain
+      ? { id: domain.id ?? ARTILLERY_DOMAIN_ID, label: domain.label, src: domain.src }
+      : null,
+    class: classDoc
+      ? {
+          id: classDoc.id,
+          name: classDoc.name,
+          domains: classDoc.system?.domains ?? [],
+          evasion: classDoc.system?.evasion ?? null,
+          hitPoints: classDoc.system?.hitPoints ?? null,
+          features: classDoc.system?.features?.length ?? 0,
+        }
+      : null,
+    subclasses: subclassDocs.map((doc) =>
+      doc
+        ? {
+            id: doc.id,
+            name: doc.name,
+            spellcastTrait: doc.system?.spellcastingTrait ?? null,
+            features: doc.system?.features?.length ?? 0,
+            linkedClass: doc.system?.linkedClass ?? null,
+          }
+        : null
+    ),
+    cards: { expected: 9, actual: artilleryCards.length, rows },
+    features: { expected: 10, actual: ownedFeatures.length },
+  };
+
+  console.log(`${MODULE_ID} | P2.11c.1 Artificer + Artillery status`, result);
+  return result;
+}
+
+
+async function withArtificerImportPacksUnlocked(operation) {
+  const packIds = [
+    "dh-features",
+    "dh-domain-cards",
+    "dh-classes",
+    "dh-subclasses",
+  ];
+
+  const packs = packIds.map((packId) => {
+    const pack = game.packs.get(`${MODULE_ID}.${packId}`);
+    if (!pack) throw new Error(`Compendium Toolkit ${packId} absent.`);
+    return pack;
+  });
+
+  // Keep the entire multi-pack import inside one unlock transaction. Foundry
+  // v14 can reject a create if a helper re-locks the collection between
+  // asynchronous document operations.
+  for (const pack of packs) {
+    await pack.configure({ locked: false });
+  }
+
+  try {
+    return await operation();
+  } finally {
+    for (const pack of [...packs].reverse()) {
+      try {
+        await pack.configure({ locked: true });
+      } catch (error) {
+        console.error(`${MODULE_ID} | unable to relock ${pack.collection}`, error);
+      }
+    }
+  }
+}
+
+export async function importArtificerArtillery() {
+  if (!game.user?.isGM) {
+    throw new Error("L’import Artificier + Artillery est réservé au MJ.");
+  }
+
+  return withArtificerImportPacksUnlocked(async () => {
+    const domain = await ensureArtilleryDomain();
+    const cards = await importArtilleryCards();
+    const ownedCards = await syncOwnedArtilleryCards({ cards });
+    const { classDoc, featureDocs: classFeatures } = await importArtificerClass();
+
+    const subclasses = [];
+    let subclassFeatureCount = 0;
+    for (const sourcePath of ARTIFICER_SUBCLASS_SOURCES) {
+      const imported = await importArtificerSubclass(sourcePath, classDoc);
+      subclasses.push(imported.subclassDoc);
+      subclassFeatureCount += imported.featureDocs.length;
+    }
+
+    const folders = await organizeDomainCardsByDomain();
+    const status = await artificerArtilleryStatus();
+    const result = {
+      green: status.green && folders.green && ownedCards.green,
+      domain,
+      folders,
+      ownedCards,
+      imported: {
+        cards: cards.length,
+        class: classDoc?.name ?? null,
+        subclasses: subclasses.map((doc) => doc.name),
+        features: classFeatures.length + subclassFeatureCount,
+      },
+      status,
+    };
+
+    if (result.green) {
+      ui.notifications.info(
+        "Campaign Toolkit : Artificier + Artillery importés (9 cartes, 1 classe, 2 sous-classes)."
+      );
+    } else {
+      ui.notifications.warn(
+        "Campaign Toolkit : import Artificier + Artillery incomplet, consultez artificerArtilleryStatus()."
+      );
+    }
+
+    return result;
+  });
+}
+
+
+export async function importHuntPilot() {
+  const domain = await ensureHuntDomain();
+
+  const card = await importCanonicalDomainCard(
+    "data/homebrew/monster-hunter/domains/hunt/lecture-de-la-proie.json"
+  );
+
+  const result = {
+    green: Boolean(card),
+    domain,
+    card: card
+      ? {
+          id: card.id,
+          name: card.name,
+          type: card.type,
+          domain: card.system?.domain ?? null,
+          level: card.system?.level ?? null,
+          recallCost: card.system?.recallCost ?? null,
+          cardType: card.system?.type ?? null,
+          sourceId: card.flags?.[FLAG_SCOPE]?.sourceId ?? null,
+        }
+      : null,
+  };
+
+  console.log(`${MODULE_ID} | P2.11a.1 Hunt pilot`, result);
+  return result;
+}
+
+
 /**
  * Import one canonical homebrew adversary without rebuilding any owned Item pack.
  * This deliberately keeps the Actor legacy/native-template route isolated from
@@ -1507,118 +4256,6 @@ async function refreshHuntingNoteLinks(pack) {
   }
 }
 
-
-function managedAdversarySourceId(doc) {
-  const value = doc?.flags?.[FLAG_SCOPE]?.sourceId;
-  return typeof value === "string" && value.trim() ? value.trim() : null;
-}
-
-function adversaryKeeperScore(doc) {
-  const itemCount = doc?.items?.size ?? doc?.items?.length ?? 0;
-  const notesLength = String(doc?.system?.notes ?? "").length;
-  const modified = Number(doc?._stats?.modifiedTime ?? 0);
-  return (itemCount * 1_000_000_000) + (notesLength * 1_000) + modified;
-}
-
-export async function dedupeCanonicalAdversaries(pack = null) {
-  if (!game.user?.isGM) {
-    throw new Error("La déduplication des adversaires Toolkit est réservée au MJ.");
-  }
-
-  const targetPack =
-    pack ??
-    game.packs.get(`${MODULE_ID}.dh-adversaries`);
-
-  if (!targetPack) {
-    throw new Error("Compendium Toolkit dh-adversaries absent.");
-  }
-
-  const wasLocked = Boolean(targetPack.locked);
-  if (wasLocked) await targetPack.configure({ locked: false });
-
-  try {
-    const docs = await targetPack.getDocuments();
-    const groups = new Map();
-
-    for (const doc of docs) {
-      const sourceId = managedAdversarySourceId(doc);
-      if (!sourceId) continue;
-      const list = groups.get(sourceId) ?? [];
-      list.push(doc);
-      groups.set(sourceId, list);
-    }
-
-    const deleted = [];
-    const kept = [];
-
-    for (const [sourceId, matches] of groups) {
-      if (matches.length < 2) continue;
-
-      matches.sort((a, b) => adversaryKeeperScore(b) - adversaryKeeperScore(a));
-      const keeper = matches[0];
-      const extras = matches.slice(1);
-
-      kept.push({
-        sourceId,
-        id: keeper.id,
-        name: keeper.name,
-        items: keeper.items?.size ?? keeper.items?.length ?? 0,
-      });
-
-      for (const extra of extras) {
-        deleted.push({
-          sourceId,
-          id: extra.id,
-          name: extra.name,
-          items: extra.items?.size ?? extra.items?.length ?? 0,
-        });
-        await extra.delete();
-      }
-    }
-
-    if (deleted.length) {
-      console.table(deleted);
-      console.info(`${MODULE_ID} | adversary duplicates removed`, {
-        deleted: deleted.length,
-        kept,
-      });
-    }
-
-    return {
-      green: true,
-      duplicateGroups: kept.length,
-      deleted: deleted.length,
-      kept,
-    };
-  } finally {
-    if (wasLocked) await targetPack.configure({ locked: true });
-  }
-}
-
-const canonicalAdversaryImportLocks = new Map();
-
-async function withCanonicalAdversaryImportLock(sourceId, operation) {
-  const key = String(sourceId ?? "");
-  const previous = canonicalAdversaryImportLocks.get(key) ?? Promise.resolve();
-
-  let release;
-  const current = new Promise(resolve => {
-    release = resolve;
-  });
-  canonicalAdversaryImportLocks.set(key, previous.then(() => current));
-
-  await previous;
-
-  try {
-    return await operation();
-  } finally {
-    release();
-    if (canonicalAdversaryImportLocks.get(key) === current) {
-      canonicalAdversaryImportLocks.delete(key);
-    }
-  }
-}
-
 export async function importCanonicalAdversary(sourcePath) {
   if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est réservé au MJ.");
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
@@ -1631,48 +4268,35 @@ export async function importCanonicalAdversary(sourcePath) {
   const raw = await response.json();
   if (raw?.kind !== "adversary" || !raw?.id) throw new Error(`${cleanPath} n'est pas un adversaire canonique valide.`);
 
-  return withCanonicalAdversaryImportLock(raw.id, async () => {
-    const entry = {
-      kind: "adversary",
-      key: raw.id,
-      corpus: raw?.source?.corpus ?? "homebrew",
-      source_path: cleanPath,
-      data: raw,
-    };
-    const data = await buildActor(entry);
-    data.flags ??= {};
-    data.flags[FLAG_SCOPE] ??= {};
-    data.flags[FLAG_SCOPE].managed = true;
-    data.flags[FLAG_SCOPE].kind = "adversary";
-    data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
-    data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
+  const entry = {
+    kind: "adversary",
+    key: raw.id,
+    corpus: raw?.source?.corpus ?? "homebrew",
+    source_path: cleanPath,
+    data: raw,
+  };
+  const data = await buildActor(entry);
+  data.flags ??= {};
+  data.flags[FLAG_SCOPE] ??= {};
+  data.flags[FLAG_SCOPE].managed = true;
+  data.flags[FLAG_SCOPE].kind = "adversary";
+  data.flags[FLAG_SCOPE].contentOwner = MODULE_ID;
+  data.flags[FLAG_SCOPE].contentOrigin = "homebrew";
 
-    const pack = game.packs.get(`${MODULE_ID}.dh-adversaries`);
-    if (!pack) throw new Error("Compendium Toolkit dh-adversaries absent.");
-
-    const wasLocked = Boolean(pack.locked);
-    if (wasLocked) await pack.configure({ locked: false });
-
-    try {
-      // Delete every previous copy with the same canonical sourceId. The lock
-      // above prevents two simultaneous imports from racing between delete/create.
-      const docs = await pack.getDocuments();
-      const previous = docs.filter(doc => managedAdversarySourceId(doc) === raw.id);
-      for (const doc of previous) await doc.delete();
-
-      const created = await Actor.create(data, { pack: pack.collection });
-
-      // Defense in depth for duplicates already left in the pack by an older
-      // import path/version.
-      await dedupeCanonicalAdversaries(pack);
-      await refreshHuntingNoteLinks(pack);
-
-      ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
-      return created;
-    } finally {
-      if (wasLocked) await pack.configure({ locked: true });
-    }
-  });
+  const pack = game.packs.get(`${MODULE_ID}.dh-adversaries`);
+  if (!pack) throw new Error("Compendium Toolkit dh-adversaries absent.");
+  await pack.configure({ locked: false });
+  try {
+    const docs = await pack.getDocuments();
+    const previous = docs.filter(doc => doc.flags?.[FLAG_SCOPE]?.sourceId === raw.id);
+    for (const doc of previous) await doc.delete();
+    const created = await Actor.create(data, { pack: pack.collection });
+    await refreshHuntingNoteLinks(pack);
+    ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
+    return created;
+  } finally {
+    await pack.configure({ locked: true });
+  }
 }
 
 const TETSUCABRA_ACTOR_SOURCES = [
@@ -1681,46 +4305,6 @@ const TETSUCABRA_ACTOR_SOURCES = [
   "data/homebrew/monster-hunter/adversaries/tetsucabra-part-forelegs.json",
   "data/homebrew/monster-hunter/adversaries/tetsucabra-part-hindlegs.json",
 ];
-
-
-const MONSTER_HUNTER_ADVERSARY_SOURCES = [
-  ...TETSUCABRA_ACTOR_SOURCES,
-  "data/homebrew/monster-hunter/adversaries/queen-vespoid.json",
-  "data/homebrew/monster-hunter/adversaries/vespoid-minion.json",
-];
-
-export async function importMonsterHunterAdversaries() {
-  if (!game.user?.isGM) {
-    throw new Error("L'import Monster Hunter Toolkit est réservé au MJ.");
-  }
-
-  const actors = [];
-
-  for (const sourcePath of MONSTER_HUNTER_ADVERSARY_SOURCES) {
-    actors.push(await importCanonicalAdversary(sourcePath));
-  }
-
-  const dedupe = await dedupeCanonicalAdversaries();
-
-  const result = {
-    green: true,
-    imported: actors.length,
-    actors: actors.map(actor => ({
-      id: actor.id,
-      name: actor.name,
-      sourceId: managedAdversarySourceId(actor),
-      embeddedFeatures: actor.items?.size ?? actor.items?.length ?? 0,
-      hasLoot:
-        Array.isArray(actor.flags?.[FLAG_SCOPE]?.hunting?.loot) &&
-        actor.flags[FLAG_SCOPE].hunting.loot.length > 0,
-    })),
-    dedupe,
-  };
-
-  console.table(result.actors);
-  console.log(`${MODULE_ID} | Monster Hunter adversaries imported`, result);
-  return result;
-}
 
 export async function importTetsucabra() {
   const actors = [];

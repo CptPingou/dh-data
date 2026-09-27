@@ -70,7 +70,12 @@ import {
 } from "./toolkit-card-families.mjs";
 import { registerToolkitCardSheetIntegration, toolkitCardSheetApi } from "./toolkit-card-sheet.mjs";
 import { huntingCardsApi } from "./hunting-cards.mjs";
-import { registerHuntingDomain, registerContextualDomainCardBypass } from "./hunting-domain-card-bridge.mjs";
+import {
+  registerArtilleryDomain,
+  registerHuntDomain,
+  registerHuntingDomain,
+  registerContextualDomainCardBypass,
+} from "./hunting-domain-card-bridge.mjs";
 import { motherboardAugmentCatalogApi } from "./weapon-augment-catalog.mjs";
 import { createWeaponAugmentStateApi } from "./weapon-augment-state.mjs";
 import { registerWeaponAugmentSheetIntegration } from "./weapon-augment-sheet.mjs";
@@ -81,6 +86,11 @@ import {
   exportAutonomousCoreSources,
   autonomousSourceExpectedCounts,
 } from "./autonomous-source-export.mjs";
+
+import {
+  artificerResourceApi,
+  registerArtificerResourceRuntime,
+} from "./artificer-resource-runtime.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const SMOKE_MACRO_NAME = "Campaign Toolkit - Smoke Test";
@@ -128,6 +138,8 @@ function registerBloodDomain() {
 // persisted world documents. Registering this only from the init hook is too late:
 // Item documents containing system.domain = "blood" may already be validated then.
 const bloodDomainBootstrapped = registerBloodDomain();
+const huntDomainBootstrapped = registerHuntDomain();
+const artilleryDomainBootstrapped = registerArtilleryDomain();
 const huntingDomainBootstrapped = registerHuntingDomain();
 const huntingStatusEffectsBootstrapped = registerHuntingStatusEffects();
 const monsterPartsApi = createMonsterPartsApi(huntingEffectsApi);
@@ -139,6 +151,12 @@ Hooks.once("init", () => {
   registerExpeditionManifestPersistence();
   if (!bloodDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.blood) {
     registerBloodDomain();
+  }
+  if (!huntDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.hunt) {
+    registerHuntDomain();
+  }
+  if (!artilleryDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.artillery) {
+    registerArtilleryDomain();
   }
   if (!huntingDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.hunting) {
     registerHuntingDomain();
@@ -287,6 +305,7 @@ Hooks.once("init", () => {
     weaponProgression: weaponProgressionApi,
     weaponAugments: motherboardAugmentCatalogApi,
     weaponAugmentState: createWeaponAugmentStateApi(motherboardAugmentCatalogApi),
+    artificerResource: artificerResourceApi,
   };
 
   const toolkitApi = game.modules.get(MODULE_ID).api;
@@ -325,6 +344,7 @@ Hooks.once("init", () => {
   registerEngagementSupportActionHook(toolkitApi.engagementSupport, toolkitApi.engagementState);
   registerWeaponAugmentSheetIntegration();
   registerToolkitCardSheetIntegration();
+  registerArtificerResourceRuntime();
 });
 
 Hooks.once("ready", async () => {

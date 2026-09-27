@@ -1,0 +1,55 @@
+{
+  "id": "homebrew.artificer.subclass.battle-smith",
+  "kind": "subclass",
+  "name": "Forgeron de bataille",
+  "name_original": "Battle Smith",
+  "class_id": "homebrew.artificer.class.artificer",
+  "spellcast_trait": "knowledge",
+  "features": [
+    {
+      "tier": "foundation",
+      "name": "Décharge arcanique",
+      "name_original": "Arcane Jolt",
+      "text": "Lorsque vous utilisez Décharge arcanique, choisissez un effet : la cible subit 2d6 dégâts supplémentaires ; ou dépensez 1 Espoir et choisissez une créature ou un objet que vous voyez à portée Lointaine de la cible : une énergie curative afflue vers la cible choisie et lui fait récupérer 1d6 Points de Vie. Vous pouvez utiliser cette énergie un nombre de fois par session égal à votre modificateur de Connaissance (minimum 1). Vous récupérez tous les usages dépensés après un repos long.",
+      "text_original": "The target takes an extra 2d6 damage. Spend 1 Hope and choose one creature or object you can see within Far range of the target. Healing energy flows into the chosen recipient, restoring d6 hit points to it. You can use this energy a number of times equal to your Knowledge modifier (minimum of once) per Session. You regain all expended uses when you finish a long rest.",
+      "source_status": "complete",
+      "ambiguity": "La carte ne précise pas dans cet extrait quel déclencheur initial permet d’« utiliser » Arcane Jolt."
+    },
+    {
+      "tier": "specialization",
+      "name": "Défenseur d’acier",
+      "name_original": "Steel Defender",
+      "text": "Vos bricolages ont donné naissance à un Défenseur d’acier. Utilisez la fiche Ranger Companion. Vous déterminez son apparence et s’il possède deux ou quatre jambes ; ce choix ne modifie pas ses statistiques. Défenseur d’acier : construct de taille Moyenne, Évasion 10, Stress 3. Vigilant : le défenseur ne peut pas être surpris. Actions — MagiTech Rend : au niveau 1, son dé de dégâts est un d6, toujours à portée Mêlée. Repair (3/session) : ses mécanismes magiques lui permettent d’effacer 1 Stress. Réaction — Deflect Attack : le défenseur impose un désavantage au jet d’attaque d’une créature qu’il voit et qui se trouve à portée Mêlée de lui, à condition que l’attaque vise une créature autre que le défenseur. Pour commander votre Défenseur d’acier, effectuez un jet d’Incantation. Vous pouvez dépenser 1 Espoir pour ajouter une Expérience applicable du Défenseur au jet. En cas de réussite avec Espoir, si votre prochaine action s’appuie sur sa réussite, vous gagnez l’avantage sur ce jet. Quand vous lui ordonnez d’attaquer, il bénéficie de tout effet qui s’appliquerait normalement uniquement à vous. En cas de réussite, son jet de dégâts utilise votre Maîtrise et son dé de dégâts. Lorsqu’il subit n’importe quelle quantité de dégâts, il marque 1 Stress. Quand il marque son dernier Stress, il quitte la scène en s’arrêtant. Il reste indisponible jusqu’au début de votre prochain repos long, où il revient avec 1 Stress effacé. Quand vous choisissez une action de repos qui efface du Stress sur vous, votre Défenseur efface le même nombre de Stress. À chaque montée de niveau, choisissez une amélioration disponible pour votre Défenseur : Intelligent (3) : +1 permanent à une Expérience du Défenseur ; Light in the Dark (1) : gagnez un emplacement d’Espoir supplémentaire utilisable par votre personnage ; Maintenance (1) : une fois par repos, lors d’un entretien de routine, gagnez 1 Espoir ou vous effacez chacun 1 Stress ; Armored (1) : lorsqu’il subit des dégâts, vous pouvez marquer un de vos emplacements d’Armure à la place de son Stress ; Vicious (3) : augmentez son dé de dégâts d’un cran ; Resilient (3) : +1 emplacement de Stress ; Bonded (1) : quand vous marquez votre dernier Point de Vie, il accourt ; lancez un nombre de d6 égal à ses emplacements de Stress non marqués puis marquez-les ; si au moins un dé obtient 6, effacez votre dernier Point de Vie et revenez dans la scène ; Aware (3) : +2 permanent à son Évasion.",
+      "text_original": "Your tinkering has borne you a Steel Defender. You use Ranger Companion sheet. You determine the creature’s appearance and whether it has two legs or four, your choice has no effect on its game statistics. Steel Defender: Medium construct. Evasion 10. Stress 3. Vigilant. The defender can’t be surprised. Actions: MagiTech Rend. At level 1, Steel Defender’s damage die is a d6, always at melee range. Repair (3/Session). The magical mechanisms inside the defender restore 1 Stress. Reaction: Deflect Attack. The defender imposes disadvantage on the attack roll of one creature it can see that it is within Melee range, provided the attack roll is against a creature other than the defender. Working With Your Steel Defender: Make a Spellcast Roll to connect with your Steel Defender and command them to take an action. Spend a Hope to add an applicable Steel Defender Experience to the roll. On a success with Hope, if your next action builds on their success, you gain advantage on the roll. When you command your Steel Defender to attack, they gain any benefits that would normally only apply to you. On a success, their damage roll uses your Proficiency and their damage die. When your Steel Defender suffers any amount of damage, they mark a Stress. When they mark their last Stress, they drop out of the scene (by shutting down). They remain unavailable until the start of your next long rest, when they return with 1 Stress cleared. When you choose a downtime move that clears Stress on yourself, your Steel Defender clears an equal number of Stress. Leveling Up: choose one available option: Intelligent (3), Light in the Dark (1), Maintenance (1), Armored (1), Vicious (3), Resilient (3), Bonded (1), Aware (3).",
+      "source_status": "complete"
+    },
+    {
+      "tier": "mastery",
+      "name": "Savant forgeron de bataille",
+      "name_original": "Battle Smith Savant",
+      "text": "Décharge arcanique peut être utilisée pour aider vos alliés à portée Lointaine. Dépensez 1 Espoir et ajoutez 2d6 à n’importe lequel de leurs jets après le lancer mais avant que le résultat soit connu. Vous pouvez le faire 3 fois par session. Le Défenseur d’acier gagne un dé de dégâts supplémentaire de 1d6. Gagnez 1 Stress pour déclencher l’état Entravé sur 3 cibles à portée Lointaine. Vous pouvez le faire 3 fois par session.",
+      "text_original": "Arcane Jolt can be used to help your allies within Far Range. Spend 1 Hope and add 2d6 to any of their rolls after they roll but before the results are known. This can be used 3 times/session. Steel Defender gains additional 1d6 damage die. Gain 1 Stress to trigger Restrained condition on 3 targets within Far Range. This can be used 3 times/session.",
+      "source_status": "complete"
+    },
+    {
+      "tier": "specialization",
+      "name": "Forgeron de bataille amélioré",
+      "name_original": "Improved Battle Smith",
+      "text": "Les dégâts supplémentaires et les soins de votre Décharge arcanique augmentent chacun de +1d6. Votre Défenseur d’acier gagne +2 Évasion. Chaque fois que votre Défenseur d’acier utilise Deflect Attack, l’attaquant subit des dégâts égaux à 1d4 + votre modificateur de Connaissance.",
+      "text_original": "The extra damage and the healing of your Arcane Jolt both increase by +1d6. Your steel defender gains a +2 bonus to Evasion. Whenever your steel defender uses its Deflect Attack, the attacker takes damage equal to 1d4 + your Knowledge modifier.",
+      "source_status": "complete"
+    }
+  ],
+  "source": {
+    "corpus": "artificer-recreation-from-original-5e-ruleset",
+    "version": "source-extraction-2026-09-25",
+    "status": "homebrew"
+  },
+  "canonical": true,
+  "integration": {
+    "foundation_status": "complete",
+    "specialization_status": "complete",
+    "mastery_status": "complete",
+    "companion_dependency": "Ranger Companion sheet"
+  }
+}

@@ -1,0 +1,202 @@
+[
+  {
+    "id": "homebrew.artificer.domain-card.artillery.battle-rhythm",
+    "kind": "domain_card",
+    "name": "Rythme de bataille",
+    "name_original": "Battle Rhythem",
+    "name_correction": "Battle Rhythm",
+    "domain": "artillery",
+    "level": 1,
+    "recall_cost": 0,
+    "card_type": "ability",
+    "rules_text": "Lorsque vous obtenez une réussite critique sur un jet d’attaque, effacez 1 Stress. Une fois par repos, pendant un moment de calme entre deux vagues, effacez 2 Stress et placez 1 jeton Cob Round ou de charge sur votre carte de classe, si vous en avez une.",
+    "rules_text_original": "When you critically succeed on an attack roll, clear 1 Stress. Once per rest during a moment of calm between waves, clear 2 Stress and place 1 Cob Round or charge token on your class card if you have one.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred",
+      "unresolved_terms": [
+        "Cob Round",
+        "charge token",
+        "class card resource"
+      ]
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.concussive-shot",
+    "kind": "domain_card",
+    "name": "Tir concussif",
+    "name_original": "Concussive Shot",
+    "domain": "artillery",
+    "level": 1,
+    "recall_cost": 1,
+    "card_type": "ability",
+    "rules_text": "Lorsque vous réussissez un jet d’attaque, vous pouvez marquer 1 Stress pour envoyer une onde de choc à travers la cible. La cible est repoussée d’un cran de portée et doit effectuer un jet de Réaction d’Agilité (12) ou être mise à Terre. Les adversaires mis à Terre de cette manière marquent 1 Stress.",
+    "rules_text_original": "When you succeed on an attack roll, you can mark a Stress to send a concussive wave through the target. The target is knocked back one range step and must make an Agility Reaction Roll (12) or be knocked Prone. Adversaries knocked Prone this way mark a Stress.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred"
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.heavy-volley",
+    "kind": "domain_card",
+    "name": "Volée lourde",
+    "name_original": "Heavy Volley",
+    "domain": "artillery",
+    "level": 1,
+    "recall_cost": 0,
+    "card_type": "ability",
+    "rules_text": "Vos attaques frappent plus fort que la plupart. Lorsque vous infligez des dégâts avec un jet d’attaque, ajoutez +1d6 à votre jet de dégâts. Ce bonus passe à +1d8 au Tier 2, +1d10 au Tier 3 et +1d12 au Tier 4.",
+    "rules_text_original": "Your attacks hit harder than most. When you deal damage with an attack roll, add +1d6 to your damage roll. This bonus increases to +1d8 at Tier 2, +1d10 at Tier 3, and +1d12 at Tier 4.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred"
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.siege-stance",
+    "kind": "domain_card",
+    "name": "Posture de siège",
+    "name_original": "Siege Stance",
+    "domain": "artillery",
+    "level": 2,
+    "recall_cost": 1,
+    "card_type": "ability",
+    "rules_text": "Une fois par repos, dans le cadre d’une action, ancrez-vous fermement et entrez en Posture de siège jusqu’à ce que vous vous déplaciez ou preniez un repos. Tant que vous êtes en Posture de siège, vos jets d’attaque gagnent +2 et vos jets de dégâts gagnent +1d8. Vous ne pouvez pas être déplacé, repoussé ou forcé à vous repositionner. Si vous vous déplacez volontairement, la Posture de siège prend immédiatement fin.",
+    "rules_text_original": "Once per rest, as part of an action, plant yourself firmly and enter Siege Stance until you move or take a rest. While in Siege Stance: your attack rolls gain +2; your damage rolls gain +1d8; you cannot be moved, knocked back, or forced to reposition by any means; if you move voluntarily, Siege Stance ends immediately.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred"
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.shockwave",
+    "kind": "domain_card",
+    "name": "Onde de choc",
+    "name_original": "Shockwave",
+    "domain": "artillery",
+    "level": 2,
+    "recall_cost": 1,
+    "card_type": "spell",
+    "rules_text": "Effectuez un jet d’Incantation contre une cible à portée Lointaine. En cas de réussite, l’impact envoie une onde de choc à travers le sol. Tous les adversaires à portée Très proche de la cible doivent effectuer un jet de Réaction d’Agilité (13) ou être mis à Terre et subir 1d6+2 dégâts physiques. Les adversaires qui réussissent subissent tout de même 1d6+2 dégâts.",
+    "rules_text_original": "Make a Spellcast Roll against a target within Far range. On a success, the impact sends a shockwave through the ground. All adversaries within Very Close range of the target must make an Agility Reaction Roll (13) or be knocked Prone and take 1d6+2 physical damage. Adversaries who succeed still take 1d6+2 damage.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred"
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.barrage",
+    "kind": "domain_card",
+    "name": "Barrage",
+    "name_original": "Barrage",
+    "domain": "artillery",
+    "level": 3,
+    "recall_cost": 2,
+    "card_type": "ability",
+    "rules_text": "Une fois par repos, marquez 1 Stress pour effectuer deux jets d’attaque contre la même cible au cours d’une seule action. Lancez les dégâts séparément pour chaque attaque réussie. Si les deux attaques réussissent, la cible devient temporairement Vulnérable jusqu’à la fin de votre prochaine action.",
+    "rules_text_original": "Once per rest, mark a Stress to make two attack rolls against the same target in a single action. Roll damage separately for each hit. If both attacks succeed, the target is temporarily Vulnerable until the end of your next action.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred"
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.overwhelming-force",
+    "kind": "domain_card",
+    "name": "Force écrasante",
+    "name_original": "Overwhelming Force",
+    "domain": "artillery",
+    "level": 3,
+    "recall_cost": 2,
+    "card_type": "ability",
+    "rules_text": "Lorsque vous infligez des dégâts Sévères, la Difficulté du jet de Réaction de tous vos effets d’onde de choc augmente de +2 et la cible est repoussée d’un cran de portée supplémentaire. Une fois par repos, lorsque vous infligez des dégâts, vous pouvez déclarer l’attaque Écrasante : elle ignore toute résistance de la cible, et la cible marque 1 Point de Vie supplémentaire.",
+    "rules_text_original": "When you deal Severe damage, the Reaction Roll Difficulty for any shockwave effects increases by +2 and the target is knocked back one additional range step. Once per rest, when you deal damage, you can declare it Overwhelming—the attack ignores any resistance the target has, and the target marks an additional Hit Point.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred"
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.decisive-strike",
+    "kind": "domain_card",
+    "name": "Frappe décisive",
+    "name_original": "Decisive Strike",
+    "domain": "artillery",
+    "level": 4,
+    "recall_cost": 2,
+    "card_type": "ability",
+    "rules_text": "Une fois par repos long, avant d’effectuer un jet d’attaque, déclarez une Frappe décisive et dépensez toutes vos ressources d’action actuelles (Cob Rounds, jetons de charge ou équivalent). L’attaque gagne +1 à son jet et +2d6 à son jet de dégâts pour chaque ressource dépensée de cette manière. En cas de réussite, la cible ne peut pas effectuer de Réactions jusqu’au début de votre prochaine action.",
+    "rules_text_original": "Once per long rest, before making an attack roll, declare a Decisive Strike and spend all your current action resources (Cob Rounds, charge tokens, or similar). The attack gains +1 to its roll and +2d6 to its damage roll for each resource spent this way. On a success, the target cannot take reactions until the start of your next action.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred",
+      "unresolved_terms": [
+        "Cob Rounds",
+        "charge tokens",
+        "action resources"
+      ]
+    }
+  },
+  {
+    "id": "homebrew.artificer.domain-card.artillery.carpet-bomb",
+    "kind": "domain_card",
+    "name": "Bombardement en tapis",
+    "name_original": "Carpet Bomb",
+    "domain": "artillery",
+    "level": 4,
+    "recall_cost": 2,
+    "card_type": "spell",
+    "rules_text": "Une fois par repos long, effectuez un jet d’Incantation contre un point à portée Lointaine. En cas de réussite, choisissez une zone à portée Très proche autour de ce point. Tous les adversaires dans cette zone subissent 3d10+5 dégâts physiques et doivent effectuer un jet de Réaction d’Agilité (15) ou être mis à Terre. Sur une réussite critique, la zone s’étend à portée Proche.",
+    "rules_text_original": "Once per long rest, make a Spellcast Roll against a point within Far range. On a success, choose a Very Close area around that point. All adversaries in the area take 3d10+5 physical damage and must make an Agility Reaction Roll (15) or be knocked Prone. On a critical success, the area expands to Close range.",
+    "source": {
+      "corpus": "heart-of-daggers-artillery-artificer",
+      "version": "source-extraction-2026-09-25",
+      "status": "homebrew"
+    },
+    "canonical": true,
+    "integration": {
+      "automation": "deferred"
+    }
+  }
+]

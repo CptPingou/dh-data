@@ -1,0 +1,49 @@
+{
+  "id": "homebrew.artificer.subclass.armorer",
+  "kind": "subclass",
+  "name": "Armurier",
+  "name_original": "Armorer",
+  "class_id": "homebrew.artificer.class.artificer",
+  "spellcast_trait": "knowledge",
+  "features": [
+    {
+      "tier": "foundation",
+      "name": "Adepte armurier",
+      "name_original": "Armorer Adept",
+      "text": "Vous débutez comme Adepte armurier. Vos compétences d’Armurier montrent un grand potentiel. Vos infusions d’arme et d’armure gagnent un +1 supplémentaire par Tier. Vous pouvez dépenser 1 Stress au lieu d’utiliser 1 emplacement d’Armure, ou ajouter 1d4 aux dégâts d’une attaque effectuée avec votre arme améliorée. Au Tier 3, vous pouvez avoir jusqu’à 6 cartes de Domaine/Infusion au total, à condition que la moitié d’entre elles soient des Infusions.",
+      "text_original": "You begin as an Armorer Adept. Your Armorer skills are showing great promise. Your Weapon and Armor infusions get extra +1 per Tier. You can spend 1 Stress instead of using 1 Armor slot or adding 1d4 damage to attack that is made with your Enhanced weapon. At Tier 3 you can have 6 total Domain/Infusion cards at one time as long as half of them are Infusions.",
+      "source_status": "complete",
+      "ambiguities": [
+        "Le +1 par Tier ne précise pas quelle valeur de l’infusion est augmentée.",
+        "La phrase anglaise avec « or adding 1d4 » est grammaticalement ambiguë ; la mise en forme française conserve les deux usages sans inventer de timing."
+      ]
+    },
+    {
+      "tier": "specialization",
+      "name": "Armure arcanique",
+      "name_original": "Arcane Armor",
+      "text": "Vos recherches métallurgiques vous ont conduit à faire de votre armure un conduit pour votre MagiTech. Par une action, vous pouvez transformer l’armure que vous portez en Armure arcanique. Tant que vous la portez : l’armure s’attache à vous et ne peut pas être retirée contre votre volonté ; elle se déploie pour couvrir tout votre corps, vous pouvez rétracter ou déployer le casque à volonté, et elle remplace tout membre manquant en fonctionnant comme celui qu’elle remplace ; vous pouvez enfiler ou retirer l’armure à tout moment ; l’armure vous accorde +1 Évasion par Tier. Elle reste votre Armure arcanique jusqu’à ce que vous portiez une autre armure ou que vous mouriez.",
+      "text_original": "Your metallurgical pursuits have led to you making armor a conduit for your MagiTech. As an action, you can turn a suit of armor you are wearing into Arcane Armor. You gain the following benefits while wearing this armor: The armor attaches to you and can’t be removed against your will. It also expands to cover your entire body, although you can retract or deploy the helmet at will. The armor replaces any missing limbs, functioning identically to a limb it replaces. You can wear or take off armor at any time. Armor grants you +1 Evasion per Tier. The armor continues to be Arcane Armor until you wear another suit of armor or you die.",
+      "source_status": "complete"
+    },
+    {
+      "tier": "mastery",
+      "name": "Armure perfectionnée",
+      "name_original": "Perfected Armor",
+      "text": "Votre Armure arcanique gagne des bénéfices supplémentaires selon son modèle. Gardien : lorsqu’une créature de taille Huge ou inférieure que vous voyez termine son tour à portée Proche, vous pouvez utiliser votre réaction pour la forcer magiquement à effectuer un jet de Réaction de Force (15). En cas d’échec, vous l’attirez jusqu’à portée Proche dans un espace inoccupé. Si vous l’attirez dans un espace à portée Mêlée, vous pouvez effectuer une attaque de mêlée contre elle dans le cadre de cette réaction. Vous pouvez utiliser cette réaction un nombre de fois égal à votre Maîtrise et récupérez tous les usages dépensés après un repos long. Infiltrateur : toute créature qui subit des dégâts de foudre de votre Lightning Launcher scintille d’une lumière magique jusqu’à ce que le MJ dépense de la Peur. La créature scintillante émet une faible lumière et subit un désavantage à ses jets d’attaque contre vous, car la lumière la secoue lorsqu’elle vous attaque. De plus, le prochain jet d’attaque effectué contre elle bénéficie d’un avantage ; si cette attaque touche, la cible subit 1d6 dégâts de foudre supplémentaires.",
+      "text_original": "Your Arcane Armor gains additional benefits based on its model, as shown below. Guardian. When a Huge or smaller creature you see ends its turn within Close range of you, you can use your reaction to magically force it to make a Strength Reaction (15). On a failed roll, you pull the creature up to Close range directly to an unoccupied space. If you pull the target to a space within Melee range, you can make a melee weapon attack against it as part of this reaction. You can use this reaction a number of times equal to your Proficiency, and you regain all expended uses of it when you finish a long rest. Infiltrator. Any creature that takes lightning damage from your Lightning Launcher glimmers with magical light until GM uses Fear. The glimmering creature sheds dim light, and it has disadvantage on attack rolls against you, as the light jolts it if it attacks you. In addition, the next attack roll against it has advantage, and if that attack hits, the target takes an extra 1d6 lightning damage.",
+      "source_status": "complete"
+    }
+  ],
+  "source": {
+    "corpus": "artificer-recreation-from-original-5e-ruleset",
+    "version": "source-extraction-2026-09-25",
+    "status": "homebrew"
+  },
+  "canonical": true,
+  "integration": {
+    "foundation_status": "complete",
+    "specialization_status": "complete",
+    "mastery_status": "complete"
+  }
+}

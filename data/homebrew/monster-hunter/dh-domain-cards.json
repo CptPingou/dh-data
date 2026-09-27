@@ -5,7 +5,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Lecture du terrain.</strong> Une fois par chasse, sans effectuer de jet, obtenez une information sûre sur le comportement du monstre ou son biome.</p><p>Les autres informations obtenues par observation ou étude sont résolues normalement par le MJ.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -33,6 +33,11 @@
           "familyLabel": "Chasse",
           "eligibility": "toolkit",
           "loadoutGroup": "hunt"
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": null,
+          "huntRole": "knowledge"
         }
       }
     },
@@ -45,7 +50,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Maîtrise de la piste.</strong> Vous savez identifier le trajet probable d’un monstre et l’emplacement de sa tanière à partir de traces suffisantes.</p><p>Lorsque vous préparez un piège sur un passage identifié avant la confrontation, les PJ ont l’initiative lorsque le monstre entre dans la zone préparée.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -73,6 +78,11 @@
           "familyLabel": "Chasse",
           "eligibility": "toolkit",
           "loadoutGroup": "hunt"
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": null,
+          "huntRole": "tracking"
         }
       }
     },
@@ -85,7 +95,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Réorientation.</strong> Pendant un Engagement, vous pouvez changer le Finisher désigné par l’Opener avant que l’Opportunité ne soit convertie.</p><p>Vous êtes également le référent logistique du groupe pour l’organisation et la capacité des objets de chasse.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -113,6 +123,11 @@
           "familyLabel": "Chasse",
           "eligibility": "toolkit",
           "loadoutGroup": "hunt"
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "support",
+          "huntRole": "logistics"
         }
       }
     },
@@ -125,7 +140,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Préparation de chasse.</strong> Vous pouvez préparer des appâts adaptés aux habitudes alimentaires du monstre afin de provoquer des désavantages ou créer une ouverture appropriée.</p><p>Vous pouvez également cuisiner pour favoriser la récupération et réaliser les préparations locales nécessaires au craft de chasse.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -153,6 +168,11 @@
           "familyLabel": "Chasse",
           "eligibility": "toolkit",
           "loadoutGroup": "hunt"
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": null,
+          "huntRole": "preparation"
         }
       }
     },
@@ -165,7 +185,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Préservation.</strong> Une fois par chasse, vous pouvez désigner une partie du monstre comme <em>préservée</em> afin d’éviter qu’elle soit perdue lors de l’extraction.</p><p>Le dépeçage final reste résolu par un jet de Dualité ; la partie préservée est sécurisée indépendamment de ce résultat.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -193,6 +213,11 @@
           "familyLabel": "Chasse",
           "eligibility": "toolkit",
           "loadoutGroup": "hunt"
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": null,
+          "huntRole": "extraction"
         }
       }
     },
@@ -205,7 +230,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Opener.</strong> Dépensez 2 Espoir lorsque vous engagez le monstre. Sur une ouverture réussie, créez 2 Opportunités et désignez le Finisher.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -309,6 +334,11 @@
           "MHOPENACTION0001": {
             "role": "opener"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "opener",
+          "huntRole": null
         }
       }
     },
@@ -321,7 +351,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Finisher.</strong> Lorsque vous convertissez une Opportunité, chaque OP dépensée en dégâts ajoute 1 dé de dégâts de l’arme. Vous pouvez à la place déclencher un Effet disponible. Sur un critique du Finisher, vous pouvez appliquer les dégâts et l’Effet.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -429,6 +459,11 @@
           "MHFINACTION00001": {
             "role": "finisher"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "finisher",
+          "huntRole": null
         }
       }
     },
@@ -441,7 +476,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Support.</strong> Une fois par combat pour cet engagement, dépensez 1 Espoir pour imposer <strong>−1d4</strong> au jet d’attaque du monstre contre un personnage engagé.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -535,6 +570,11 @@
           "MHSUPACTION00001": {
             "role": "support"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "support",
+          "huntRole": null
         }
       }
     },
@@ -547,7 +587,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Opener.</strong> Résolvez l’Ouverture normalement. Si elle provoque une réaction du monstre, appliquez <strong>−1d4</strong> à son jet d’attaque.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -663,6 +703,11 @@
           "MHFEINTEACTION01": {
             "role": "opener"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "opener",
+          "huntRole": null
         }
       }
     },
@@ -675,7 +720,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Finisher.</strong> <strong>Effet — Rupture (2 OP) :</strong> au lieu des dés bonus, rendez le monstre <strong>Vulnérable</strong> jusqu’à ce qu’il subisse la prochaine attaque. Sur un critique : Effet + dégâts convertis.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -794,6 +839,11 @@
           "MHRUPTURACTION01": {
             "role": "finisher"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "finisher",
+          "huntRole": null
         }
       }
     },
@@ -806,7 +856,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Support.</strong> Dépensez 1 Espoir : le prochain jet d’attaque du Finisher de cet Engagement gagne <strong>+1d6</strong>.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -898,6 +948,11 @@
           "MHGUIDEACTION001": {
             "role": "support"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "support",
+          "huntRole": null
         }
       }
     },
@@ -910,7 +965,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Opener.</strong> Résolvez l’Ouverture normalement. Si elle réussit avec Espoir, le Finisher désigné gagne <strong>+1d6</strong> à son prochain jet d’attaque pendant cet Engagement.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -1026,6 +1081,11 @@
           "MHPRECISACTION01": {
             "role": "opener"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "opener",
+          "huntRole": null
         }
       }
     },
@@ -1038,7 +1098,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Opener.</strong> Résolvez l’Ouverture normalement. Si elle provoque une réaction du monstre, celui-ci doit, si possible, diriger cette réaction contre l’Opener.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -1153,6 +1213,11 @@
           "MHPROVOACTION001": {
             "role": "opener"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "opener",
+          "huntRole": null
         }
       }
     },
@@ -1165,7 +1230,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Finisher.</strong> <strong>Effet — Mutilation (3 OP) :</strong> au lieu des dés bonus, infligez une conséquence fictionnelle durable à une partie exposée du monstre : aile, patte, corne, carapace ou organe approprié. Le MJ traduit cette atteinte dans les actions du monstre. Sur un critique : Effet + dégâts convertis.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -1285,6 +1350,11 @@
           "MHMUTILACTION001": {
             "role": "finisher"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "finisher",
+          "huntRole": null
         }
       }
     },
@@ -1297,7 +1367,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Finisher.</strong> <strong>Effet — Épuisement (2 OP) :</strong> au lieu des dés bonus, faites subir <strong>1 Stress</strong> au monstre si sa fiche utilise le Stress. Sur un critique : Effet + dégâts convertis.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -1416,6 +1486,11 @@
           "MHEXHAUSTACTION1": {
             "role": "finisher"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "finisher",
+          "huntRole": null
         }
       }
     },
@@ -1428,7 +1503,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Support.</strong> Dépensez 1 Espoir : la prochaine attaque appropriée du monstre contre le Finisher désigné subit <strong>−1d4</strong> pendant cet Engagement.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -1520,6 +1595,11 @@
           "MHCOVERACTION001": {
             "role": "support"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "support",
+          "huntRole": null
         }
       }
     },
@@ -1532,7 +1612,7 @@
     "type": "domainCard",
     "system": {
       "description": "<p><strong>Support.</strong> Dépensez 1 Espoir : jusqu’au prochain Finisher de cet Engagement, la prochaine réaction du monstre subit <strong>−1d4</strong> à son jet d’attaque.</p>",
-      "domain": "valor",
+      "domain": "hunt",
       "recallCost": 1,
       "level": 1,
       "type": "ability",
@@ -1625,6 +1705,11 @@
           "MHDIVERSACTION01": {
             "role": "support"
           }
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": "support",
+          "huntRole": null
         }
       }
     },

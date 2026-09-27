@@ -1,0 +1,21 @@
+{
+  "id": "homebrew.monster-hunter.domain-card.hunt.lecture-de-la-proie",
+  "kind": "domain_card",
+  "name": "Lecture de la proie",
+  "domain": "hunt",
+  "level": 1,
+  "recall_cost": 0,
+  "card_type": "ability",
+  "rules_text": "Quand vous effectuez un jet pour étudier les traces, les habitudes, l’anatomie ou les vulnérabilités d’une créature, vous pouvez dépenser 1 Espoir pour gagner l’avantage sur ce jet. En cas de réussite, le MJ vous révèle également un détail exploitable sur son comportement, sa mobilité ou une partie de son corps.",
+  "source": {
+    "corpus": "monster-hunter-homebrew",
+    "version": "0.1",
+    "status": "homebrew"
+  },
+  "canonical": true,
+  "design": {
+    "milestone": "P2.11a.1",
+    "role": "hunt-domain-vertical-slice",
+    "automation": "text-only"
+  }
+}

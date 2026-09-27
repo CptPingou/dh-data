@@ -1406,6 +1406,200 @@ async function ensureSharedContainers(api, manifest) {
   };
 }
 
+
+async function confirmBulkGmAction({
+  title,
+  content,
+  confirmLabel = "Confirmer",
+} = {}) {
+  const DialogV2 = foundry?.applications?.api?.DialogV2;
+
+  if (DialogV2?.confirm) {
+    return DialogV2.confirm({
+      window: { title },
+      content: `<p>${content}</p>`,
+      yes: { label: confirmLabel },
+      no: { label: "Annuler" },
+    });
+  }
+
+  return window.confirm(content);
+}
+
+async function saveAndBroadcastBulkInventoryChange(api, manifest, {
+  containerId = null,
+  reason = "gm-bulk-inventory",
+} = {}) {
+  const validation = api.expeditionManifest.validate?.(manifest);
+
+  if (validation && validation.green === false) {
+    throw new Error(
+      `Manifest invalide : ${(validation.errors ?? []).join("; ")}`
+    );
+  }
+
+  await api.expeditionManifest.save(manifest);
+  broadcastBackpackAccessChange(manifest, containerId);
+
+  Hooks.callAll(`${MODULE_ID}.expeditionChanged`, {
+    manifest,
+    containerId,
+    reason,
+  });
+
+  await reopenExpeditionDialog(api, manifest);
+}
+
+async function clearGroundContainer(api, manifest, container) {
+  if (!game.user?.isGM) {
+    return { green: false, reason: "not-gm" };
+  }
+
+  if (
+    inferredSharedRole(container) !== "ground" ||
+    !api?.expeditionManifest?.lose
+  ) {
+    return { green: false, reason: "ground-container-unavailable" };
+  }
+
+  const entries = [...(container.contents ?? [])];
+  if (!entries.length) {
+    ui.notifications?.info("Le Sol est déjà vide.");
+    return { green: true, changed: false, removed: 0 };
+  }
+
+  const confirmed = await confirmBulkGmAction({
+    title: "Vider le Sol",
+    content:
+      `Supprimer les ${entries.length} entrée(s) présentes au Sol ? ` +
+      "Cette action retire tout le contenu du Sol.",
+    confirmLabel: "Vider le Sol",
+  });
+
+  if (!confirmed) {
+    return { green: true, changed: false, cancelled: true };
+  }
+
+  let removed = 0;
+
+  for (const entry of entries) {
+    const quantity = Math.max(1, Number(entry?.quantity) || 1);
+
+    const result = api.expeditionManifest.lose(manifest, {
+      containerId: container.containerId,
+      entryId: entry.entryId,
+      quantity,
+      note: "Suppression en masse du Sol par le MJ",
+    });
+
+    if (!result?.changed) {
+      throw new Error(
+        result?.reason ?? `Impossible de supprimer ${entry?.itemRef?.name ?? entry?.entryId}.`
+      );
+    }
+
+    removed += 1;
+  }
+
+  await saveAndBroadcastBulkInventoryChange(api, manifest, {
+    containerId: container.containerId,
+    reason: "gm-clear-ground",
+  });
+
+  ui.notifications?.info(
+    `Sol vidé : ${removed} entrée(s) supprimée(s).`
+  );
+
+  return { green: true, changed: true, removed };
+}
+
+async function transferBackpackContentsToGround(api, manifest, backpack) {
+  if (!game.user?.isGM) {
+    return { green: false, reason: "not-gm" };
+  }
+
+  if (
+    backpack?.type !== "backpack" ||
+    !api?.expeditionManifest?.transfer
+  ) {
+    return { green: false, reason: "backpack-unavailable" };
+  }
+
+  const ground = (manifest.containers ?? []).find(
+    (container) => inferredSharedRole(container) === "ground"
+  );
+
+  if (!ground) {
+    return { green: false, reason: "ground-container-not-found" };
+  }
+
+  const entries = [...(backpack.contents ?? [])];
+
+  if (!entries.length) {
+    ui.notifications?.info(`${backpack.name} est déjà vide.`);
+    return { green: true, changed: false, moved: 0, remaining: 0 };
+  }
+
+  const confirmed = await confirmBulkGmAction({
+    title: `Vider ${backpack.name} vers le Sol`,
+    content:
+      `Transférer les ${entries.length} entrée(s) de "${backpack.name}" vers le Sol ?`,
+    confirmLabel: "Tout transférer",
+  });
+
+  if (!confirmed) {
+    return { green: true, changed: false, cancelled: true };
+  }
+
+  let moved = 0;
+  let failureReason = null;
+
+  for (const entry of entries) {
+    const result = api.expeditionManifest.transfer(manifest, {
+      entryId: entry.entryId,
+      fromContainerId: backpack.containerId,
+      toContainerId: ground.containerId,
+    });
+
+    if (!result?.moved) {
+      failureReason =
+        result?.reason ??
+        `Transfert refusé pour ${entry?.itemRef?.name ?? entry?.entryId}.`;
+      break;
+    }
+
+    moved += 1;
+  }
+
+  if (moved > 0) {
+    await saveAndBroadcastBulkInventoryChange(api, manifest, {
+      containerId: ground.containerId,
+      reason: "gm-backpack-to-ground",
+    });
+  }
+
+  const remaining = (backpack.contents ?? []).length;
+
+  if (failureReason) {
+    ui.notifications?.warn(
+      `${moved} entrée(s) transférée(s), ${remaining} restante(s) — ${failureReason}`
+    );
+  } else {
+    ui.notifications?.info(
+      `${moved} entrée(s) transférée(s) de ${backpack.name} vers le Sol.`
+    );
+  }
+
+  return {
+    green: moved > 0 || !failureReason,
+    changed: moved > 0,
+    moved,
+    remaining,
+    reason: failureReason,
+  };
+}
+
+
 function sharedRoleLabel(role) {
   switch (role) {
     case "fob":
@@ -1462,6 +1656,13 @@ function renderGmSharedAccessManagement(manifest) {
           <i class="fa-solid fa-floppy-disk"></i>
           Enregistrer
         </button>
+
+        ${role === "ground" ? `
+          <button type="button" data-dhct-ground-clear>
+            <i class="fa-solid fa-broom"></i>
+            Vider le Sol
+          </button>
+        ` : ""}
       </article>
     `;
   }).join("");
@@ -1586,6 +1787,7 @@ function injectGmSharedAccessManagement(dialog, manifest, api) {
     const roleSelect = card.querySelector("[data-dhct-shared-role]");
     const enabledInput = card.querySelector("[data-dhct-shared-enabled]");
     const saveButton = card.querySelector("[data-dhct-shared-save]");
+    const clearGroundButton = card.querySelector("[data-dhct-ground-clear]");
 
     roleSelect?.addEventListener("change", () => {
       if (enabledInput instanceof HTMLInputElement) {
@@ -1626,6 +1828,44 @@ function injectGmSharedAccessManagement(dialog, manifest, api) {
     });
 
     saveButton?.addEventListener("click", persist);
+
+    clearGroundButton?.addEventListener("pointerdown", (event) => {
+      event.stopPropagation();
+    });
+
+    clearGroundButton?.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (clearGroundButton instanceof HTMLButtonElement) {
+        clearGroundButton.disabled = true;
+      }
+
+      try {
+        const freshManifest = await api.expeditionManifest.load(
+          manifest.expeditionId
+        );
+
+        const freshContainer = (freshManifest?.containers ?? []).find(
+          (candidate) => candidate.containerId === containerId
+        );
+
+        if (!freshContainer) {
+          throw new Error("Conteneur Sol introuvable.");
+        }
+
+        await clearGroundContainer(api, freshManifest, freshContainer);
+      } catch (error) {
+        console.error(`${MODULE_ID} | clear ground failed`, error);
+        ui.notifications?.error(
+          error?.message ?? "Impossible de vider le Sol."
+        );
+
+        if (clearGroundButton instanceof HTMLButtonElement) {
+          clearGroundButton.disabled = false;
+        }
+      }
+    });
 
     for (const control of [roleSelect, enabledInput]) {
       control?.addEventListener("pointerdown", (event) => {
@@ -2276,6 +2516,11 @@ function renderGmBackpackManagement(manifest) {
         </div>
 
         <div class="dhct-backpack-admin-actions">
+          <button type="button" data-dhct-backpack-to-ground>
+            <i class="fa-solid fa-arrow-down"></i>
+            Tout transférer au Sol
+          </button>
+
           <button type="button" data-dhct-backpack-save>
             <i class="fa-solid fa-floppy-disk"></i>
             Enregistrer
@@ -2359,6 +2604,7 @@ function injectGmBackpackManagement(dialog, manifest, api) {
     const stateLabel = card.querySelector(".dhct-backpack-admin-state");
     const toggle = card.querySelector("[data-dhct-backpack-toggle]");
     const save = card.querySelector("[data-dhct-backpack-save]");
+    const toGround = card.querySelector("[data-dhct-backpack-to-ground]");
 
     const currentContainer = (manifest.containers ?? []).find(
       (candidate) => candidate.containerId === containerId
@@ -2439,6 +2685,48 @@ function injectGmBackpackManagement(dialog, manifest, api) {
     });
 
     save?.addEventListener("click", persist);
+
+    toGround?.addEventListener("pointerdown", (event) => {
+      event.stopPropagation();
+    });
+
+    toGround?.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (toGround instanceof HTMLButtonElement) {
+        toGround.disabled = true;
+      }
+
+      try {
+        const freshManifest = await api.expeditionManifest.load(
+          manifest.expeditionId
+        );
+
+        const freshBackpack = (freshManifest?.containers ?? []).find(
+          (candidate) => candidate.containerId === containerId
+        );
+
+        if (!freshBackpack) {
+          throw new Error("Sac à dos introuvable.");
+        }
+
+        await transferBackpackContentsToGround(
+          api,
+          freshManifest,
+          freshBackpack
+        );
+      } catch (error) {
+        console.error(`${MODULE_ID} | backpack to ground failed`, error);
+        ui.notifications?.error(
+          error?.message ?? "Impossible de transférer le sac vers le Sol."
+        );
+
+        if (toGround instanceof HTMLButtonElement) {
+          toGround.disabled = false;
+        }
+      }
+    });
 
     for (const input of [nameInput, slotsInput, locationInput]) {
       input?.addEventListener("pointerdown", (event) => {

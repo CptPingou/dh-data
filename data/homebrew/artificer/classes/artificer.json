@@ -1,0 +1,119 @@
+{
+  "id": "homebrew.artificer.class.artificer",
+  "kind": "class",
+  "name": "Artificier",
+  "name_original": "Artificer",
+  "domains": [
+    "codex",
+    "artillery"
+  ],
+  "spellcast_trait": "knowledge",
+  "starting_evasion": 10,
+  "starting_hit_points": 5,
+  "hope_feature": {
+    "name": "Deus Ex Machina",
+    "text": "Dépensez 3 Espoir et créez un petit construct qui bloque complètement des dégâts Sévères entrants, ou ajoute 1d12 aux Tiers 1 et 2 et 2d12 aux Tiers 3 et 4.",
+    "text_original": "Spend 3 Hope and create a small construct that blocks an incoming severe damage completely or adds D12 at Tier 1 and 2 and 2D12 at Tier 3 and 4.",
+    "integration_status": "text-only",
+    "ambiguity": "La source ne précise pas à quel jet ou quelle valeur les d12 sont ajoutés.",
+    "automation_reason": "Le coût de 3 Espoir et le blocage de dégâts Sévères sont décrits, mais la source ne précise pas à quel jet ou quelle valeur les d12 sont ajoutés. Aucune automation n'est créée sans cette information."
+  },
+  "features": [
+    {
+      "name": "Bricolage magique",
+      "name_original": "Magical Tinkering",
+      "type": "passive",
+      "text": "Au niveau 1, vous apprenez à insuffler une étincelle de magie dans des objets ordinaires. Pour chaque objet affecté, choisissez un effet : il émet une lumière vive dans un rayon Très proche ; lorsqu’une créature le touche, il diffuse un message enregistré audible jusqu’à portée Très proche ; il émet en continu une odeur ou un son non verbal perceptible jusqu’à portée Très proche ; ou un effet visuel statique apparaît sur l’une de ses surfaces, pouvant être une image, jusqu’à 25 mots de texte, des lignes et des formes, ou un mélange de ces éléments. Vous pouvez affecter simultanément un nombre d’objets égal à votre modificateur de Connaissance.",
+      "source_status": "complete",
+      "integration": {
+        "status": "text-only",
+        "reason": "La feature est complète narrativement mais ne requiert pas de primitive de combat Foundryborne. Le maximum égal au modificateur de Connaissance reste une règle de suivi narratif.",
+        "runtime": false
+      }
+    },
+    {
+      "name": "Infusions d’Artificier",
+      "name_original": "Artificer Infusions",
+      "type": "passive",
+      "text": "Pendant un repos court ou long, vous pouvez infuser des armes, armures ou autres objets avec de l’énergie MagiTech. Les infusions durent jusqu’au prochain repos long. Lorsqu’un personnage porteur d’une infusion subit des dégâts provenant d’une réussite critique, lancez 1d6 : sur 1, il perd l’infusion ; sur 2, il perd 1 Point de Vie ; sur 3, il gagne 1 Stress ; sur 4–6, rien ne se passe. Si plusieurs infusions sont actives, la plus récente est affectée en premier. Une fois par session, le PJ peut dépenser 1 Espoir pour empêcher cette conséquence. Nombre d’infusions : 2 au niveau 1, 4 au niveau 3, 6 au niveau 5, 8 au niveau 7 et 10 au niveau 9.",
+      "source_status": "incomplete",
+      "ambiguity": "La source annonce des « bonuses » d’infusion mais ne fournit pas la liste ou la définition de ces bonus.",
+      "integration": {
+        "status": "deferred-p2.11d.3",
+        "reason": "Le cycle de vie, le nombre d'infusions et la table de mishap sont décrits, mais les bonus d'infusion annoncés par la source ne sont pas fournis. P2.11d.3 implémentera le cadre sans inventer ces bonus.",
+        "runtime": false,
+        "known_contract": {
+          "duration": "until-long-rest",
+          "creation_window": [
+            "short-rest",
+            "long-rest"
+          ],
+          "critical_damage_mishap_die": "d6",
+          "mishap": {
+            "1": "lose-infusion",
+            "2": "lose-1-hp",
+            "3": "gain-1-stress",
+            "4-6": "nothing"
+          },
+          "hope_prevention": {
+            "cost": 1,
+            "frequency": "once-per-session"
+          },
+          "newest_infusion_first": true,
+          "capacity_by_level": {
+            "1": 2,
+            "3": 4,
+            "5": 6,
+            "7": 8,
+            "9": 10
+          }
+        },
+        "unknown_contract": [
+          "infusion-bonus-list",
+          "infusion-bonus-values",
+          "eligible-bonus-to-item-mapping"
+        ]
+      }
+    }
+  ],
+  "source": {
+    "corpus": "heart-of-daggers-artillery-artificer",
+    "version": "source-extraction-2026-09-25",
+    "status": "homebrew"
+  },
+  "canonical": true,
+  "integration": {
+    "class_card_resource_status": "missing",
+    "note": "Les cartes Artillery mentionnent Cob Rounds / charge tokens, mais la fiche Artificier fournie ne définit pas cette ressource.",
+    "domain_source_conflict": {
+      "giovanni_pdf": [
+        "codex",
+        "artillery"
+      ],
+      "artificer_web_pdf": [
+        "codex",
+        "magitech"
+      ],
+      "current_homebrew_choice": [
+        "codex",
+        "artillery"
+      ],
+      "status": "requires-design-decision"
+    },
+    "feature_audit": {
+      "version": "P2.11d.2",
+      "dispositions": {
+        "Deus Ex Machina": "text-only",
+        "Bricolage magique": "text-only",
+        "Infusions d’Artificier": "deferred-p2.11d.3"
+      },
+      "unsupported_features": [
+        {
+          "name": "Arcane Jolt",
+          "status": "not-in-current-artificer-source",
+          "note": "Cette feature n'apparaît pas dans la source Artificier canonique actuellement importée ; elle n'entre pas dans la roadmap tant qu'une source explicite n'est pas fournie."
+        }
+      ]
+    }
+  }
+}
