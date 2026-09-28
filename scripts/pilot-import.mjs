@@ -3210,25 +3210,16 @@ async function upsertHomebrewFeature(parentRaw, record) {
   return Item.create(data, { pack: pack.collection });
 }
 
-function serializeItemLinkSpecimen(value) {
+function cloneItemLinkRuntime(value) {
   if (!value || typeof value !== "object") return null;
 
-  // Foundryborne exposes ItemLink entries as DataModel-like runtime objects.
-  // Mutating a deep-cloned runtime object is not sufficient: its resolved
-  // `item` reference can still point at the specimen source. Always collapse
-  // the specimen to its source payload first.
-  const serialized =
-    value?.toObject?.() ??
-    value?._source ??
-    foundry.utils.deepClone(value);
-
-  if (!serialized || typeof serialized !== "object") return null;
-
-  const link = foundry.utils.deepClone(serialized);
-
-  // `item` is a runtime-resolved document reference, never canonical link data.
-  if ("item" in link) delete link.item;
-
+  // Foundryborne 2.10.5 ItemLink is a lightweight runtime object, not a
+  // DataModel: observed own keys are exactly `type`, `item`, `uuid`, with no
+  // toObject(), no toJSON() and no _source. Preserve that shape.
+  const link = {};
+  for (const key of Object.getOwnPropertyNames(value)) {
+    link[key] = value[key];
+  }
   return link;
 }
 
@@ -3237,8 +3228,7 @@ async function nativeLinkSpecimen(ownerType, wantedType) {
   const packId = ownerType === "class" ? "dh-classes" : "dh-subclasses";
   const pack = game.packs.get(`${MODULE_ID}.${packId}`);
 
-  // Use an already-valid Toolkit link as schema specimen, but serialize it
-  // before remapping so no resolved Item document from the source class leaks.
+  // Use an already-resolved Toolkit ItemLink as a schema specimen.
   if (pack) {
     const docs = await pack.getDocuments();
     for (const doc of docs) {
@@ -3249,14 +3239,14 @@ async function nativeLinkSpecimen(ownerType, wantedType) {
         (link) => normalizedChoice(link?.type) === wanted
       );
       if (match) {
-        const serialized = serializeItemLinkSpecimen(match);
-        if (serialized) return serialized;
+        const cloned = cloneItemLinkRuntime(match);
+        if (cloned) return cloned;
       }
     }
   }
 
   // Fallback for future Foundryborne versions where the blank schema template
-  // exposes the ItemLink shape directly.
+  // exposes populated ItemLinks.
   const specimen = await nativeTemplate("Item", ownerType);
   const links = Array.isArray(specimen?.system?.features)
     ? specimen.system.features
@@ -3265,8 +3255,8 @@ async function nativeLinkSpecimen(ownerType, wantedType) {
     (link) => normalizedChoice(link?.type) === wanted
   );
   if (match) {
-    const serialized = serializeItemLinkSpecimen(match);
-    if (serialized) return serialized;
+    const cloned = cloneItemLinkRuntime(match);
+    if (cloned) return cloned;
   }
 
   throw new Error(
@@ -3275,52 +3265,30 @@ async function nativeLinkSpecimen(ownerType, wantedType) {
 }
 
 function remapItemLink(specimen, doc, wantedType) {
-  const link = serializeItemLinkSpecimen(specimen);
+  const link = cloneItemLinkRuntime(specimen);
   if (!link) {
     throw new Error(`Aucun ItemLink specimen disponible pour ${wantedType}.`);
   }
 
-  let mapped = false;
+  // Foundryborne 2.10.5 runtime contract observed directly:
+  // { type, item: DhItem, uuid }. `uuid` is not sufficient by itself:
+  // the resolved `item` document is what actually drives the link.
+  // Remap BOTH fields to the target feature document.
+  link.type = wantedType;
+  link.item = doc;
+  link.uuid = doc.uuid;
 
-  // Foundryborne 2.10.5 ItemLink source schema observed at runtime:
-  // { uuid, type } with `item` exposed only as a resolved getter.
-  // Prefer uuid explicitly and overwrite it unconditionally when supported.
-  if ("uuid" in link) {
-    link.uuid = doc.uuid;
-    mapped = true;
-  }
-
-  for (const key of ["itemUuid", "value"]) {
-    if (key in link && typeof link[key] === "string") {
-      link[key] = doc.uuid;
-      mapped = true;
-    }
-  }
-
-  for (const key of ["id", "itemId"]) {
-    if (key in link) {
-      link[key] = doc.id;
-      mapped = true;
-    }
-  }
-
-  if ("type" in link) link.type = wantedType;
+  // Compatibility fields for alternate/minor schema variants.
+  if ("itemUuid" in link) link.itemUuid = doc.uuid;
+  if ("value" in link && typeof link.value === "string") link.value = doc.uuid;
+  if ("id" in link) link.id = doc.id;
+  if ("itemId" in link) link.itemId = doc.id;
   if ("name" in link && typeof link.name === "string") link.name = doc.name;
   if ("label" in link && typeof link.label === "string") link.label = doc.name;
 
-  // Never persist a resolved document from the specimen.
-  if ("item" in link) delete link.item;
-
-  if (!mapped) {
+  if (link.item !== doc || link.uuid !== doc.uuid) {
     throw new Error(
-      `ItemLink specimen ${wantedType} sans identifiant exploitable: ${JSON.stringify(link)}`
-    );
-  }
-
-  // Fail early if the canonical UUID was not actually remapped.
-  if ("uuid" in link && link.uuid !== doc.uuid) {
-    throw new Error(
-      `ItemLink ${wantedType} mal remappé: ${link.uuid} != ${doc.uuid}`
+      `ItemLink ${wantedType} mal remappé vers ${doc.name}.`
     );
   }
 
