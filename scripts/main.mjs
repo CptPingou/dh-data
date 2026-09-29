@@ -1,3 +1,5 @@
+import { registerNativeLongRestInfusionBridge } from "./artificer-rest-bridge.mjs";
+import { registerWorldInfusionsSetting } from "./artificer-infusion-runtime.mjs";
 import { installExpeditionInventoryUx } from "./expedition-inventory-ux.mjs";
 import {
   installToolkitCardPresentationBridge,
@@ -148,6 +150,7 @@ const monsterHunterAdversaryApi = createMonsterHunterAdversaryApi({ monsterParts
 Hooks.once("init", () => {
   console.log(`${MODULE_ID} | init`);
   registerEngagementStateSetting();
+  registerWorldInfusionsSetting();
   registerExpeditionManifestPersistence();
   if (!bloodDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.blood) {
     registerBloodDomain();
@@ -348,6 +351,7 @@ Hooks.once("init", () => {
 });
 
 Hooks.once("ready", async () => {
+  registerNativeLongRestInfusionBridge();
   console.log(`${MODULE_ID} | ready`);
 
   try {
