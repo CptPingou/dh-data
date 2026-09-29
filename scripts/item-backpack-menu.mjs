@@ -432,13 +432,100 @@ function patchSheetClass(SheetClass) {
         await moveItemToBackpack(item);
       },
     };
+const motherboardOption = {
+  name: "Convertir en arme Motherboard",
+  icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
 
+  condition: (target) => {
+    if (!game.user?.isGM) return false;
+
+    const row = target?.closest?.("[data-item-uuid]");
+    const uuid = row?.dataset?.itemUuid;
+    if (!uuid) return false;
+
+    const item = fromUuidSync(uuid);
+
+    if (
+      item?.documentName !== "Item" ||
+      item.type !== "weapon" ||
+      item.parent?.documentName !== "Actor" ||
+      item.parent?.type !== "character"
+    ) {
+      return false;
+    }
+
+    const api = game.modules.get(MODULE_ID)?.api;
+
+    if (!api?.weaponAugmentState) return false;
+
+    return !api.weaponAugmentState.get(item).initialized;
+  },
+
+  callback: async (target) => {
+    if (!game.user?.isGM) return;
+
+    const row = target?.closest?.("[data-item-uuid]");
+    const uuid = row?.dataset?.itemUuid;
+    const item = uuid ? await fromUuid(uuid) : null;
+
+    if (
+      item?.documentName !== "Item" ||
+      item.type !== "weapon" ||
+      item.parent?.documentName !== "Actor" ||
+      item.parent?.type !== "character"
+    ) {
+      ui.notifications?.warn("Cette entrée n'est pas une arme de personnage.");
+      return;
+    }
+
+    const api = game.modules.get(MODULE_ID)?.api;
+
+    if (!api?.weaponAugmentState) {
+      ui.notifications?.error("API Motherboard indisponible.");
+      return;
+    }
+
+    try {
+      const current = api.weaponAugmentState.get(item);
+
+      if (current.initialized) {
+        ui.notifications?.info("Cette arme est déjà compatible Motherboard.");
+        return;
+      }
+
+      await api.weaponAugmentState.initialize(item, {
+        slots: 2,
+      });
+
+      ui.notifications?.info(
+        `${item.name} est désormais compatible Motherboard (2 emplacements).`
+      );
+
+      await this.render({ force: true });
+
+    } catch (error) {
+      console.error(`${MODULE_ID} | Motherboard conversion failed`, error);
+
+      ui.notifications?.error(
+        error?.message ?? "Échec de la conversion Motherboard."
+      );
+    }
+  },
+};
     const deleteIndex = options.findIndex((option) =>
       option?.name === "CONTROLS.CommonDelete"
     );
 
-    if (deleteIndex >= 0) options.splice(deleteIndex, 0, backpackOption);
-    else options.push(backpackOption);
+    const newOptions = [
+  backpackOption,
+  motherboardOption,
+];
+
+if (deleteIndex >= 0) {
+  options.splice(deleteIndex, 0, ...newOptions);
+} else {
+  options.push(...newOptions);
+}
 
     return options;
   };
