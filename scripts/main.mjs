@@ -82,6 +82,7 @@ import { motherboardAugmentCatalogApi } from "./weapon-augment-catalog.mjs";
 import { createWeaponAugmentStateApi } from "./weapon-augment-state.mjs";
 import { weaponAugmentAuthorityApi } from "./weapon-augment-authority.mjs";
 import { weaponAugmentWorkshopApi } from "./weapon-augment-workshop.mjs";
+import { craftingMaterialsApi } from "./crafting-material-runtime.mjs";
 import { registerWeaponAugmentSheetIntegration } from "./weapon-augment-sheet.mjs";
 import {
   registerWeaponAugmentNativeFeatures,
@@ -312,6 +313,7 @@ Hooks.once("init", () => {
     weaponAugmentState: createWeaponAugmentStateApi(motherboardAugmentCatalogApi),
     weaponAugmentAuthority: weaponAugmentAuthorityApi,
     weaponAugmentWorkshop: weaponAugmentWorkshopApi,
+    craftingMaterials: craftingMaterialsApi,
     artificerResource: artificerResourceApi,
   };
 
