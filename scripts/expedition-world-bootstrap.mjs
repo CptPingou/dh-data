@@ -137,6 +137,12 @@ function ensureBackpack(manifest, actor, character) {
       changed = true;
     }
 
+    const backpackMaterialStorage = { accepts: [], stackLimit: 1, mergeStacks: false };
+    if (JSON.stringify(container.materialStorage ?? null) !== JSON.stringify(backpackMaterialStorage)) {
+      container.materialStorage = backpackMaterialStorage;
+      changed = true;
+    }
+
     if (!Array.isArray(container.rules)) {
       container.rules = [];
       changed = true;
@@ -166,6 +172,11 @@ function ensureBackpack(manifest, actor, character) {
     },
     layout: {
       slots: makeSlots(containerId, DEFAULT_BACKPACK_SLOTS),
+    },
+    materialStorage: {
+      accepts: [],
+      stackLimit: 1,
+      mergeStacks: false,
     },
     rules: [],
     contents: [],

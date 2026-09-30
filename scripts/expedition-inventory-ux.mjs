@@ -1300,6 +1300,7 @@ const SHARED_CONTAINER_SPECS = Object.freeze([
     role: "caravan",
     slots: 40,
     playerAccess: false,
+    materialStorage: { accepts: [], stackLimit: 30, mergeStacks: true },
   }),
 ]);
 
@@ -1321,6 +1322,7 @@ function buildSharedContainer(manifest, spec) {
         slotId: `slot-${index + 1}`,
       })),
     },
+    materialStorage: spec.materialStorage ? structuredClone(spec.materialStorage) : undefined,
     rules: [],
     contents: [],
     presentation: {
@@ -1367,6 +1369,11 @@ async function ensureSharedContainers(api, manifest) {
 
     if (container.presentation.playerAccess == null) {
       container.presentation.playerAccess = spec.playerAccess;
+      metadataChanged = true;
+    }
+
+    if (spec.materialStorage && JSON.stringify(container.materialStorage ?? null) !== JSON.stringify(spec.materialStorage)) {
+      container.materialStorage = structuredClone(spec.materialStorage);
       metadataChanged = true;
     }
   }

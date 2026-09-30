@@ -113,6 +113,9 @@ export function validateExpeditionManifest(input) {
         if (!Number.isInteger(container.materialStorage.stackLimit) || container.materialStorage.stackLimit < 1) {
           errors.push(`container ${id}: materialStorage.stackLimit must be >= 1`);
         }
+        if (container.materialStorage.mergeStacks != null && typeof container.materialStorage.mergeStacks !== "boolean") {
+          errors.push(`container ${id}: materialStorage.mergeStacks must be a boolean`);
+        }
       }
     }
     if (container?.presentation != null) {
@@ -244,7 +247,24 @@ function materialStorageRuleResult(container, entry, { additionalQuantity = null
     }
   }
 
-  return { green: true, material, stackLimit: Number.isInteger(stackLimit) ? stackLimit : null };
+  return {
+    green: true,
+    material,
+    stackLimit: Number.isInteger(stackLimit) ? stackLimit : null,
+    mergeStacks: policy.mergeStacks !== false,
+  };
+}
+
+function materialMergeTarget(container, entry) {
+  const policy = container?.materialStorage;
+  if (!policy || policy.mergeStacks === false) return null;
+  const material = materialStorageData(entry);
+  if (!material?.materialId) return null;
+  return (container.contents ?? []).find((candidate) =>
+    candidate !== entry &&
+    materialStorageData(candidate)?.materialId === material.materialId &&
+    Number(candidate?.quantity) > 0
+  ) ?? null;
 }
 
 function transferRuleResult(container, entry) {
@@ -306,6 +326,14 @@ export function canTransferExpeditionEntry(manifest, {
   const materialRule = materialStorageRuleResult(to, entry);
   if (!materialRule.green) return materialRule;
 
+  const mergeTarget = materialMergeTarget(to, entry);
+  if (mergeTarget) {
+    const nextQuantity = Math.max(1, Number(mergeTarget.quantity) || 1) + Math.max(1, Number(entry.quantity) || 1);
+    const mergeRule = materialStorageRuleResult(to, mergeTarget, { additionalQuantity: nextQuantity });
+    if (!mergeRule.green) return mergeRule;
+    return { green: true, entry, from, to, slotId: mergeTarget.slotId ?? null, reposition: false, mergeTarget };
+  }
+
   const capacity = to.capacity?.slots ?? 0;
   if ((to.contents ?? []).filter((candidate) => {
       const state = candidate?.itemRef?.lifecycle?.state ?? "legacy";
@@ -334,16 +362,20 @@ export function transferExpeditionEntry(manifest, {
   const check = canTransferExpeditionEntry(manifest, { entryId, fromContainerId, toContainerId, toSlotId });
   if (!check.green) return { moved: false, reason: check.reason, manifest };
 
-  const { entry, from, to, slotId, reposition } = check;
+  const { entry, from, to, slotId, reposition, mergeTarget = null } = check;
 
   if (reposition) {
     entry.slotId = slotId;
   } else {
     const index = from.contents.findIndex((candidate) => candidate.entryId === entryId);
     from.contents.splice(index, 1);
-    entry.slotId = slotId;
-    to.contents ??= [];
-    to.contents.push(entry);
+    if (mergeTarget) {
+      mergeTarget.quantity = Math.max(1, Number(mergeTarget.quantity) || 1) + Math.max(1, Number(entry.quantity) || 1);
+    } else {
+      entry.slotId = slotId;
+      to.contents ??= [];
+      to.contents.push(entry);
+    }
   }
 
   manifest.revision = Math.max(1, Number(manifest.revision) || 1) + 1;
@@ -360,7 +392,7 @@ export function transferExpeditionEntry(manifest, {
     });
   }
 
-  return { moved: true, reposition, entryId, fromContainerId, toContainerId, slotId, ledgerEvent, manifest };
+  return { moved: true, reposition, merged: Boolean(mergeTarget), entryId, fromContainerId, toContainerId, slotId, ledgerEvent, manifest };
 }
 
 export function appendExpeditionLedgerEvent(manifest, {
@@ -472,7 +504,7 @@ export function acquireExpeditionEntry(manifest, {
 
   const candidateStackKey = stackSnapshotKey(candidate.itemRef);
   const existingStack =
-    candidateStackKey == null
+    candidateStackKey == null || container?.materialStorage?.mergeStacks === false
       ? null
       : (container.contents ?? []).find((existing) => {
           if (existing?.itemRef?.sourceId !== candidate.itemRef?.sourceId) return false;
