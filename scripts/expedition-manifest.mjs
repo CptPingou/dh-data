@@ -103,6 +103,18 @@ export function validateExpeditionManifest(input) {
     if (!Array.isArray(container?.layout?.slots)) errors.push(`container ${id}: layout.slots must be an array`);
     if (!Array.isArray(container?.rules)) errors.push(`container ${id}: rules must be an array`);
     if (!Array.isArray(container?.contents)) errors.push(`container ${id}: contents must be an array`);
+    if (container?.materialStorage != null) {
+      if (!container.materialStorage || typeof container.materialStorage !== "object" || Array.isArray(container.materialStorage)) {
+        errors.push(`container ${id}: materialStorage must be an object`);
+      } else {
+        if (!Array.isArray(container.materialStorage.accepts) || container.materialStorage.accepts.some((value) => !nonEmpty(value))) {
+          errors.push(`container ${id}: materialStorage.accepts must be an array of non-empty strings`);
+        }
+        if (!Number.isInteger(container.materialStorage.stackLimit) || container.materialStorage.stackLimit < 1) {
+          errors.push(`container ${id}: materialStorage.stackLimit must be >= 1`);
+        }
+      }
+    }
     if (container?.presentation != null) {
       if (!container.presentation || typeof container.presentation !== "object" || Array.isArray(container.presentation)) {
         errors.push(`container ${id}: presentation must be an object`);
@@ -190,6 +202,51 @@ function firstFreeSlot(container) {
   return null;
 }
 
+function materialStorageData(entry) {
+  const material = entry?.itemRef?.snapshot?.flags?.["daggerheart-campaign-toolkit"]?.material;
+  if (!material?.materialId || !material?.containerClass) return null;
+  return {
+    materialId: material.materialId,
+    containerClass: material.containerClass,
+    stackable: material.stackable !== false,
+  };
+}
+
+function materialStorageRuleResult(container, entry, { additionalQuantity = null } = {}) {
+  const material = materialStorageData(entry);
+  if (!material) return { green: true, material: null };
+
+  const policy = container?.materialStorage;
+  if (!policy) return { green: true, material, unmanaged: true };
+
+  const accepts = Array.isArray(policy.accepts) ? policy.accepts : [];
+  if (accepts.length && !accepts.includes(material.containerClass)) {
+    return {
+      green: false,
+      reason: `${container.name} ne peut pas contenir ${material.containerClass}`,
+      code: "material-container-class-rejected",
+    };
+  }
+
+  const stackLimit = Number(policy.stackLimit);
+  if (Number.isInteger(stackLimit) && stackLimit > 0) {
+    const quantity = additionalQuantity == null
+      ? Math.max(1, Number(entry?.quantity) || 1)
+      : Math.max(1, Number(additionalQuantity) || 1);
+    if (quantity > stackLimit) {
+      return {
+        green: false,
+        reason: `${container.name} limite ce type de matériau à ${stackLimit} unité(s) par stack`,
+        code: "material-stack-limit-exceeded",
+        stackLimit,
+        quantity,
+      };
+    }
+  }
+
+  return { green: true, material, stackLimit: Number.isInteger(stackLimit) ? stackLimit : null };
+}
+
 function transferRuleResult(container, entry) {
   for (const rule of container?.rules ?? []) {
     if (!rule || rule.enabled === false) continue;
@@ -245,6 +302,9 @@ export function canTransferExpeditionEntry(manifest, {
 
   const rule = transferRuleResult(to, entry);
   if (!rule.green) return rule;
+
+  const materialRule = materialStorageRuleResult(to, entry);
+  if (!materialRule.green) return materialRule;
 
   const capacity = to.capacity?.slots ?? 0;
   if ((to.contents ?? []).filter((candidate) => {
@@ -420,8 +480,11 @@ export function acquireExpeditionEntry(manifest, {
         });
 
   if (existingStack) {
-    existingStack.quantity =
-      Math.max(1, Number(existingStack.quantity) || 1) + qty;
+    const nextQuantity = Math.max(1, Number(existingStack.quantity) || 1) + qty;
+    const materialRule = materialStorageRuleResult(container, existingStack, { additionalQuantity: nextQuantity });
+    if (!materialRule.green) return { acquired: false, reason: materialRule.reason, code: materialRule.code, manifest };
+
+    existingStack.quantity = nextQuantity;
 
     manifest.revision = Math.max(1, Number(manifest.revision) || 1) + 1;
 
@@ -457,7 +520,7 @@ export function acquireExpeditionEntry(manifest, {
   } finally {
     manifest.containers.pop();
   }
-  if (!preflight.green) return { acquired: false, reason: preflight.reason, manifest };
+  if (!preflight.green) return { acquired: false, reason: preflight.reason, code: preflight.code ?? null, manifest };
 
   candidate.quantity = qty;
   candidate.slotId = preflight.slotId ?? null;
