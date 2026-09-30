@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "mh.materials.pilot",
+  "materials": [
+    {
+      "id": "mh.tetsucabra.fang",
+      "name": "Croc de Tetsucabra",
+      "material": { "family": "osseous", "quality": 2, "properties": ["rigid", "piercing", "impact"] },
+      "inventory": { "stackable": true, "containerClass": "hard-material" },
+      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
+      "source": { "type": "creature", "creatureId": "mh.tetsucabra", "anatomy": "fang" }
+    },
+    {
+      "id": "mh.tetsucabra.hide",
+      "name": "Peau de Tetsucabra",
+      "material": { "family": "tegument", "quality": 2, "properties": ["flexible", "dense", "reinforcing"] },
+      "inventory": { "stackable": true, "containerClass": "soft-material" },
+      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
+      "source": { "type": "creature", "creatureId": "mh.tetsucabra", "anatomy": "hide" }
+    },
+    {
+      "id": "mh.vespoid.gland",
+      "name": "Glande de Vespoid",
+      "material": { "family": "organ", "quality": 1, "properties": ["electric", "conductive"] },
+      "inventory": { "stackable": true, "containerClass": "organ" },
+      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
+      "source": { "type": "creature", "creatureId": "mh.vespoid", "anatomy": "gland" }
+    },
+    {
+      "id": "mh.vespoid.wing",
+      "name": "Aile de Vespoid",
+      "material": { "family": "fiber", "quality": 1, "properties": ["light", "flexible", "resonant"] },
+      "inventory": { "stackable": true, "containerClass": "soft-material" },
+      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
+      "source": { "type": "creature", "creatureId": "mh.vespoid", "anatomy": "wing" }
+    }
+  ]
+}

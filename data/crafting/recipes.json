@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "id": "mh.recipes.pilot",
+  "recipes": [
+    {
+      "id": "craft.weapon-augment.force",
+      "name": "Force",
+      "output": { "type": "weaponAugment", "id": "motherboard.force" },
+      "requirements": [
+        { "id": "force-structure", "units": 2, "match": { "property": "rigid", "minimumQuality": 1 } },
+        { "id": "force-impact", "units": 2, "match": { "property": "impact", "minimumQuality": 1 } },
+        { "id": "force-binding", "units": 1, "match": { "property": "flexible", "minimumQuality": 1 } }
+      ]
+    }
+  ]
+}
