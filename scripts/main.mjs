@@ -80,6 +80,7 @@ import {
 } from "./hunting-domain-card-bridge.mjs";
 import { motherboardAugmentCatalogApi } from "./weapon-augment-catalog.mjs";
 import { createWeaponAugmentStateApi } from "./weapon-augment-state.mjs";
+import { weaponAugmentAuthorityApi } from "./weapon-augment-authority.mjs";
 import { registerWeaponAugmentSheetIntegration } from "./weapon-augment-sheet.mjs";
 import {
   registerWeaponAugmentNativeFeatures,
@@ -308,6 +309,7 @@ Hooks.once("init", () => {
     weaponProgression: weaponProgressionApi,
     weaponAugments: motherboardAugmentCatalogApi,
     weaponAugmentState: createWeaponAugmentStateApi(motherboardAugmentCatalogApi),
+    weaponAugmentAuthority: weaponAugmentAuthorityApi,
     artificerResource: artificerResourceApi,
   };
 
@@ -346,6 +348,11 @@ Hooks.once("init", () => {
   registerEngagementFinisherChatHook(toolkitApi.engagementFinisher);
   registerEngagementSupportActionHook(toolkitApi.engagementSupport, toolkitApi.engagementState);
   registerWeaponAugmentSheetIntegration();
+  const weaponAugmentAuthority = weaponAugmentAuthorityApi.install();
+console.info(
+  `${MODULE_ID} | Weapon Augment authority`,
+  weaponAugmentAuthority
+);
   registerToolkitCardSheetIntegration();
   registerArtificerResourceRuntime();
 });

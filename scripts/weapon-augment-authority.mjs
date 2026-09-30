@@ -6,7 +6,20 @@ const SOCKET_RESULT = "weapon-augment-authority-result";
 
 const AUTHORITY_REQUEST_TIMEOUT_MS = 10_000;
 
-const pendingRequests = new Map();
+const RUNTIME_KEY = "__dhctWeaponAugmentAuthorityRuntime";
+
+function authorityRuntime() {
+  const root = globalThis;
+
+  if (!root[RUNTIME_KEY]) {
+    root[RUNTIME_KEY] = {
+      pendingRequests: new Map(),
+      listenerInstalled: false,
+    };
+  }
+
+  return root[RUNTIME_KEY];
+}
 
 function activeAuthorityGm() {
   return [...(game.users ?? [])]
@@ -205,7 +218,7 @@ export async function requestWeaponAugmentAuthority({
 
   return new Promise((resolve) => {
     const timer = setTimeout(() => {
-      pendingRequests.delete(message.requestId);
+      authorityRuntime().pendingRequests.delete(message.requestId);
 
       resolve({
         green: false,
@@ -213,7 +226,7 @@ export async function requestWeaponAugmentAuthority({
       });
     }, AUTHORITY_REQUEST_TIMEOUT_MS);
 
-    pendingRequests.set(message.requestId, {
+    authorityRuntime().pendingRequests.set(message.requestId, {
       resolve,
       timer,
     });
@@ -230,14 +243,16 @@ export function installWeaponAugmentAuthority() {
     };
   }
 
-  if (game.socket.__dhctWeaponAugmentAuthorityInstalled) {
-    return {
-      green: true,
-      reused: true,
-    };
-  }
+  const runtime = authorityRuntime();
 
-  game.socket.__dhctWeaponAugmentAuthorityInstalled = true;
+if (runtime.listenerInstalled) {
+  return {
+    green: true,
+    reused: true,
+  };
+}
+
+runtime.listenerInstalled = true;
 
   game.socket.on(SOCKET_CHANNEL, async (message) => {
     if (!message) return;
@@ -276,10 +291,10 @@ export function installWeaponAugmentAuthority() {
     if (message.type !== SOCKET_RESULT) return;
     if (message.targetUserId !== game.user?.id) return;
 
-    const pending = pendingRequests.get(message.requestId);
+    const pending = authorityRuntime().pendingRequests.get(message.requestId);
     if (!pending) return;
 
-    pendingRequests.delete(message.requestId);
+    authorityRuntime().pendingRequests.delete(message.requestId);
     clearTimeout(pending.timer);
 
     pending.resolve({
