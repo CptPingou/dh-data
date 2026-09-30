@@ -470,6 +470,64 @@ export function acquireExpeditionEntry(manifest, {
 } = {}) {
   const container = findContainerOrThrow(manifest, containerId);
   const qty = Math.max(1, Number(quantity) || 1);
+
+  // P2.12d.1: non-merging material storage represents physical stacks/slots.
+  // Split a multi-unit acquisition into stack-sized entries atomically instead
+  // of rejecting the whole request because a single staged entry is too large.
+  const materialProbe = { itemRef: itemRef && typeof itemRef === "object" ? clone(itemRef) : {}, quantity: 1 };
+  const material = materialStorageData(materialProbe);
+  const policy = container?.materialStorage;
+  const stackLimit = Number(policy?.stackLimit);
+  if (
+    material &&
+    policy?.mergeStacks === false &&
+    Number.isInteger(stackLimit) &&
+    stackLimit > 0 &&
+    qty > stackLimit
+  ) {
+    const snapshot = clone(manifest);
+    const entries = [];
+    const ledgerEvents = [];
+    let remaining = qty;
+    let first = true;
+
+    while (remaining > 0) {
+      const chunk = Math.min(stackLimit, remaining);
+      const result = acquireExpeditionEntry(manifest, {
+        containerId,
+        itemRef,
+        quantity: chunk,
+        entryId: first ? entryId : null,
+        note,
+      });
+
+      if (!result.acquired) {
+        for (const key of Object.keys(manifest)) delete manifest[key];
+        Object.assign(manifest, snapshot);
+        return {
+          acquired: false,
+          reason: result.reason,
+          code: result.code ?? null,
+          manifest,
+        };
+      }
+
+      entries.push(result.entry);
+      if (result.ledgerEvent) ledgerEvents.push(result.ledgerEvent);
+      remaining -= chunk;
+      first = false;
+    }
+
+    return {
+      acquired: true,
+      split: true,
+      entries,
+      entry: entries[0] ?? null,
+      ledgerEvents,
+      ledgerEvent: ledgerEvents[0] ?? null,
+      manifest,
+    };
+  }
   const candidate = {
     entryId: nonEmpty(entryId) ? entryId : nextEntryId(manifest, itemRef),
     itemRef: itemRef && typeof itemRef === "object" ? clone(itemRef) : {},

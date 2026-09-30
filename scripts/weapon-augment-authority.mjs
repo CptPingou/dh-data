@@ -132,9 +132,52 @@ async function processAuthorityRequest(message) {
   let state;
 
   switch (message.operation) {
-    case "craft":
-      state = await api.craft(weapon, augmentId);
-      break;
+    case "craft": {
+      const craftingApi = game.modules.get(MODULE_ID)?.api?.crafting ?? null;
+      if (!craftingApi?.craftWeaponAugment) {
+        return { green: false, reason: "crafting-api-unavailable" };
+      }
+
+      const expeditionId = String(message?.expeditionId ?? "").trim();
+      const containerId = String(message?.containerId ?? "caravan").trim() || "caravan";
+
+      if (!expeditionId) {
+        return { green: false, reason: "expedition-id-required" };
+      }
+
+      const craft = await craftingApi.craftWeaponAugment({
+        crafter,
+        weapon,
+        augmentId,
+        expeditionId,
+        containerId,
+      });
+
+      if (!craft?.green) {
+        return {
+          ...craft,
+          green: false,
+          operation: message.operation,
+          crafterUuid: crafter.uuid,
+          weaponUuid: weapon.uuid,
+          augmentId,
+          expeditionId,
+          containerId,
+        };
+      }
+
+      return {
+        ...craft,
+        green: true,
+        reason: permission.reason,
+        operation: message.operation,
+        crafterUuid: crafter.uuid,
+        weaponUuid: weapon.uuid,
+        augmentId,
+        expeditionId,
+        containerId,
+      };
+    }
 
     case "install":
       state = await api.install(weapon, augmentId);
@@ -173,6 +216,8 @@ function emitAuthorityResult(message, result) {
     crafterUuid: message?.crafterUuid ?? null,
     weaponUuid: message?.weaponUuid ?? null,
     augmentId: message?.augmentId ?? null,
+    expeditionId: message?.expeditionId ?? null,
+    containerId: message?.containerId ?? null,
 
     ...result,
   });
@@ -183,6 +228,8 @@ export async function requestWeaponAugmentAuthority({
   weapon,
   operation,
   augmentId,
+  expeditionId = null,
+  containerId = "caravan",
 } = {}) {
   if (!game.socket?.emit) {
     return {
@@ -208,6 +255,8 @@ export async function requestWeaponAugmentAuthority({
     weaponUuid: weapon?.uuid ?? null,
     operation: operation ?? null,
     augmentId: augmentId ?? null,
+    expeditionId: expeditionId ?? null,
+    containerId: containerId ?? "caravan",
   };
 
   // Same fast path as expedition inventory when the authority itself
@@ -304,6 +353,10 @@ runtime.listenerInstalled = true;
       crafterUuid: message.crafterUuid ?? null,
       weaponUuid: message.weaponUuid ?? null,
       augmentId: message.augmentId ?? null,
+      expeditionId: message.expeditionId ?? null,
+      containerId: message.containerId ?? null,
+      allocations: message.allocations ?? null,
+      consumed: message.consumed ?? null,
       state: message.state ?? null,
     });
   });

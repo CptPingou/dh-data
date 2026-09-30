@@ -352,13 +352,78 @@ export function createExpeditionFoundryItemsApi({ expeditionManifestApi } = {}) 
       return { ...result, containerId, entryId, manifest };
     },
 
-    loadFromActor(manifest, { containerId, item, quantity = 1, entryId = null, note = null } = {}) {
+    async loadFromActor(manifest, { containerId, item, quantity = 1, entryId = null, note = null } = {}) {
       const container = (manifest?.containers ?? []).find((c) => c.containerId === containerId);
       const actor = actorFromContainer(container);
       if (!actor) return { loaded: false, reason: "container-holder-actor-not-found", manifest };
       if (!item || item.documentName !== "Item" || item.parent?.id !== actor.id) return { loaded: false, reason: "item-not-owned-by-container-holder", manifest };
-      const result = expeditionManifestApi.acquire(manifest, { containerId, itemRef: foundryItemRef(item), quantity, entryId, note: note ?? `Chargé depuis ${actor.name}` });
-      return { loaded: Boolean(result.acquired), actorId: actor.id, itemId: item.id, ...result };
+
+      const requested = Math.max(1, Math.floor(Number(quantity) || 1));
+      const system = item.system ?? {};
+      let quantityPath = null;
+      let available = 1;
+
+      if (typeof system.quantity === "number") {
+        quantityPath = "system.quantity";
+        available = Math.max(1, Number(system.quantity) || 1);
+      } else if (system.quantity && typeof system.quantity === "object" && Object.prototype.hasOwnProperty.call(system.quantity, "value")) {
+        quantityPath = "system.quantity.value";
+        available = Math.max(1, Number(system.quantity.value) || 1);
+      } else if (typeof system.amount === "number") {
+        quantityPath = "system.amount";
+        available = Math.max(1, Number(system.amount) || 1);
+      } else if (system.amount && typeof system.amount === "object" && Object.prototype.hasOwnProperty.call(system.amount, "value")) {
+        quantityPath = "system.amount.value";
+        available = Math.max(1, Number(system.amount.value) || 1);
+      }
+
+      if (requested > available) {
+        return { loaded: false, reason: "quantity-exceeds-actor-item", available, requested, manifest };
+      }
+
+      const manifestSnapshot = clone(manifest);
+      const result = expeditionManifestApi.acquire(manifest, {
+        containerId,
+        itemRef: foundryItemRef(item),
+        quantity: requested,
+        entryId,
+        note: note ?? `Chargé depuis ${actor.name}`,
+      });
+
+      if (!result.acquired) {
+        return { loaded: false, actorId: actor.id, itemId: item.id, ...result };
+      }
+
+      try {
+        const remaining = available - requested;
+        if (remaining <= 0) {
+          await item.delete();
+        } else if (quantityPath) {
+          await item.update({ [quantityPath]: remaining });
+        } else {
+          // A non-stackable Item cannot represent a partial remainder.
+          restoreManifestSnapshot(manifest, manifestSnapshot);
+          return {
+            loaded: false,
+            reason: "actor-item-quantity-path-not-found",
+            actorId: actor.id,
+            itemId: item.id,
+            manifest,
+          };
+        }
+
+        return {
+          loaded: true,
+          actorId: actor.id,
+          itemId: item.id,
+          loadedQuantity: requested,
+          remainingActorQuantity: remaining,
+          ...result,
+        };
+      } catch (error) {
+        restoreManifestSnapshot(manifest, manifestSnapshot);
+        throw error;
+      }
     },
 
     async unloadToActor(manifest, { containerId, entryId, quantity = null, note = null } = {}) {

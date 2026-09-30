@@ -1,0 +1,139 @@
+import { validateRecipeCatalog } from "./crafting-schema.mjs";
+import { allocateRecipe } from "./crafting-recipe-engine.mjs";
+
+const MODULE_ID = "daggerheart-campaign-toolkit";
+const RECIPES_URL = `modules/${MODULE_ID}/data/crafting/recipes.json`;
+let recipeCache = null;
+
+const clone = (value) => value == null ? value : (globalThis.structuredClone ? structuredClone(value) : JSON.parse(JSON.stringify(value)));
+
+export async function loadCraftingRecipeCatalog({ force = false } = {}) {
+  if (recipeCache && !force) return clone(recipeCache);
+  const response = await fetch(RECIPES_URL, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Unable to load crafting recipe catalog (${response.status}).`);
+  const catalog = await response.json();
+  validateRecipeCatalog(catalog);
+  recipeCache = clone(catalog);
+  return clone(recipeCache);
+}
+
+export async function getCraftingRecipeForOutput(outputType, outputId) {
+  const catalog = await loadCraftingRecipeCatalog();
+  return clone(catalog.recipes.find((recipe) => recipe.output?.type === outputType && recipe.output?.id === outputId) ?? null);
+}
+
+function materialData(entry) {
+  return entry?.itemRef?.snapshot?.flags?.[MODULE_ID]?.material ?? null;
+}
+
+function containerInventory(container) {
+  const totals = new Map();
+  for (const entry of container?.contents ?? []) {
+    const materialId = materialData(entry)?.materialId;
+    const quantity = Number(entry?.quantity) || 0;
+    if (!materialId || quantity <= 0) continue;
+    totals.set(materialId, (totals.get(materialId) ?? 0) + quantity);
+  }
+  return [...totals].map(([materialId, quantity]) => ({ materialId, quantity }));
+}
+
+function knownMaterialDefinition(material, knowledgeApi, crafter) {
+  const known = new Set(knowledgeApi.effective(crafter, material.id)?.properties ?? []);
+  const copy = clone(material);
+  copy.material.properties = copy.material.properties.filter((property) => known.has(property));
+  if (copy.material.properties.length === 0) copy.material.properties = ["__unknown__"];
+  return copy;
+}
+
+function consumeAllocationFromContainer(manifestApi, manifest, containerId, allocations) {
+  const required = new Map();
+  for (const allocation of allocations) {
+    required.set(allocation.materialId, (required.get(allocation.materialId) ?? 0) + allocation.quantity);
+  }
+
+  const container = manifest.containers.find((candidate) => candidate.containerId === containerId);
+  if (!container) throw new Error(`Unknown crafting container: ${containerId}.`);
+
+  const consumed = [];
+  for (const [materialId, total] of required) {
+    let remaining = total;
+    const entries = [...(container.contents ?? [])].filter((entry) => materialData(entry)?.materialId === materialId);
+    for (const entry of entries) {
+      if (remaining <= 0) break;
+      const quantity = Math.min(remaining, Number(entry.quantity) || 0);
+      if (quantity <= 0) continue;
+      const result = manifestApi.consume(manifest, {
+        containerId,
+        entryId: entry.entryId,
+        quantity,
+        note: "Craft biologique",
+      });
+      if (!result.changed) throw new Error(result.reason ?? `Unable to consume ${materialId}.`);
+      consumed.push({ materialId, entryId: entry.entryId, quantity });
+      remaining -= quantity;
+    }
+    if (remaining > 0) throw new Error(`Allocation drift for ${materialId}: ${remaining} unit(s) missing.`);
+  }
+  return consumed;
+}
+
+export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestApi, persistenceApi, weaponAugmentStateApi } = {}) {
+  if (!materialsApi?.list) throw new Error("craftingMaterials API is required.");
+  if (!knowledgeApi?.effective) throw new Error("craftingKnowledge API is required.");
+  if (!manifestApi?.consume || !manifestApi?.validate) throw new Error("expeditionManifest API is required.");
+  if (!persistenceApi?.load || !persistenceApi?.save) throw new Error("expedition persistence API is required.");
+  if (!weaponAugmentStateApi?.craft) throw new Error("weaponAugmentState API is required.");
+
+  async function planWeaponAugment({ crafter, augmentId, expeditionId, containerId = "caravan" } = {}) {
+    const recipe = await getCraftingRecipeForOutput("weaponAugment", augmentId);
+    if (!recipe) return { green: false, reason: "biological-recipe-not-found", augmentId };
+    const manifest = await persistenceApi.load(expeditionId);
+    if (!manifest) return { green: false, reason: "expedition-not-found", expeditionId };
+    const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
+    if (!container) return { green: false, reason: "crafting-container-not-found", containerId };
+
+    const definitions = await materialsApi.list();
+    const knownDefinitions = definitions.map((material) => knownMaterialDefinition(material, knowledgeApi, crafter));
+    const allocation = allocateRecipe(recipe, containerInventory(container), knownDefinitions);
+    return {
+      ...allocation,
+      augmentId,
+      expeditionId,
+      containerId,
+      recipe: clone(recipe),
+      inventory: containerInventory(container),
+    };
+  }
+
+  async function craftWeaponAugment({ crafter, weapon, augmentId, expeditionId, containerId = "caravan" } = {}) {
+    if (!game.user?.isGM) throw new Error("Biological craft mutation is GM-only.");
+    const plan = await planWeaponAugment({ crafter, augmentId, expeditionId, containerId });
+    if (!plan.green) return plan;
+
+    const original = await persistenceApi.load(expeditionId);
+    const working = clone(original);
+    const consumed = consumeAllocationFromContainer(manifestApi, working, containerId, plan.allocations);
+    const validation = manifestApi.validate(working);
+    if (!validation.green) throw new Error(`Craft would create invalid expedition manifest: ${(validation.errors ?? []).join("; ")}`);
+
+    await persistenceApi.save(working);
+    try {
+      const state = await weaponAugmentStateApi.craft(weapon, augmentId);
+      return { green: true, operation: "craft", augmentId, expeditionId, containerId, allocations: plan.allocations, consumed, state };
+    } catch (error) {
+      try {
+        await persistenceApi.save(original);
+      } catch (rollbackError) {
+        throw new Error(`Craft failed (${error.message}); material rollback also failed (${rollbackError.message}).`);
+      }
+      throw error;
+    }
+  }
+
+  return Object.freeze({
+    loadRecipes: loadCraftingRecipeCatalog,
+    recipeForOutput: getCraftingRecipeForOutput,
+    planWeaponAugment,
+    craftWeaponAugment,
+  });
+}

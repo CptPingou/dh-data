@@ -209,6 +209,8 @@ function augmentRow({
   augment,
   crafted,
   installed,
+  biologicalRecipe = null,
+  expeditionAvailable = false,
 }) {
   let action = "craft";
   let label = "Fabriquer";
@@ -228,6 +230,9 @@ function augmentRow({
       : "À fabriquer";
 
   const tier = requiredTier(augment);
+  const craftBlocked = action === "craft" && (!biologicalRecipe || !expeditionAvailable);
+  if (action === "craft" && !biologicalRecipe) label = "Recette à migrer";
+  if (action === "craft" && biologicalRecipe && !expeditionAvailable) label = "Expédition requise";
 
   return `
     <div
@@ -267,6 +272,7 @@ function augmentRow({
         type="button"
         data-dct-augment-action="${action}"
         data-dct-augment-id="${escapeHtml(augment.id)}"
+        ${craftBlocked ? "disabled" : ""}
       >
         ${label}
       </button>
@@ -281,9 +287,27 @@ async function renderAugmentManager({
 }) {
   const state = api.weaponAugmentState.get(weapon);
   const augments = await api.weaponAugments.list();
+  const expeditions = await api.expeditionManifest?.list?.() ?? [];
+  const expeditionOptions = expeditions
+    .map((entry) => {
+      const id = String(entry?.expeditionId ?? "").trim();
+      if (!id) return "";
+      const phase = entry?.phase ? ` — ${entry.phase}` : "";
+      return `<option value="${escapeHtml(id)}">${escapeHtml(id + phase)}</option>`;
+    })
+    .filter(Boolean)
+    .join("");
 
   const crafted = craftedIds(state);
   const installed = installedIds(state);
+
+  const recipePairs = await Promise.all(
+    augments.map(async (augment) => [
+      augment.id,
+      await api.crafting?.recipeForOutput?.("weaponAugment", augment.id) ?? null,
+    ]),
+  );
+  const recipes = new Map(recipePairs);
 
   const rows = augments
     .map((augment) =>
@@ -291,6 +315,8 @@ async function renderAugmentManager({
         augment,
         crafted: crafted.has(augment.id),
         installed: installed.has(augment.id),
+        biologicalRecipe: recipes.get(augment.id),
+        expeditionAvailable: Boolean(expeditionOptions),
       }),
     )
     .join("");
@@ -316,6 +342,16 @@ async function renderAugmentManager({
         ${state.installedCount}/${state.slots} utilisés
         ·
         ${state.availableSlots} disponible(s)
+      </p>
+
+      <p>
+        <label>
+          <strong>Expédition de craft :</strong>
+          <select data-dct-crafting-expedition ${expeditionOptions ? "" : "disabled"}>
+            ${expeditionOptions || '<option value="">Aucune expédition disponible</option>'}
+          </select>
+        </label>
+        <span style="opacity:.65;font-size:.85em"> · stock : Caravane</span>
       </p>
 
       <p>
@@ -460,12 +496,18 @@ export async function openHuntWeaponWorkshop(crafter) {
     augmentButton.disabled = true;
 
     try {
+      const expeditionId = operation === "craft"
+        ? element.querySelector("[data-dct-crafting-expedition]")?.value ?? null
+        : null;
+
       const response =
         await api.weaponAugmentAuthority.request({
           crafter,
           weapon: selectedWeapon,
           operation,
           augmentId,
+          expeditionId,
+          containerId: "caravan",
         });
 
       console.info(

@@ -84,6 +84,7 @@ import { weaponAugmentAuthorityApi } from "./weapon-augment-authority.mjs";
 import { weaponAugmentWorkshopApi } from "./weapon-augment-workshop.mjs";
 import { craftingMaterialsApi } from "./crafting-material-runtime.mjs";
 import { registerMaterialKnowledgeSetting, createCraftingKnowledgeApi } from "./crafting-knowledge-runtime.mjs";
+import { createCraftingRuntimeApi } from "./crafting-runtime.mjs";
 import { registerWeaponAugmentSheetIntegration } from "./weapon-augment-sheet.mjs";
 import {
   registerWeaponAugmentNativeFeatures,
@@ -201,7 +202,7 @@ Hooks.once("init", () => {
   });
 
   game.modules.get(MODULE_ID).api = {
-    version: "0.5.59",
+    version: "0.5.60",
     async smokeTest() {
       const systemOk = game.system?.id === "daggerheart";
       const packs = Object.fromEntries([
@@ -321,6 +322,13 @@ Hooks.once("init", () => {
   };
 
   const toolkitApi = game.modules.get(MODULE_ID).api;
+  toolkitApi.crafting = createCraftingRuntimeApi({
+    materialsApi: toolkitApi.craftingMaterials,
+    knowledgeApi: toolkitApi.craftingKnowledge,
+    manifestApi: toolkitApi.expeditionManifest,
+    persistenceApi: toolkitApi.expeditionManifest,
+    weaponAugmentStateApi: toolkitApi.weaponAugmentState,
+  });
   toolkitApi.engagement = createEngagementApi({
     opportunity: toolkitApi.engagementOpportunity,
     opener: toolkitApi.engagementOpener,
