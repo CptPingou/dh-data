@@ -118,7 +118,7 @@ function cloneResourceData(resource) {
     foundry.utils.deepClone(resource);
 }
 
-function simpleResourceSpecimen(actor) {
+async function simpleResourceSpecimen(actor) {
   // Prefer an already-valid native simple resource on the same Actor.
   // Seaborne / "Connaître la marée" is the reference specimen validated
   // against Foundryborne 2.10.5.
@@ -140,17 +140,32 @@ function simpleResourceSpecimen(actor) {
   const own = nativeResourceOf(counterFeature(actor));
   if (own) return cloneResourceData(own);
 
-  return null;
+  // Fresh-world bootstrap: a brand new Artificer has no actor-side native
+  // resource yet. Search the Toolkit feature compendium instead of requiring
+  // the GM to create an unrelated Seaborne character first.
+  const featurePack = game.packs.get(`${MODULE_ID}.dh-features`);
+  if (featurePack) {
+    const featureDocs = await featurePack.getDocuments();
+    for (const item of featureDocs) {
+      const resource = nativeResourceOf(item);
+      if (resource) return cloneResourceData(resource);
+    }
+  }
+
+  // Last-resort seed for a genuinely empty pack: only fields observed in the
+  // validated native Seaborne simple resource. Cob-specific overrides below
+  // replace value/max/icon/recovery. This avoids a world-dependent failure.
+  return {
+    type: "simple",
+    value: 0,
+    max: "",
+    icon: "fa-solid fa-bullseye",
+    recovery: null,
+  };
 }
 
 function cobResourceFromSpecimen(specimen, value, max = null) {
-  if (!specimen) {
-    throw new Error(
-      "Aucun compteur natif simple disponible comme specimen. " +
-      "Ajoutez/ouvrez un personnage possédant une feature native à compteur " +
-      "(ex. Connaître la marée / Seaborne), puis relancez ensure()."
-    );
-  }
+  if (!specimen) throw new Error("Schéma de ressource Cob simple indisponible.");
 
   const resource = foundry.utils.deepClone(specimen);
   resource.type = "simple";
@@ -179,7 +194,7 @@ async function nativeFeatureTemplate(actor, initialState) {
   const specimen = docs.find((doc) => doc.type === "feature") ?? null;
   if (!specimen) throw new Error("Aucun specimen natif feature dans dh-features.");
 
-  const resourceSpecimen = simpleResourceSpecimen(actor);
+  const resourceSpecimen = await simpleResourceSpecimen(actor);
   const data = specimen.toObject();
   delete data._id;
   delete data.folder;
@@ -262,7 +277,7 @@ export async function ensureArtificerResourceFeature(actor) {
 
     if (!nativeBefore) {
       update["system.resource"] = cobResourceFromSpecimen(
-        simpleResourceSpecimen(actor),
+        await simpleResourceSpecimen(actor),
         state.value,
         state.max
       );
