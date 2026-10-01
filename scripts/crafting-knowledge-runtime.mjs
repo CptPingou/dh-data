@@ -120,11 +120,14 @@ export function createCraftingKnowledgeApi(materialsApi, { now = () => Date.now(
     };
   }
 
-  async function discoverMaterialProperty({ actor, materialId, propertyId, source = { type: "research-station" } } = {}) {
+  async function discoverMaterialProperty({ actor, materialId, propertyId, source = { type: "research-station" }, specimenQuantity = null } = {}) {
     assertGm();
     const material = await resolveProperty(materialsApi, materialId, propertyId);
     const specimen = material.research?.specimen ?? { required: false, consumed: false };
-    if (specimen.required && materialsApi.actorQuantity(actor, materialId) < 1) {
+    const availableSpecimens = specimenQuantity == null
+      ? materialsApi.actorQuantity(actor, materialId)
+      : Math.max(0, Number(specimenQuantity) || 0);
+    if (specimen.required && availableSpecimens < 1) {
       throw new Error(`A specimen of ${material.name} is required for discovery.`);
     }
     if (specimen.consumed) throw new Error("Consumed research specimens are not implemented in v1.");

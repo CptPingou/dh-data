@@ -78,11 +78,68 @@ function consumeAllocationFromContainer(manifestApi, manifest, containerId, allo
 }
 
 export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestApi, persistenceApi, weaponAugmentStateApi } = {}) {
-  if (!materialsApi?.list) throw new Error("craftingMaterials API is required.");
-  if (!knowledgeApi?.effective) throw new Error("craftingKnowledge API is required.");
+  if (!materialsApi?.list || !materialsApi?.get) throw new Error("craftingMaterials API is required.");
+  if (!knowledgeApi?.effective || !knowledgeApi?.discover) throw new Error("craftingKnowledge API is required.");
   if (!manifestApi?.consume || !manifestApi?.validate) throw new Error("expeditionManifest API is required.");
   if (!persistenceApi?.load || !persistenceApi?.save) throw new Error("expedition persistence API is required.");
   if (!weaponAugmentStateApi?.craft) throw new Error("weaponAugmentState API is required.");
+
+  async function researchMaterialProperty({ actor, materialId, propertyId, expeditionId, containerId = "fob", source = "fob" } = {}) {
+    if (!game.user?.isGM) throw new Error("Material research mutation is GM-only.");
+    if (!actor?.uuid) return { green: false, reason: "research-actor-required" };
+    if (!materialId) return { green: false, reason: "material-id-required" };
+    if (!propertyId) return { green: false, reason: "property-id-required" };
+    if (!expeditionId) return { green: false, reason: "expedition-id-required" };
+
+    const manifest = await persistenceApi.load(expeditionId);
+    if (!manifest) return { green: false, reason: "expedition-not-found", expeditionId };
+
+    const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
+    if (!container) return { green: false, reason: "research-container-not-found", expeditionId, containerId };
+
+    const role = String(container.presentation?.playerRole ?? "").trim().toLowerCase();
+    if (containerId !== "fob" && role !== "fob") {
+      return { green: false, reason: "research-container-not-fob", expeditionId, containerId };
+    }
+
+    const material = await materialsApi.get(materialId);
+    if (!material) return { green: false, reason: "material-not-found", materialId };
+    if (!material.research?.discoverable) return { green: false, reason: "material-not-research-discoverable", materialId };
+    if (!material.material?.properties?.includes(propertyId)) {
+      return { green: false, reason: "material-property-not-found", materialId, propertyId };
+    }
+
+    const specimenEntries = (container.contents ?? []).filter((entry) =>
+      materialData(entry)?.materialId === materialId &&
+      Number(entry?.quantity) > 0 &&
+      !["consumed", "deleted"].includes(entry?.itemRef?.lifecycle?.state)
+    );
+    const specimenQuantity = specimenEntries.reduce((sum, entry) => sum + Number(entry.quantity || 0), 0);
+    const specimenRequired = material.research?.specimen?.required === true;
+    if (specimenRequired && specimenQuantity < 1) {
+      return { green: false, reason: "research-specimen-required", materialId, expeditionId, containerId };
+    }
+    if (material.research?.specimen?.consumed === true) {
+      return { green: false, reason: "research-specimen-consumption-not-supported", materialId };
+    }
+
+    const discovery = await knowledgeApi.discover({
+      actor,
+      materialId,
+      propertyId,
+      specimenQuantity,
+      source: { type: "research-station", location: source, expeditionId, containerId },
+    });
+
+    return {
+      ...discovery,
+      operation: "research-material-property",
+      expeditionId,
+      containerId,
+      specimenQuantity,
+      specimenConsumed: false,
+    };
+  }
 
   async function planWeaponAugment({ crafter, augmentId, expeditionId, containerId = "caravan" } = {}) {
     const recipe = await getCraftingRecipeForOutput("weaponAugment", augmentId);
@@ -133,6 +190,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
   return Object.freeze({
     loadRecipes: loadCraftingRecipeCatalog,
     recipeForOutput: getCraftingRecipeForOutput,
+    researchMaterialProperty,
     planWeaponAugment,
     craftWeaponAugment,
   });
