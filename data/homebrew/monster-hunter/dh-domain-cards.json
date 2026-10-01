@@ -19,7 +19,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -41,7 +41,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Naturaliste — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHNATURALIST0001"
   },
   {
@@ -64,7 +116,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -86,7 +138,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Traqueur — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHTRAQUEUR000001"
   },
   {
@@ -109,7 +213,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -131,7 +235,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Tacticien — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHTACTICIEN00001"
   },
   {
@@ -154,7 +310,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -176,8 +332,157 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Cuistot — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHCUISINIER00001"
+  },
+  {
+    "name": "Artisant",
+    "img": "icons/tools/hand/hammer-and-nail.webp",
+    "type": "domainCard",
+    "system": {
+      "description": "<p><strong>Atelier d’armes de chasse.</strong> Vous pouvez utiliser l’Atelier d’armes de chasse pour fabriquer, installer et retirer les augmentations compatibles sur les armes de chasse du groupe.</p><p><strong>Carte de rôle.</strong> Artisant ne consomme pas d’emplacement de votre loadout normal : lorsqu’elle est chargée, elle augmente votre maximum de loadout de 1.</p><p>Les coûts, matériaux, recettes et autorisations sont résolus par le sous-système de craft du Campaign Toolkit.</p>",
+      "domain": "hunt",
+      "recallCost": 1,
+      "level": 1,
+      "type": "ability",
+      "actions": {},
+      "attribution": {
+        "source": "Monster Hunter Daggerheart",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "resource": null,
+      "inVault": false,
+      "vaultActive": false,
+      "loadoutIgnore": true,
+      "domainTouched": null
+    },
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "canonicalSourceId": "monster-hunter.hunt.MHARTISANT000001",
+        "toolkitCard": {
+          "family": "hunt",
+          "familyLabel": "Chasse",
+          "eligibility": "toolkit",
+          "loadoutGroup": "hunt"
+        },
+        "huntingCardRoles": {
+          "schemaVersion": 1,
+          "combatRole": null,
+          "huntRole": "crafting"
+        }
+      }
+    },
+    "effects": [
+      {
+        "name": "Artisant — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
+    "_id": "MHARTISANT000001"
   },
   {
     "name": "Extracteur",
@@ -199,7 +504,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -221,7 +526,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Extracteur — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHEXTRACTEUR0001"
   },
   {
@@ -298,7 +655,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -342,7 +699,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Ouverture — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHOPENINGSTRIKE1"
   },
   {
@@ -419,7 +828,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -467,7 +876,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Conversion — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHFINISHERBASE01"
   },
   {
@@ -520,7 +981,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -578,7 +1039,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Appui défensif — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHSUPPORTGUARD01"
   },
   {
@@ -655,7 +1168,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -711,7 +1224,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Feinte d’approche — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHFEINTEAPPROCH1"
   },
   {
@@ -788,7 +1353,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -847,7 +1412,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Frappe de rupture — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHRUPTUREFINISH1"
   },
   {
@@ -900,7 +1517,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -956,7 +1573,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Guidage du Finisher — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHGUIDESUPP00001"
   },
   {
@@ -1033,7 +1702,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -1089,7 +1758,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Ouverture précise — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHPRECISIONOPEN1"
   },
   {
@@ -1166,7 +1887,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -1221,7 +1942,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Provocation — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHPROVOCATION001"
   },
   {
@@ -1298,7 +2071,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -1358,7 +2131,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Frappe mutilante — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHMUTILFINISH001"
   },
   {
@@ -1435,7 +2260,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -1494,7 +2319,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Frappe d’épuisement — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHEXHAUSTFINISH1"
   },
   {
@@ -1547,7 +2424,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -1603,7 +2480,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Couverture — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHCOVERSUPPORT01"
   },
   {
@@ -1656,7 +2585,7 @@
       "resource": null,
       "inVault": false,
       "vaultActive": false,
-      "loadoutIgnore": false,
+      "loadoutIgnore": true,
       "domainTouched": null
     },
     "flags": {
@@ -1713,7 +2642,59 @@
         }
       }
     },
-    "effects": [],
+    "effects": [
+      {
+        "name": "Diversion — Loadout de Chasse",
+        "type": "base",
+        "_id": "MHHUNTLOADOUT001",
+        "img": "icons/svg/upgrade.svg",
+        "system": {
+          "rangeDependence": null,
+          "changes": [
+            {
+              "key": "system.bonuses.maxLoadout",
+              "type": "add",
+              "value": 1,
+              "priority": 20,
+              "phase": "initial"
+            }
+          ],
+          "duration": {
+            "description": ""
+          },
+          "stacking": null,
+          "targetDispositions": []
+        },
+        "disabled": false,
+        "duration": {
+          "value": null,
+          "units": "seconds",
+          "expiry": null,
+          "expired": false
+        },
+        "description": "<p>Cette carte augmente de 1 votre maximum de loadout afin de ne pas consommer un emplacement de carte de domaine standard.</p>",
+        "tint": "#ffffff",
+        "transfer": true,
+        "statuses": [],
+        "sort": 0,
+        "flags": {},
+        "_stats": {
+          "compendiumSource": null,
+          "coreVersion": "14.364",
+          "systemId": "daggerheart",
+          "systemVersion": "2.9.4",
+          "createdTime": null,
+          "modifiedTime": null,
+          "lastModifiedBy": null,
+          "duplicateSource": null,
+          "exportSource": null
+        },
+        "start": null,
+        "showIcon": 1,
+        "folder": null,
+        "origin": null
+      }
+    ],
     "_id": "MHDIVERSUPPORT01"
   }
 ]

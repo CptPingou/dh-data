@@ -1,5 +1,6 @@
-﻿const MODULE_ID = "daggerheart-campaign-toolkit";
+const MODULE_ID = "daggerheart-campaign-toolkit";
 const ARTIFICER_CLASS_SOURCE_ID = "homebrew.artificer.class.artificer";
+export const HUNT_ARTISAN_CARD_SOURCE_ID = "monster-hunter.hunt.MHARTISANT000001";
 
 function toolkitApi() {
   return game.modules.get(MODULE_ID)?.api ?? null;
@@ -11,7 +12,7 @@ function escapeHtml(value) {
   return div.innerHTML;
 }
 
-function isArtificer(actor) {
+export function isArtificer(actor) {
   if (!actor || actor.documentName !== "Actor") return false;
 
   return actor.items.some((item) => {
@@ -21,6 +22,22 @@ function isArtificer(actor) {
       item.flags?.[MODULE_ID]?.sourceId === ARTIFICER_CLASS_SOURCE_ID
     );
   });
+}
+
+export function isHuntArtisanCard(item) {
+  if (!item || item.documentName === "Actor" || item.type !== "domainCard") return false;
+
+  const flags = item.flags?.[MODULE_ID] ?? {};
+  return (
+    flags.canonicalSourceId === HUNT_ARTISAN_CARD_SOURCE_ID ||
+    flags.sourceId === HUNT_ARTISAN_CARD_SOURCE_ID ||
+    (item.id ?? item._id) === "MHARTISANT000001"
+  );
+}
+
+export function hasHuntArtisanCard(actor) {
+  if (!actor || actor.documentName !== "Actor" || actor.type !== "character") return false;
+  return actor.items.some((item) => isHuntArtisanCard(item));
 }
 
 function weaponState(api, weapon) {
@@ -73,10 +90,10 @@ export function listHuntWeapons({
     };
   }
 
-  if (!isArtificer(crafter)) {
+  if (!hasHuntArtisanCard(crafter)) {
     return {
       green: false,
-      reason: "crafter-not-artificer",
+      reason: "crafter-missing-hunt-artisan-card",
       crafter: crafter.uuid,
       weapons: [],
     };
@@ -190,7 +207,7 @@ function workshopContent(crafter, result) {
   return `
     <div class="dct-hunt-weapon-workshop">
       <p>
-        <strong>Artificier :</strong>
+        <strong>Artisant :</strong>
         ${escapeHtml(crafter.name)}
       </p>
 
@@ -333,7 +350,7 @@ async function renderAugmentManager({
       </p>
 
       <p>
-        <strong>Artificier :</strong>
+        <strong>Artisant :</strong>
         ${escapeHtml(crafter.name)}
       </p>
 

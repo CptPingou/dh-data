@@ -1,0 +1,35 @@
+[
+  {
+    "_id": "MHARTWORKSHOP001",
+    "name": "Atelier d’armes de chasse",
+    "type": "feature",
+    "img": "icons/tools/smithing/anvil.webp",
+    "system": {
+      "description": "<p>Vous pouvez ouvrir l’<strong>Atelier d’armes de chasse</strong> afin de fabriquer, installer ou retirer des augmentations sur les armes de chasse compatibles.</p><p>Cette feature est accordée par la carte de domaine Chasse <strong>Artisant</strong>.</p>",
+      "attribution": {
+        "source": "Monster Hunter Daggerheart",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "Feature d’interface accordée automatiquement tant que le personnage possède Artisant.",
+      "granter": null,
+      "featureForm": "passive",
+      "actorResources": [],
+      "resource": null,
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "monster-hunter.hunt.feature.weapon-workshop",
+        "canonicalSourceId": "monster-hunter.hunt.feature.weapon-workshop",
+        "managed": true,
+        "kind": "hunt_feature",
+        "sourceNamespace": "monster-hunter",
+        "parentSourceId": "monster-hunter.hunt.MHARTISANT000001",
+        "huntRole": "crafting",
+        "workshop": "weapon-augment"
+      }
+    }
+  }
+]

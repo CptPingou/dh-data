@@ -1,5 +1,6 @@
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const INDEX_URL = `modules/${MODULE_ID}/data/source-index.json`;
+const ACTION_FIELD_ITEM_TYPES = new Set(["domainCard", "consumable", "feature"]);
 
 function urlFor(path) {
   return `modules/${MODULE_ID}/${path}`;
@@ -116,7 +117,7 @@ function normalizeSourceThroughFoundry(source, pack) {
   // through Document#update. Preserve the authoritative source actions in the
   // comparable representation so verification checks the materialized field
   // instead of normalizing it away.
-  const sourceActions = source?.type === "domainCard"
+  const sourceActions = ACTION_FIELD_ITEM_TYPES.has(source?.type)
     ? source?.system?.actions
     : null;
   if (
@@ -131,18 +132,46 @@ function normalizeSourceThroughFoundry(source, pack) {
   return result;
 }
 
-function sourceValueIsPreserved(runtime, source) {
+function sourceValueIsPreserved(runtime, source, path = "") {
   if (Array.isArray(source)) {
     if (!Array.isArray(runtime) || runtime.length !== source.length) return false;
-    return source.every((value, index) => sourceValueIsPreserved(runtime[index], value));
+    return source.every((value, index) =>
+      sourceValueIsPreserved(runtime[index], value, `${path}[${index}]`)
+    );
   }
 
   if (source !== null && typeof source === "object") {
+    // Foundryborne ActionField hydration collapses authored alternate damage
+    // values to null at runtime in multiple branches (for example
+    // damage.main.valueAlt and damage.resources.<resource>.valueAlt). This is
+    // schema normalization, not a semantic divergence. Keep the exception
+    // restricted to valueAlt fields located under damage.*.
+    if (
+      runtime === null &&
+      /(?:^|\.)damage(?:\.[^.]+)+\.valueAlt$/.test(path)
+    ) {
+      return true;
+    }
+
     if (runtime === null || typeof runtime !== "object" || Array.isArray(runtime)) return false;
-    return Object.entries(source).every(
-      ([key, value]) => Object.prototype.hasOwnProperty.call(runtime, key)
-        && sourceValueIsPreserved(runtime[key], value),
-    );
+    return Object.entries(source).every(([key, value]) => {
+      const childPath = path ? `${path}.${key}` : key;
+      const hasRuntimeKey = Object.prototype.hasOwnProperty.call(runtime, key);
+
+      // Foundryborne omits these optional originItem keys entirely when their
+      // authored value is null. Treat an omitted runtime key as equivalent to
+      // source null only for those schema-normalized fields.
+      if (
+        value === null &&
+        (!hasRuntimeKey || runtime[key] === undefined) &&
+        /(?:^|\.)originItem\.(?:itemPath|actionIndex)$/.test(childPath)
+      ) {
+        return true;
+      }
+
+      return hasRuntimeKey
+        && sourceValueIsPreserved(runtime[key], value, childPath);
+    });
   }
 
   return Object.is(runtime, source);
@@ -152,7 +181,7 @@ function comparisonPair(doc, source, pack) {
   const runtime = comparable(doc.toObject());
   const normalizedSource = comparable(normalizeSourceThroughFoundry(source, pack));
 
-  if (source?.type !== "domainCard") {
+  if (!ACTION_FIELD_ITEM_TYPES.has(source?.type)) {
     return { runtime, normalizedSource, actionsGreen: true };
   }
 
@@ -433,7 +462,7 @@ async function replacePack(packName, sources) {
       const createSources = sources.map(source => {
         const copy = foundry.utils.deepClone(source);
         if (
-          ["domainCard", "consumable"].includes(copy?.type) &&
+          ACTION_FIELD_ITEM_TYPES.has(copy?.type) &&
           copy?.system?.actions &&
           typeof copy.system.actions === "object" &&
           Object.keys(copy.system.actions).length > 0
@@ -452,7 +481,7 @@ async function replacePack(packName, sources) {
       for (const doc of created) {
         const actions = sourceById.get(doc.id)?.system?.actions;
         if (
-          ["domainCard", "consumable"].includes(doc.type) &&
+          ACTION_FIELD_ITEM_TYPES.has(doc.type) &&
           actions &&
           typeof actions === "object" &&
           Object.keys(actions).length > 0

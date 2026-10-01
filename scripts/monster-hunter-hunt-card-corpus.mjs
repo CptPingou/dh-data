@@ -23,6 +23,8 @@ export async function monsterHunterHuntCardCorpusStatus({
   const expected = [
     "opening", "conversion", "defensive-support",
     "feinte-approche", "frappe-rupture", "guidage-finisher",
+    "ouverture-precise", "provocation", "frappe-mutilante",
+    "frappe-epuisement", "couverture", "diversion",
   ];
   const ids = mechanical.map((row) => row.mechanic.id);
 
@@ -38,8 +40,8 @@ export async function monsterHunterHuntCardCorpusStatus({
       mechanic,
     })),
     green:
-      mh.length === 11 &&
-      mechanical.length === 6 &&
+      mh.length === 18 &&
+      mechanical.length === 12 &&
       expected.every((id) => ids.includes(id)),
   };
 }

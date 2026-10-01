@@ -1,5 +1,6 @@
 import { expeditionErrorMessage } from "./expedition-errors.mjs";
 import "./expedition-world-bootstrap.mjs";
+import { isHuntArtisanWorkshopFeature } from "./hunt-artisan-workshop-feature.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const PATCH_MARK = Symbol.for(`${MODULE_ID}.backpackContextMenuPatched`);
@@ -353,9 +354,9 @@ function patchSheetClass(SheetClass) {
     if (!Array.isArray(options)) return options;
 
     const backpackOption = {
-      name: "Mettre dans le sac à dos",
+      label: "Mettre dans le sac à dos",
       icon: '<i class="fa-solid fa-backpack"></i>',
-      condition: (target) => {
+      visible: (target) => {
         const row = target?.closest?.("[data-item-uuid]");
         const uuid = row?.dataset?.itemUuid;
         if (!uuid) return false;
@@ -384,10 +385,10 @@ function patchSheetClass(SheetClass) {
       },
     };
 const motherboardOption = {
-  name: "Convertir en arme Motherboard",
+  label: "Convertir en arme de chasse",
   icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
 
-  condition: (target) => {
+  visible: (target) => {
     if (!game.user?.isGM) return false;
 
     const row = target?.closest?.("[data-item-uuid]");
@@ -463,12 +464,54 @@ const motherboardOption = {
     }
   },
 };
+
+const workshopOption = {
+  label: "Atelier d’armes de chasse",
+  icon: '<i class="fa-solid fa-screwdriver-wrench"></i>',
+
+  visible: (target) => {
+    const row = target?.closest?.("[data-item-uuid]");
+    const uuid = row?.dataset?.itemUuid;
+    if (!uuid) return false;
+
+    const item = fromUuidSync(uuid);
+    const actor = item?.parent;
+    return Boolean(
+      isHuntArtisanWorkshopFeature(item) &&
+      actor?.documentName === "Actor" &&
+      actor?.type === "character" &&
+      (actor.isOwner || game.user?.isGM)
+    );
+  },
+
+  callback: async (target) => {
+    const row = target?.closest?.("[data-item-uuid]");
+    const uuid = row?.dataset?.itemUuid;
+    const item = uuid ? await fromUuid(uuid) : null;
+    const actor = item?.parent;
+
+    if (!isHuntArtisanWorkshopFeature(item) || actor?.type !== "character") {
+      ui.notifications?.warn("Feature Atelier d’armes de chasse introuvable.");
+      return;
+    }
+
+    const api = getToolkitApi();
+    if (!api?.weaponAugmentWorkshop?.open) {
+      ui.notifications?.error("Atelier d’armes de chasse indisponible.");
+      return;
+    }
+
+    await api.weaponAugmentWorkshop.open(actor);
+  },
+};
+
     const deleteIndex = options.findIndex((option) =>
-      option?.name === "CONTROLS.CommonDelete"
+      (option?.label ?? option?.name) === "CONTROLS.CommonDelete"
     );
 
     const newOptions = [
   backpackOption,
+  workshopOption,
   motherboardOption,
 ];
 
