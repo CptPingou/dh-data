@@ -1,4 +1,4 @@
-import { registerNativeLongRestInfusionBridge } from "./artificer-rest-bridge.mjs";
+﻿import { registerNativeLongRestInfusionBridge } from "./artificer-rest-bridge.mjs";
 import { registerWorldInfusionsSetting } from "./artificer-infusion-runtime.mjs";
 import { installExpeditionInventoryUx } from "./expedition-inventory-ux.mjs";
 import {
@@ -136,8 +136,8 @@ function registerBloodDomain() {
     domainConfig.domains.blood = {
       id: "blood",
       label: "Blood",
-      src: "icons/svg/blood.svg",
-      description: "Blood domain (The Void v1.5 playtest).",
+      src: "modules/daggerheart-campaign-toolkit/assets/icons/blood.svg",
+      description: "Blood domain",
     };
   }
   console.log(`${MODULE_ID} | Blood domain registered`);

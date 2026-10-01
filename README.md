@@ -1,40 +1,50 @@
-# Patch Domain Assets — Daggerheart Campaign Toolkit
+# Artificer subclass link fix
 
-But exact du patch :
+But
+---
+Le lien `system.linkedClass` des sous-classes Artificier est déjà correctement résolu
+vers l'UUID de la classe Artificier. Le problème restant est uniquement que
+`mappingGaps` conserve deux marqueurs devenus obsolètes :
+- `system.linkedClass`
+- `system.features`
 
-- `assets/icons/<domain>.svg` = **icône de domaine de l'en-tête personnage**, à droite de HOPE.
-- `assets/icons/domain-card/<domain>.png` = **image des cartes de domaine + icônes d'actions**.
+Ce patch retire ces deux gaps après résolution effective des liens.
 
-## Contenu
+Installation
+------------
+Depuis PowerShell, à la racine où tu as extrait ce dossier :
 
-- `scripts/pilot-import.mjs` : version corrigée à copier dans le repo.
-- `apply-supporting-fixes.ps1` : corrige uniquement les anciennes déclarations de registre connues dans `hunting-domain-card-bridge.mjs` et `main.mjs`, avec backup automatique.
-- `verify-domain-assets.ps1` : vérifie assets, chemins et syntaxe JS.
+    powershell -ExecutionPolicy Bypass -File .\apply-artificer-link-fix.ps1 -RepoRoot C:\dev\dh-data
 
-## Installation depuis `C:\dev\dh-data`
+Puis vérifie :
 
-1. Sauvegarder/committer le repo.
-2. Copier `scripts\pilot-import.mjs` du ZIP vers `C:\dev\dh-data\scripts\pilot-import.mjs`.
-3. Exécuter :
+    powershell -ExecutionPolicy Bypass -File .\verify-artificer-link-fix.ps1 -RepoRoot C:\dev\dh-data
 
-```powershell
-powershell -ExecutionPolicy Bypass -File .\apply-supporting-fixes.ps1 -RepoRoot C:\dev\dh-data
-powershell -ExecutionPolicy Bypass -File .\verify-domain-assets.ps1 -RepoRoot C:\dev\dh-data
-```
+Ensuite :
+1. `git diff -- scripts/pilot-import.mjs`
+2. déploie le repo vers le module Foundry avec ton robocopy habituel
+3. F5 dans Foundry
+4. relance :
 
-4. Si `DOMAIN ASSETS PATCH GREEN`, faire le robocopy habituel vers Foundry puis F5.
+    const p = await import(
+      `/modules/daggerheart-campaign-toolkit/scripts/pilot-import.mjs?v=${Date.now()}`
+    );
+    await p.importArtificerArtillery();
 
-## Résultat attendu
+Contrôle final
+--------------
+    const subPack = game.packs.get("daggerheart-campaign-toolkit.dh-subclasses");
+    const subs = await subPack.getDocuments();
 
-```text
-CONFIG.DH.DOMAIN.domains.artillery.src
-→ modules/daggerheart-campaign-toolkit/assets/icons/artillery.svg
+    for (const s of subs.filter(s =>
+      /artific/i.test(JSON.stringify(s.toObject()))
+    )) {
+      console.log(
+        s.name,
+        s.system?.linkedClass,
+        s.flags?.["daggerheart-campaign-toolkit"]?.mappingGaps
+      );
+    }
 
-Artillery domainCard.img
-→ modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png
-
-Artillery action.img (valeur par défaut domaine)
-→ modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png
-```
-
-Les domaines natifs conservent leur `raw.img` canonique pour les cartes ; ils ne sont plus transformés en `assets/icons/domains/<slug>.png` Toolkit.
+Attendu : Armurier et Forgeron de bataille avec un UUID `linkedClass` vers
+`dh-classes` et `mappingGaps: []`.

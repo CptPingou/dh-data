@@ -143,10 +143,6 @@ function domainIcon(domain) {
 
 
 const HUNT_DOMAIN_ID = "hunt";
-const HUNT_DOMAIN_ICON =
-  "modules/daggerheart-campaign-toolkit/assets/icons/hunt.svg";
-const HUNT_CARD_ICON =
-  "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/hunt.png";
 const HUNT_CARD_ROLE_SCHEMA_VERSION = 1;
 
 const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
@@ -259,15 +255,11 @@ function isLegacyHuntCardName(name) {
 }
 
 const ARTILLERY_DOMAIN_ID = "artillery";
-const ARTILLERY_DOMAIN_ICON =
-  "modules/daggerheart-campaign-toolkit/assets/icons/artillery.svg";
-const ARTILLERY_CARD_ICON =
-  "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png";
 
 const ARTILLERY_DOMAIN_DEFINITION = Object.freeze({
   id: ARTILLERY_DOMAIN_ID,
   label: "Artillery",
-  src: ARTILLERY_DOMAIN_ICON,
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png",
   description:
     "Artillery est le domaine de la puissance de feu, du contrÃ´le de zone et des attaques Ã  fort impact.",
   color: "#8a5a24",
@@ -322,7 +314,7 @@ export async function ensureArtilleryDomain() {
 const HUNT_DOMAIN_DEFINITION = Object.freeze({
   id: HUNT_DOMAIN_ID,
   label: "Chasse",
-  src: HUNT_DOMAIN_ICON,
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/hunt.png",
   description:
     "La Chasse est le domaine de lâ€™observation, de la prÃ©paration et de la coordination contre des crÃ©atures dangereuses.",
   color: "#6b5b3e",
@@ -984,7 +976,7 @@ function artilleryBaseAction({
   name,
   description = "",
   type = "effect",
-  img = ARTILLERY_CARD_ICON,
+  img = ARTILLERY_DOMAIN_DEFINITION.src,
   range = "",
   targetAmount = null,
   stressCost = 0,
@@ -1057,7 +1049,7 @@ function artilleryAttackAction(options = {}) {
 function artilleryHealingAction({
   name,
   description = "",
-  img = ARTILLERY_CARD_ICON,
+  img = ARTILLERY_DOMAIN_DEFINITION.src,
   stress = 0,
   usesMax = "",
   recovery = null,
@@ -1301,7 +1293,7 @@ function artilleryEffectDraft({
   changes = [],
   transfer = true,
   disabled = false,
-  img = ARTILLERY_CARD_ICON,
+  img = ARTILLERY_DOMAIN_DEFINITION.src,
 }) {
   return {
     name,
@@ -1576,7 +1568,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
         description:
           "<p>Une fois par repos, pendant un moment de calme entre deux vagues, effacez 2 Stress et gagnez 1 Cob Round.</p>",
         type: "effect",
-        img: ARTILLERY_CARD_ICON,
+        img: ARTILLERY_DOMAIN_DEFINITION.src,
         range: "self",
         targetAmount: null,
         usesMax: "1",
@@ -1606,7 +1598,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
         description:
           "<p>Une fois par repos long, avant votre prochain jet dâ€™attaque, dÃ©pensez tous vos Cob Rounds. Le prochain jet dâ€™attaque gagne +1 et +2d6 dÃ©gÃ¢ts par Cob Round dÃ©pensÃ©. En cas de rÃ©ussite, la cible ne peut pas effectuer de RÃ©actions jusquâ€™au dÃ©but de votre prochaine action.</p>",
         type: "effect",
-        img: ARTILLERY_CARD_ICON,
+        img: ARTILLERY_DOMAIN_DEFINITION.src,
         range: "self",
         targetAmount: null,
         usesMax: "1",
@@ -1931,20 +1923,13 @@ export async function buildItem(entry) {
 
     const domain = r.domain ?? raw?.domain;
     if (domain) {
-      const key = normalizedChoice(domain);
-      data.system.domain = key;
+      data.system.domain = normalizedChoice(domain);
 
-      if (key === ARTILLERY_DOMAIN_ID) {
-        data.img = ARTILLERY_CARD_ICON;
-      } else if (key === HUNT_DOMAIN_ID) {
-        data.img = HUNT_CARD_ICON;
-      } else if (typeof raw?.img === "string" && raw.img.trim()) {
-        // Native domains keep their canonical card artwork. The SVG returned by
-        // domainIcon() is reserved for CONFIG.DH.DOMAIN / character-sheet UI.
-        data.img = raw.img.trim();
-      } else {
-        gaps.push("img.domain");
-      }
+      const icon = domainIcon(domain);
+      if (icon) data.img = icon;
+      else if (normalizedChoice(domain) === HUNT_DOMAIN_ID) {
+        data.img = HUNT_DOMAIN_DEFINITION.src;
+      } else gaps.push("img.domain");
     }
 
     const level = Number(r.level ?? raw?.level);
@@ -2636,9 +2621,9 @@ export async function normalizeHuntCardIcons() {
       if (
         doc.type === "domainCard" &&
         normalizedChoice(doc.system?.domain) === HUNT_DOMAIN_ID &&
-        doc.img !== HUNT_CARD_ICON
+        doc.img !== HUNT_DOMAIN_DEFINITION.src
       ) {
-        await doc.update({ img: HUNT_CARD_ICON });
+        await doc.update({ img: HUNT_DOMAIN_DEFINITION.src });
         packChanged += 1;
       }
     }
@@ -2652,11 +2637,11 @@ export async function normalizeHuntCardIcons() {
         (item) =>
           item.type === "domainCard" &&
           normalizedChoice(item.system?.domain) === HUNT_DOMAIN_ID &&
-          item.img !== HUNT_CARD_ICON
+          item.img !== HUNT_DOMAIN_DEFINITION.src
       )
       .map((item) => ({
         _id: item.id,
-        img: HUNT_CARD_ICON,
+        img: HUNT_DOMAIN_DEFINITION.src,
       }));
 
     if (updates.length) {
@@ -2667,7 +2652,7 @@ export async function normalizeHuntCardIcons() {
 
   const result = {
     green: true,
-    icon: HUNT_CARD_ICON,
+    icon: HUNT_DOMAIN_DEFINITION.src,
     domainChanged: domain.changed,
     packChanged,
     actorChanged,
@@ -2705,7 +2690,7 @@ export async function huntIconStatus() {
           item: item.name,
           itemId: item.id,
           img: item.img,
-          green: item.img === HUNT_CARD_ICON,
+          green: item.img === HUNT_DOMAIN_DEFINITION.src,
         });
       }
     }
@@ -2720,7 +2705,7 @@ export async function huntIconStatus() {
     name: doc.name,
     id: doc.id,
     img: doc.img,
-    green: doc.img === HUNT_CARD_ICON,
+    green: doc.img === HUNT_DOMAIN_DEFINITION.src,
   })).concat(actorCards.map((row) => ({
     scope: "actor",
     owner: row.actor,
@@ -2734,7 +2719,7 @@ export async function huntIconStatus() {
     green:
       configDomain?.src === HUNT_DOMAIN_DEFINITION.src &&
       rows.every((row) => row.green),
-    icon: HUNT_CARD_ICON,
+    icon: HUNT_DOMAIN_DEFINITION.src,
     domainIcon: configDomain?.src ?? null,
     compendiumCards: packCards.length,
     actorCards: actorCards.length,
@@ -2980,7 +2965,7 @@ export async function migrateLegacyHuntCards() {
         /(?:^|\/)domains\/valor\.(?:png|webp|svg)$/i.test(currentImg) ||
         currentImg === "icons/svg/item-bag.svg"
       ) {
-        update.img = HUNT_CARD_ICON;
+        update.img = HUNT_DOMAIN_DEFINITION.src;
       }
 
       await doc.update(update);
@@ -3453,6 +3438,14 @@ async function importArtificerSubclass(sourcePath, classDoc) {
     async (data) => {
       data.system.features = links;
       data.system.linkedClass = linkedClass;
+
+      // These deferred relations have now been resolved to real Foundry documents.
+      data.flags[FLAG_SCOPE].mappingGaps = (
+        data.flags[FLAG_SCOPE].mappingGaps ?? []
+      ).filter((gap) =>
+        gap !== "system.linkedClass" &&
+        gap !== "system.features"
+      );
     },
   );
 
