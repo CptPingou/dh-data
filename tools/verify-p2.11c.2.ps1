@@ -15,7 +15,7 @@ foreach ($path in @($asset,$pilot,$bridge)) {
   if (-not (Test-Path $path)) { Fail "fichier absent : $path" }
 }
 
-$runtime = "modules/daggerheart-campaign-toolkit/assets/icons/domains/artillery.png"
+$runtime = "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
 $p = Get-Content $pilot -Raw -Encoding UTF8
 $b = Get-Content $bridge -Raw -Encoding UTF8
 
@@ -37,3 +37,4 @@ Write-Host "[ OK ] bootstrap runtime Artillery utilise l'icone custom" -Foregrou
 Write-Host "[ OK ] import des cartes Artillery utilise l'icone custom" -ForegroundColor Green
 Write-Host ""
 Write-Host "P2.11c.2 GREEN (source)" -ForegroundColor Green
+

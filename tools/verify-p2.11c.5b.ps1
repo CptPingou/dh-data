@@ -17,7 +17,7 @@ $p = Get-Content $pilot -Raw -Encoding UTF8
 
 foreach ($needle in @(
   'COUNTER_SOURCE_ID = "homebrew.artificer.runtime-resource.cob-rounds"',
-  'assets/icons/domains/artillery.png',
+  'assets/icons/domain-card/artillery.png',
   'clearArtificerStress',
   'resolveBattleRhythmCalm',
   'Battle Rhythm critical -> clear 1 Stress',
@@ -52,3 +52,4 @@ Write-Host "[ OK ] Moment de calme limite a 1/repos" -ForegroundColor Green
 Write-Host "[ OK ] status Artillery etendu a Rythme de bataille" -ForegroundColor Green
 Write-Host ""
 Write-Host "P2.11c.5b GREEN (source)" -ForegroundColor Green
+

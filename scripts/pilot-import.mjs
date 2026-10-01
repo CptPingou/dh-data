@@ -1,4 +1,4 @@
-import { localizeNativeEquipmentEmbedded } from "./equipment-native-fr.mjs";
+﻿import { localizeNativeEquipmentEmbedded } from "./equipment-native-fr.mjs";
 import { applyContentLocale, getImportLocale } from "./content-locale.mjs";
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const PILOT_URL = `modules/${MODULE_ID}/data/pilot.json`;
@@ -106,9 +106,6 @@ function normalizedChoice(value) {
   return typeof value === "string" ? value.trim().toLowerCase() : value;
 }
 
-const DOMAIN_ICON_BASE =
-  "modules/daggerheart-campaign-toolkit/assets/icons/domains";
-
 const DOMAIN_ICON_KEYS = new Set([
   "arcana",
   "blade",
@@ -122,21 +119,38 @@ const DOMAIN_ICON_KEYS = new Set([
   "valor",
   "hunt",
   "artillery",
+  "blood",
 ]);
+
+const TOOLKIT_DOMAIN_ICONS = Object.freeze({
+  artillery:
+    "modules/daggerheart-campaign-toolkit/assets/icons/artillery.svg",
+  hunt:
+    "modules/daggerheart-campaign-toolkit/assets/icons/hunt.svg",
+  blood:
+    "modules/daggerheart-campaign-toolkit/assets/icons/blood.svg",
+});
 
 function domainIcon(domain) {
   const key = normalizedChoice(domain);
   if (!key || !DOMAIN_ICON_KEYS.has(key)) return null;
-  if (key === ARTILLERY_DOMAIN_ID) return ARTILLERY_DOMAIN_DEFINITION.src;
-  return `${DOMAIN_ICON_BASE}/${key}.png`;
+
+  return (
+    TOOLKIT_DOMAIN_ICONS[key] ??
+    `systems/daggerheart/assets/icons/domains/${key}.svg`
+  );
 }
 
 
 const HUNT_DOMAIN_ID = "hunt";
+const HUNT_DOMAIN_ICON =
+  "modules/daggerheart-campaign-toolkit/assets/icons/hunt.svg";
+const HUNT_CARD_ICON =
+  "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/hunt.png";
 const HUNT_CARD_ROLE_SCHEMA_VERSION = 1;
 
 const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
-  "Appui défensif": {
+  "Appui dÃ©fensif": {
     combatRole: "support",
     huntRole: null,
   },
@@ -160,11 +174,11 @@ const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
     combatRole: null,
     huntRole: "extraction",
   },
-  "Feinte d’approche": {
+  "Feinte dâ€™approche": {
     combatRole: "opener",
     huntRole: null,
   },
-  "Frappe d’épuisement": {
+  "Frappe dâ€™Ã©puisement": {
     combatRole: "finisher",
     huntRole: null,
   },
@@ -188,7 +202,7 @@ const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
     combatRole: "opener",
     huntRole: null,
   },
-  "Ouverture précise": {
+  "Ouverture prÃ©cise": {
     combatRole: "opener",
     huntRole: null,
   },
@@ -207,20 +221,20 @@ const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
 });
 
 const LEGACY_HUNT_CARD_NAMES = Object.freeze([
-  "Appui défensif",
+  "Appui dÃ©fensif",
   "Conversion",
   "Couverture",
   "Cuistot",
   "Diversion",
   "Extracteur",
-  "Feinte d’approche",
-  "Frappe d’épuisement",
+  "Feinte dâ€™approche",
+  "Frappe dâ€™Ã©puisement",
   "Frappe de rupture",
   "Frappe mutilante",
   "Guidage du finisher",
   "Naturaliste",
   "Ouverture",
-  "Ouverture précise",
+  "Ouverture prÃ©cise",
   "Provocation",
   "Tacticien",
   "Traqueur",
@@ -230,7 +244,7 @@ function normalizedHuntCardName(value) {
   return String(value ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[’‘`´]/g, "'")
+    .replace(/[â€™â€˜`Â´]/g, "'")
     .replace(/\s+/g, " ")
     .trim()
     .toLocaleLowerCase();
@@ -245,19 +259,23 @@ function isLegacyHuntCardName(name) {
 }
 
 const ARTILLERY_DOMAIN_ID = "artillery";
+const ARTILLERY_DOMAIN_ICON =
+  "modules/daggerheart-campaign-toolkit/assets/icons/artillery.svg";
+const ARTILLERY_CARD_ICON =
+  "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png";
 
 const ARTILLERY_DOMAIN_DEFINITION = Object.freeze({
   id: ARTILLERY_DOMAIN_ID,
   label: "Artillery",
-  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/artillery.png",
+  src: ARTILLERY_DOMAIN_ICON,
   description:
-    "Artillery est le domaine de la puissance de feu, du contrôle de zone et des attaques à fort impact.",
+    "Artillery est le domaine de la puissance de feu, du contrÃ´le de zone et des attaques Ã  fort impact.",
   color: "#8a5a24",
 });
 
 export async function ensureArtilleryDomain() {
   if (!game.user?.isGM) {
-    throw new Error("L’enregistrement du domaine Artillery est réservé au MJ.");
+    throw new Error("Lâ€™enregistrement du domaine Artillery est rÃ©servÃ© au MJ.");
   }
 
   const settingKey = CONFIG?.DH?.SETTINGS?.gameSettings?.Homebrew;
@@ -304,15 +322,15 @@ export async function ensureArtilleryDomain() {
 const HUNT_DOMAIN_DEFINITION = Object.freeze({
   id: HUNT_DOMAIN_ID,
   label: "Chasse",
-  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/hunt.png",
+  src: HUNT_DOMAIN_ICON,
   description:
-    "La Chasse est le domaine de l’observation, de la préparation et de la coordination contre des créatures dangereuses.",
+    "La Chasse est le domaine de lâ€™observation, de la prÃ©paration et de la coordination contre des crÃ©atures dangereuses.",
   color: "#6b5b3e",
 });
 
 export async function ensureHuntDomain() {
   if (!game.user?.isGM) {
-    throw new Error("L’enregistrement du domaine Chasse est réservé au MJ.");
+    throw new Error("Lâ€™enregistrement du domaine Chasse est rÃ©servÃ© au MJ.");
   }
 
   const settingKey = CONFIG?.DH?.SETTINGS?.gameSettings?.Homebrew;
@@ -925,14 +943,14 @@ async function nativeTemplate(documentName, type) {
     return source;
   }
 
-  throw new Error(`Aucun template Foundryborne trouvé pour ${documentName}:${type}`);
+  throw new Error(`Aucun template Foundryborne trouvÃ© pour ${documentName}:${type}`);
 }
 
 
 function parseVersatileProfile(feature) {
   if (String(feature?.name ?? "").trim().toLowerCase() !== "versatile") return null;
   const text = String(feature?.text ?? "");
-  const match = text.match(/statistics[—-]\s*([^,]+),\s*([^,]+),\s*(d\d+(?:[+-]\d+)?)(?:\s+(phy|mag))?/i);
+  const match = text.match(/statistics[â€”-]\s*([^,]+),\s*([^,]+),\s*(d\d+(?:[+-]\d+)?)(?:\s+(phy|mag))?/i);
   if (!match) return { raw: text, parseStatus: "text-preserved" };
   return {
     trait: match[1].trim().toLowerCase(),
@@ -966,7 +984,7 @@ function artilleryBaseAction({
   name,
   description = "",
   type = "effect",
-  img = ARTILLERY_DOMAIN_DEFINITION.src,
+  img = ARTILLERY_CARD_ICON,
   range = "",
   targetAmount = null,
   stressCost = 0,
@@ -1039,7 +1057,7 @@ function artilleryAttackAction(options = {}) {
 function artilleryHealingAction({
   name,
   description = "",
-  img = ARTILLERY_DOMAIN_DEFINITION.src,
+  img = ARTILLERY_CARD_ICON,
   stress = 0,
   usesMax = "",
   recovery = null,
@@ -1131,7 +1149,7 @@ function artilleryDamage({ dice, count = 1, bonus = 0, damageType = "physical" }
 
 function artilleryProneEffect(description) {
   return {
-    name: "À terre",
+    name: "Ã€ terre",
     img: "icons/svg/falling.svg",
     transfer: false,
     _id: foundry.utils.randomID(),
@@ -1240,7 +1258,7 @@ async function nativeDomainActionSpecimens() {
     }
 
     if (!specimens.attack) {
-      throw new Error("Aucun specimen natif d'Action attack trouvé dans dh-domain-cards.");
+      throw new Error("Aucun specimen natif d'Action attack trouvÃ© dans dh-domain-cards.");
     }
 
     console.info(`${MODULE_ID} | P2.11c.4a2 native Artillery specimens`, {
@@ -1283,7 +1301,7 @@ function artilleryEffectDraft({
   changes = [],
   transfer = true,
   disabled = false,
-  img = ARTILLERY_DOMAIN_DEFINITION.src,
+  img = ARTILLERY_CARD_ICON,
 }) {
   return {
     name,
@@ -1421,9 +1439,9 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
 
   if (sourceId.endsWith(".concussive-shot")) {
     const action = register(artilleryAttackAction({
-      name: "Décharge concussive",
+      name: "DÃ©charge concussive",
       description:
-        "<p>Après une attaque réussie, marquez 1 Stress. La cible est repoussée d’un cran de portée et effectue un jet de Réaction d’Agilité (12). En cas d’échec, elle est mise À terre. Si un adversaire est mis À terre ainsi, il marque aussi 1 Stress.</p><p><em>Le recul et le Stress de la cible restent à appliquer manuellement.</em></p>",
+        "<p>AprÃ¨s une attaque rÃ©ussie, marquez 1 Stress. La cible est repoussÃ©e dâ€™un cran de portÃ©e et effectue un jet de RÃ©action dâ€™AgilitÃ© (12). En cas dâ€™Ã©chec, elle est mise Ã€ terre. Si un adversaire est mis Ã€ terre ainsi, il marque aussi 1 Stress.</p><p><em>Le recul et le Stress de la cible restent Ã  appliquer manuellement.</em></p>",
       img: "icons/magic/sonic/explosion-shock-wave-teal.webp",
       targetAmount: 1,
       stressCost: 1,
@@ -1434,7 +1452,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
     const prone = hydrateNativeProneEffect(
       nativeSpecimens.proneEffect,
       artilleryProneEffect(
-        "<p>Échec au jet de Réaction d’Agilité (12) de Tir concussif.</p>"
+        "<p>Ã‰chec au jet de RÃ©action dâ€™AgilitÃ© (12) de Tir concussif.</p>"
       )
     );
     addArtilleryEffectToAction(data, action, prone, { onSave: false });
@@ -1451,7 +1469,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
     const action = register(artilleryAttackAction({
       name: "Onde de choc",
       description:
-        "<p>Effectuez un jet d’Incantation contre une cible à portée Lointaine. En cas de réussite, les adversaires à portée Très proche de la cible effectuent un jet de Réaction d’Agilité (13). Ils subissent 1d6+2 dégâts physiques dans tous les cas ; ceux qui échouent sont également mis À terre.</p>",
+        "<p>Effectuez un jet dâ€™Incantation contre une cible Ã  portÃ©e Lointaine. En cas de rÃ©ussite, les adversaires Ã  portÃ©e TrÃ¨s proche de la cible effectuent un jet de RÃ©action dâ€™AgilitÃ© (13). Ils subissent 1d6+2 dÃ©gÃ¢ts physiques dans tous les cas ; ceux qui Ã©chouent sont Ã©galement mis Ã€ terre.</p>",
       img: "icons/magic/earth/projectile-stone-landslide.webp",
       range: "far",
       rollType: "spellcast",
@@ -1476,7 +1494,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
     const prone = hydrateNativeProneEffect(
       nativeSpecimens.proneEffect,
       artilleryProneEffect(
-        "<p>Échec au jet de Réaction d’Agilité (13) d’Onde de choc.</p>"
+        "<p>Ã‰chec au jet de RÃ©action dâ€™AgilitÃ© (13) dâ€™Onde de choc.</p>"
       )
     );
     addArtilleryEffectToAction(data, action, prone, { onSave: false });
@@ -1500,7 +1518,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
     const action = register(artilleryAttackAction({
       name: "Bombardement en tapis",
       description:
-        "<p>Une fois par repos long, effectuez un jet d’Incantation contre un point à portée Lointaine. En cas de réussite, tous les adversaires dans une zone Très proche subissent 3d10+5 dégâts physiques et effectuent un jet de Réaction d’Agilité (15). Ceux qui échouent sont mis À terre.</p><p><strong>Réussite critique :</strong> étendez manuellement la zone à portée Proche.</p>",
+        "<p>Une fois par repos long, effectuez un jet dâ€™Incantation contre un point Ã  portÃ©e Lointaine. En cas de rÃ©ussite, tous les adversaires dans une zone TrÃ¨s proche subissent 3d10+5 dÃ©gÃ¢ts physiques et effectuent un jet de RÃ©action dâ€™AgilitÃ© (15). Ceux qui Ã©chouent sont mis Ã€ terre.</p><p><strong>RÃ©ussite critique :</strong> Ã©tendez manuellement la zone Ã  portÃ©e Proche.</p>",
       img: "icons/magic/fire/projectile-meteor-salvo-strong-red.webp",
       range: "far",
       rollType: "spellcast",
@@ -1528,7 +1546,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
     const prone = hydrateNativeProneEffect(
       nativeSpecimens.proneEffect,
       artilleryProneEffect(
-        "<p>Échec au jet de Réaction d’Agilité (15) de Bombardement en tapis.</p>"
+        "<p>Ã‰chec au jet de RÃ©action dâ€™AgilitÃ© (15) de Bombardement en tapis.</p>"
       )
     );
     addArtilleryEffectToAction(data, action, prone, { onSave: false });
@@ -1558,7 +1576,7 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
         description:
           "<p>Une fois par repos, pendant un moment de calme entre deux vagues, effacez 2 Stress et gagnez 1 Cob Round.</p>",
         type: "effect",
-        img: ARTILLERY_DOMAIN_DEFINITION.src,
+        img: ARTILLERY_CARD_ICON,
         range: "self",
         targetAmount: null,
         usesMax: "1",
@@ -1584,11 +1602,11 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
   if (sourceId.endsWith(".decisive-strike")) {
     register(
       artilleryBaseAction({
-        name: "Armer Frappe décisive",
+        name: "Armer Frappe dÃ©cisive",
         description:
-          "<p>Une fois par repos long, avant votre prochain jet d’attaque, dépensez tous vos Cob Rounds. Le prochain jet d’attaque gagne +1 et +2d6 dégâts par Cob Round dépensé. En cas de réussite, la cible ne peut pas effectuer de Réactions jusqu’au début de votre prochaine action.</p>",
+          "<p>Une fois par repos long, avant votre prochain jet dâ€™attaque, dÃ©pensez tous vos Cob Rounds. Le prochain jet dâ€™attaque gagne +1 et +2d6 dÃ©gÃ¢ts par Cob Round dÃ©pensÃ©. En cas de rÃ©ussite, la cible ne peut pas effectuer de RÃ©actions jusquâ€™au dÃ©but de votre prochaine action.</p>",
         type: "effect",
-        img: ARTILLERY_DOMAIN_DEFINITION.src,
+        img: ARTILLERY_CARD_ICON,
         range: "self",
         targetAmount: null,
         usesMax: "1",
@@ -1618,9 +1636,9 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
     const effect = hydrateNativeEffect(
       nativeSpecimens.transferEffect,
       artilleryEffectDraft({
-        name: "Volée lourde",
+        name: "VolÃ©e lourde",
         description:
-          "<p>Ajoute un dé aux jets de dégâts : d6 au Tier 1, d8 au Tier 2, d10 au Tier 3, d12 au Tier 4.</p><p><em>P2.11c.4b automatise nativement le bonus Tier 1 ; le changement de taille du dé avec le Tier reste suivi par le flag Toolkit jusqu’à ce qu’un hook de scaling sûr soit validé.</em></p>",
+          "<p>Ajoute un dÃ© aux jets de dÃ©gÃ¢ts : d6 au Tier 1, d8 au Tier 2, d10 au Tier 3, d12 au Tier 4.</p><p><em>P2.11c.4b automatise nativement le bonus Tier 1 ; le changement de taille du dÃ© avec le Tier reste suivi par le flag Toolkit jusquâ€™Ã  ce quâ€™un hook de scaling sÃ»r soit validÃ©.</em></p>",
         transfer: true,
         disabled: false,
         img: "icons/skills/ranged/arrows-flying-salvo-blue.webp",
@@ -1663,9 +1681,9 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
     const stance = hydrateNativeEffect(
       nativeSpecimens.transferEffect,
       artilleryEffectDraft({
-        name: "Posture de siège",
+        name: "Posture de siÃ¨ge",
         description:
-          "<p>Tant que la posture est active : +2 aux jets d’attaque et +1d8 aux jets de dégâts. Vous ne pouvez pas être déplacé contre votre volonté. La posture prend fin dès que vous vous déplacez.</p><p><em>L’immunité au déplacement forcé et la fin automatique au mouvement restent manuelles dans P2.11c.4b.</em></p>",
+          "<p>Tant que la posture est active : +2 aux jets dâ€™attaque et +1d8 aux jets de dÃ©gÃ¢ts. Vous ne pouvez pas Ãªtre dÃ©placÃ© contre votre volontÃ©. La posture prend fin dÃ¨s que vous vous dÃ©placez.</p><p><em>Lâ€™immunitÃ© au dÃ©placement forcÃ© et la fin automatique au mouvement restent manuelles dans P2.11c.4b.</em></p>",
         transfer: false,
         disabled: false,
         img: "icons/skills/ranged/cannon-barrel-firing-orange.webp",
@@ -1699,9 +1717,9 @@ async function applyArtilleryDomainCardAutomation(data, raw) {
 
     const action = register(
       artilleryBaseAction({
-        name: "Adopter la posture de siège",
+        name: "Adopter la posture de siÃ¨ge",
         description:
-          "<p>Une fois par repos, adoptez la Posture de siège : +2 aux attaques et +1d8 dégâts tant que vous ne vous déplacez pas.</p>",
+          "<p>Une fois par repos, adoptez la Posture de siÃ¨ge : +2 aux attaques et +1d8 dÃ©gÃ¢ts tant que vous ne vous dÃ©placez pas.</p>",
         type: "effect",
         img: "icons/skills/ranged/cannon-barrel-firing-orange.webp",
         usesMax: "1",
@@ -1913,13 +1931,20 @@ export async function buildItem(entry) {
 
     const domain = r.domain ?? raw?.domain;
     if (domain) {
-      data.system.domain = normalizedChoice(domain);
+      const key = normalizedChoice(domain);
+      data.system.domain = key;
 
-      const icon = domainIcon(domain);
-      if (icon) data.img = icon;
-      else if (normalizedChoice(domain) === HUNT_DOMAIN_ID) {
-        data.img = HUNT_DOMAIN_DEFINITION.src;
-      } else gaps.push("img.domain");
+      if (key === ARTILLERY_DOMAIN_ID) {
+        data.img = ARTILLERY_CARD_ICON;
+      } else if (key === HUNT_DOMAIN_ID) {
+        data.img = HUNT_CARD_ICON;
+      } else if (typeof raw?.img === "string" && raw.img.trim()) {
+        // Native domains keep their canonical card artwork. The SVG returned by
+        // domainIcon() is reserved for CONFIG.DH.DOMAIN / character-sheet UI.
+        data.img = raw.img.trim();
+      } else {
+        gaps.push("img.domain");
+      }
     }
 
     const level = Number(r.level ?? raw?.level);
@@ -2114,7 +2139,7 @@ function huntingNotesHtml(raw) {
 
   if (hunting.footprint?.width && hunting.footprint?.height) {
     lines.push(
-      `<p><strong>Empreinte :</strong> ${esc(hunting.footprint.width)}×${esc(hunting.footprint.height)}</p>`
+      `<p><strong>Empreinte :</strong> ${esc(hunting.footprint.width)}Ã—${esc(hunting.footprint.height)}</p>`
     );
   }
 
@@ -2122,7 +2147,7 @@ function huntingNotesHtml(raw) {
     const mobility = hunting.mobility.state
       ? `${hunting.mobility.mode} (${hunting.mobility.state})`
       : hunting.mobility.mode;
-    lines.push(`<p><strong>Mobilité :</strong> ${esc(mobility)}</p>`);
+    lines.push(`<p><strong>MobilitÃ© :</strong> ${esc(mobility)}</p>`);
   }
 
   if (Array.isArray(hunting.loot) && hunting.loot.length) {
@@ -2142,34 +2167,34 @@ function huntingNotesHtml(raw) {
     lines.push("<ul>");
     for (const part of hunting.colossus.parts) {
       const ft = Number(part?.fractureThreshold);
-      const ftText = Number.isFinite(ft) ? ` — FT ${esc(ft)}` : "";
-      const effectText = part?.brokenEffectName ? ` → <strong>${esc(part.brokenEffectName)}</strong>` : "";
+      const ftText = Number.isFinite(ft) ? ` â€” FT ${esc(ft)}` : "";
+      const effectText = part?.brokenEffectName ? ` â†’ <strong>${esc(part.brokenEffectName)}</strong>` : "";
       const consequence = part?.brokenConsequence ? `<br><small>${esc(part.brokenConsequence)}</small>` : "";
       lines.push(`<li><strong>${esc(part?.name ?? part?.id ?? "Partie")}</strong>${ftText}${effectText}${consequence}</li>`);
     }
     lines.push("</ul>");
-    lines.push("<p><em>Assembler dans Colossus par glisser-déposer : Tetsucabra comme principal, puis les Actors de partie.</em></p>");
+    lines.push("<p><em>Assembler dans Colossus par glisser-dÃ©poser : Tetsucabra comme principal, puis les Actors de partie.</em></p>");
   }
 
   if (hunting.colossusPart === true) {
     const ft = Number(hunting.fractureThreshold);
     lines.push("<h4>Partie Colossus</h4>");
-    if (Number.isFinite(ft)) lines.push(`<p><strong>Seuil de fracture :</strong> ${esc(ft)} sur un même impact.</p>`);
-    if (hunting.brokenEffect?.name) lines.push(`<p><strong>Broken :</strong> ${esc(hunting.brokenEffect.name)} — ${esc(hunting.brokenEffect.rule ?? "")}</p>`);
+    if (Number.isFinite(ft)) lines.push(`<p><strong>Seuil de fracture :</strong> ${esc(ft)} sur un mÃªme impact.</p>`);
+    if (hunting.brokenEffect?.name) lines.push(`<p><strong>Broken :</strong> ${esc(hunting.brokenEffect.name)} â€” ${esc(hunting.brokenEffect.rule ?? "")}</p>`);
     if (hunting.notes) lines.push(`<p>${esc(hunting.notes)}</p>`);
   }
 
   const normal = hunting.reactions?.normal;
   const fear = hunting.reactions?.fear;
-  const normalName = normal?.name ?? "Réaction normale";
-  const fearName = fear?.name ?? "Réaction renforcée";
+  const normalName = normal?.name ?? "RÃ©action normale";
+  const fearName = fear?.name ?? "RÃ©action renforcÃ©e";
 
   lines.push("<h4>Matrice d'Engagement</h4>");
   lines.push("<ul>");
-  lines.push("<li><strong>Succès + Hope :</strong> 2 OP — aucune réaction hostile — Spotlight → Finisher.</li>");
-  lines.push(`<li><strong>Succès + Fear :</strong> 2 OP — ${esc(normalName)}.</li>`);
-  lines.push(`<li><strong>Échec + Hope :</strong> 1 OP — ${esc(normalName)}.</li>`);
-  lines.push(`<li><strong>Échec + Fear :</strong> 1 OP — ${esc(fearName)}.</li>`);
+  lines.push("<li><strong>SuccÃ¨s + Hope :</strong> 2 OP â€” aucune rÃ©action hostile â€” Spotlight â†’ Finisher.</li>");
+  lines.push(`<li><strong>SuccÃ¨s + Fear :</strong> 2 OP â€” ${esc(normalName)}.</li>`);
+  lines.push(`<li><strong>Ã‰chec + Hope :</strong> 1 OP â€” ${esc(normalName)}.</li>`);
+  lines.push(`<li><strong>Ã‰chec + Fear :</strong> 1 OP â€” ${esc(fearName)}.</li>`);
   lines.push("</ul>");
 
   const reactionDetails = (reaction, key) => {
@@ -2178,7 +2203,7 @@ function huntingNotesHtml(raw) {
     lines.push(`<h4>${esc(reaction.name ?? key)}</h4>`);
 
     if (reaction.baseReaction === "normal" && normal?.name) {
-      lines.push(`<p>Résoudre d'abord <strong>${esc(normal.name)}</strong>, puis appliquer la conséquence ci-dessous.</p>`);
+      lines.push(`<p>RÃ©soudre d'abord <strong>${esc(normal.name)}</strong>, puis appliquer la consÃ©quence ci-dessous.</p>`);
     }
 
     const resolution = reaction.resolution;
@@ -2193,18 +2218,18 @@ function huntingNotesHtml(raw) {
         `${esc(attack.range ?? "?")} | ${esc(attack.damage ?? "?")} ${esc(attack.damage_type ?? "")}</p>`
       );
       if (reaction.supportWindow) {
-        lines.push("<p><strong>Support :</strong> 1 Hope → −1d4 au jet d'attaque du monstre.</p>");
+        lines.push("<p><strong>Support :</strong> 1 Hope â†’ âˆ’1d4 au jet d'attaque du monstre.</p>");
       }
       if (resolution.onHit?.markStress) {
         lines.push(`<p><strong>Sur une touche :</strong> la cible marque ${esc(resolution.onHit.markStress)} Stress.</p>`);
       }
     } else if (resolution.kind === "forcedMovement") {
       lines.push(
-        `<p>Projeter l'Opener de <strong>${esc(resolution.steps ?? "?")} bandes de portée</strong>.`
+        `<p>Projeter l'Opener de <strong>${esc(resolution.steps ?? "?")} bandes de portÃ©e</strong>.`
       );
       if (resolution.collision?.damagePerUnspentStep) {
         lines.push(
-          ` Chaque bande non parcourue à cause d'un obstacle solide inflige ` +
+          ` Chaque bande non parcourue Ã  cause d'un obstacle solide inflige ` +
           `<strong>${esc(resolution.collision.damagePerUnspentStep)} ${esc(resolution.collision.damage_type ?? "")}</strong> de collision.</p>`
         );
       } else {
@@ -2215,8 +2240,8 @@ function huntingNotesHtml(raw) {
     }
   };
 
-  reactionDetails(normal, "Réaction normale");
-  reactionDetails(fear, "Réaction renforcée");
+  reactionDetails(normal, "RÃ©action normale");
+  reactionDetails(fear, "RÃ©action renforcÃ©e");
 
   return lines.join("");
 }
@@ -2437,7 +2462,7 @@ export async function importPilot() {
 
   const result = await pilotStatus();
   console.log(`${MODULE_ID} | P2.3.2 mapped pilot imported`, result);
-  ui.notifications.info("Campaign Toolkit : P2.3.2 mapping importé");
+  ui.notifications.info("Campaign Toolkit : P2.3.2 mapping importÃ©");
   return result;
 }
 
@@ -2508,12 +2533,12 @@ export async function mappingAudit() {
 
 export async function importCanonicalDomainCard(sourcePath) {
   if (!game.user?.isGM) {
-    throw new Error("L’import d’une carte de domaine Toolkit est réservé au MJ.");
+    throw new Error("Lâ€™import dâ€™une carte de domaine Toolkit est rÃ©servÃ© au MJ.");
   }
 
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
   if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
-    throw new Error(`Chemin de carte de domaine non autorisé: ${cleanPath}`);
+    throw new Error(`Chemin de carte de domaine non autorisÃ©: ${cleanPath}`);
   }
 
   const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, {
@@ -2525,19 +2550,19 @@ export async function importCanonicalDomainCard(sourcePath) {
 
   const raw = await response.json();
   if (raw?.kind !== "domain_card" || !raw?.id) {
-    throw new Error(`${cleanPath} n’est pas une carte de domaine canonique valide.`);
+    throw new Error(`${cleanPath} nâ€™est pas une carte de domaine canonique valide.`);
   }
 
   if (normalizedChoice(raw?.domain) === HUNT_DOMAIN_ID) {
     const registration = await ensureHuntDomain();
     if (!registration.green) {
-      throw new Error("Le domaine Chasse n’a pas pu être enregistré dans Foundryborne.");
+      throw new Error("Le domaine Chasse nâ€™a pas pu Ãªtre enregistrÃ© dans Foundryborne.");
     }
   }
   if (normalizedChoice(raw?.domain) === ARTILLERY_DOMAIN_ID) {
     const registration = await ensureArtilleryDomain();
     if (!registration.green) {
-      throw new Error("Le domaine Artillery n’a pas pu être enregistré dans Foundryborne.");
+      throw new Error("Le domaine Artillery nâ€™a pas pu Ãªtre enregistrÃ© dans Foundryborne.");
     }
   }
 
@@ -2578,7 +2603,7 @@ export async function importCanonicalDomainCard(sourcePath) {
     });
 
     ui.notifications.info(
-      `Campaign Toolkit : ${created.name} importée dans dh-domain-cards.`
+      `Campaign Toolkit : ${created.name} importÃ©e dans dh-domain-cards.`
     );
 
     return created;
@@ -2592,7 +2617,7 @@ export async function importCanonicalDomainCard(sourcePath) {
 
 export async function normalizeHuntCardIcons() {
   if (!game.user?.isGM) {
-    throw new Error("La normalisation des icônes Chasse est réservée au MJ.");
+    throw new Error("La normalisation des icÃ´nes Chasse est rÃ©servÃ©e au MJ.");
   }
 
   const domain = await ensureHuntDomain();
@@ -2611,9 +2636,9 @@ export async function normalizeHuntCardIcons() {
       if (
         doc.type === "domainCard" &&
         normalizedChoice(doc.system?.domain) === HUNT_DOMAIN_ID &&
-        doc.img !== HUNT_DOMAIN_DEFINITION.src
+        doc.img !== HUNT_CARD_ICON
       ) {
-        await doc.update({ img: HUNT_DOMAIN_DEFINITION.src });
+        await doc.update({ img: HUNT_CARD_ICON });
         packChanged += 1;
       }
     }
@@ -2627,11 +2652,11 @@ export async function normalizeHuntCardIcons() {
         (item) =>
           item.type === "domainCard" &&
           normalizedChoice(item.system?.domain) === HUNT_DOMAIN_ID &&
-          item.img !== HUNT_DOMAIN_DEFINITION.src
+          item.img !== HUNT_CARD_ICON
       )
       .map((item) => ({
         _id: item.id,
-        img: HUNT_DOMAIN_DEFINITION.src,
+        img: HUNT_CARD_ICON,
       }));
 
     if (updates.length) {
@@ -2642,7 +2667,7 @@ export async function normalizeHuntCardIcons() {
 
   const result = {
     green: true,
-    icon: HUNT_DOMAIN_DEFINITION.src,
+    icon: HUNT_CARD_ICON,
     domainChanged: domain.changed,
     packChanged,
     actorChanged,
@@ -2651,7 +2676,7 @@ export async function normalizeHuntCardIcons() {
 
   console.log(`${MODULE_ID} | P2.11b.1 Hunt icon normalized`, result);
   ui.notifications.info(
-    `Campaign Toolkit : icône Chasse synchronisée (${packChanged} compendium, ${actorChanged} personnage(s)).`
+    `Campaign Toolkit : icÃ´ne Chasse synchronisÃ©e (${packChanged} compendium, ${actorChanged} personnage(s)).`
   );
   return result;
 }
@@ -2680,7 +2705,7 @@ export async function huntIconStatus() {
           item: item.name,
           itemId: item.id,
           img: item.img,
-          green: item.img === HUNT_DOMAIN_DEFINITION.src,
+          green: item.img === HUNT_CARD_ICON,
         });
       }
     }
@@ -2695,7 +2720,7 @@ export async function huntIconStatus() {
     name: doc.name,
     id: doc.id,
     img: doc.img,
-    green: doc.img === HUNT_DOMAIN_DEFINITION.src,
+    green: doc.img === HUNT_CARD_ICON,
   })).concat(actorCards.map((row) => ({
     scope: "actor",
     owner: row.actor,
@@ -2709,7 +2734,7 @@ export async function huntIconStatus() {
     green:
       configDomain?.src === HUNT_DOMAIN_DEFINITION.src &&
       rows.every((row) => row.green),
-    icon: HUNT_DOMAIN_DEFINITION.src,
+    icon: HUNT_CARD_ICON,
     domainIcon: configDomain?.src ?? null,
     compendiumCards: packCards.length,
     actorCards: actorCards.length,
@@ -2724,7 +2749,7 @@ export async function huntIconStatus() {
 
 export async function normalizeHuntCardRoles() {
   if (!game.user?.isGM) {
-    throw new Error("La normalisation des rôles Chasse est réservée au MJ.");
+    throw new Error("La normalisation des rÃ´les Chasse est rÃ©servÃ©e au MJ.");
   }
 
   const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
@@ -2806,11 +2831,11 @@ export async function normalizeHuntCardRoles() {
 
   if (result.green) {
     ui.notifications.info(
-      `Campaign Toolkit : rôles Chasse normalisés (${changes.length} modification(s)).`
+      `Campaign Toolkit : rÃ´les Chasse normalisÃ©s (${changes.length} modification(s)).`
     );
   } else {
     ui.notifications.warn(
-      `Campaign Toolkit : rôles Chasse incomplets (${missing.length} anomalie(s)).`
+      `Campaign Toolkit : rÃ´les Chasse incomplets (${missing.length} anomalie(s)).`
     );
   }
 
@@ -2881,12 +2906,12 @@ export async function huntCardRoleStatus() {
 
 export async function migrateLegacyHuntCards() {
   if (!game.user?.isGM) {
-    throw new Error("La migration Valor → Chasse est réservée au MJ.");
+    throw new Error("La migration Valor â†’ Chasse est rÃ©servÃ©e au MJ.");
   }
 
   const domain = await ensureHuntDomain();
   if (!domain.green) {
-    throw new Error("Le domaine Chasse n’est pas disponible.");
+    throw new Error("Le domaine Chasse nâ€™est pas disponible.");
   }
 
   const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
@@ -2955,7 +2980,7 @@ export async function migrateLegacyHuntCards() {
         /(?:^|\/)domains\/valor\.(?:png|webp|svg)$/i.test(currentImg) ||
         currentImg === "icons/svg/item-bag.svg"
       ) {
-        update.img = HUNT_DOMAIN_DEFINITION.src;
+        update.img = HUNT_CARD_ICON;
       }
 
       await doc.update(update);
@@ -3024,11 +3049,11 @@ export async function migrateLegacyHuntCards() {
 
   if (result.green) {
     ui.notifications.info(
-      `Campaign Toolkit : ${LEGACY_HUNT_CARD_NAMES.length} cartes Chasse validées (${migrated.length} migrées).`
+      `Campaign Toolkit : ${LEGACY_HUNT_CARD_NAMES.length} cartes Chasse validÃ©es (${migrated.length} migrÃ©es).`
     );
   } else {
     ui.notifications.warn(
-      `Campaign Toolkit : migration Chasse incomplète — ${missing.length} absente(s), ${wrongDomain.length} domaine(s) inattendu(s).`
+      `Campaign Toolkit : migration Chasse incomplÃ¨te â€” ${missing.length} absente(s), ${wrongDomain.length} domaine(s) inattendu(s).`
     );
   }
 
@@ -3110,7 +3135,7 @@ const ARTILLERY_CARD_SOURCE =
 async function loadCanonicalHomebrewJson(sourcePath) {
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
   if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
-    throw new Error(`Chemin homebrew non autorisé: ${cleanPath}`);
+    throw new Error(`Chemin homebrew non autorisÃ©: ${cleanPath}`);
   }
   const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, {
     cache: "no-store",
@@ -3288,7 +3313,7 @@ function remapItemLink(specimen, doc, wantedType) {
 
   if (link.item !== doc || link.uuid !== doc.uuid) {
     throw new Error(
-      `ItemLink ${wantedType} mal remappé vers ${doc.name}.`
+      `ItemLink ${wantedType} mal remappÃ© vers ${doc.name}.`
     );
   }
 
@@ -3370,7 +3395,7 @@ async function importArtificerClass() {
     ARTIFICER_CLASS_SOURCE
   );
   if (raw?.kind !== "class" || !raw?.id) {
-    throw new Error(`${cleanPath} n’est pas une classe canonique valide.`);
+    throw new Error(`${cleanPath} nâ€™est pas une classe canonique valide.`);
   }
 
   // Our integration decision is Codex + Artillery. Register Artillery before
@@ -3405,7 +3430,7 @@ async function importArtificerClass() {
 async function importArtificerSubclass(sourcePath, classDoc) {
   const { cleanPath, payload: raw } = await loadCanonicalHomebrewJson(sourcePath);
   if (raw?.kind !== "subclass" || !raw?.id) {
-    throw new Error(`${cleanPath} n’est pas une sous-classe canonique valide.`);
+    throw new Error(`${cleanPath} nâ€™est pas une sous-classe canonique valide.`);
   }
 
   const featureRecords = sourceFeatureRecords(raw, cleanPath);
@@ -3609,7 +3634,7 @@ async function replaceOwnedCardEffects(sourceDoc, ownedDoc) {
 
 export async function syncOwnedArtilleryCards({ cards = null } = {}) {
   if (!game.user?.isGM) {
-    throw new Error("La synchronisation des cartes Artillery possédées est réservée au MJ.");
+    throw new Error("La synchronisation des cartes Artillery possÃ©dÃ©es est rÃ©servÃ©e au MJ.");
   }
 
   const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
@@ -3682,7 +3707,7 @@ export async function syncOwnedArtilleryCards({ cards = null } = {}) {
 
   if (result.green) {
     ui.notifications?.info?.(
-      `Campaign Toolkit : ${cardsUpdated} carte(s) Artillery possédée(s) synchronisée(s).`
+      `Campaign Toolkit : ${cardsUpdated} carte(s) Artillery possÃ©dÃ©e(s) synchronisÃ©e(s).`
     );
   } else {
     ui.notifications?.warn?.(
@@ -3835,7 +3860,7 @@ export async function artilleryAutomationStatus() {
 
 export async function organizeDomainCardsByDomain() {
   if (!game.user?.isGM) {
-    throw new Error("Le classement des cartes de Domaine est réservé au MJ.");
+    throw new Error("Le classement des cartes de Domaine est rÃ©servÃ© au MJ.");
   }
 
   const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
@@ -4111,7 +4136,7 @@ async function withArtificerImportPacksUnlocked(operation) {
 
 export async function importArtificerArtillery() {
   if (!game.user?.isGM) {
-    throw new Error("L’import Artificier + Artillery est réservé au MJ.");
+    throw new Error("Lâ€™import Artificier + Artillery est rÃ©servÃ© au MJ.");
   }
 
   return withArtificerImportPacksUnlocked(async () => {
@@ -4146,7 +4171,7 @@ export async function importArtificerArtillery() {
 
     if (result.green) {
       ui.notifications.info(
-        "Campaign Toolkit : Artificier + Artillery importés (9 cartes, 1 classe, 2 sous-classes)."
+        "Campaign Toolkit : Artificier + Artillery importÃ©s (9 cartes, 1 classe, 2 sous-classes)."
       );
     } else {
       ui.notifications.warn(
@@ -4209,14 +4234,14 @@ async function refreshHuntingNoteLinks(pack) {
 
     const baseNotes = String(doc.system?.notes ?? "").replace(sectionPattern, "").trim();
     const rows = links.map(link => {
-      const label = foundry.utils.escapeHTML(String(link?.label ?? "Adversaire lié"));
+      const label = foundry.utils.escapeHTML(String(link?.label ?? "Adversaire liÃ©"));
       const target = bySourceId.get(String(link?.sourceId ?? ""));
       const contentLink = target ? `@UUID[${target.uuid}]{${label}}` : label;
       const note = String(link?.note ?? "").trim();
       const noteHtml = note ? `<br><small>${foundry.utils.escapeHTML(note)}</small>` : "";
       return `<li>${contentLink}${noteHtml}</li>`;
     }).join("");
-    const section = `<section data-dct-hunting-links="true"><h4>Adversaires liés</h4><ul>${rows}</ul></section>`;
+    const section = `<section data-dct-hunting-links="true"><h4>Adversaires liÃ©s</h4><ul>${rows}</ul></section>`;
     const nextNotes = [baseNotes, section].filter(Boolean).join("\n");
     if (nextNotes !== String(doc.system?.notes ?? "")) {
       await doc.update({ "system.notes": nextNotes });
@@ -4225,10 +4250,10 @@ async function refreshHuntingNoteLinks(pack) {
 }
 
 export async function importCanonicalAdversary(sourcePath) {
-  if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est réservé au MJ.");
+  if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est rÃ©servÃ© au MJ.");
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
   if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
-    throw new Error(`Chemin adversaire non autorisé: ${cleanPath}`);
+    throw new Error(`Chemin adversaire non autorisÃ©: ${cleanPath}`);
   }
 
   const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, { cache: "no-store" });
@@ -4260,7 +4285,7 @@ export async function importCanonicalAdversary(sourcePath) {
     for (const doc of previous) await doc.delete();
     const created = await Actor.create(data, { pack: pack.collection });
     await refreshHuntingNoteLinks(pack);
-    ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
+    ui.notifications.info(`Campaign Toolkit : ${created.name} importÃ© dans dh-adversaries.`);
     return created;
   } finally {
     await pack.configure({ locked: true });
@@ -4323,4 +4348,5 @@ export async function tetsucabraStatus() {
   console.log(`${MODULE_ID} | Tetsucabra Colossus status`, result);
   return result;
 }
+
 

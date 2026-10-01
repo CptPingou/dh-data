@@ -17,7 +17,7 @@ if (-not (Test-Path $bridge)) { Fail "hunting-domain-card-bridge.mjs absent" }
 
 $p = Get-Content $pilot -Raw -Encoding UTF8
 $b = Get-Content $bridge -Raw -Encoding UTF8
-$icon = "modules/daggerheart-campaign-toolkit/assets/icons/domains/hunt.png"
+$icon = "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/hunt.png"
 
 foreach ($needle in @(
   '"hunt",',
@@ -44,3 +44,4 @@ Write-Host "[ OK ] import des Domain Cards -> hunt.png" -ForegroundColor Green
 Write-Host "[ OK ] normalisation compendium + cartes embarquées disponible" -ForegroundColor Green
 Write-Host ""
 Write-Host "P2.11b.1 GREEN (source)" -ForegroundColor Green
+

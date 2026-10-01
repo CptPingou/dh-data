@@ -356,6 +356,8 @@ runtime.listenerInstalled = true;
       expeditionId: message.expeditionId ?? null,
       containerId: message.containerId ?? null,
       allocations: message.allocations ?? null,
+      missing: message.missing ?? null,
+      recipeId: message.recipeId ?? null,
       consumed: message.consumed ?? null,
       state: message.state ?? null,
     });

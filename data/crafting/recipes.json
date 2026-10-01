@@ -1,15 +1,724 @@
 {
   "schemaVersion": 1,
-  "id": "mh.recipes.pilot",
+  "id": "mh.recipes.weapon-augments.components",
   "recipes": [
     {
-      "id": "craft.weapon-augment.force",
-      "name": "Force",
-      "output": { "type": "weaponAugment", "id": "motherboard.force" },
+      "id": "craft.weapon-augment.force.components",
+      "name": "Force — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.force"
+      },
       "requirements": [
-        { "id": "force-structure", "units": 2, "match": { "property": "rigid", "minimumQuality": 1 } },
-        { "id": "force-impact", "units": 2, "match": { "property": "impact", "minimumQuality": 1 } },
-        { "id": "force-binding", "units": 1, "match": { "property": "flexible", "minimumQuality": 1 } }
+        {
+          "id": "force-gears",
+          "units": 3,
+          "match": {
+            "resourceId": "mh.crafting.gears"
+          }
+        },
+        {
+          "id": "force-lenses",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.lenses"
+          }
+        },
+        {
+          "id": "force-aluminum",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.aluminum"
+          }
+        },
+        {
+          "id": "force-capacitor",
+          "units": 1,
+          "match": {
+            "resourceId": "mh.crafting.capacitor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.guard.components",
+      "name": "Guard — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.guard"
+      },
+      "requirements": [
+        {
+          "id": "guard-wires",
+          "units": 3,
+          "match": {
+            "resourceId": "mh.crafting.wires"
+          }
+        },
+        {
+          "id": "guard-silver",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.silver"
+          }
+        },
+        {
+          "id": "guard-platinum",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.platinum"
+          }
+        },
+        {
+          "id": "guard-fuses",
+          "units": 3,
+          "match": {
+            "resourceId": "mh.crafting.fuses"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.converge.components",
+      "name": "Converge — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.converge"
+      },
+      "requirements": [
+        {
+          "id": "converge-coils",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.coils"
+          }
+        },
+        {
+          "id": "converge-crystal",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.crystal"
+          }
+        },
+        {
+          "id": "converge-gold",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.gold"
+          }
+        },
+        {
+          "id": "converge-discs",
+          "units": 3,
+          "match": {
+            "resourceId": "mh.crafting.discs"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.amplify.components",
+      "name": "Amplify — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.amplify"
+      },
+      "requirements": [
+        {
+          "id": "amplify-crystal",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.crystal"
+          }
+        },
+        {
+          "id": "amplify-cobalt",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.cobalt"
+          }
+        },
+        {
+          "id": "amplify-copper",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.copper"
+          }
+        },
+        {
+          "id": "amplify-capacitor",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.capacitor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.scope.components",
+      "name": "Scope — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.scope"
+      },
+      "requirements": [
+        {
+          "id": "scope-lenses",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.lenses"
+          }
+        },
+        {
+          "id": "scope-silver",
+          "units": 3,
+          "match": {
+            "resourceId": "mh.crafting.silver"
+          }
+        },
+        {
+          "id": "scope-circuits",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.circuits"
+          }
+        },
+        {
+          "id": "scope-relays",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.relays"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.deny.components",
+      "name": "Deny — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.deny"
+      },
+      "requirements": [
+        {
+          "id": "deny-coils",
+          "units": 6,
+          "match": {
+            "resourceId": "mh.crafting.coils"
+          }
+        },
+        {
+          "id": "deny-wires",
+          "units": 3,
+          "match": {
+            "resourceId": "mh.crafting.wires"
+          }
+        },
+        {
+          "id": "deny-copper",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.copper"
+          }
+        },
+        {
+          "id": "deny-batteries",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.batteries"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.target.components",
+      "name": "Target — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.target"
+      },
+      "requirements": [
+        {
+          "id": "target-wires",
+          "units": 10,
+          "match": {
+            "resourceId": "mh.crafting.wires"
+          }
+        },
+        {
+          "id": "target-gold",
+          "units": 7,
+          "match": {
+            "resourceId": "mh.crafting.gold"
+          }
+        },
+        {
+          "id": "target-fuses",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.fuses"
+          }
+        },
+        {
+          "id": "target-circuits",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.circuits"
+          }
+        },
+        {
+          "id": "target-batteries",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.batteries"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.split.components",
+      "name": "Split — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.split"
+      },
+      "requirements": [
+        {
+          "id": "split-gears",
+          "units": 12,
+          "match": {
+            "resourceId": "mh.crafting.gears"
+          }
+        },
+        {
+          "id": "split-lenses",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.lenses"
+          }
+        },
+        {
+          "id": "split-aluminum",
+          "units": 15,
+          "match": {
+            "resourceId": "mh.crafting.aluminum"
+          }
+        },
+        {
+          "id": "split-relays",
+          "units": 9,
+          "match": {
+            "resourceId": "mh.crafting.relays"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.fix.components",
+      "name": "Fix — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.fix"
+      },
+      "requirements": [
+        {
+          "id": "fix-coils",
+          "units": 6,
+          "match": {
+            "resourceId": "mh.crafting.coils"
+          }
+        },
+        {
+          "id": "fix-wires",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.wires"
+          }
+        },
+        {
+          "id": "fix-crystal",
+          "units": 1,
+          "match": {
+            "resourceId": "mh.crafting.crystal"
+          }
+        },
+        {
+          "id": "fix-cobalt",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.cobalt"
+          }
+        },
+        {
+          "id": "fix-silver",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.silver"
+          }
+        },
+        {
+          "id": "fix-relays",
+          "units": 7,
+          "match": {
+            "resourceId": "mh.crafting.relays"
+          }
+        },
+        {
+          "id": "fix-batteries",
+          "units": 2,
+          "match": {
+            "resourceId": "mh.crafting.batteries"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.scare.components",
+      "name": "Scare — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.scare"
+      },
+      "requirements": [
+        {
+          "id": "scare-triggers",
+          "units": 6,
+          "match": {
+            "resourceId": "mh.crafting.triggers"
+          }
+        },
+        {
+          "id": "scare-copper",
+          "units": 8,
+          "match": {
+            "resourceId": "mh.crafting.copper"
+          }
+        },
+        {
+          "id": "scare-aluminum",
+          "units": 9,
+          "match": {
+            "resourceId": "mh.crafting.aluminum"
+          }
+        },
+        {
+          "id": "scare-discs",
+          "units": 10,
+          "match": {
+            "resourceId": "mh.crafting.discs"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.sear.components",
+      "name": "Sear — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.sear"
+      },
+      "requirements": [
+        {
+          "id": "sear-triggers",
+          "units": 11,
+          "match": {
+            "resourceId": "mh.crafting.triggers"
+          }
+        },
+        {
+          "id": "sear-platinum",
+          "units": 11,
+          "match": {
+            "resourceId": "mh.crafting.platinum"
+          }
+        },
+        {
+          "id": "sear-circuits",
+          "units": 11,
+          "match": {
+            "resourceId": "mh.crafting.circuits"
+          }
+        },
+        {
+          "id": "sear-discs",
+          "units": 7,
+          "match": {
+            "resourceId": "mh.crafting.discs"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.absorb.components",
+      "name": "Absorb — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.absorb"
+      },
+      "requirements": [
+        {
+          "id": "absorb-gears",
+          "units": 26,
+          "match": {
+            "resourceId": "mh.crafting.gears"
+          }
+        },
+        {
+          "id": "absorb-gold",
+          "units": 13,
+          "match": {
+            "resourceId": "mh.crafting.gold"
+          }
+        },
+        {
+          "id": "absorb-relays",
+          "units": 15,
+          "match": {
+            "resourceId": "mh.crafting.relays"
+          }
+        },
+        {
+          "id": "absorb-batteries",
+          "units": 8,
+          "match": {
+            "resourceId": "mh.crafting.batteries"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.kick.components",
+      "name": "Kick — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.kick"
+      },
+      "requirements": [
+        {
+          "id": "kick-triggers",
+          "units": 33,
+          "match": {
+            "resourceId": "mh.crafting.triggers"
+          }
+        },
+        {
+          "id": "kick-crystal",
+          "units": 13,
+          "match": {
+            "resourceId": "mh.crafting.crystal"
+          }
+        },
+        {
+          "id": "kick-cobalt",
+          "units": 23,
+          "match": {
+            "resourceId": "mh.crafting.cobalt"
+          }
+        },
+        {
+          "id": "kick-discs",
+          "units": 16,
+          "match": {
+            "resourceId": "mh.crafting.discs"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.block.components",
+      "name": "Block — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.block"
+      },
+      "requirements": [
+        {
+          "id": "block-crystal",
+          "units": 27,
+          "match": {
+            "resourceId": "mh.crafting.crystal"
+          }
+        },
+        {
+          "id": "block-aluminum",
+          "units": 67,
+          "match": {
+            "resourceId": "mh.crafting.aluminum"
+          }
+        },
+        {
+          "id": "block-relays",
+          "units": 33,
+          "match": {
+            "resourceId": "mh.crafting.relays"
+          }
+        },
+        {
+          "id": "block-capacitor",
+          "units": 4,
+          "match": {
+            "resourceId": "mh.crafting.capacitor"
+          }
+        },
+        {
+          "id": "block-batteries",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.batteries"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.zip.components",
+      "name": "Zip — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.zip"
+      },
+      "requirements": [
+        {
+          "id": "zip-coils",
+          "units": 37,
+          "match": {
+            "resourceId": "mh.crafting.coils"
+          }
+        },
+        {
+          "id": "zip-silver",
+          "units": 43,
+          "match": {
+            "resourceId": "mh.crafting.silver"
+          }
+        },
+        {
+          "id": "zip-fuses",
+          "units": 67,
+          "match": {
+            "resourceId": "mh.crafting.fuses"
+          }
+        },
+        {
+          "id": "zip-capacitor",
+          "units": 12,
+          "match": {
+            "resourceId": "mh.crafting.capacitor"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.bury.components",
+      "name": "Bury — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.bury"
+      },
+      "requirements": [
+        {
+          "id": "bury-triggers",
+          "units": 28,
+          "match": {
+            "resourceId": "mh.crafting.triggers"
+          }
+        },
+        {
+          "id": "bury-circuits",
+          "units": 28,
+          "match": {
+            "resourceId": "mh.crafting.circuits"
+          }
+        },
+        {
+          "id": "bury-relays",
+          "units": 28,
+          "match": {
+            "resourceId": "mh.crafting.relays"
+          }
+        },
+        {
+          "id": "bury-relic",
+          "units": 1,
+          "match": {
+            "resourceId": "mh.crafting.relic"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.follow.components",
+      "name": "Follow — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.follow"
+      },
+      "requirements": [
+        {
+          "id": "follow-gears",
+          "units": 75,
+          "match": {
+            "resourceId": "mh.crafting.gears"
+          }
+        },
+        {
+          "id": "follow-lenses",
+          "units": 67,
+          "match": {
+            "resourceId": "mh.crafting.lenses"
+          }
+        },
+        {
+          "id": "follow-copper",
+          "units": 30,
+          "match": {
+            "resourceId": "mh.crafting.copper"
+          }
+        },
+        {
+          "id": "follow-circuits",
+          "units": 33,
+          "match": {
+            "resourceId": "mh.crafting.circuits"
+          }
+        }
+      ]
+    },
+    {
+      "id": "craft.weapon-augment.override.components",
+      "name": "Override — assemblage standard",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.override"
+      },
+      "requirements": [
+        {
+          "id": "override-wires",
+          "units": 63,
+          "match": {
+            "resourceId": "mh.crafting.wires"
+          }
+        },
+        {
+          "id": "override-gold",
+          "units": 71,
+          "match": {
+            "resourceId": "mh.crafting.gold"
+          }
+        },
+        {
+          "id": "override-discs",
+          "units": 58,
+          "match": {
+            "resourceId": "mh.crafting.discs"
+          }
+        },
+        {
+          "id": "override-relic",
+          "units": 5,
+          "match": {
+            "resourceId": "mh.crafting.relic"
+          }
+        }
       ]
     }
   ]

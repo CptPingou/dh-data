@@ -1,5 +1,5 @@
 import { validateRecipeCatalog } from "./crafting-schema.mjs";
-import { allocateRecipe } from "./crafting-recipe-engine.mjs";
+import { allocateExactResourceRecipe, allocateRecipe } from "./crafting-recipe-engine.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const RECIPES_URL = `modules/${MODULE_ID}/data/crafting/recipes.json`;
@@ -24,6 +24,28 @@ export async function getCraftingRecipeForOutput(outputType, outputId) {
 
 function materialData(entry) {
   return entry?.itemRef?.snapshot?.flags?.[MODULE_ID]?.material ?? null;
+}
+
+function craftingResourceData(entry) {
+  return entry?.itemRef?.snapshot?.flags?.[MODULE_ID]?.crafting ?? null;
+}
+
+function canonicalCraftingResourceId(value) {
+  const id = String(value ?? "").trim();
+  if (!id) return null;
+  return id.startsWith("mh.crafting.") ? id : `mh.crafting.${id}`;
+}
+
+function containerCraftingResourceInventory(container) {
+  const totals = new Map();
+  for (const entry of container?.contents ?? []) {
+    const crafting = craftingResourceData(entry);
+    const resourceId = canonicalCraftingResourceId(crafting?.resourceId);
+    const quantity = Number(entry?.quantity) || 0;
+    if (!resourceId || quantity <= 0) continue;
+    totals.set(resourceId, (totals.get(resourceId) ?? 0) + quantity);
+  }
+  return [...totals].map(([resourceId, quantity]) => ({ resourceId, quantity }));
 }
 
 function containerInventory(container) {
@@ -75,6 +97,50 @@ function consumeAllocationFromContainer(manifestApi, manifest, containerId, allo
     if (remaining > 0) throw new Error(`Allocation drift for ${materialId}: ${remaining} unit(s) missing.`);
   }
   return consumed;
+}
+
+function consumeExactResourceAllocationFromContainer(manifestApi, manifest, containerId, allocations) {
+  const required = new Map();
+  for (const allocation of allocations) {
+    required.set(allocation.resourceId, (required.get(allocation.resourceId) ?? 0) + allocation.quantity);
+  }
+
+  const container = manifest.containers.find((candidate) => candidate.containerId === containerId);
+  if (!container) throw new Error(`Unknown crafting container: ${containerId}.`);
+
+  const consumed = [];
+  for (const [resourceId, total] of required) {
+    let remaining = total;
+    const entries = [...(container.contents ?? [])].filter((entry) => {
+      const crafting = craftingResourceData(entry);
+      return canonicalCraftingResourceId(crafting?.resourceId) === resourceId;
+    });
+
+    for (const entry of entries) {
+      if (remaining <= 0) break;
+      const quantity = Math.min(remaining, Number(entry.quantity) || 0);
+      if (quantity <= 0) continue;
+      const result = manifestApi.consume(manifest, {
+        containerId,
+        entryId: entry.entryId,
+        quantity,
+        note: `Craft atelier : ${resourceId}`,
+      });
+      if (!result.changed) throw new Error(result.reason ?? `Unable to consume ${resourceId}.`);
+      consumed.push({ resourceId, entryId: entry.entryId, quantity });
+      remaining -= quantity;
+    }
+
+    if (remaining > 0) throw new Error(`Allocation drift for ${resourceId}: ${remaining} unit(s) missing.`);
+  }
+
+  return consumed;
+}
+
+function isExactResourceRecipe(recipe) {
+  return Array.isArray(recipe?.requirements)
+    && recipe.requirements.length > 0
+    && recipe.requirements.every((requirement) => typeof requirement?.match?.resourceId === "string");
 }
 
 export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestApi, persistenceApi, weaponAugmentStateApi } = {}) {
@@ -186,16 +252,32 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
     if (!container) return { green: false, reason: "crafting-container-not-found", containerId };
 
+    if (isExactResourceRecipe(recipe)) {
+      const inventory = containerCraftingResourceInventory(container);
+      const allocation = allocateExactResourceRecipe(recipe, inventory);
+      return {
+        ...allocation,
+        recipeMode: "exact-resource",
+        augmentId,
+        expeditionId,
+        containerId,
+        recipe: clone(recipe),
+        inventory,
+      };
+    }
+
     const definitions = await materialsApi.list();
     const knownDefinitions = definitions.map((material) => knownMaterialDefinition(material, knowledgeApi, crafter));
-    const allocation = allocateRecipe(recipe, containerInventory(container), knownDefinitions);
+    const inventory = containerInventory(container);
+    const allocation = allocateRecipe(recipe, inventory, knownDefinitions);
     return {
       ...allocation,
+      recipeMode: "biological",
       augmentId,
       expeditionId,
       containerId,
       recipe: clone(recipe),
-      inventory: containerInventory(container),
+      inventory,
     };
   }
 
@@ -206,7 +288,9 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
 
     const original = await persistenceApi.load(expeditionId);
     const working = clone(original);
-    const consumed = consumeAllocationFromContainer(manifestApi, working, containerId, plan.allocations);
+    const consumed = plan.recipeMode === "exact-resource"
+      ? consumeExactResourceAllocationFromContainer(manifestApi, working, containerId, plan.allocations)
+      : consumeAllocationFromContainer(manifestApi, working, containerId, plan.allocations);
     const validation = manifestApi.validate(working);
     if (!validation.green) throw new Error(`Craft would create invalid expedition manifest: ${(validation.errors ?? []).join("; ")}`);
 

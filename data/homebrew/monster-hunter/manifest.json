@@ -5,11 +5,11 @@
   "status": "active",
   "packs": {
     "dh-domain-cards": {
-      "count": 8,
+      "count": 18,
       "file": "dh-domain-cards.json"
     },
     "dh-loot": {
-      "count": 0,
+      "count": 21,
       "file": "dh-loot.json"
     },
     "dh-features": {
@@ -24,6 +24,7 @@
     "P2.8f : 3 premières cartes Chasse mécaniques — Ouverture, Conversion, Appui défensif.",
     "P2.8g.2 : les cartes Monster Hunter utilisent la famille transversale Toolkit `hunt`; elles ne consomment pas un domaine de classe Daggerheart.",
     "P2.9a.6a : dh-loot devient le point d’extension des objets persistants Monster Hunter (material/component/augment/recipe via métadonnées Toolkit).",
-    "P2.12h.2 : Artisant accorde la feature Atelier d’armes de chasse via dh-features."
+    "P2.12h.2 : Artisant accorde la feature Atelier d’armes de chasse via dh-features.",
+    "P2.12i.1 : dh-loot contient 19 composants de craft standards couvrant toutes les ressources du catalogue Motherboard."
   ]
 }

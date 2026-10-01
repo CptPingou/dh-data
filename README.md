@@ -1,18 +1,40 @@
-# P2.6.3e1 — correction Vespoid features
+# Patch Domain Assets — Daggerheart Campaign Toolkit
 
-Le test `buildActor()` a révélé :
-- Tetsucabra : 3 embeddedItems
-- Reine Vespoid : 0
-- Vespoid Minion : 0
+But exact du patch :
 
-Cause : les deux JSON Vespoid précédents avaient `features_text` mais pas le tableau
-normalisé `features`, alors que `buildActor()` matérialise les features embarquées depuis
-ce tableau.
+- `assets/icons/<domain>.svg` = **icône de domaine de l'en-tête personnage**, à droite de HOPE.
+- `assets/icons/domain-card/<domain>.png` = **image des cartes de domaine + icônes d'actions**.
 
-Corrections :
-- ajout de `features` à la Reine (4 entrées)
-- ajout de `features` au Vespoid Minion (3 entrées)
-- ajout de l'attaque standard du Vespoid Minion : ATK -2, Piqûre, Melee, 2 phy
+## Contenu
 
-Après copie dans DH Data, relancer `export_foundry_full.py`, puis redémarrer Foundry
-avant de refaire le test de mapping.
+- `scripts/pilot-import.mjs` : version corrigée à copier dans le repo.
+- `apply-supporting-fixes.ps1` : corrige uniquement les anciennes déclarations de registre connues dans `hunting-domain-card-bridge.mjs` et `main.mjs`, avec backup automatique.
+- `verify-domain-assets.ps1` : vérifie assets, chemins et syntaxe JS.
+
+## Installation depuis `C:\dev\dh-data`
+
+1. Sauvegarder/committer le repo.
+2. Copier `scripts\pilot-import.mjs` du ZIP vers `C:\dev\dh-data\scripts\pilot-import.mjs`.
+3. Exécuter :
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\apply-supporting-fixes.ps1 -RepoRoot C:\dev\dh-data
+powershell -ExecutionPolicy Bypass -File .\verify-domain-assets.ps1 -RepoRoot C:\dev\dh-data
+```
+
+4. Si `DOMAIN ASSETS PATCH GREEN`, faire le robocopy habituel vers Foundry puis F5.
+
+## Résultat attendu
+
+```text
+CONFIG.DH.DOMAIN.domains.artillery.src
+→ modules/daggerheart-campaign-toolkit/assets/icons/artillery.svg
+
+Artillery domainCard.img
+→ modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png
+
+Artillery action.img (valeur par défaut domaine)
+→ modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png
+```
+
+Les domaines natifs conservent leur `raw.img` canonique pour les cartes ; ils ne sont plus transformés en `assets/icons/domains/<slug>.png` Toolkit.

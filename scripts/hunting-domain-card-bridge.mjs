@@ -1,4 +1,4 @@
-const MODULE_ID = "daggerheart-campaign-toolkit";
+﻿const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_KEY = "contextualCard";
 const HUNTING_DOMAIN_ID = "hunting";
 const HUNT_DOMAIN_ID = "hunt";
@@ -7,18 +7,18 @@ const ARTILLERY_DOMAIN_ID = "artillery";
 const ARTILLERY_DOMAIN_DEFINITION = Object.freeze({
   id: ARTILLERY_DOMAIN_ID,
   label: "Artillery",
-  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/artillery.png",
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png",
   description:
-    "Artillery est le domaine de la puissance de feu, du contrôle de zone et des attaques à fort impact.",
+    "Artillery est le domaine de la puissance de feu, du contrÃ´le de zone et des attaques Ã  fort impact.",
   color: "#8a5a24",
 });
 
 const HUNT_DOMAIN_DEFINITION = Object.freeze({
   id: HUNT_DOMAIN_ID,
   label: "Chasse",
-  src: "modules/daggerheart-campaign-toolkit/assets/icons/domains/hunt.png",
+  src: "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/hunt.png",
   description:
-    "La Chasse est le domaine de l’observation, de la préparation et de la coordination contre des créatures dangereuses.",
+    "La Chasse est le domaine de lâ€™observation, de la prÃ©paration et de la coordination contre des crÃ©atures dangereuses.",
   color: "#6b5b3e",
 });
 
@@ -187,3 +187,4 @@ export function registerContextualDomainCardBypass() {
   );
   return true;
 }
+

@@ -1,4 +1,4 @@
-const MODULE_ID = "daggerheart-campaign-toolkit";
+﻿const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_SCOPE = MODULE_ID;
 
 const ARTIFICER_CLASS_SOURCE_ID = "homebrew.artificer.class.artificer";
@@ -11,7 +11,7 @@ const COUNTER_KEY = "cobRounds";
 const COUNTER_LABEL = "Cob Rounds";
 const COUNTER_SOURCE_ID = "homebrew.artificer.runtime-resource.cob-rounds";
 const COUNTER_ICON =
-  "modules/daggerheart-campaign-toolkit/assets/icons/domains/artillery.png";
+  "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png";
 const COUNTER_FEATURE_FLAG = "artificerResourceFeature";
 const DECISIVE_STRIKE_FLAG = "decisiveStrike";
 const DECISIVE_STRIKE_EFFECT_FLAG = "decisiveStrikeEffect";
@@ -120,7 +120,7 @@ function cloneResourceData(resource) {
 
 async function simpleResourceSpecimen(actor) {
   // Prefer an already-valid native simple resource on the same Actor.
-  // Seaborne / "Connaître la marée" is the reference specimen validated
+  // Seaborne / "ConnaÃ®tre la marÃ©e" is the reference specimen validated
   // against Foundryborne 2.10.5.
   for (const item of actorItems(actor)) {
     if (item === counterFeature(actor)) continue;
@@ -165,7 +165,7 @@ async function simpleResourceSpecimen(actor) {
 }
 
 function cobResourceFromSpecimen(specimen, value, max = null) {
-  if (!specimen) throw new Error("Schéma de ressource Cob simple indisponible.");
+  if (!specimen) throw new Error("SchÃ©ma de ressource Cob simple indisponible.");
 
   const resource = foundry.utils.deepClone(specimen);
   resource.type = "simple";
@@ -218,9 +218,9 @@ async function nativeFeatureTemplate(actor, initialState) {
 
   if (data.system) {
     data.system.description =
-      "<p><strong>Cob Rounds</strong> de l’Artificier. " +
-      "Ce compteur utilise la même ressource native simple que " +
-      "<em>Connaître la marée</em> (Seaborne).</p>";
+      "<p><strong>Cob Rounds</strong> de lâ€™Artificier. " +
+      "Ce compteur utilise la mÃªme ressource native simple que " +
+      "<em>ConnaÃ®tre la marÃ©e</em> (Seaborne).</p>";
     if ("gmNotes" in data.system) data.system.gmNotes = "";
     if ("granter" in data.system) data.system.granter = null;
     if ("featureForm" in data.system) data.system.featureForm = "passive";
@@ -329,7 +329,7 @@ async function persistState(actor, state) {
   if (next.max != null) next.value = Math.min(next.value, next.max);
 
   if (!feature || !nativeResourceOf(feature)) {
-    throw new Error("Feature Cob Rounds native introuvable après ensure().");
+    throw new Error("Feature Cob Rounds native introuvable aprÃ¨s ensure().");
   }
 
   const update = {
@@ -459,9 +459,9 @@ async function postDecisiveStrikeDamageChat(actor, spent) {
     speaker: ChatMessage.getSpeaker({ actor }),
     content: `
       <div class="daggerheart-campaign-toolkit decisive-strike-manual-damage">
-        <p><strong>Frappe décisive</strong></p>
-        <p>Ajoutez manuellement <strong>+${dice}d6 dégâts</strong> aux dégâts de cette attaque.</p>
-        <p><small>${count} Cob Round(s) dépensé(s).</small></p>
+        <p><strong>Frappe dÃ©cisive</strong></p>
+        <p>Ajoutez manuellement <strong>+${dice}d6 dÃ©gÃ¢ts</strong> aux dÃ©gÃ¢ts de cette attaque.</p>
+        <p><small>${count} Cob Round(s) dÃ©pensÃ©(s).</small></p>
       </div>
     `,
   });
@@ -489,13 +489,13 @@ function decisiveStrikeEffectData(spent) {
   const damageDice = `${count * 2}d6`;
 
   return {
-    name: `Frappe décisive [${count} Cob]`,
+    name: `Frappe dÃ©cisive [${count} Cob]`,
     type: "base",
     img: COUNTER_ICON,
     disabled: false,
     transfer: false,
     description:
-      `<p>Frappe décisive armée : +${count} au prochain jet d’attaque et +${damageDice} aux dégâts.</p>`,
+      `<p>Frappe dÃ©cisive armÃ©e : +${count} au prochain jet dâ€™attaque et +${damageDice} aux dÃ©gÃ¢ts.</p>`,
     flags: {
       [FLAG_SCOPE]: {
         [DECISIVE_STRIKE_EFFECT_FLAG]: true,
@@ -571,7 +571,7 @@ export async function armDecisiveStrike(actor) {
   if (!effect) {
     // Fail safe: restore the resource if Foundry rejected the effect.
     await gainCobRounds(actor, spent.spent);
-    throw new Error("Impossible de créer l’effet Frappe décisive.");
+    throw new Error("Impossible de crÃ©er lâ€™effet Frappe dÃ©cisive.");
   }
 
   const state = {
@@ -747,7 +747,7 @@ function isAttackMessage(message) {
     flavor.includes("attack") ||
     flavor.includes("attaque") ||
     content.includes("attack roll") ||
-    content.includes("jet d’attaque") ||
+    content.includes("jet dâ€™attaque") ||
     content.includes("jet d'attaque")
   );
 }
@@ -782,7 +782,7 @@ function isDecisiveStrikeMessage(message) {
 
   const title = String(message?.system?.title ?? "").toLowerCase();
   return (
-    title.includes("frappe décisive") ||
+    title.includes("frappe dÃ©cisive") ||
     title.includes("frappe decisive") ||
     title.includes("decisive strike")
   );
@@ -840,8 +840,8 @@ export async function handleArtificerCriticalMessage(message) {
     if (!armed.green) {
       ui.notifications?.warn?.(
         armed.reason === "no-cob-rounds"
-          ? `${actor.name} : aucun Cob Round à dépenser pour Frappe décisive.`
-          : `${actor.name} : Frappe décisive n’a pas pu être armée.`
+          ? `${actor.name} : aucun Cob Round Ã  dÃ©penser pour Frappe dÃ©cisive.`
+          : `${actor.name} : Frappe dÃ©cisive nâ€™a pas pu Ãªtre armÃ©e.`
       );
       return {
         green: true,
@@ -852,7 +852,7 @@ export async function handleArtificerCriticalMessage(message) {
     }
 
     ui.notifications?.info?.(
-      `${actor.name} : Frappe décisive armée — ${armed.spent} Cob Round(s), +${armed.spent} à l’attaque, +${armed.spent * 2}d6 dégâts.`
+      `${actor.name} : Frappe dÃ©cisive armÃ©e â€” ${armed.spent} Cob Round(s), +${armed.spent} Ã  lâ€™attaque, +${armed.spent * 2}d6 dÃ©gÃ¢ts.`
     );
 
     console.info(`${MODULE_ID} | Decisive Strike armed`, {
@@ -879,7 +879,7 @@ export async function handleArtificerCriticalMessage(message) {
     const resolved = await resolveBattleRhythmCalm(actor);
 
     ui.notifications?.info?.(
-      `${actor.name} : Rythme de bataille — ${resolved.stress.cleared} Stress effacé(s), ${COUNTER_LABEL} +1 (${resolved.resource.value})`
+      `${actor.name} : Rythme de bataille â€” ${resolved.stress.cleared} Stress effacÃ©(s), ${COUNTER_LABEL} +1 (${resolved.resource.value})`
     );
 
     console.info(`${MODULE_ID} | Battle Rhythm calm -> clear Stress + Cob Rounds`, {
@@ -904,7 +904,7 @@ export async function handleArtificerCriticalMessage(message) {
     await clearDecisiveStrikeState(actor);
 
     ui.notifications?.info?.(
-      `${actor.name} : Frappe décisive consommée (${pendingStrike.spent} Cob Round(s)).`
+      `${actor.name} : Frappe dÃ©cisive consommÃ©e (${pendingStrike.spent} Cob Round(s)).`
     );
 
     await postDecisiveStrikeDamageChat(actor, pendingStrike.spent);
@@ -938,7 +938,7 @@ export async function handleArtificerCriticalMessage(message) {
 
   if (stress.cleared > 0) {
     ui.notifications?.info?.(
-      `${actor.name} : Rythme de bataille — 1 Stress effacé`
+      `${actor.name} : Rythme de bataille â€” 1 Stress effacÃ©`
     );
   }
 
@@ -1046,3 +1046,4 @@ export const artificerResourceApi = Object.freeze({
   handleCriticalMessage: handleArtificerCriticalMessage,
   status: artificerResourceStatus,
 });
+

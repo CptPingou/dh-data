@@ -77,6 +77,30 @@ function recipeLabel(augment) {
     .join(" · ");
 }
 
+function workshopFailureLabel(response) {
+  if (response?.reason === "insufficient-components" && Array.isArray(response?.missing)) {
+    const details = response.missing
+      .map((entry) => {
+        const resourceId = String(entry?.resourceId ?? entry?.requirementId ?? "composant");
+        const label = resourceId.replace(/^mh\.crafting\./, "");
+        const available = Number(entry?.availableUnits ?? 0);
+        const required = Number(entry?.requiredUnits ?? (available + Number(entry?.missingUnits ?? 0)));
+        return `${label} ${available}/${required}`;
+      })
+      .join(", ");
+
+    return details
+      ? `Composants insuffisants : ${details}`
+      : "Composants insuffisants";
+  }
+
+  if (response?.reason === "insufficient-materials") {
+    return "Matériaux biologiques insuffisants";
+  }
+
+  return response?.reason ?? "raison inconnue";
+}
+
 export function listHuntWeapons({
   crafter = null,
   api = toolkitApi(),
@@ -534,9 +558,7 @@ export async function openHuntWeaponWorkshop(crafter) {
 
       if (!response?.green) {
         ui.notifications?.warn(
-          `Modification impossible : ${
-            response?.reason ?? "raison inconnue"
-          }`,
+          `Modification impossible : ${workshopFailureLabel(response)}`,
         );
         return;
       }
