@@ -141,6 +141,43 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     };
   }
 
+  async function documentMaterialProperty({ actor, materialId, propertyId, expeditionId, containerId = "fob", source = "fob" } = {}) {
+    if (!knowledgeApi?.document) throw new Error("craftingKnowledge document API is required.");
+    if (!game.user?.isGM) throw new Error("Material documentation mutation is GM-only.");
+    if (!actor?.uuid) return { green: false, reason: "documentation-actor-required" };
+    if (!materialId) return { green: false, reason: "material-id-required" };
+    if (!propertyId) return { green: false, reason: "property-id-required" };
+    if (!expeditionId) return { green: false, reason: "expedition-id-required" };
+
+    const manifest = await persistenceApi.load(expeditionId);
+    if (!manifest) return { green: false, reason: "expedition-not-found", expeditionId };
+
+    const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
+    if (!container) return { green: false, reason: "documentation-container-not-found", expeditionId, containerId };
+
+    const role = String(container.presentation?.playerRole ?? "").trim().toLowerCase();
+    if (containerId !== "fob" && role !== "fob") {
+      return { green: false, reason: "documentation-container-not-fob", expeditionId, containerId };
+    }
+
+    const material = await materialsApi.get(materialId);
+    if (!material) return { green: false, reason: "material-not-found", materialId };
+    if (!material.material?.properties?.includes(propertyId)) {
+      return { green: false, reason: "material-property-not-found", materialId, propertyId };
+    }
+
+    const documentation = await knowledgeApi.document({ actor, materialId, propertyId });
+    return {
+      ...documentation,
+      operation: "document-material-property",
+      expeditionId,
+      containerId,
+      source,
+      specimenRequired: false,
+      specimenConsumed: false,
+    };
+  }
+
   async function planWeaponAugment({ crafter, augmentId, expeditionId, containerId = "caravan" } = {}) {
     const recipe = await getCraftingRecipeForOutput("weaponAugment", augmentId);
     if (!recipe) return { green: false, reason: "biological-recipe-not-found", augmentId };
@@ -191,6 +228,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     loadRecipes: loadCraftingRecipeCatalog,
     recipeForOutput: getCraftingRecipeForOutput,
     researchMaterialProperty,
+    documentMaterialProperty,
     planWeaponAugment,
     craftWeaponAugment,
   });
