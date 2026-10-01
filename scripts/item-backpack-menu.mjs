@@ -1,4 +1,4 @@
-﻿import { expeditionErrorMessage } from "./expedition-errors.mjs";
+import { expeditionErrorMessage } from "./expedition-errors.mjs";
 import "./expedition-world-bootstrap.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
@@ -143,11 +143,6 @@ function getQuantityInfo(item) {
   };
 }
 
-function cloneManifest(manifest) {
-  return foundry?.utils?.deepClone
-    ? foundry.utils.deepClone(manifest)
-    : structuredClone(manifest);
-}
 
 async function chooseTransferQuantity(item, maximum) {
   if (maximum <= 1) return 1;
@@ -214,77 +209,19 @@ async function chooseTransferQuantity(item, maximum) {
   return Math.min(maximum, quantity);
 }
 
-async function applyActorDebit(item, quantity, quantityInfo) {
-  const available = quantityInfo.value;
 
-  if (quantity >= available || !quantityInfo.updatePath) {
-    await item.delete();
-    return {
-      mode: "deleted",
-      remaining: 0,
-    };
-  }
-
-  const remaining = available - quantity;
-
-  await item.update({
-    [quantityInfo.updatePath]: remaining,
-  });
-
-  return {
-    mode: "decremented",
-    remaining,
-  };
-}
-
-
-async function refreshOpenExpeditionFromTransfer(api, manifest) {
-  const expeditionId = getManifestId(manifest);
-  if (!expeditionId) return;
-
-  let freshManifest = manifest;
-
-  try {
-    freshManifest = await api.expeditionManifest.load(expeditionId);
-  } catch (error) {
-    console.warn(`${MODULE_ID} | could not reload expedition manifest after transfer`, error);
-  }
-
-  const dialogs = [...document.querySelectorAll("dialog.application.dialog")];
-  const expeditionDialog = dialogs.find((dialog) =>
-    /préparer l[’']expédition|prepare expedition/i.test(dialog.textContent ?? "")
-  );
-
-  if (!expeditionDialog) return;
-
-  try {
-    // Reproduce the already validated manual close/open behavior.
-    if (typeof expeditionDialog.close === "function" && expeditionDialog.open) {
-      expeditionDialog.close();
-    }
-
-    // HTMLDialogElement.close() does not remove the node. The expedition
-    // renderer creates a fresh dialog on open(), so the stale one must be
-    // removed explicitly or both remain in the DOM.
-    expeditionDialog.remove();
-
-    // Yield one frame so Foundry's dialog teardown completes before reopening.
-    await new Promise((resolve) => requestAnimationFrame(resolve));
-
-    // Important: open() expects the full manifest object, not expeditionId.
-    if (typeof api?.expeditionManifest?.open === "function") {
-      await api.expeditionManifest.open(freshManifest);
-    }
-  } catch (error) {
-    console.warn(`${MODULE_ID} | expedition dialog reopen after transfer failed`, error);
-  }
-}
 
 async function moveItemToBackpack(item) {
   const actor = item?.parent;
 
-  if (!actor || actor.documentName !== "Actor" || actor.type !== "character") {
-    ui.notifications?.warn("Cet objet n'appartient pas à un personnage.");
+  if (
+    !actor ||
+    actor.documentName !== "Actor" ||
+    actor.type !== "character"
+  ) {
+    ui.notifications?.warn(
+      "Cet objet n'appartient pas à un personnage."
+    );
     return;
   }
 
@@ -292,73 +229,87 @@ async function moveItemToBackpack(item) {
 
   if (
     !api?.expeditionManifest?.list ||
-    !api?.expeditionManifest?.load ||
-    !api?.expeditionManifest?.save ||
-    !api?.expeditionItems?.loadFromActor
+    !api?.expeditionManifest?.load
   ) {
-    ui.notifications?.error("Sac à dos : API d'expédition indisponible.");
+    ui.notifications?.error(
+      "Sac à dos : API d'expédition indisponible."
+    );
     return;
   }
 
   const binding = await findActorBackpack(api, actor);
 
   if (!binding) {
-    ui.notifications?.warn(`Aucun sac à dos d'expédition accessible pour ${actor.name}.`);
+    ui.notifications?.warn(
+      `Aucun sac à dos d'expédition accessible pour ${actor.name}.`
+    );
     return;
   }
 
   const quantityInfo = getQuantityInfo(item);
-  const quantity = await chooseTransferQuantity(item, quantityInfo.value);
+  const quantity = await chooseTransferQuantity(
+    item,
+    quantityInfo.value
+  );
 
   if (quantity == null) return;
 
-  const { manifest, backpack } = binding;
-  const snapshot = cloneManifest(manifest);
+  const requestAuthority =
+    globalThis.dhctExpeditionAuthority?.request;
 
-  let transferFailureReason = null;
+  if (typeof requestAuthority !== "function") {
+    ui.notifications?.error(
+      "Sac à dos : autorité d'inventaire indisponible."
+    );
+    return;
+  }
 
   try {
-    const result = await api.expeditionItems.loadFromActor(manifest, {
-      containerId: backpack.containerId,
-      item,
+    const result = await requestAuthority({
+      expeditionId: getManifestId(binding.manifest),
+      action: "actor-to-backpack",
+      toContainerId: binding.backpack.containerId,
+      itemUuid: item.uuid,
       quantity,
     });
 
-    if (!result?.loaded) {
-      transferFailureReason = result?.reason ?? "loadFromActor did not confirm the transfer.";
-      throw new Error(transferFailureReason);
-    }
-
-    await api.expeditionManifest.save(manifest);
-
-    try {
-      const debit = await applyActorDebit(item, quantity, quantityInfo);
-
-      ui.notifications?.info(
-        debit.remaining > 0
-          ? `${quantity} × ${item.name} → sac à dos (${debit.remaining} restant)`
-          : `${quantity} × ${item.name} → sac à dos`
+    if (!result?.green) {
+      throw new Error(
+        result?.reason ??
+        "Le transfert n'a pas été confirmé par l'autorité MJ."
       );
-    } catch (error) {
-      await api.expeditionManifest.save(snapshot);
-      throw error;
     }
+
+    const remaining = Math.max(
+      0,
+      Number(result.remaining ?? 0)
+    );
+
+    ui.notifications?.info(
+      remaining > 0
+        ? `${quantity} × ${item.name} → sac à dos (${remaining} restant)`
+        : `${quantity} × ${item.name} → sac à dos`
+    );
 
     Hooks.callAll(`${MODULE_ID}.expeditionChanged`, {
-      manifest,
-      containerId: backpack.containerId,
+      expeditionId: getManifestId(binding.manifest),
+      containerId: binding.backpack.containerId,
       actorUuid: actor.uuid,
       itemName: item.name,
       quantity,
+      source: "actor-to-backpack",
     });
-
-    await refreshOpenExpeditionFromTransfer(api, manifest);
   } catch (error) {
-    console.error(`${MODULE_ID} | Actor → backpack transfer failed`, error);
+    console.error(
+      `${MODULE_ID} | Actor → backpack transfer failed`,
+      error
+    );
+
     ui.notifications?.error(
-      expeditionErrorMessage(transferFailureReason ?? error?.message, {
+      expeditionErrorMessage(error?.message, {
         itemName: item.name,
-        containerName: backpack?.name ?? "le sac à dos",
+        containerName:
+          binding.backpack?.name ?? "le sac à dos",
         actorName: actor.name,
       })
     );

@@ -185,6 +185,8 @@ function containerDetailHtml(container, characterById) {
 
         ${rules}
 
+        ${(container.containerId === "fob" || String(presentation.playerRole ?? "").toLowerCase() === "fob") ? `<div style="margin:.6rem 0"><button type="button" data-expedition-action="open-research-station" data-container-id="${esc(container.containerId)}"><i class="fa-solid fa-flask"></i> Station de recherche</button></div>` : ""}
+
         <div class="dct-expedition-grid-shell">
           ${inventoryGridHtml(container)}
         </div>
@@ -691,6 +693,23 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
       entry.addEventListener("keydown", selectEntry);
     }
 
+    for (const button of root.querySelectorAll("[data-expedition-action='open-research-station']")) {
+      if (button.dataset.dctBound === "1") continue;
+      button.dataset.dctBound = "1";
+      button.addEventListener("click", async () => {
+        const api = game.modules.get(MODULE_ID)?.api?.craftingResearchStation;
+        if (!api?.open) {
+          ui.notifications?.warn("Campaign Toolkit : station de recherche indisponible.");
+          return;
+        }
+        const containerId = button.dataset.containerId || "fob";
+        const result = await api.open({ expeditionId: manifest.expeditionId, containerId });
+        if (result?.green === false) {
+          ui.notifications?.warn(`Campaign Toolkit : station de recherche — ${result.reason}.`);
+        }
+      });
+    }
+
     for (const button of root.querySelectorAll("[data-expedition-action='return-to-actor']")) {
       if (button.dataset.dctBound === "1") continue;
       button.dataset.dctBound = "1";
@@ -787,7 +806,7 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
 }
 
 export const expeditionWindowApi = Object.freeze({
-  version: 15,
+  version: 16,
   content: expeditionWindowContent,
   open: openExpeditionWindow,
 });

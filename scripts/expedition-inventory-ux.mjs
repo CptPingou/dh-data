@@ -2049,6 +2049,139 @@ async function processInventoryAuthorityRequest(message) {
     };
   }
 
+  if (message.action === "actor-to-backpack") {
+    const to = (manifest.containers ?? []).find(
+      (container) => container.containerId === message.toContainerId
+    );
+
+    if (!to) {
+      return { green: false, reason: "container-not-found" };
+    }
+
+    if (!userCanAccessContainer(requester, to)) {
+      return { green: false, reason: "container-access-denied" };
+    }
+
+    if (!api?.expeditionItems?.loadFromActor) {
+      return { green: false, reason: "load-from-actor-unavailable" };
+    }
+
+    const item = message.itemUuid
+      ? await fromUuid(message.itemUuid).catch(() => null)
+      : null;
+
+    if (!item || item.documentName !== "Item") {
+      return { green: false, reason: "item-not-found" };
+    }
+
+    const actor = item.parent;
+    if (!actor || actor.documentName !== "Actor" || actor.type !== "character") {
+      return { green: false, reason: "actor-not-found" };
+    }
+
+    if (
+      typeof actor.testUserPermission !== "function" ||
+      !actor.testUserPermission(requester, "OWNER")
+    ) {
+      return { green: false, reason: "actor-access-denied" };
+    }
+
+    const quantity = Math.max(1, Math.floor(Number(message.quantity) || 1));
+    const manifestSnapshot = structuredClone(manifest);
+    const itemSnapshot = item.toObject();
+
+    try {
+      const result = await api.expeditionItems.loadFromActor(manifest, {
+        containerId: message.toContainerId,
+        item,
+        quantity,
+      });
+
+      if (!result?.loaded) {
+        return {
+          green: false,
+          reason: result?.reason ?? "load-from-actor-refused",
+        };
+      }
+
+      const validation = api.expeditionManifest.validate?.(manifest);
+      if (validation && validation.green === false) {
+        throw new Error(
+          `manifest-invalid: ${(validation.errors ?? []).join("; ")}`
+        );
+      }
+
+      await api.expeditionManifest.save(manifest);
+      broadcastBackpackAccessChange(manifest, message.toContainerId);
+
+      const remainingItem = actor.items.get(itemSnapshot._id);
+      const remaining = remainingItem
+        ? Math.max(0, Number(
+            remainingItem.system?.quantity ??
+            remainingItem.system?.count ??
+            remainingItem.system?.uses?.value ??
+            1
+          ) || 0)
+        : 0;
+
+      Hooks.callAll(`${MODULE_ID}.expeditionChanged`, {
+        manifest,
+        source: "gm-authority-actor-to-backpack",
+        requestUserId: requester.id,
+        actorUuid: actor.uuid,
+        containerId: message.toContainerId,
+        itemUuid: itemSnapshot._id,
+        itemName: itemSnapshot.name ?? null,
+        quantity,
+      });
+
+      return {
+        green: true,
+        action: "actor-to-backpack",
+        revision: manifest.revision ?? null,
+        containerId: message.toContainerId,
+        itemName: itemSnapshot.name ?? null,
+        remaining,
+      };
+    } catch (error) {
+      console.error(
+        `${MODULE_ID} | GM Actor → backpack authority failed`,
+        error
+      );
+
+      try {
+        await api.expeditionManifest.save(manifestSnapshot);
+      } catch (rollbackError) {
+        console.error(
+          `${MODULE_ID} | Actor → backpack manifest rollback failed`,
+          rollbackError
+        );
+      }
+
+      try {
+        const currentItem = actor.items.get(itemSnapshot._id);
+
+        if (currentItem) {
+          await actor.updateEmbeddedDocuments("Item", [itemSnapshot]);
+        } else {
+          await actor.createEmbeddedDocuments("Item", [itemSnapshot], {
+            keepId: true,
+          });
+        }
+      } catch (rollbackError) {
+        console.error(
+          `${MODULE_ID} | Actor → backpack item rollback failed`,
+          rollbackError
+        );
+      }
+
+      return {
+        green: false,
+        reason: error?.message ?? "actor-to-backpack-failed",
+      };
+    }
+  }
+
   if (message.action === "acquire-item") {
     const to = (manifest.containers ?? []).find(
       (container) => container.containerId === message.toContainerId
@@ -2374,6 +2507,7 @@ function installExpeditionSocketSync() {
         containerId: message.containerId ?? null,
         entryId: message.entryId ?? null,
         itemName: message.itemName ?? null,
+        remaining: message.remaining ?? null,
       });
       return;
     }
