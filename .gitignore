@@ -25,3 +25,5 @@ Thumbs.db
 # Generated audit/work files
 tmp/
 hf-extraction-diagnostic.txt
+
+*.bak
