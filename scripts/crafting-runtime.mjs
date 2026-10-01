@@ -1,4 +1,4 @@
-import { validateRecipeCatalog } from "./crafting-schema.mjs";
+import { materialPropertyIds, recipeMode, validateRecipeCatalog } from "./crafting-schema.mjs";
 import { allocateExactResourceRecipe, allocateRecipe } from "./crafting-recipe-engine.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
@@ -62,8 +62,16 @@ function containerInventory(container) {
 function knownMaterialDefinition(material, knowledgeApi, crafter) {
   const known = new Set(knowledgeApi.effective(crafter, material.id)?.properties ?? []);
   const copy = clone(material);
-  copy.material.properties = copy.material.properties.filter((property) => known.has(property));
-  if (copy.material.properties.length === 0) copy.material.properties = ["__unknown__"];
+  const rawProperties = copy.material?.properties;
+  if (Array.isArray(rawProperties)) {
+    copy.material.properties = rawProperties.filter((property) => known.has(property));
+    if (copy.material.properties.length === 0) copy.material.properties = ["__unknown__"];
+  } else {
+    copy.material.properties = Object.fromEntries(
+      Object.entries(rawProperties ?? {}).filter(([propertyId]) => known.has(propertyId))
+    );
+    if (Object.keys(copy.material.properties).length === 0) copy.material.properties = { "__unknown__": 1 };
+  }
   return copy;
 }
 
@@ -138,9 +146,17 @@ function consumeExactResourceAllocationFromContainer(manifestApi, manifest, cont
 }
 
 function isExactResourceRecipe(recipe) {
-  return Array.isArray(recipe?.requirements)
-    && recipe.requirements.length > 0
-    && recipe.requirements.every((requirement) => typeof requirement?.match?.resourceId === "string");
+  return recipeMode(recipe) === "exact-resource";
+}
+
+function materialHasProperty(material, propertyId) {
+  return materialPropertyIds(material).includes(propertyId);
+}
+
+function isResearchContainer(container) {
+  const id = String(container?.containerId ?? "").trim().toLowerCase();
+  const role = String(container?.presentation?.playerRole ?? "").trim().toLowerCase();
+  return ["fob", "caravan"].includes(id) || ["fob", "caravan"].includes(role);
 }
 
 export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestApi, persistenceApi, weaponAugmentStateApi } = {}) {
@@ -163,15 +179,14 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
     if (!container) return { green: false, reason: "research-container-not-found", expeditionId, containerId };
 
-    const role = String(container.presentation?.playerRole ?? "").trim().toLowerCase();
-    if (containerId !== "fob" && role !== "fob") {
-      return { green: false, reason: "research-container-not-fob", expeditionId, containerId };
+    if (!isResearchContainer(container)) {
+      return { green: false, reason: "research-container-not-supported", expeditionId, containerId };
     }
 
     const material = await materialsApi.get(materialId);
     if (!material) return { green: false, reason: "material-not-found", materialId };
     if (!material.research?.discoverable) return { green: false, reason: "material-not-research-discoverable", materialId };
-    if (!material.material?.properties?.includes(propertyId)) {
+    if (!materialHasProperty(material, propertyId)) {
       return { green: false, reason: "material-property-not-found", materialId, propertyId };
     }
 
@@ -228,7 +243,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
 
     const material = await materialsApi.get(materialId);
     if (!material) return { green: false, reason: "material-not-found", materialId };
-    if (!material.material?.properties?.includes(propertyId)) {
+    if (!materialHasProperty(material, propertyId)) {
       return { green: false, reason: "material-property-not-found", materialId, propertyId };
     }
 
@@ -272,7 +287,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     const allocation = allocateRecipe(recipe, inventory, knownDefinitions);
     return {
       ...allocation,
-      recipeMode: "biological",
+      recipeMode: recipeMode(recipe) === "property-budget" ? "property-budget" : "biological",
       augmentId,
       expeditionId,
       containerId,

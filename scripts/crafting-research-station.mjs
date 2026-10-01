@@ -4,8 +4,11 @@ function esc(value) {
   return String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
 function materialData(entry) { return entry?.itemRef?.snapshot?.flags?.[MODULE_ID]?.material ?? null; }
-function isFob(container) {
-  return Boolean(container && (container.containerId === "fob" || String(container.presentation?.playerRole ?? "").toLowerCase() === "fob"));
+function isResearchContainer(container) {
+  if (!container) return false;
+  const id = String(container.containerId ?? "").toLowerCase();
+  const role = String(container.presentation?.playerRole ?? "").toLowerCase();
+  return ["fob", "caravan"].includes(id) || ["fob", "caravan"].includes(role);
 }
 export function isEligibleResearchActor(actor, user = game.user) {
   return Boolean(
@@ -26,7 +29,7 @@ export async function buildResearchStationModel({ api, actor, expeditionId, cont
   if (!manifest) return { green:false, reason:"expedition-not-found" };
   const container = manifest.containers?.find((c) => c.containerId === containerId) ?? null;
   if (!container) return { green:false, reason:"research-container-not-found" };
-  if (!isFob(container)) return { green:false, reason:"research-container-not-fob" };
+  if (!isResearchContainer(container)) return { green:false, reason:"research-container-not-supported" };
 
   const byMaterial = new Map();
   for (const entry of container.contents ?? []) {
@@ -43,17 +46,24 @@ export async function buildResearchStationModel({ api, actor, expeditionId, cont
     if (!definition?.research?.discoverable) continue;
     const personal = api.craftingKnowledge.personal(actor, materialId) ?? {};
     const documented = api.craftingKnowledge.documented(materialId) ?? {};
-    const properties = (definition.material?.properties ?? []).map((propertyId, index) => {
+    const rawProperties = definition.material?.properties ?? {};
+    const propertyIds = Array.isArray(rawProperties) ? rawProperties : Object.keys(rawProperties);
+    const properties = [];
+    for (let index = 0; index < propertyIds.length; index += 1) {
+      const propertyId = propertyIds[index];
       const isPersonal = Boolean(personal[propertyId]);
       const isDocumented = Boolean(documented[propertyId]);
-      return {
+      const propertyDefinition = await api.craftingMaterials.property?.(propertyId);
+      const knownLabel = propertyDefinition?.label ?? propertyId;
+      properties.push({
         propertyId,
-        label: isPersonal || isDocumented ? propertyId : `Propriété inconnue ${index + 1}`,
+        value: Array.isArray(rawProperties) ? 1 : Number(rawProperties[propertyId]) || 0,
+        label: isPersonal || isDocumented ? knownLabel : `Propriété inconnue ${index + 1}`,
         personal: isPersonal,
         documented: isDocumented,
         action: isPersonal && !isDocumented ? "document" : (!isPersonal && !isDocumented ? "research" : null),
-      };
-    });
+      });
+    }
     materials.push({ materialId, name: definition.name ?? materialId, quantity, properties });
   }
   materials.sort((a,b) => a.name.localeCompare(b.name, game.i18n?.lang ?? "fr"));
@@ -73,7 +83,7 @@ function content(model, actors, actorId) {
     </section>`).join("");
   return `<div class="dct-research-station">
     <p><label><strong>Chercheur :</strong> <select data-dct-research-actor>${options}</select></label></p>
-    <p style="opacity:.75">Les recherches utilisent les spécimens présents à la FOB sans les consommer. Une découverte personnelle peut ensuite être documentée pour le groupe.</p>
+    <p style="opacity:.75">Les recherches utilisent les spécimens présents à la FOB ou dans la Caravane sans les consommer. Une découverte personnelle peut ensuite être documentée pour le groupe.</p>
     <div data-dct-research-materials>${rows || "<p>Aucun matériau recherchable à la FOB.</p>"}</div>
   </div>`;
 }

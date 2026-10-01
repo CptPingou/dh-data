@@ -88,7 +88,11 @@ async function resolveProperty(materialsApi, materialId, propertyId) {
   const material = await materialsApi.get(materialId);
   if (!material) throw new Error(`Unknown material: ${materialId}.`);
   if (!material.research?.discoverable) throw new Error(`${material.name} is not research-discoverable.`);
-  if (!material.material?.properties?.includes(propertyId)) throw new Error(`${propertyId} is not a property of ${material.name}.`);
+  const properties = material.material?.properties;
+  const hasProperty = Array.isArray(properties)
+    ? properties.includes(propertyId)
+    : Boolean(properties && typeof properties === "object" && Number(properties[propertyId]) > 0);
+  if (!hasProperty) throw new Error(`${propertyId} is not a property of ${material.name}.`);
   return material;
 }
 

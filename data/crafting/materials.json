@@ -1,38 +1,121 @@
 {
-  "schemaVersion": 1,
-  "id": "mh.materials.pilot",
+  "schemaVersion": 2,
+  "id": "mh.materials.pilot-v2",
   "materials": [
     {
       "id": "mh.tetsucabra.fang",
       "name": "Croc de Tetsucabra",
-      "material": { "family": "osseous", "quality": 2, "properties": ["rigid", "piercing", "impact"] },
-      "inventory": { "stackable": true, "containerClass": "hard-material" },
-      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
-      "source": { "type": "creature", "creatureId": "mh.tetsucabra", "anatomy": "fang" }
+      "material": {
+        "family": "osseous",
+        "quality": 2,
+        "properties": {
+          "rigid": 4,
+          "piercing": 3,
+          "impact": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "hard-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": true,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "creature",
+        "creatureId": "mh.tetsucabra",
+        "anatomy": "fang"
+      }
     },
     {
       "id": "mh.tetsucabra.hide",
-      "name": "Peau de Tetsucabra",
-      "material": { "family": "tegument", "quality": 2, "properties": ["flexible", "dense", "reinforcing"] },
-      "inventory": { "stackable": true, "containerClass": "soft-material" },
-      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
-      "source": { "type": "creature", "creatureId": "mh.tetsucabra", "anatomy": "hide" }
+      "name": "Cuir de Tetsucabra",
+      "material": {
+        "family": "tegument",
+        "quality": 2,
+        "properties": {
+          "flexible": 2,
+          "dense": 3,
+          "reinforcing": 4
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": true,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "creature",
+        "creatureId": "mh.tetsucabra",
+        "anatomy": "hide"
+      }
     },
     {
       "id": "mh.vespoid.gland",
       "name": "Glande de Vespoid",
-      "material": { "family": "organ", "quality": 1, "properties": ["electric", "conductive"] },
-      "inventory": { "stackable": true, "containerClass": "organ" },
-      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
-      "source": { "type": "creature", "creatureId": "mh.vespoid", "anatomy": "gland" }
+      "material": {
+        "family": "organ",
+        "quality": 1,
+        "properties": {
+          "conductive": 4,
+          "electric": 3
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "organ"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": true,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "creature",
+        "creatureId": "mh.vespoid",
+        "anatomy": "gland"
+      }
     },
     {
       "id": "mh.vespoid.wing",
       "name": "Aile de Vespoid",
-      "material": { "family": "fiber", "quality": 1, "properties": ["light", "flexible", "resonant"] },
-      "inventory": { "stackable": true, "containerClass": "soft-material" },
-      "research": { "discoverable": true, "specimen": { "required": true, "consumed": false } },
-      "source": { "type": "creature", "creatureId": "mh.vespoid", "anatomy": "wing" }
+      "material": {
+        "family": "fiber",
+        "quality": 1,
+        "properties": {
+          "light": 3,
+          "flexible": 2,
+          "resonant": 3
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": true,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "creature",
+        "creatureId": "mh.vespoid",
+        "anatomy": "wing"
+      }
     }
   ]
 }

@@ -1,8 +1,10 @@
-import { validateMaterialCatalog } from "./crafting-schema.mjs";
+import { materialPropertyIds, validateMaterialCatalog, validatePropertyCatalog } from "./crafting-schema.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const MATERIALS_URL = `modules/${MODULE_ID}/data/crafting/materials.json`;
+const PROPERTIES_URL = `modules/${MODULE_ID}/data/crafting/properties.json`;
 let cache = null;
+let propertyCache = null;
 
 function clone(value) { return value == null ? value : structuredClone(value); }
 function positiveQuantity(value) {
@@ -22,12 +24,34 @@ function materialFlags(material) {
 }
 function flagData(item) { return item?.flags?.[MODULE_ID]?.material ?? null; }
 
+export async function loadPropertyCatalog({ force = false } = {}) {
+  if (propertyCache && !force) return clone(propertyCache);
+  const response = await fetch(PROPERTIES_URL, { cache: "no-store" });
+  if (!response.ok) throw new Error(`Unable to load material property catalog (${response.status}).`);
+  const catalog = await response.json();
+  validatePropertyCatalog(catalog);
+  propertyCache = clone(catalog);
+  return clone(propertyCache);
+}
+
+export async function getPropertyDefinition(propertyId) {
+  const catalog = await loadPropertyCatalog();
+  return clone(catalog.properties.find((entry) => entry.id === propertyId) ?? null);
+}
+
 export async function loadMaterialCatalog({ force = false } = {}) {
   if (cache && !force) return cache;
   const response = await fetch(MATERIALS_URL, { cache: "no-store" });
   if (!response.ok) throw new Error(`Unable to load material catalog (${response.status}).`);
   const catalog = await response.json();
   validateMaterialCatalog(catalog);
+  const propertyCatalog = await loadPropertyCatalog({ force });
+  const knownProperties = new Set(propertyCatalog.properties.map((entry) => entry.id));
+  for (const material of catalog.materials) {
+    for (const propertyId of materialPropertyIds(material)) {
+      if (!knownProperties.has(propertyId)) throw new Error(`Unknown material property ${propertyId} on ${material.id}.`);
+    }
+  }
   cache = catalog;
   return catalog;
 }
@@ -134,6 +158,8 @@ export async function materialRuntimeStatus(actor = null) {
 
 export const craftingMaterialsApi = Object.freeze({
   load: loadMaterialCatalog,
+  loadProperties: loadPropertyCatalog,
+  property: getPropertyDefinition,
   list: listMaterialDefinitions,
   get: getMaterialDefinition,
   itemData: materialItemData,

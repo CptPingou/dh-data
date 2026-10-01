@@ -66,14 +66,43 @@ function requiredTier(augment) {
     : 1;
 }
 
-function recipeLabel(augment) {
-  if (!Array.isArray(augment?.recipe)) return "";
+function propertyLabel(propertyId, propertyLabels = new Map()) {
+  return propertyLabels.get(propertyId) ?? propertyId;
+}
 
-  return augment.recipe
-    .map(
-      (ingredient) =>
-        `${ingredient.quantity} ${ingredient.resource}`,
-    )
+function recipeRequirementLabel(requirement, propertyLabels = new Map()) {
+  const units = Number(requirement?.units ?? requirement?.value ?? 0);
+  const match = requirement?.match ?? {};
+
+  if (typeof match.property === "string" && match.property) {
+    return `${propertyLabel(match.property, propertyLabels)} : ${units}`;
+  }
+
+  if (typeof match.resourceId === "string" && match.resourceId) {
+    return `${match.resourceId.replace(/^mh\\.crafting\\./, "")} : ${units}`;
+  }
+
+  if (typeof match.materialId === "string" && match.materialId) {
+    return `${match.materialId} : ${units}`;
+  }
+
+  if (typeof match.family === "string" && match.family) {
+    const quality = Number(match.minimumQuality);
+    return Number.isFinite(quality)
+      ? `${match.family} (qualité ≥ ${quality}) : ${units}`
+      : `${match.family} : ${units}`;
+  }
+
+  return `${requirement?.id ?? "besoin"} : ${units}`;
+}
+
+function recipeLabel(recipe, propertyLabels = new Map()) {
+  if (!Array.isArray(recipe?.requirements) || recipe.requirements.length === 0) {
+    return "";
+  }
+
+  return recipe.requirements
+    .map((requirement) => recipeRequirementLabel(requirement, propertyLabels))
     .join(" · ");
 }
 
@@ -231,7 +260,7 @@ function workshopContent(crafter, result) {
   return `
     <div class="dct-hunt-weapon-workshop">
       <p>
-        <strong>Artisant :</strong>
+        <strong>Artisan :</strong>
         ${escapeHtml(crafter.name)}
       </p>
 
@@ -251,6 +280,7 @@ function augmentRow({
   crafted,
   installed,
   biologicalRecipe = null,
+  propertyLabels = new Map(),
   expeditionAvailable = false,
 }) {
   let action = "craft";
@@ -301,7 +331,7 @@ function augmentRow({
         </div>
 
         <div style="opacity:.65;font-size:.85em;margin-top:.2rem">
-          ${escapeHtml(recipeLabel(augment))}
+          ${escapeHtml(recipeLabel(biologicalRecipe, propertyLabels))}
         </div>
 
         <div style="opacity:.8;font-size:.85em;margin-top:.2rem">
@@ -342,6 +372,22 @@ async function renderAugmentManager({
   const crafted = craftedIds(state);
   const installed = installedIds(state);
 
+  const propertyCatalog = await api.craftingMaterials?.loadProperties?.() ?? null;
+  const propertyEntries = Array.isArray(propertyCatalog?.properties)
+    ? propertyCatalog.properties
+    : Array.isArray(propertyCatalog)
+      ? propertyCatalog
+      : [];
+
+  const propertyLabels = new Map(
+    propertyEntries
+      .filter((entry) => entry?.id)
+      .map((entry) => [
+        entry.id,
+        entry.label ?? entry.name ?? entry.id,
+      ]),
+  );
+
   const recipePairs = await Promise.all(
     augments.map(async (augment) => [
       augment.id,
@@ -357,6 +403,7 @@ async function renderAugmentManager({
         crafted: crafted.has(augment.id),
         installed: installed.has(augment.id),
         biologicalRecipe: recipes.get(augment.id),
+        propertyLabels,
         expeditionAvailable: Boolean(expeditionOptions),
       }),
     )
@@ -374,7 +421,7 @@ async function renderAugmentManager({
       </p>
 
       <p>
-        <strong>Artisant :</strong>
+        <strong>Artisan :</strong>
         ${escapeHtml(crafter.name)}
       </p>
 

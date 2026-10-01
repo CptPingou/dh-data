@@ -31,8 +31,14 @@ function requiredTier(augment) {
 }
 
 function validateRecipe(augment) {
+  // Recipes are no longer canonical in motherboard.json.
+  // The crafting rail owns recipe truth in data/crafting/recipes.json.
+  // Keep validating legacy recipe payloads when present so old catalogs still
+  // fail loudly if malformed, but allow the field to be omitted entirely.
+  if (augment.recipe === undefined || augment.recipe === null) return;
+
   if (!Array.isArray(augment.recipe) || augment.recipe.length === 0) {
-    throw new Error(`Augment ${augment.id} requires a non-empty recipe.`);
+    throw new Error(`Augment ${augment.id} recipe must be a non-empty array when provided.`);
   }
 
   for (const ingredient of augment.recipe) {
@@ -43,7 +49,7 @@ function validateRecipe(augment) {
       || !Number.isInteger(ingredient.quantity)
       || ingredient.quantity <= 0
     ) {
-      throw new Error(`Invalid recipe ingredient for ${augment.id}.`);
+      throw new Error(`Invalid legacy recipe ingredient for ${augment.id}.`);
     }
   }
 }

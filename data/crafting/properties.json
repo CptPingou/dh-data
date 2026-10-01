@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 2,
+  "id": "mh.material-properties",
+  "properties": [
+    {
+      "id": "rigid",
+      "label": "Rigide",
+      "category": "structural",
+      "description": "Résiste à la déformation et maintient une structure sous contrainte."
+    },
+    {
+      "id": "flexible",
+      "label": "Souple",
+      "category": "structural",
+      "description": "Peut se déformer sans rompre et absorber une partie des contraintes."
+    },
+    {
+      "id": "dense",
+      "label": "Dense",
+      "category": "structural",
+      "description": "Concentre beaucoup de matière dans un faible volume."
+    },
+    {
+      "id": "reinforcing",
+      "label": "Renforçant",
+      "category": "structural",
+      "description": "Améliore la résistance d'un assemblage auquel il est intégré."
+    },
+    {
+      "id": "light",
+      "label": "Léger",
+      "category": "structural",
+      "description": "Apporte peu de masse à l'assemblage."
+    },
+    {
+      "id": "piercing",
+      "label": "Perforant",
+      "category": "offensive",
+      "description": "Concentre l'effort sur une faible surface pour pénétrer une cible."
+    },
+    {
+      "id": "impact",
+      "label": "Impact",
+      "category": "offensive",
+      "description": "Transmet efficacement une force brutale ou un choc."
+    },
+    {
+      "id": "conductive",
+      "label": "Conducteur",
+      "category": "energetic",
+      "description": "Transmet efficacement une énergie à travers l'assemblage."
+    },
+    {
+      "id": "electric",
+      "label": "Électrique",
+      "category": "energetic",
+      "description": "Produit, stocke ou restitue une charge électrique exploitable."
+    },
+    {
+      "id": "resonant",
+      "label": "Résonant",
+      "category": "energetic",
+      "description": "Réagit fortement aux vibrations et peut les transmettre ou les amplifier."
+    }
+  ]
+}
