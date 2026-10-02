@@ -176,15 +176,41 @@ export function validateRecipe(recipe) {
 }
 
 export function validateRecipeCatalog(catalog) {
-  const version = schemaVersion(catalog, "Recipe catalog", [1, 2]); text(catalog.id, "Recipe catalog id");
-  if (!Array.isArray(catalog.recipes)) throw new Error("Recipe catalog recipes must be an array.");
+  const version = schemaVersion(catalog, "Recipe catalog", [1, 2, 3]);
+  text(catalog.id, "Recipe catalog id");
+
+  if (version >= 3) {
+    text(catalog.namespace, "Recipe catalog namespace");
+
+    if (catalog.kind !== "recipe-catalog") {
+      throw new Error(
+        'Recipe catalog kind must be "recipe-catalog" for schemaVersion 3.',
+      );
+    }
+  }
+
+  if (!Array.isArray(catalog.recipes)) {
+    throw new Error("Recipe catalog recipes must be an array.");
+  }
+
   const ids = new Set();
+
   for (const recipe of catalog.recipes) {
     validateRecipe(recipe);
-    if (ids.has(recipe.id)) throw new Error(`Duplicate recipe id: ${recipe.id}.`);
+
+    if (ids.has(recipe.id)) {
+      throw new Error(`Duplicate recipe id: ${recipe.id}.`);
+    }
+
     ids.add(recipe.id);
   }
-  return { green: true, schemaVersion: version, catalogId: catalog.id, recipes: catalog.recipes.length };
+
+  return {
+    green: true,
+    schemaVersion: version,
+    catalogId: catalog.id,
+    recipes: catalog.recipes.length,
+  };
 }
 
 export function validateContainer(container) {

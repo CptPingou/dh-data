@@ -2,24 +2,281 @@ import { materialPropertyIds, recipeMode, validateRecipeCatalog } from "./crafti
 import { allocateExactResourceRecipe, allocateRecipe } from "./crafting-recipe-engine.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
-const RECIPES_URL = `modules/${MODULE_ID}/data/crafting/recipes.json`;
-let recipeCache = null;
 
 const clone = (value) => value == null ? value : (globalThis.structuredClone ? structuredClone(value) : JSON.parse(JSON.stringify(value)));
+const RECIPE_CATALOG_REGISTRY_URL =
+  `modules/${MODULE_ID}/data/crafting/recipe-catalogs.json`;
 
-export async function loadCraftingRecipeCatalog({ force = false } = {}) {
-  if (recipeCache && !force) return clone(recipeCache);
-  const response = await fetch(RECIPES_URL, { cache: "no-store" });
-  if (!response.ok) throw new Error(`Unable to load crafting recipe catalog (${response.status}).`);
-  const catalog = await response.json();
-  validateRecipeCatalog(catalog);
-  recipeCache = clone(catalog);
-  return clone(recipeCache);
+let recipeRegistryCache = null;
+const recipeCatalogCache = new Map();
+
+export async function loadCraftingRecipeCatalogRegistry(
+  { force = false } = {},
+) {
+  if (recipeRegistryCache && !force) {
+    return clone(recipeRegistryCache);
+  }
+
+  const response = await fetch(
+    RECIPE_CATALOG_REGISTRY_URL,
+    { cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to load crafting recipe catalog registry (${response.status}).`,
+    );
+  }
+
+  const registry = await response.json();
+
+  if (registry?.schemaVersion !== 1) {
+    throw new Error(
+      "Crafting recipe catalog registry schemaVersion must be 1.",
+    );
+  }
+
+  if (
+    typeof registry?.id !== "string" ||
+    !registry.id.trim()
+  ) {
+    throw new Error(
+      "Crafting recipe catalog registry id is required.",
+    );
+  }
+
+  if (
+    typeof registry?.defaultCatalog !== "string" ||
+    !registry.defaultCatalog.trim()
+  ) {
+    throw new Error(
+      "Crafting recipe catalog registry defaultCatalog is required.",
+    );
+  }
+
+  if (!Array.isArray(registry?.catalogs)) {
+    throw new Error(
+      "Crafting recipe catalog registry catalogs must be an array.",
+    );
+  }
+
+  const ids = new Set();
+
+  for (const entry of registry.catalogs) {
+    for (const field of ["id", "namespace", "kind", "path"]) {
+      if (
+        typeof entry?.[field] !== "string" ||
+        !entry[field].trim()
+      ) {
+        throw new Error(
+          `Crafting recipe catalog registry entry ${field} is required.`,
+        );
+      }
+    }
+
+    if (entry.kind !== "recipe-catalog") {
+      throw new Error(
+        `Recipe catalog registry entry ${entry.id} must use kind "recipe-catalog".`,
+      );
+    }
+
+    if (ids.has(entry.id)) {
+      throw new Error(
+        `Duplicate recipe catalog id: ${entry.id}.`,
+      );
+    }
+
+    ids.add(entry.id);
+  }
+
+  if (!ids.has(registry.defaultCatalog)) {
+    throw new Error(
+      `Unknown default recipe catalog: ${registry.defaultCatalog}.`,
+    );
+  }
+
+  recipeRegistryCache = clone(registry);
+  return clone(recipeRegistryCache);
 }
 
-export async function getCraftingRecipeForOutput(outputType, outputId) {
-  const catalog = await loadCraftingRecipeCatalog();
-  return clone(catalog.recipes.find((recipe) => recipe.output?.type === outputType && recipe.output?.id === outputId) ?? null);
+export async function loadCraftingRecipeCatalog(
+  {
+    force = false,
+    catalogId = null,
+  } = {},
+) {
+  const registry =
+    await loadCraftingRecipeCatalogRegistry({ force });
+
+  const resolvedCatalogId =
+    catalogId ?? registry.defaultCatalog;
+
+  const entry =
+    registry.catalogs.find(
+      (candidate) => candidate.id === resolvedCatalogId,
+    ) ?? null;
+
+  if (!entry) {
+    throw new Error(
+      `Unknown crafting recipe catalog: ${resolvedCatalogId}.`,
+    );
+  }
+
+  if (!force && recipeCatalogCache.has(resolvedCatalogId)) {
+    return clone(
+      recipeCatalogCache.get(resolvedCatalogId),
+    );
+  }
+
+  const relativePath =
+    entry.path.replace(/^data\//, "");
+
+  const url =
+    `modules/${MODULE_ID}/data/${relativePath}`;
+
+  const response = await fetch(
+    url,
+    { cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to load crafting recipe catalog ${resolvedCatalogId} (${response.status}).`,
+    );
+  }
+
+  const catalog = await response.json();
+
+  validateRecipeCatalog(catalog);
+
+  for (const field of ["id", "namespace", "kind"]) {
+    if (catalog[field] !== entry[field]) {
+      throw new Error(
+        `Recipe catalog ${resolvedCatalogId} ${field} does not match registry.`,
+      );
+    }
+  }
+
+  recipeCatalogCache.set(
+    resolvedCatalogId,
+    clone(catalog),
+  );
+
+  return clone(catalog);
+}
+
+export async function loadCraftingRecipeCatalogs(
+  { force = false } = {},
+) {
+  const registry =
+    await loadCraftingRecipeCatalogRegistry({ force });
+
+  const catalogs = [];
+
+  for (const entry of registry.catalogs) {
+    catalogs.push(
+      await loadCraftingRecipeCatalog({
+        catalogId: entry.id,
+        force,
+      }),
+    );
+  }
+
+  return catalogs;
+}
+
+export async function listCraftingRecipes() {
+  const catalogs =
+    await loadCraftingRecipeCatalogs();
+
+  const recipes = [];
+  const ids = new Set();
+
+  for (const catalog of catalogs) {
+    for (const recipe of catalog.recipes) {
+      if (ids.has(recipe.id)) {
+        throw new Error(
+          `Duplicate crafting recipe id across catalogs: ${recipe.id}.`,
+        );
+      }
+
+      ids.add(recipe.id);
+      recipes.push(clone(recipe));
+    }
+  }
+
+  return recipes;
+}
+
+export async function resolveCraftingRecipe(
+  recipeId,
+  { force = false } = {},
+) {
+  const catalogs =
+    await loadCraftingRecipeCatalogs({ force });
+
+  let resolved = null;
+
+  for (const catalog of catalogs) {
+    const recipe =
+      catalog.recipes.find(
+        (entry) => entry.id === recipeId,
+      ) ?? null;
+
+    if (!recipe) continue;
+
+    if (resolved) {
+      throw new Error(
+        `Duplicate crafting recipe id across catalogs: ${recipeId}.`,
+      );
+    }
+
+    resolved = {
+      catalog,
+      recipe,
+    };
+  }
+
+  return clone(resolved);
+}
+
+export async function getCraftingRecipe(
+  recipeId,
+) {
+  const resolved =
+    await resolveCraftingRecipe(recipeId);
+
+  return clone(resolved?.recipe ?? null);
+}
+
+export async function getCraftingRecipeForOutput(
+  outputType,
+  outputId,
+) {
+  const catalogs =
+    await loadCraftingRecipeCatalogs();
+
+  let resolved = null;
+
+  for (const catalog of catalogs) {
+    const matches = catalog.recipes.filter(
+      (recipe) =>
+        recipe.output?.type === outputType &&
+        recipe.output?.id === outputId,
+    );
+
+    for (const recipe of matches) {
+      if (resolved) {
+        throw new Error(
+          `Duplicate crafting recipe output: ${outputType}/${outputId}.`,
+        );
+      }
+
+      resolved = recipe;
+    }
+  }
+
+  return clone(resolved);
 }
 
 function materialData(entry) {
@@ -326,6 +583,11 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
   return Object.freeze({
     loadRecipes: loadCraftingRecipeCatalog,
     recipeForOutput: getCraftingRecipeForOutput,
+    loadRecipeRegistry: loadCraftingRecipeCatalogRegistry,
+    loadAllRecipes: loadCraftingRecipeCatalogs,
+    listRecipes: listCraftingRecipes,
+    getRecipe: getCraftingRecipe,
+    resolveRecipe: resolveCraftingRecipe,
     researchMaterialProperty,
     documentMaterialProperty,
     planWeaponAugment,

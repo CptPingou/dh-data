@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "id": "mh.recipes.weapon-augments.property-budget.pilot",
   "recipes": [
     {
@@ -91,5 +91,7 @@
         }
       ]
     }
-  ]
+  ],
+  "namespace": "monster-hunter",
+  "kind": "recipe-catalog"
 }

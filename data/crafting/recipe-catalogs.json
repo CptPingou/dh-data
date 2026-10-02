@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "recipe-catalog-registry",
+  "defaultCatalog": "mh.recipes.weapon-augments.property-budget.pilot",
+  "catalogs": [
+    {
+      "id": "mh.recipes.weapon-augments.property-budget.pilot",
+      "namespace": "monster-hunter",
+      "kind": "recipe-catalog",
+      "path": "data/crafting/catalogs/monster-hunter.recipes.json"
+    }
+  ]
+}
