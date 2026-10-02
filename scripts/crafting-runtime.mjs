@@ -283,7 +283,7 @@ function materialData(entry) {
   return entry?.itemRef?.snapshot?.flags?.[MODULE_ID]?.material ?? null;
 }
 
-function containerInventory(container) {
+export function containerInventory(container) {
   const totals = new Map();
   for (const entry of container?.contents ?? []) {
     const materialId = materialData(entry)?.materialId;
@@ -294,7 +294,7 @@ function containerInventory(container) {
   return [...totals].map(([materialId, quantity]) => ({ materialId, quantity }));
 }
 
-function knownMaterialDefinition(material, knowledgeApi, crafter) {
+export function knownMaterialDefinition(material, knowledgeApi, crafter) {
   const known = new Set(knowledgeApi.effective(crafter, material.id)?.properties ?? []);
   const copy = clone(material);
   const rawProperties = copy.material?.properties;
@@ -452,26 +452,115 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     };
   }
 
-  async function planWeaponAugment({ crafter, augmentId, expeditionId, containerId = "caravan" } = {}) {
-    const recipe = await getCraftingRecipeForOutput("weaponAugment", augmentId);
-    if (!recipe) return { green: false, reason: "biological-recipe-not-found", augmentId };
-    const manifest = await persistenceApi.load(expeditionId);
-    if (!manifest) return { green: false, reason: "expedition-not-found", expeditionId };
-    const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
-    if (!container) return { green: false, reason: "crafting-container-not-found", containerId };
+  async function planRecipe({
+    crafter,
+    recipeId,
+    expeditionId,
+    containerId = "caravan",
+  } = {}) {
+    const recipe =
+      await getCraftingRecipe(recipeId);
 
-    const definitions = await materialsApi.list();
-    const knownDefinitions = definitions.map((material) => knownMaterialDefinition(material, knowledgeApi, crafter));
-    const inventory = containerInventory(container);
-    const allocation = allocateRecipe(recipe, inventory, knownDefinitions);
+    if (!recipe) {
+      return {
+        green: false,
+        reason: "recipe-not-found",
+        recipeId,
+      };
+    }
+
+    const manifest =
+      await persistenceApi.load(expeditionId);
+
+    if (!manifest) {
+      return {
+        green: false,
+        reason: "expedition-not-found",
+        expeditionId,
+        recipeId,
+      };
+    }
+
+    const container =
+      manifest.containers?.find(
+        (candidate) =>
+          candidate.containerId === containerId
+      );
+
+    if (!container) {
+      return {
+        green: false,
+        reason: "crafting-container-not-found",
+        containerId,
+        recipeId,
+      };
+    }
+
+    const definitions =
+      await materialsApi.list();
+
+    const knownDefinitions =
+      definitions.map(
+        (material) =>
+          knownMaterialDefinition(
+            material,
+            knowledgeApi,
+            crafter
+          )
+      );
+
+    const inventory =
+      containerInventory(container);
+
+    const allocation =
+      allocateRecipe(
+        recipe,
+        inventory,
+        knownDefinitions
+      );
+
     return {
       ...allocation,
-      recipeMode: recipeMode(recipe) === "property-budget" ? "property-budget" : "biological",
-      augmentId,
+
+      recipeMode:
+        recipeMode(recipe),
+
       expeditionId,
       containerId,
-      recipe: clone(recipe),
+
+      recipe:
+        clone(recipe),
+
       inventory,
+    };
+  }
+
+  async function planWeaponAugment({ crafter, augmentId, expeditionId, containerId = "caravan" } = {}) {
+    const recipe =
+      await getCraftingRecipeForOutput(
+        "weaponAugment",
+        augmentId
+      );
+
+    if (!recipe) {
+      return {
+        green: false,
+        reason: "biological-recipe-not-found",
+        augmentId,
+      };
+    }
+
+    const plan =
+      await planRecipe({
+        crafter,
+        recipeId: recipe.id,
+        expeditionId,
+        containerId,
+      });
+
+    return {
+      ...plan,
+      augmentId,
     };
   }
 
@@ -510,6 +599,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     resolveRecipe: resolveCraftingRecipe,
     researchMaterialProperty,
     documentMaterialProperty,
+    planRecipe,
     planWeaponAugment,
     craftWeaponAugment,
   });
