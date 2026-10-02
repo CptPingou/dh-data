@@ -1,21 +1,8 @@
-﻿const MODULE_ID = "daggerheart-campaign-toolkit";
+import { buildActor } from "./actor-builder.mjs";
+
+const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_SCOPE = MODULE_ID;
 
-let dependencies = null;
-
-export function configureAdversaryImport(value) {
-  dependencies = value;
-}
-
-function importDependencies() {
-  if (!dependencies) {
-    throw new Error("Adversary import dependencies are not configured.");
-  }
-  return dependencies;
-}
-
-const buildActor = (...args) =>
-  importDependencies().buildActor(...args);
 
 async function refreshHuntingNoteLinks(pack) {
   const docs = await pack.getDocuments();
@@ -32,14 +19,14 @@ async function refreshHuntingNoteLinks(pack) {
 
     const baseNotes = String(doc.system?.notes ?? "").replace(sectionPattern, "").trim();
     const rows = links.map(link => {
-      const label = foundry.utils.escapeHTML(String(link?.label ?? "Adversaire liÃ©"));
+      const label = foundry.utils.escapeHTML(String(link?.label ?? "Adversaire lié"));
       const target = bySourceId.get(String(link?.sourceId ?? ""));
       const contentLink = target ? `@UUID[${target.uuid}]{${label}}` : label;
       const note = String(link?.note ?? "").trim();
       const noteHtml = note ? `<br><small>${foundry.utils.escapeHTML(note)}</small>` : "";
       return `<li>${contentLink}${noteHtml}</li>`;
     }).join("");
-    const section = `<section data-dct-hunting-links="true"><h4>Adversaires liÃ©s</h4><ul>${rows}</ul></section>`;
+    const section = `<section data-dct-hunting-links="true"><h4>Adversaires liés</h4><ul>${rows}</ul></section>`;
     const nextNotes = [baseNotes, section].filter(Boolean).join("\n");
     if (nextNotes !== String(doc.system?.notes ?? "")) {
       await doc.update({ "system.notes": nextNotes });
@@ -48,10 +35,10 @@ async function refreshHuntingNoteLinks(pack) {
 }
 
 export async function importCanonicalAdversary(sourcePath) {
-  if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est rÃ©servÃ© au MJ.");
+  if (!game.user?.isGM) throw new Error("L'import d'un adversaire Toolkit est réservé au MJ.");
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
   if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
-    throw new Error(`Chemin adversaire non autorisÃ©: ${cleanPath}`);
+    throw new Error(`Chemin adversaire non autorisé: ${cleanPath}`);
   }
 
   const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, { cache: "no-store" });
@@ -83,7 +70,7 @@ export async function importCanonicalAdversary(sourcePath) {
     for (const doc of previous) await doc.delete();
     const created = await Actor.create(data, { pack: pack.collection });
     await refreshHuntingNoteLinks(pack);
-    ui.notifications.info(`Campaign Toolkit : ${created.name} importÃ© dans dh-adversaries.`);
+    ui.notifications.info(`Campaign Toolkit : ${created.name} importé dans dh-adversaries.`);
     return created;
   } finally {
     await pack.configure({ locked: true });

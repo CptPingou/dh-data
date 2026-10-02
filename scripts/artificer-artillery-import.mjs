@@ -1,31 +1,13 @@
+import { organizeDomainCardsByDomain } from "./domain-card-import.mjs";
+import { ARTILLERY_DOMAIN_ID, ensureArtilleryDomain } from "./artillery-domain.mjs";
 import { syncOwnedArtilleryCards } from "./artillery-owned-sync.mjs";
 import { buildItem, buildLinkedSourceFeature } from "./item-builder.mjs";
 import { nativeTemplate } from "./native-mapping.mjs";
+import { normalizedChoice } from "./import-primitives.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_SCOPE = "daggerheart-campaign-toolkit";
-const ARTILLERY_DOMAIN_ID = "artillery";
 
-let dependencies = null;
-
-export function configureArtificerArtilleryImport(value) {
-  dependencies = value;
-}
-
-function importDependencies() {
-  if (!dependencies) {
-    throw new Error("Artificer/Artillery import dependencies are not configured.");
-  }
-
-  return dependencies;
-}
-
-const ensureArtilleryDomain = (...args) =>
-  importDependencies().ensureArtilleryDomain(...args);
-const normalizedChoice = (...args) =>
-  importDependencies().normalizedChoice(...args);
-const organizeDomainCardsByDomain = (...args) =>
-  importDependencies().organizeDomainCardsByDomain(...args);
 
 const ARTIFICER_CLASS_SOURCE =
   "data/homebrew/artificer/classes/artificer.json";
@@ -39,7 +21,7 @@ const ARTILLERY_CARD_SOURCE =
 async function loadCanonicalHomebrewJson(sourcePath) {
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
   if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
-    throw new Error(`Chemin homebrew non autorisÃ©: ${cleanPath}`);
+    throw new Error(`Chemin homebrew non autorisé: ${cleanPath}`);
   }
   const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, {
     cache: "no-store",
@@ -217,7 +199,7 @@ function remapItemLink(specimen, doc, wantedType) {
 
   if (link.item !== doc || link.uuid !== doc.uuid) {
     throw new Error(
-      `ItemLink ${wantedType} mal remappÃ© vers ${doc.name}.`
+      `ItemLink ${wantedType} mal remappé vers ${doc.name}.`
     );
   }
 
@@ -299,7 +281,7 @@ async function importArtificerClass() {
     ARTIFICER_CLASS_SOURCE
   );
   if (raw?.kind !== "class" || !raw?.id) {
-    throw new Error(`${cleanPath} nâ€™est pas une classe canonique valide.`);
+    throw new Error(`${cleanPath} n’est pas une classe canonique valide.`);
   }
 
   // Our integration decision is Codex + Artillery. Register Artillery before
@@ -334,7 +316,7 @@ async function importArtificerClass() {
 async function importArtificerSubclass(sourcePath, classDoc) {
   const { cleanPath, payload: raw } = await loadCanonicalHomebrewJson(sourcePath);
   if (raw?.kind !== "subclass" || !raw?.id) {
-    throw new Error(`${cleanPath} nâ€™est pas une sous-classe canonique valide.`);
+    throw new Error(`${cleanPath} n’est pas une sous-classe canonique valide.`);
   }
 
   const featureRecords = sourceFeatureRecords(raw, cleanPath);
@@ -569,7 +551,7 @@ async function withArtificerImportPacksUnlocked(operation) {
 
 export async function importArtificerArtillery() {
   if (!game.user?.isGM) {
-    throw new Error("Lâ€™import Artificier + Artillery est rÃ©servÃ© au MJ.");
+    throw new Error("L’import Artificier + Artillery est réservé au MJ.");
   }
 
   return withArtificerImportPacksUnlocked(async () => {
@@ -604,7 +586,7 @@ export async function importArtificerArtillery() {
 
     if (result.green) {
       ui.notifications.info(
-        "Campaign Toolkit : Artificier + Artillery importÃ©s (9 cartes, 1 classe, 2 sous-classes)."
+        "Campaign Toolkit : Artificier + Artillery importés (9 cartes, 1 classe, 2 sous-classes)."
       );
     } else {
       ui.notifications.warn(

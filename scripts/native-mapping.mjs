@@ -1,25 +1,14 @@
-﻿import { applyContentLocale, getImportLocale } from "./content-locale.mjs";
+import { applyContentLocale, getImportLocale } from "./content-locale.mjs";
 
 const FLAG_SCOPE = "daggerheart-campaign-toolkit";
 const PILOT_MAPPING_VERSION = "P2.3.4e-fix2c";
 
-let dependencies = null;
-
-export function configureNativeMapping(value) {
-  dependencies = value;
-}
-
-function mappingDependencies() {
-  if (!dependencies) {
-    throw new Error("Native mapping dependencies are not configured.");
-  }
-  return dependencies;
-}
-
-const rules = (...args) => mappingDependencies().rules(...args);
-const normalizedToken = (...args) => mappingDependencies().normalizedToken(...args);
-const mapRange = (...args) => mappingDependencies().mapRange(...args);
-const mapDamageTypes = (...args) => mappingDependencies().mapDamageTypes(...args);
+import {
+  rules,
+  normalizedToken,
+  mapRange,
+  mapDamageTypes,
+} from "./import-primitives.mjs";
 
 function mapFeatureForm(value) {
   const token = normalizedToken(value);
@@ -234,7 +223,7 @@ export async function nativeTemplate(documentName, type) {
     return source;
   }
 
-  throw new Error(`Aucun template Foundryborne trouvÃ© pour ${documentName}:${type}`);
+  throw new Error(`Aucun template Foundryborne trouvé pour ${documentName}:${type}`);
 }
 
 

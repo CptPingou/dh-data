@@ -1,48 +1,28 @@
+import { MODULE_ID, FLAG_SCOPE, PILOT_MAPPING_VERSION } from "./import-constants.mjs";
+import { ARTILLERY_DOMAIN_ID } from "./artillery-domain.mjs";
 import { localizeNativeEquipmentEmbedded } from "./equipment-native-fr.mjs";
 import { applyContentLocale, getImportLocale } from "./content-locale.mjs";
 import { nativeTemplate } from "./native-mapping.mjs";
 import { applyArtilleryDomainCardAutomation } from "./artillery-automation.mjs";
 
-let dependencies = null;
+import {
+  ownedClassImage,
+  nameOf,
+  rules,
+  provenanceFlags,
+  setMappingGaps,
+  clearItemLinks,
+  baseDescription,
+  normalizedChoice,
+  domainIcon,
+  normalizedToken,
+  mapTrait,
+  mapRange,
+  mapDamageTypes,
+  parseWeaponDamage,
+  appendFeatureDescription,
+} from "./import-primitives.mjs";
 
-export function configureItemBuilder(value) {
-  dependencies = value;
-}
-
-function itemDependencies() {
-  if (!dependencies) {
-    throw new Error("Item builder dependencies are not configured.");
-  }
-  return dependencies;
-}
-
-const ownedClassImage = (...args) => itemDependencies().ownedClassImage(...args);
-const nameOf = (...args) => itemDependencies().nameOf(...args);
-const rules = (...args) => itemDependencies().rules(...args);
-const provenanceFlags = (...args) => itemDependencies().provenanceFlags(...args);
-const setMappingGaps = (...args) => itemDependencies().setMappingGaps(...args);
-const clearItemLinks = (...args) => itemDependencies().clearItemLinks(...args);
-const baseDescription = (...args) => itemDependencies().baseDescription(...args);
-const normalizedChoice = (...args) => itemDependencies().normalizedChoice(...args);
-const domainIcon = (...args) => itemDependencies().domainIcon(...args);
-const normalizedToken = (...args) => itemDependencies().normalizedToken(...args);
-const mapTrait = (...args) => itemDependencies().mapTrait(...args);
-const mapRange = (...args) => itemDependencies().mapRange(...args);
-const mapDamageTypes = (...args) => itemDependencies().mapDamageTypes(...args);
-const parseWeaponDamage = (...args) => itemDependencies().parseWeaponDamage(...args);
-const appendFeatureDescription = (...args) => itemDependencies().appendFeatureDescription(...args);
-
-let MODULE_ID = null;
-let FLAG_SCOPE = null;
-let PILOT_MAPPING_VERSION = null;
-let ARTILLERY_DOMAIN_ID = null;
-
-export function configureItemBuilderConstants(value) {
-  MODULE_ID = value.MODULE_ID;
-  FLAG_SCOPE = value.FLAG_SCOPE;
-  PILOT_MAPPING_VERSION = value.PILOT_MAPPING_VERSION;
-  ARTILLERY_DOMAIN_ID = value.ARTILLERY_DOMAIN_ID;
-}
 
 const SOURCE_FEATURE_PREFIX = "dctSource";
 const sourceEquipmentFeatureKeys = {
@@ -351,7 +331,7 @@ function mapWeaponBurden(value) {
 function parseVersatileProfile(feature) {
   if (String(feature?.name ?? "").trim().toLowerCase() !== "versatile") return null;
   const text = String(feature?.text ?? "");
-  const match = text.match(/statistics[Ã¢â‚¬â€-]\s*([^,]+),\s*([^,]+),\s*(d\d+(?:[+-]\d+)?)(?:\s+(phy|mag))?/i);
+  const match = text.match(/statistics[—-]\s*([^,]+),\s*([^,]+),\s*(d\d+(?:[+-]\d+)?)(?:\s+(phy|mag))?/i);
   if (!match) return { raw: text, parseStatus: "text-preserved" };
   return {
     trait: match[1].trim().toLowerCase(),

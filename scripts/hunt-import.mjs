@@ -1,23 +1,9 @@
-﻿import { ensureHuntDomain } from "./hunt-domain.mjs";
+import { ensureHuntDomain } from "./hunt-domain.mjs";
+import { importCanonicalDomainCard } from "./domain-card-import.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_SCOPE = "daggerheart-campaign-toolkit";
 
-let dependencies = null;
-
-export function configureHuntImport(value) {
-  dependencies = value;
-}
-
-function importDependencies() {
-  if (!dependencies) {
-    throw new Error("Hunt import dependencies are not configured.");
-  }
-  return dependencies;
-}
-
-const importCanonicalDomainCard = (...args) =>
-  importDependencies().importCanonicalDomainCard(...args);
 
 export async function importHuntPilot() {
   const domain = await ensureHuntDomain();

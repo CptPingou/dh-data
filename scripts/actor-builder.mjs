@@ -1,4 +1,4 @@
-﻿import { applyContentLocale, getImportLocale } from "./content-locale.mjs";
+import { applyContentLocale, getImportLocale } from "./content-locale.mjs";
 import {
   mapEmbeddedSourceFeatures,
   parseAdversaryExperiences,
@@ -8,27 +8,16 @@ import {
 
 const FLAG_SCOPE = "daggerheart-campaign-toolkit";
 
-let dependencies = null;
-
-export function configureActorBuilder(value) {
-  dependencies = value;
-}
-
-function builderDependencies() {
-  if (!dependencies) {
-    throw new Error("Actor builder dependencies are not configured.");
-  }
-  return dependencies;
-}
-
-const nameOf = (...args) => builderDependencies().nameOf(...args);
-const rules = (...args) => builderDependencies().rules(...args);
-const provenanceFlags = (...args) => builderDependencies().provenanceFlags(...args);
-const setMappingGaps = (...args) => builderDependencies().setMappingGaps(...args);
-const sanitizeEmbeddedActorData = (...args) => builderDependencies().sanitizeEmbeddedActorData(...args);
-const baseDescription = (...args) => builderDependencies().baseDescription(...args);
-const normalizedChoice = (...args) => builderDependencies().normalizedChoice(...args);
-const normalizedToken = (...args) => builderDependencies().normalizedToken(...args);
+import {
+  nameOf,
+  rules,
+  provenanceFlags,
+  setMappingGaps,
+  sanitizeEmbeddedActorData,
+  baseDescription,
+  normalizedChoice,
+  normalizedToken,
+} from "./import-primitives.mjs";
 
 function huntingNotesHtml(raw) {
   const hunting = raw?.hunting;
@@ -54,7 +43,7 @@ function huntingNotesHtml(raw) {
 
   if (hunting.footprint?.width && hunting.footprint?.height) {
     lines.push(
-      `<p><strong>Empreinte :</strong> ${esc(hunting.footprint.width)}Ã—${esc(hunting.footprint.height)}</p>`
+      `<p><strong>Empreinte :</strong> ${esc(hunting.footprint.width)}×${esc(hunting.footprint.height)}</p>`
     );
   }
 
@@ -62,7 +51,7 @@ function huntingNotesHtml(raw) {
     const mobility = hunting.mobility.state
       ? `${hunting.mobility.mode} (${hunting.mobility.state})`
       : hunting.mobility.mode;
-    lines.push(`<p><strong>MobilitÃ© :</strong> ${esc(mobility)}</p>`);
+    lines.push(`<p><strong>Mobilité :</strong> ${esc(mobility)}</p>`);
   }
 
   if (Array.isArray(hunting.loot) && hunting.loot.length) {
@@ -82,34 +71,34 @@ function huntingNotesHtml(raw) {
     lines.push("<ul>");
     for (const part of hunting.colossus.parts) {
       const ft = Number(part?.fractureThreshold);
-      const ftText = Number.isFinite(ft) ? ` â€” FT ${esc(ft)}` : "";
-      const effectText = part?.brokenEffectName ? ` â†’ <strong>${esc(part.brokenEffectName)}</strong>` : "";
+      const ftText = Number.isFinite(ft) ? ` — FT ${esc(ft)}` : "";
+      const effectText = part?.brokenEffectName ? ` → <strong>${esc(part.brokenEffectName)}</strong>` : "";
       const consequence = part?.brokenConsequence ? `<br><small>${esc(part.brokenConsequence)}</small>` : "";
       lines.push(`<li><strong>${esc(part?.name ?? part?.id ?? "Partie")}</strong>${ftText}${effectText}${consequence}</li>`);
     }
     lines.push("</ul>");
-    lines.push("<p><em>Assembler dans Colossus par glisser-dÃ©poser : Tetsucabra comme principal, puis les Actors de partie.</em></p>");
+    lines.push("<p><em>Assembler dans Colossus par glisser-déposer : Tetsucabra comme principal, puis les Actors de partie.</em></p>");
   }
 
   if (hunting.colossusPart === true) {
     const ft = Number(hunting.fractureThreshold);
     lines.push("<h4>Partie Colossus</h4>");
-    if (Number.isFinite(ft)) lines.push(`<p><strong>Seuil de fracture :</strong> ${esc(ft)} sur un mÃªme impact.</p>`);
-    if (hunting.brokenEffect?.name) lines.push(`<p><strong>Broken :</strong> ${esc(hunting.brokenEffect.name)} â€” ${esc(hunting.brokenEffect.rule ?? "")}</p>`);
+    if (Number.isFinite(ft)) lines.push(`<p><strong>Seuil de fracture :</strong> ${esc(ft)} sur un même impact.</p>`);
+    if (hunting.brokenEffect?.name) lines.push(`<p><strong>Broken :</strong> ${esc(hunting.brokenEffect.name)} — ${esc(hunting.brokenEffect.rule ?? "")}</p>`);
     if (hunting.notes) lines.push(`<p>${esc(hunting.notes)}</p>`);
   }
 
   const normal = hunting.reactions?.normal;
   const fear = hunting.reactions?.fear;
-  const normalName = normal?.name ?? "RÃ©action normale";
-  const fearName = fear?.name ?? "RÃ©action renforcÃ©e";
+  const normalName = normal?.name ?? "Réaction normale";
+  const fearName = fear?.name ?? "Réaction renforcée";
 
   lines.push("<h4>Matrice d'Engagement</h4>");
   lines.push("<ul>");
-  lines.push("<li><strong>SuccÃ¨s + Hope :</strong> 2 OP â€” aucune rÃ©action hostile â€” Spotlight â†’ Finisher.</li>");
-  lines.push(`<li><strong>SuccÃ¨s + Fear :</strong> 2 OP â€” ${esc(normalName)}.</li>`);
-  lines.push(`<li><strong>Ã‰chec + Hope :</strong> 1 OP â€” ${esc(normalName)}.</li>`);
-  lines.push(`<li><strong>Ã‰chec + Fear :</strong> 1 OP â€” ${esc(fearName)}.</li>`);
+  lines.push("<li><strong>Succès + Hope :</strong> 2 OP — aucune réaction hostile — Spotlight → Finisher.</li>");
+  lines.push(`<li><strong>Succès + Fear :</strong> 2 OP — ${esc(normalName)}.</li>`);
+  lines.push(`<li><strong>Échec + Hope :</strong> 1 OP — ${esc(normalName)}.</li>`);
+  lines.push(`<li><strong>Échec + Fear :</strong> 1 OP — ${esc(fearName)}.</li>`);
   lines.push("</ul>");
 
   const reactionDetails = (reaction, key) => {
@@ -118,7 +107,7 @@ function huntingNotesHtml(raw) {
     lines.push(`<h4>${esc(reaction.name ?? key)}</h4>`);
 
     if (reaction.baseReaction === "normal" && normal?.name) {
-      lines.push(`<p>RÃ©soudre d'abord <strong>${esc(normal.name)}</strong>, puis appliquer la consÃ©quence ci-dessous.</p>`);
+      lines.push(`<p>Résoudre d'abord <strong>${esc(normal.name)}</strong>, puis appliquer la conséquence ci-dessous.</p>`);
     }
 
     const resolution = reaction.resolution;
@@ -133,18 +122,18 @@ function huntingNotesHtml(raw) {
         `${esc(attack.range ?? "?")} | ${esc(attack.damage ?? "?")} ${esc(attack.damage_type ?? "")}</p>`
       );
       if (reaction.supportWindow) {
-        lines.push("<p><strong>Support :</strong> 1 Hope â†’ âˆ’1d4 au jet d'attaque du monstre.</p>");
+        lines.push("<p><strong>Support :</strong> 1 Hope → −1d4 au jet d'attaque du monstre.</p>");
       }
       if (resolution.onHit?.markStress) {
         lines.push(`<p><strong>Sur une touche :</strong> la cible marque ${esc(resolution.onHit.markStress)} Stress.</p>`);
       }
     } else if (resolution.kind === "forcedMovement") {
       lines.push(
-        `<p>Projeter l'Opener de <strong>${esc(resolution.steps ?? "?")} bandes de portÃ©e</strong>.`
+        `<p>Projeter l'Opener de <strong>${esc(resolution.steps ?? "?")} bandes de portée</strong>.`
       );
       if (resolution.collision?.damagePerUnspentStep) {
         lines.push(
-          ` Chaque bande non parcourue Ã  cause d'un obstacle solide inflige ` +
+          ` Chaque bande non parcourue à cause d'un obstacle solide inflige ` +
           `<strong>${esc(resolution.collision.damagePerUnspentStep)} ${esc(resolution.collision.damage_type ?? "")}</strong> de collision.</p>`
         );
       } else {
@@ -155,8 +144,8 @@ function huntingNotesHtml(raw) {
     }
   };
 
-  reactionDetails(normal, "RÃ©action normale");
-  reactionDetails(fear, "RÃ©action renforcÃ©e");
+  reactionDetails(normal, "Réaction normale");
+  reactionDetails(fear, "Réaction renforcée");
 
   return lines.join("");
 }

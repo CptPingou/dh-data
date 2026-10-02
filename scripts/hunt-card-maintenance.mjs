@@ -1,4 +1,4 @@
-﻿import {
+import {
   HUNT_DOMAIN_ID,
   HUNT_DOMAIN_DEFINITION,
   ensureHuntDomain,
@@ -7,28 +7,12 @@
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_SCOPE = "daggerheart-campaign-toolkit";
 
-let dependencies = null;
-
-export function configureHuntCardMaintenance(value) {
-  dependencies = value;
-}
-
-function maintenanceDependencies() {
-  if (!dependencies) {
-    throw new Error("Hunt card maintenance dependencies are not configured.");
-  }
-  return dependencies;
-}
-
-const normalizedChoice = (...args) =>
-  maintenanceDependencies().normalizedChoice(...args);
-const domainIcon = (...args) =>
-  maintenanceDependencies().domainIcon(...args);
+import { normalizedChoice, domainIcon } from "./import-primitives.mjs";
 
 const HUNT_CARD_ROLE_SCHEMA_VERSION = 1;
 
 const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
-  "Appui dÃ©fensif": {
+  "Appui défensif": {
     combatRole: "support",
     huntRole: null,
   },
@@ -52,11 +36,11 @@ const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
     combatRole: null,
     huntRole: "extraction",
   },
-  "Feinte dâ€™approche": {
+  "Feinte d’approche": {
     combatRole: "opener",
     huntRole: null,
   },
-  "Frappe dâ€™Ã©puisement": {
+  "Frappe d’épuisement": {
     combatRole: "finisher",
     huntRole: null,
   },
@@ -80,7 +64,7 @@ const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
     combatRole: "opener",
     huntRole: null,
   },
-  "Ouverture prÃ©cise": {
+  "Ouverture précise": {
     combatRole: "opener",
     huntRole: null,
   },
@@ -99,20 +83,20 @@ const HUNT_CARD_ROLE_CONTRACT = Object.freeze({
 });
 
 const LEGACY_HUNT_CARD_NAMES = Object.freeze([
-  "Appui dÃ©fensif",
+  "Appui défensif",
   "Conversion",
   "Couverture",
   "Cuistot",
   "Diversion",
   "Extracteur",
-  "Feinte dâ€™approche",
-  "Frappe dâ€™Ã©puisement",
+  "Feinte d’approche",
+  "Frappe d’épuisement",
   "Frappe de rupture",
   "Frappe mutilante",
   "Guidage du finisher",
   "Naturaliste",
   "Ouverture",
-  "Ouverture prÃ©cise",
+  "Ouverture précise",
   "Provocation",
   "Tacticien",
   "Traqueur",
@@ -122,7 +106,7 @@ function normalizedHuntCardName(value) {
   return String(value ?? "")
     .normalize("NFD")
     .replace(/[\u0300-\u036f]/g, "")
-    .replace(/[â€™â€˜`Â´]/g, "'")
+    .replace(/[’‘`´]/g, "'")
     .replace(/\s+/g, " ")
     .trim()
     .toLocaleLowerCase();
@@ -139,7 +123,7 @@ function isLegacyHuntCardName(name) {
 
 export async function normalizeHuntCardIcons() {
   if (!game.user?.isGM) {
-    throw new Error("La normalisation des icÃ´nes Chasse est rÃ©servÃ©e au MJ.");
+    throw new Error("La normalisation des icônes Chasse est réservée au MJ.");
   }
 
   const domain = await ensureHuntDomain();
@@ -198,7 +182,7 @@ export async function normalizeHuntCardIcons() {
 
   console.log(`${MODULE_ID} | P2.11b.1 Hunt icon normalized`, result);
   ui.notifications.info(
-    `Campaign Toolkit : icÃ´ne Chasse synchronisÃ©e (${packChanged} compendium, ${actorChanged} personnage(s)).`
+    `Campaign Toolkit : icône Chasse synchronisée (${packChanged} compendium, ${actorChanged} personnage(s)).`
   );
   return result;
 }
@@ -271,7 +255,7 @@ export async function huntIconStatus() {
 
 export async function normalizeHuntCardRoles() {
   if (!game.user?.isGM) {
-    throw new Error("La normalisation des rÃ´les Chasse est rÃ©servÃ©e au MJ.");
+    throw new Error("La normalisation des rôles Chasse est réservée au MJ.");
   }
 
   const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
@@ -353,11 +337,11 @@ export async function normalizeHuntCardRoles() {
 
   if (result.green) {
     ui.notifications.info(
-      `Campaign Toolkit : rÃ´les Chasse normalisÃ©s (${changes.length} modification(s)).`
+      `Campaign Toolkit : rôles Chasse normalisés (${changes.length} modification(s)).`
     );
   } else {
     ui.notifications.warn(
-      `Campaign Toolkit : rÃ´les Chasse incomplets (${missing.length} anomalie(s)).`
+      `Campaign Toolkit : rôles Chasse incomplets (${missing.length} anomalie(s)).`
     );
   }
 
@@ -428,12 +412,12 @@ export async function huntCardRoleStatus() {
 
 export async function migrateLegacyHuntCards() {
   if (!game.user?.isGM) {
-    throw new Error("La migration Valor â†’ Chasse est rÃ©servÃ©e au MJ.");
+    throw new Error("La migration Valor → Chasse est réservée au MJ.");
   }
 
   const domain = await ensureHuntDomain();
   if (!domain.green) {
-    throw new Error("Le domaine Chasse nâ€™est pas disponible.");
+    throw new Error("Le domaine Chasse n’est pas disponible.");
   }
 
   const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
@@ -571,11 +555,11 @@ export async function migrateLegacyHuntCards() {
 
   if (result.green) {
     ui.notifications.info(
-      `Campaign Toolkit : ${LEGACY_HUNT_CARD_NAMES.length} cartes Chasse validÃ©es (${migrated.length} migrÃ©es).`
+      `Campaign Toolkit : ${LEGACY_HUNT_CARD_NAMES.length} cartes Chasse validées (${migrated.length} migrées).`
     );
   } else {
     ui.notifications.warn(
-      `Campaign Toolkit : migration Chasse incomplÃ¨te â€” ${missing.length} absente(s), ${wrongDomain.length} domaine(s) inattendu(s).`
+      `Campaign Toolkit : migration Chasse incomplète — ${missing.length} absente(s), ${wrongDomain.length} domaine(s) inattendu(s).`
     );
   }
 

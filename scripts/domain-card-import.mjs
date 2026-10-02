@@ -1,45 +1,19 @@
-let dependencies = null;
+import { buildItem } from "./item-builder.mjs";
+import { HUNT_DOMAIN_ID, ensureHuntDomain } from "./hunt-domain.mjs";
+import { MODULE_ID, FLAG_SCOPE, PILOT_MAPPING_VERSION } from "./import-constants.mjs";
+import { ARTILLERY_DOMAIN_ID, ensureArtilleryDomain } from "./artillery-domain.mjs";
+import { normalizedChoice, domainIcon } from "./import-primitives.mjs";
 
-export function configureDomainCardImport(value) {
-  dependencies = value;
-}
 
-function domainDependencies() {
-  if (!dependencies) {
-    throw new Error("Domain Card import dependencies are not configured.");
-  }
-
-  return dependencies;
-}
-
-const buildItem = (...args) => domainDependencies().buildItem(...args);
-const normalizedChoice = (...args) => domainDependencies().normalizedChoice(...args);
-const domainIcon = (...args) => domainDependencies().domainIcon(...args);
-const ensureArtilleryDomain = (...args) => domainDependencies().ensureArtilleryDomain(...args);
-const ensureHuntDomain = (...args) => domainDependencies().ensureHuntDomain(...args);
-
-let MODULE_ID = null;
-let FLAG_SCOPE = null;
-let PILOT_MAPPING_VERSION = null;
-let ARTILLERY_DOMAIN_ID = null;
-let HUNT_DOMAIN_ID = null;
-
-export function configureDomainCardConstants(value) {
-  MODULE_ID = value.MODULE_ID;
-  FLAG_SCOPE = value.FLAG_SCOPE;
-  PILOT_MAPPING_VERSION = value.PILOT_MAPPING_VERSION;
-  ARTILLERY_DOMAIN_ID = value.ARTILLERY_DOMAIN_ID;
-  HUNT_DOMAIN_ID = value.HUNT_DOMAIN_ID;
-}
 
 export async function importCanonicalDomainCard(sourcePath) {
   if (!game.user?.isGM) {
-    throw new Error("LÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢import dÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢une carte de domaine Toolkit est rÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©servÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© au MJ.");
+    throw new Error("L’import d’une carte de domaine Toolkit est réservé au MJ.");
   }
 
   const cleanPath = String(sourcePath ?? "").replace(/^\/+/, "");
   if (!cleanPath.startsWith("data/homebrew/") || !cleanPath.endsWith(".json")) {
-    throw new Error(`Chemin de carte de domaine non autorisÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©: ${cleanPath}`);
+    throw new Error(`Chemin de carte de domaine non autorisé: ${cleanPath}`);
   }
 
   const response = await fetch(`modules/${MODULE_ID}/${cleanPath}`, {
@@ -51,19 +25,19 @@ export async function importCanonicalDomainCard(sourcePath) {
 
   const raw = await response.json();
   if (raw?.kind !== "domain_card" || !raw?.id) {
-    throw new Error(`${cleanPath} nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢est pas une carte de domaine canonique valide.`);
+    throw new Error(`${cleanPath} n’est pas une carte de domaine canonique valide.`);
   }
 
   if (normalizedChoice(raw?.domain) === HUNT_DOMAIN_ID) {
     const registration = await ensureHuntDomain();
     if (!registration.green) {
-      throw new Error("Le domaine Chasse nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢a pas pu ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªtre enregistrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© dans Foundryborne.");
+      throw new Error("Le domaine Chasse n’a pas pu être enregistré dans Foundryborne.");
     }
   }
   if (normalizedChoice(raw?.domain) === ARTILLERY_DOMAIN_ID) {
     const registration = await ensureArtilleryDomain();
     if (!registration.green) {
-      throw new Error("Le domaine Artillery nÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¾Ãƒâ€šÃ‚Â¢a pas pu ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Âªtre enregistrÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© dans Foundryborne.");
+      throw new Error("Le domaine Artillery n’a pas pu être enregistré dans Foundryborne.");
     }
   }
 
@@ -104,7 +78,7 @@ export async function importCanonicalDomainCard(sourcePath) {
     });
 
     ui.notifications.info(
-      `Campaign Toolkit : ${created.name} importÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©e dans dh-domain-cards.`
+      `Campaign Toolkit : ${created.name} importée dans dh-domain-cards.`
     );
 
     return created;
@@ -188,7 +162,7 @@ async function ensureDomainCardFolder(pack, domain) {
 
 export async function organizeDomainCardsByDomain() {
   if (!game.user?.isGM) {
-    throw new Error("Le classement des cartes de Domaine est rÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â©servÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â© au MJ.");
+    throw new Error("Le classement des cartes de Domaine est réservé au MJ.");
   }
 
   const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
