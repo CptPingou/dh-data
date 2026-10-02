@@ -27,6 +27,30 @@ import {
   activateExpeditionShellTab,
 } from "./expedition-shell.mjs";
 
+import {
+  projectExpeditionInventory,
+} from "./expedition-inventory-projection.mjs";
+
+import {
+  createFoundryViewerCapabilities,
+} from "./expedition-viewer-capabilities-foundry.mjs";
+
+import {
+  containerCapabilityResolver,
+} from "./expedition-viewer-capabilities.mjs";
+
+import {
+  projectMaterialLibrary,
+} from "./expedition-material-projection.mjs";
+
+import {
+  projectExpeditionDashboard,
+} from "./expedition-dashboard-projection.mjs";
+
+import {
+  renderExpeditionView,
+} from "./expedition-view.mjs";
+
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const PANEL_CLASS = "dhct-expedition-ux-summary";
 const ROLE_TABS_CLASS = "dhct-expedition-role-tabs";
@@ -2130,6 +2154,68 @@ function injectGmBackpackManagement(dialog, manifest, api) {
 }
 
 
+async function buildExpeditionDashboardView(
+  api,
+  manifest
+) {
+  const viewerCapabilities =
+    createFoundryViewerCapabilities({
+      user: game.user,
+      manifest,
+    });
+
+  const inventory =
+    projectExpeditionInventory({
+      manifest,
+      capabilityResolver:
+        containerCapabilityResolver(
+          viewerCapabilities
+        ),
+    });
+
+  const materials =
+    await api.craftingMaterials.list();
+
+  const propertyCatalog =
+    await api.craftingMaterials.loadProperties();
+
+  const materialInventory =
+    inventory.containers.flatMap(
+      (container) =>
+        (container.entries ?? [])
+          .filter(
+            (entry) =>
+              entry?.item?.materialId &&
+              Number(entry?.quantity) > 0
+          )
+          .map((entry) => ({
+            materialId:
+              entry.item.materialId,
+            quantity:
+              Number(entry.quantity) || 0,
+          }))
+    );
+
+  const materialLibrary =
+    projectMaterialLibrary({
+      materials,
+      propertyCatalog,
+      knowledge: {},
+      inventory: materialInventory,
+    });
+
+  const dashboard =
+    projectExpeditionDashboard({
+      manifest,
+      inventory,
+      materialLibrary,
+    });
+
+  return renderExpeditionView(
+    dashboard
+  );
+}
+
 function expeditionShellPlaceholder(
   title,
   description
@@ -2158,7 +2244,7 @@ function expeditionShellPlaceholder(
   return section;
 }
 
-function configureExpeditionShell(
+async function configureExpeditionShell(
   dialog,
   manifest,
   lifecyclePanel,
@@ -2260,7 +2346,7 @@ function configureExpeditionShell(
 
   const shell =
     createExpeditionShell({
-      activeTab: "inventory",
+      activeTab: "expedition",
       canManage: isGm,
     });
 
@@ -2309,11 +2395,14 @@ function configureExpeditionShell(
 
   inventoryPane.append(browser);
 
+  const expeditionView =
+    await buildExpeditionDashboardView(
+      getApi(),
+      manifest
+    );
+
   expeditionPane.append(
-    expeditionShellPlaceholder(
-      "Expédition",
-      "Vue opérationnelle de l’expédition — prochaine étape."
-    )
+    expeditionView
   );
 
   workshopPane.append(
@@ -2399,7 +2488,7 @@ function configureExpeditionShell(
     green: true,
     mode: isGm ? "gm" : "player",
     reused: false,
-    activeTab: "inventory",
+    activeTab: "expedition",
     technicalNodes:
       technicalNodes.length,
     gmPanel:
@@ -2468,7 +2557,7 @@ export async function refreshExpeditionInventoryUx() {
   }
 
   const roleView =
-    configureExpeditionShell(
+    await configureExpeditionShell(
       dialog,
       manifest,
       lifecyclePanel,
@@ -2698,6 +2787,243 @@ function injectStyles() {
 
     .dhct-expedition-shell__gm-panel[hidden] {
       display: none !important;
+    }
+
+    /* Expedition dashboard */
+
+    .dhct-expedition-view {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1rem;
+      padding: .2rem .15rem 1rem;
+    }
+
+    .dhct-expedition-view__header {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: .15rem .15rem .8rem;
+      border-bottom: 1px solid rgba(201, 177, 137, .28);
+    }
+
+    .dhct-expedition-view__header h2 {
+      margin: 0;
+      font-size: 1.65rem;
+      line-height: 1;
+    }
+
+    .dhct-expedition-view__header
+      .dhct-expedition-view__metric {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .3rem .6rem;
+      border: 1px solid rgba(201, 177, 137, .28);
+      border-radius: 999px;
+      background: rgba(18, 17, 22, .38);
+    }
+
+    .dhct-expedition-view__header
+      .dhct-expedition-view__metric-label {
+      opacity: .66;
+      font-size: .78rem;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .dhct-expedition-view__header
+      .dhct-expedition-view__metric-value {
+      font-weight: 700;
+    }
+
+    .dhct-expedition-view__overview {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 2fr)
+        minmax(220px, 1fr);
+      gap: 1rem;
+      align-items: start;
+    }
+
+    .dhct-expedition-view__section {
+      min-width: 0;
+    }
+
+    .dhct-expedition-view__section > h3 {
+      margin: 0 0 .45rem;
+      font-size: .82rem;
+      line-height: 1.1;
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      opacity: .72;
+    }
+
+    .dhct-expedition-view__section-body {
+      min-width: 0;
+    }
+
+    .dhct-expedition-view__section--hunters
+      .dhct-expedition-view__section-body,
+    .dhct-expedition-view__section--logistics
+      .dhct-expedition-view__section-body {
+      overflow: hidden;
+      border: 1px solid rgba(201, 177, 137, .30);
+      border-radius: 8px;
+      background: rgba(18, 17, 22, .34);
+    }
+
+    .dhct-expedition-view__hunter {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 1rem;
+      min-height: 2.7rem;
+      padding: .45rem .7rem;
+      border-bottom: 1px solid rgba(201, 177, 137, .16);
+    }
+
+    .dhct-expedition-view__hunter:last-child {
+      border-bottom: 0;
+    }
+
+    .dhct-expedition-view__hunter h4 {
+      margin: 0;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 1rem;
+    }
+
+    .dhct-expedition-view__hunter
+      .dhct-expedition-view__metric {
+      display: flex;
+      align-items: baseline;
+      gap: .45rem;
+      white-space: nowrap;
+    }
+
+    .dhct-expedition-view__hunter
+      .dhct-expedition-view__metric-label {
+      opacity: .58;
+      font-size: .76rem;
+      text-transform: uppercase;
+    }
+
+    .dhct-expedition-view__hunter
+      .dhct-expedition-view__metric-value {
+      min-width: 3.5rem;
+      text-align: right;
+      font-weight: 700;
+    }
+
+    .dhct-expedition-view__section--logistics
+      .dhct-expedition-view__metric {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: .75rem;
+      min-height: 2.7rem;
+      padding: .45rem .7rem;
+      border-bottom: 1px solid rgba(201, 177, 137, .16);
+    }
+
+    .dhct-expedition-view__section--logistics
+      .dhct-expedition-view__metric:last-child {
+      border-bottom: 0;
+    }
+
+    .dhct-expedition-view__section--logistics
+      .dhct-expedition-view__metric-value {
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .dhct-expedition-view__section--materials
+      .dhct-expedition-view__section-body {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .45rem;
+      min-height: 3rem;
+      padding: .65rem;
+      border: 1px solid rgba(201, 177, 137, .30);
+      border-radius: 8px;
+      background: rgba(18, 17, 22, .28);
+    }
+
+    .dhct-expedition-view__material {
+      display: inline-flex;
+      align-items: center;
+      gap: .45rem;
+      padding: .35rem .6rem;
+      border: 1px solid rgba(203, 182, 147, .34);
+      border-radius: 999px;
+      background: rgba(87, 67, 45, .26);
+    }
+
+    .dhct-expedition-view__material span:last-child {
+      font-weight: 700;
+    }
+
+    .dhct-expedition-view__section--materials
+      .dhct-expedition-view__metric {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      opacity: .68;
+    }
+
+    .dhct-expedition-view__section--materials
+      .dhct-expedition-view__metric-label {
+      display: none;
+    }
+
+    .dhct-expedition-view__readiness {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      gap: .45rem;
+    }
+
+    .dhct-expedition-view__readiness
+      .dhct-expedition-view__metric {
+      display: flex;
+      flex-direction: row-reverse;
+      justify-content: flex-end;
+      align-items: center;
+      gap: .45rem;
+      min-width: 0;
+      padding: .5rem .6rem;
+      border: 1px solid rgba(201, 177, 137, .24);
+      border-radius: 6px;
+      background: rgba(18, 17, 22, .28);
+    }
+
+    .dhct-expedition-view__readiness
+      .dhct-expedition-view__metric-label {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dhct-expedition-view__readiness
+      .dhct-expedition-view__metric-value {
+      flex: 0 0 auto;
+      font-weight: 700;
+    }
+
+    @media (max-width: 820px) {
+      .dhct-expedition-view__overview {
+        grid-template-columns: 1fr;
+      }
+
+      .dhct-expedition-view__section--readiness
+        .dhct-expedition-view__section-body {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
+      }
     }
 
     .dhct-expedition-shell-placeholder {

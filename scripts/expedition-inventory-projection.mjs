@@ -30,6 +30,11 @@ function projectEntry(entry) {
   const ref = entry?.itemRef ?? {};
   const lifecycle = ref.lifecycle?.state ?? "legacy";
 
+  const material =
+    ref.snapshot?.flags?.[
+      "daggerheart-campaign-toolkit"
+    ]?.material ?? null;
+
   return {
     entryId: entry?.entryId ?? null,
     slotId: entry?.slotId ?? null,
@@ -41,6 +46,8 @@ function projectEntry(entry) {
       type: ref.type ?? null,
       name: ref.name ?? ref.sourceId ?? "Objet",
       img: ref.img ?? null,
+      materialId:
+        material?.materialId ?? null,
       lifecycle,
     },
   };
