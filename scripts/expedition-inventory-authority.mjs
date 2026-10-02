@@ -228,6 +228,96 @@ export async function processInventoryAuthorityRequest(
     }
   }
 
+  if (message.action === "backpack-to-actor") {
+    const from = (manifest.containers ?? []).find(
+      (container) => container.containerId === message.fromContainerId
+    );
+
+    if (!from) {
+      return { green: false, reason: "container-not-found" };
+    }
+
+    if (!userCanAccessContainer(requester, from)) {
+      return { green: false, reason: "container-access-denied" };
+    }
+
+    if (!api?.expeditionItems?.unloadToActor) {
+      return { green: false, reason: "unload-to-actor-unavailable" };
+    }
+
+    const entry = (from.contents ?? []).find(
+      (candidate) => candidate.entryId === message.entryId
+    );
+
+    if (!entry) {
+      return { green: false, reason: "entry-not-found" };
+    }
+
+    const quantity = Math.max(
+      1,
+      Math.floor(Number(message.quantity) || 1)
+    );
+
+    const result = await api.expeditionItems.unloadToActor(
+      manifest,
+      {
+        containerId: message.fromContainerId,
+        entryId: message.entryId,
+        quantity,
+        note: `Restitu? ? son personnage par ${requester.name ?? "joueur"}`,
+      }
+    );
+
+    if (!result?.unloaded) {
+      return {
+        green: false,
+        reason: result?.reason ?? "unload-to-actor-refused",
+      };
+    }
+
+    const validation =
+      api.expeditionManifest.validate?.(manifest);
+
+    if (validation && validation.green === false) {
+      return {
+        green: false,
+        reason: `manifest-invalid: ${(validation.errors ?? []).join("; ")}`,
+      };
+    }
+
+    await api.expeditionManifest.save(manifest);
+
+    broadcastBackpackAccessChange(
+      manifest,
+      message.fromContainerId
+    );
+
+    Hooks.callAll(`${MODULE_ID}.expeditionChanged`, {
+      manifest,
+      source: "gm-authority-backpack-to-actor",
+      requestUserId: requester.id,
+      containerId: message.fromContainerId,
+      entryId: message.entryId,
+      quantity,
+      actorId: result.actorId ?? null,
+      createdItemId: result.createdItemId ?? null,
+      mergedItemId: result.mergedItemId ?? null,
+    });
+
+    return {
+      green: true,
+      action: "backpack-to-actor",
+      revision: manifest.revision ?? null,
+      containerId: message.fromContainerId,
+      entryId: message.entryId,
+      quantity,
+      actorId: result.actorId ?? null,
+      createdItemId: result.createdItemId ?? null,
+      mergedItemId: result.mergedItemId ?? null,
+      merged: result.merged === true,
+    };
+  }
+
   if (message.action === "acquire-item") {
     const to = (manifest.containers ?? []).find(
       (container) => container.containerId === message.toContainerId

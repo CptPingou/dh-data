@@ -713,37 +713,63 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
     for (const button of root.querySelectorAll("[data-expedition-action='return-to-actor']")) {
       if (button.dataset.dctBound === "1") continue;
       button.dataset.dctBound = "1";
+
       button.addEventListener("click", async () => {
-        if (typeof unloadToActor !== "function") {
-          ui.notifications.warn("Campaign Toolkit : pont Actor indisponible.");
+        const containerId = button.dataset.containerId;
+        const entryId = button.dataset.entryId;
+
+        const container = manifest.containers?.find(
+          (candidate) => candidate.containerId === containerId
+        );
+
+        const entry = container?.contents?.find(
+          (candidate) => candidate.entryId === entryId
+        );
+
+        if (!container || !entry) return;
+
+        const authority =
+          globalThis.dhctExpeditionAuthority;
+
+        if (!authority?.request) {
+          ui.notifications.warn(
+            "Campaign Toolkit : autorit? d'inventaire indisponible."
+          );
           return;
         }
 
-        const containerId = button.dataset.containerId;
-        const entryId = button.dataset.entryId;
-        const container = manifest.containers?.find((c) => c.containerId === containerId);
-        const entry = container?.contents?.find((e) => e.entryId === entryId);
-        if (!container || !entry) return;
-
         button.disabled = true;
+
         try {
-          const result = await unloadToActor(manifest, {
-            containerId,
+          const result = await authority.request({
+            action: "backpack-to-actor",
+            expeditionId: manifest.expeditionId,
+            fromContainerId: containerId,
             entryId,
             quantity: Number(entry.quantity ?? 1),
           });
-          if (!result?.unloaded) {
-            ui.notifications.warn(`Campaign Toolkit : restitution refusée — ${result?.reason ?? "inconnue"}.`);
+
+          if (!result?.green) {
+            ui.notifications.warn(
+              `Campaign Toolkit : restitution refus?e ? ${result?.reason ?? "inconnue"}.`
+            );
             return;
           }
 
           currentSelectedEntryId = null;
-          if (typeof save === "function") await save(manifest);
-          ui.notifications.info(`Campaign Toolkit : ${entry.itemRef?.name ?? "objet"} rendu à ${result.actorName ?? "son personnage"}.`);
-          refreshLocal();
+
+          ui.notifications.info(
+            `Campaign Toolkit : ${entry.itemRef?.name ?? "objet"} rendu au personnage.`
+          );
         } catch (error) {
-          console.error(`${MODULE_ID} | return-to-actor failed`, error);
-          ui.notifications.error("Campaign Toolkit : restitution au personnage échouée.");
+          console.error(
+            `${MODULE_ID} | return-to-actor failed`,
+            error
+          );
+
+          ui.notifications.error(
+            "Campaign Toolkit : restitution au personnage ?chou?e."
+          );
         } finally {
           button.disabled = false;
         }
