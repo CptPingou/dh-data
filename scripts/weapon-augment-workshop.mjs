@@ -78,10 +78,6 @@ function recipeRequirementLabel(requirement, propertyLabels = new Map()) {
     return `${propertyLabel(match.property, propertyLabels)} : ${units}`;
   }
 
-  if (typeof match.resourceId === "string" && match.resourceId) {
-    return `${match.resourceId.replace(/^mh\\.crafting\\./, "")} : ${units}`;
-  }
-
   if (typeof match.materialId === "string" && match.materialId) {
     return `${match.materialId} : ${units}`;
   }
@@ -107,22 +103,6 @@ function recipeLabel(recipe, propertyLabels = new Map()) {
 }
 
 function workshopFailureLabel(response) {
-  if (response?.reason === "insufficient-components" && Array.isArray(response?.missing)) {
-    const details = response.missing
-      .map((entry) => {
-        const resourceId = String(entry?.resourceId ?? entry?.requirementId ?? "composant");
-        const label = resourceId.replace(/^mh\.crafting\./, "");
-        const available = Number(entry?.availableUnits ?? 0);
-        const required = Number(entry?.requiredUnits ?? (available + Number(entry?.missingUnits ?? 0)));
-        return `${label} ${available}/${required}`;
-      })
-      .join(", ");
-
-    return details
-      ? `Composants insuffisants : ${details}`
-      : "Composants insuffisants";
-  }
-
   if (response?.reason === "insufficient-materials") {
     return "Matériaux biologiques insuffisants";
   }

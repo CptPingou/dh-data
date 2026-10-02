@@ -5,35 +5,6 @@ import {
   validateRecipe,
 } from "./crafting-schema.mjs";
 
-export function allocateExactResourceRecipe(recipe, inventory) {
-  validateRecipe(recipe);
-  if (!Array.isArray(inventory)) throw new Error("inventory must be an array.");
-
-  const available = new Map();
-  for (const stack of inventory) {
-    if (!stack || typeof stack.resourceId !== "string" || !stack.resourceId.trim() || !Number.isInteger(stack.quantity) || stack.quantity < 0) {
-      throw new Error("Invalid inventory crafting-resource stack.");
-    }
-    available.set(stack.resourceId, (available.get(stack.resourceId) ?? 0) + stack.quantity);
-  }
-
-  const allocations = [];
-  const missing = [];
-  for (const requirement of recipe.requirements) {
-    const resourceId = requirement?.match?.resourceId;
-    if (typeof resourceId !== "string" || !resourceId.trim()) throw new Error(`Recipe ${recipe.id} is not an exact-resource recipe.`);
-    const quantity = available.get(resourceId) ?? 0;
-    if (quantity < requirement.units) {
-      missing.push({ requirementId: requirement.id, resourceId, requiredUnits: requirement.units, availableUnits: quantity, missingUnits: requirement.units - quantity });
-      continue;
-    }
-    allocations.push({ requirementId: requirement.id, resourceId, quantity: requirement.units });
-  }
-
-  if (missing.length) return { green: false, reason: "insufficient-components", recipeId: recipe.id, allocations: [], missing };
-  return { green: true, recipeId: recipe.id, allocations, missing: [] };
-}
-
 function legacyMatches(material, match) {
   if (match.materialId !== undefined && material.id !== match.materialId) return false;
   if (match.family !== undefined && material.material.family !== match.family) return false;

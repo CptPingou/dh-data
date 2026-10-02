@@ -129,18 +129,13 @@ function validateLegacyRequirement(recipe, requirement, ids) {
   object(requirement, `${recipe.id}.requirement`); text(requirement.id, `${recipe.id}.requirement.id`); positiveInt(requirement.units, `${recipe.id}.${requirement.id}.units`); object(requirement.match, `${recipe.id}.${requirement.id}.match`);
   if (ids.has(requirement.id)) throw new Error(`Duplicate requirement id: ${requirement.id}.`); ids.add(requirement.id);
   const match = requirement.match;
-  const selectors = [match.resourceId, match.materialId, match.family, match.property].filter((v) => v !== undefined);
-  if (selectors.length === 0) throw new Error(`${recipe.id}.${requirement.id}.match needs resourceId, materialId, family, or property.`);
-  if (match.resourceId !== undefined) {
-    text(match.resourceId, `${recipe.id}.${requirement.id}.match.resourceId`);
-    if (!match.resourceId.startsWith("mh.crafting.")) throw new Error(`${recipe.id}.${requirement.id}.match.resourceId must use the mh.crafting.* namespace.`);
-    if (selectors.length !== 1) throw new Error(`${recipe.id}.${requirement.id}.match.resourceId cannot be mixed with biological selectors yet.`);
-    if (match.minimumQuality !== undefined) throw new Error(`${recipe.id}.${requirement.id}.match.minimumQuality is not supported for exact crafting resources.`);
-  }
+  if (match.resourceId !== undefined) throw new Error(`${recipe.id}.${requirement.id}.match.resourceId is no longer supported.`);
+  const selectors = [match.materialId, match.family, match.property].filter((v) => v !== undefined);
+  if (selectors.length === 0) throw new Error(`${recipe.id}.${requirement.id}.match needs materialId, family, or property.`);
   if (match.materialId !== undefined) text(match.materialId, `${recipe.id}.${requirement.id}.match.materialId`);
   if (match.family !== undefined && !MATERIAL_FAMILIES.has(match.family)) throw new Error(`${recipe.id}.${requirement.id}.match.family is unsupported.`);
   if (match.property !== undefined) text(match.property, `${recipe.id}.${requirement.id}.match.property`);
-  if (match.resourceId === undefined && match.minimumQuality !== undefined && (!Number.isInteger(match.minimumQuality) || match.minimumQuality < QUALITY_MIN || match.minimumQuality > QUALITY_MAX)) throw new Error(`${recipe.id}.${requirement.id}.match.minimumQuality must be 1..4.`);
+  if (match.minimumQuality !== undefined && (!Number.isInteger(match.minimumQuality) || match.minimumQuality < QUALITY_MIN || match.minimumQuality > QUALITY_MAX)) throw new Error(`${recipe.id}.${requirement.id}.match.minimumQuality must be 1..4.`);
 }
 
 function validatePropertyBudgetRequirement(recipe, requirement, ids) {
@@ -159,7 +154,6 @@ function validatePropertyBudgetRequirement(recipe, requirement, ids) {
 
 export function recipeMode(recipe) {
   if (recipe?.mode === "property-budget") return "property-budget";
-  if (Array.isArray(recipe?.requirements) && recipe.requirements.length > 0 && recipe.requirements.every((requirement) => typeof requirement?.match?.resourceId === "string")) return "exact-resource";
   return "legacy-biological";
 }
 
