@@ -5,10 +5,11 @@ const clone = (value) =>
       ? structuredClone(value)
       : JSON.parse(JSON.stringify(value));
 
-function actorKey(viewer) {
+function characterKey(viewer) {
   if (typeof viewer === "string") return viewer;
 
   return (
+    viewer?.characterId ??
     viewer?.actorUuid ??
     viewer?.actor?.uuid ??
     viewer?.uuid ??
@@ -32,11 +33,12 @@ export function projectMaterialKnowledge(
   } = {}
 ) {
   const state =
-    knowledgeState && typeof knowledgeState === "object"
+    knowledgeState &&
+    typeof knowledgeState === "object"
       ? knowledgeState
       : {};
 
-  const key = actorKey(viewer);
+  const key = characterKey(viewer);
 
   const personalMaterials =
     key
@@ -53,32 +55,42 @@ export function projectMaterialKnowledge(
     documentedMaterials
   )) {
     const personal =
-      personalMaterials?.[materialId]?.discoveredProperties ?? {};
+      personalMaterials?.[materialId]
+        ?.discoveredProperties ?? {};
 
     const documented =
-      documentedMaterials?.[materialId]?.documentedProperties ?? {};
+      documentedMaterials?.[materialId]
+        ?.documentedProperties ?? {};
+
+    const personalProperties =
+      Object.keys(personal);
+
+    const documentedProperties =
+      Object.keys(documented);
 
     const properties = [
       ...new Set([
-        ...Object.keys(documented),
-        ...Object.keys(personal),
+        ...documentedProperties,
+        ...personalProperties,
       ]),
     ];
 
     materials[materialId] = {
       materialId,
       properties,
-      personal: clone(personal),
-      documented: clone(documented),
+      personalProperties,
+      documentedProperties,
     };
   }
 
   return {
     schemaVersion: 1,
     kind: "material-knowledge-projection",
+
     viewer: {
-      actorUuid: key,
+      characterId: key,
     },
+
     materials,
   };
 }
@@ -86,5 +98,7 @@ export function projectMaterialKnowledge(
 export function materialKnowledgeForLibrary(
   knowledgeProjection
 ) {
-  return clone(knowledgeProjection?.materials ?? {});
+  return clone(
+    knowledgeProjection?.materials ?? {}
+  );
 }
