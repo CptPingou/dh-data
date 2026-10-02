@@ -30,6 +30,9 @@ import {
 import {
   projectExpeditionInventory,
 } from "./expedition-inventory-projection.mjs";
+import {
+  renderExpeditionInventoryView,
+} from "./expedition-inventory-view.mjs";
 
 import {
   createFoundryViewerCapabilities,
@@ -2154,6 +2157,32 @@ function injectGmBackpackManagement(dialog, manifest, api) {
 }
 
 
+function buildExpeditionInventoryView(
+  manifest
+) {
+  const viewerCapabilities =
+    createFoundryViewerCapabilities({
+      user: game.user,
+      manifest,
+    });
+
+  const inventory =
+    projectExpeditionInventory({
+      manifest,
+      capabilityResolver:
+        containerCapabilityResolver(
+          viewerCapabilities
+        ),
+    });
+
+  return renderExpeditionInventoryView(
+    inventory,
+    {
+      initialSharedRole: "ground",
+    }
+  );
+}
+
 async function buildExpeditionDashboardView(
   api,
   manifest
@@ -2393,7 +2422,20 @@ async function configureExpeditionShell(
     };
   }
 
-  inventoryPane.append(browser);
+  // Transitional mount: retain the legacy browser
+  // and its listeners until the new inventory actions
+  // are connected.
+  browser.hidden = true;
+
+  const inventoryView =
+    buildExpeditionInventoryView(
+      manifest
+    );
+
+  inventoryPane.append(
+    inventoryView,
+    browser
+  );
 
   const expeditionView =
     await buildExpeditionDashboardView(
@@ -2787,6 +2829,185 @@ function injectStyles() {
 
     .dhct-expedition-shell__gm-panel[hidden] {
       display: none !important;
+    }
+
+    /* Expedition inventory view */
+
+    .dhct-inventory-view {
+      display: grid;
+      grid-template-rows:
+        minmax(0, 1fr)
+        auto;
+      gap: .75rem;
+      width: 100%;
+      min-width: 0;
+      min-height: 0;
+      height: 100%;
+    }
+
+    .dhct-inventory-view__columns {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr)
+        minmax(0, 1fr);
+      gap: .75rem;
+      min-height: 0;
+    }
+
+    .dhct-inventory-view__pane,
+    .dhct-inventory-view__detail {
+      box-sizing: border-box;
+      border:
+        1px solid rgba(201, 177, 137, .32);
+      border-radius: 8px;
+      background: rgba(18, 17, 22, .38);
+    }
+
+    .dhct-inventory-view__pane {
+      display: flex;
+      flex-direction: column;
+      gap: .55rem;
+      min-width: 0;
+      min-height: 0;
+      padding: .75rem;
+    }
+
+    .dhct-inventory-view__pane-header,
+    .dhct-inventory-view__shared-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+    }
+
+    .dhct-inventory-view__pane-title,
+    .dhct-inventory-view__detail-title {
+      margin: 0;
+    }
+
+    .dhct-inventory-view__container-name {
+      font-weight: 600;
+    }
+
+    .dhct-inventory-view__capacity {
+      opacity: .72;
+      white-space: nowrap;
+    }
+
+    .dhct-inventory-view__shared-tabs {
+      display: flex;
+      gap: .35rem;
+    }
+
+    .dhct-inventory-view__shared-tab {
+      flex: 1 1 0;
+      min-width: 0;
+    }
+
+    .dhct-inventory-view__shared-tab.active {
+      outline:
+        1px solid rgba(220, 190, 135, .85);
+    }
+
+    .dhct-inventory-view__entries {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          auto-fill,
+          minmax(145px, 1fr)
+        );
+      gap: .4rem;
+      align-content: start;
+      min-height: 0;
+      overflow: auto;
+    }
+
+    .dhct-inventory-view__entry {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      min-width: 0;
+      min-height: 42px;
+      text-align: left;
+    }
+
+    .dhct-inventory-view__entry.active {
+      outline:
+        1px solid rgba(220, 190, 135, .9);
+    }
+
+    .dhct-inventory-view__entry-icon {
+      display: grid;
+      place-items: center;
+      width: 32px;
+      height: 32px;
+      flex: 0 0 32px;
+    }
+
+    .dhct-inventory-view__entry-icon img {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+
+    .dhct-inventory-view__entry-name {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .dhct-inventory-view__detail {
+      min-height: 110px;
+      padding: .75rem;
+    }
+
+    .dhct-inventory-view__detail-header {
+      display: flex;
+      align-items: center;
+      gap: .65rem;
+    }
+
+    .dhct-inventory-view__detail-image {
+      width: 48px;
+      height: 48px;
+      flex: 0 0 48px;
+      object-fit: cover;
+      border-radius: 5px;
+    }
+
+    .dhct-inventory-view__detail-identity {
+      display: grid;
+      gap: .15rem;
+    }
+
+    .dhct-inventory-view__detail-meta {
+      display: flex;
+      gap: .75rem;
+      margin-top: .45rem;
+      opacity: .72;
+    }
+
+    .dhct-inventory-view__actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: .4rem;
+      margin-top: .6rem;
+    }
+
+    .dhct-inventory-view__actions-placeholder,
+    .dhct-inventory-view__empty {
+      opacity: .62;
+    }
+
+    .dhct-inventory-view__empty {
+      padding: .7rem;
+    }
+
+    @media (max-width: 820px) {
+      .dhct-inventory-view__columns {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* Expedition dashboard */
