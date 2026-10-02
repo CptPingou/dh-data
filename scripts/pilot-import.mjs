@@ -969,7 +969,8 @@ function recordEquipmentFeatureDisposition(data, kind, feature, key, status, ext
 }
 
 
-import { ARTILLERY_AUTOMATION_VERSION, applyArtilleryDomainCardAutomation, serializedActions } from "./artillery-automation.mjs";
+import { ARTILLERY_AUTOMATION_VERSION, applyArtilleryDomainCardAutomation, artilleryAutomationStatus, serializedActions } from "./artillery-automation.mjs";
+export { artilleryAutomationStatus };
 
 export async function buildItem(entry) {
   const raw = entry.data;
@@ -2784,72 +2785,6 @@ async function ensureDomainCardFolder(pack, domain) {
   );
 }
 
-
-export async function artilleryAutomationStatus() {
-  const pack = game.packs.get(`${MODULE_ID}.dh-domain-cards`);
-  if (!pack) return { green: false, reason: "dh-domain-cards absent" };
-
-  const docs = await pack.getDocuments();
-  const expected = new Map([
-    ["homebrew.artificer.domain-card.artillery.concussive-shot", { status: "partial-native", requiresAction: true, requiresEffect: true }],
-    ["homebrew.artificer.domain-card.artillery.shockwave", { status: "native", requiresAction: true, requiresEffect: true }],
-    ["homebrew.artificer.domain-card.artillery.carpet-bomb", { status: "partial-native", requiresAction: true, requiresEffect: true }],
-    ["homebrew.artificer.domain-card.artillery.heavy-volley", { status: "partial-native", requiresAction: false, requiresEffect: true }],
-    ["homebrew.artificer.domain-card.artillery.siege-stance", { status: "partial-native", requiresAction: true, requiresEffect: true }],
-    ["homebrew.artificer.domain-card.artillery.battle-rhythm", { status: "runtime-authoritative", requiresAction: true, requiresEffect: false }],
-    ["homebrew.artificer.domain-card.artillery.decisive-strike", { status: "partial-runtime", requiresAction: true, requiresEffect: false }],
-  ]);
-
-  const rows = [];
-  for (const [sourceId, expectation] of expected) {
-    const expectedStatus = expectation.status;
-    const doc = docs.find(
-      (candidate) => candidate.flags?.[FLAG_SCOPE]?.sourceId === sourceId
-    ) ?? null;
-    const automation = doc?.flags?.[FLAG_SCOPE]?.artilleryAutomation ?? null;
-    const actions = doc?.system?.actions ?? [];
-    const actionRows = serializedActions(actions);
-    const rawActions = serializedActions(doc?.toObject()?.system?.actions);
-    const actionCount = Math.max(actionRows.length, rawActions.length);
-    const runtimeEffects = Array.isArray(doc?.toObject()?.effects)
-      ? doc.toObject().effects
-      : [];
-    const effectCount = runtimeEffects.length;
-
-    rows.push({
-      sourceId,
-      name: doc?.name ?? null,
-      expectedStatus,
-      status: automation?.status ?? null,
-      version: automation?.version ?? null,
-      actions: actionCount,
-      runtimeActions: actionRows.length,
-      rawActions: rawActions.length,
-      effects: effectCount,
-      actionNames: (actionRows.length ? actionRows : rawActions)
-        .map((action) => action?.name ?? null)
-        .filter(Boolean),
-      effectNames: runtimeEffects.map((effect) => effect?.name ?? null).filter(Boolean),
-      specimenContainer: automation?.specimen?.actionContainer ?? null,
-      ok:
-        Boolean(doc) &&
-        automation?.version === ARTILLERY_AUTOMATION_VERSION &&
-        automation?.status === expectedStatus &&
-        (!expectation.requiresAction || actionCount > 0) &&
-        (!expectation.requiresEffect || effectCount > 0),
-    });
-  }
-
-  console.table(rows);
-  const result = {
-    green: rows.every((row) => row.ok),
-    expected: rows.length,
-    valid: rows.filter((row) => row.ok).length,
-    rows,
-  };
-  console.log(`${MODULE_ID} | P2.11c.6e Artillery automation status`, result);
-  return result;
-}
 
 export async function organizeDomainCardsByDomain() {
   if (!game.user?.isGM) {
