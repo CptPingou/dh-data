@@ -21,10 +21,15 @@ import {
 
 import { processInventoryAuthorityRequest as processInventoryAuthorityRequestCore } from "./expedition-inventory-authority.mjs";
 
+import {
+  createExpeditionShell,
+  expeditionShellPane,
+  activateExpeditionShellTab,
+} from "./expedition-shell.mjs";
+
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const PANEL_CLASS = "dhct-expedition-ux-summary";
 const ROLE_TABS_CLASS = "dhct-expedition-role-tabs";
-const GM_TAB_ID = "dhct-expedition-gm";
 const INVENTORY_TAB_ID = "dhct-expedition-inventory";
 const SOCKET_CHANNEL = `module.${MODULE_ID}`;
 const SOCKET_BACKPACK_ACCESS = "expedition-backpack-access-changed";
@@ -277,7 +282,7 @@ function captureExpeditionViewState(dialog) {
   if (!(dialog instanceof HTMLElement)) {
     return {
       selectedContainerId: null,
-      activeRoleTab: null,
+      activeShellTab: null,
     };
   }
 
@@ -290,15 +295,19 @@ function captureExpeditionViewState(dialog) {
     )?.dataset?.containerId ??
     null;
 
-  const activeRoleTab =
+  const shell =
     dialog.querySelector(
-      `.${ROLE_TABS_CLASS} [data-dhct-tab].active`
-    )?.dataset?.dhctTab ??
-    null;
+      ".dhct-expedition-shell"
+    );
+
+  const activeShellTab =
+    shell instanceof HTMLElement
+      ? shell.dataset.dhctActiveTab ?? null
+      : null;
 
   return {
     selectedContainerId,
-    activeRoleTab,
+    activeShellTab,
   };
 }
 
@@ -306,52 +315,85 @@ async function restoreExpeditionViewState(state, {
   retries = 16,
   delay = 40,
 } = {}) {
-  if (!state?.selectedContainerId && !state?.activeRoleTab) return;
+  if (
+    !state?.selectedContainerId &&
+    !state?.activeShellTab
+  ) {
+    return;
+  }
 
-  let remaining = Math.max(1, Number(retries) || 1);
+  let remaining =
+    Math.max(
+      1,
+      Number(retries) || 1
+    );
 
   while (remaining > 0) {
-    const dialog = findOpenExpeditionDialog();
+    const dialog =
+      findOpenExpeditionDialog();
 
     if (dialog) {
-      let selectedRestored = !state.selectedContainerId;
-      let tabRestored = !state.activeRoleTab;
+      let selectedRestored =
+        !state.selectedContainerId;
+
+      let tabRestored =
+        !state.activeShellTab;
 
       if (state.selectedContainerId) {
-        const row = dialog.querySelector(
-          `.dct-expedition-list-item[data-container-id="${CSS.escape(state.selectedContainerId)}"]`
-        );
+        const row =
+          dialog.querySelector(
+            `.dct-expedition-list-item[data-container-id="${CSS.escape(state.selectedContainerId)}"]`
+          );
 
         if (row instanceof HTMLElement) {
-          if (!row.classList.contains("is-selected")) {
+          if (
+            !row.classList.contains(
+              "is-selected"
+            )
+          ) {
             row.click();
           }
+
           selectedRestored = true;
         }
       }
 
-      if (state.activeRoleTab) {
-        const tabs = dialog.querySelector(`.${ROLE_TABS_CLASS}`);
-
-        if (tabs instanceof HTMLElement) {
-          const button = tabs.querySelector(
-            `[data-dhct-tab="${CSS.escape(state.activeRoleTab)}"]`
+      if (state.activeShellTab) {
+        const shell =
+          dialog.querySelector(
+            ".dhct-expedition-shell"
           );
 
-          if (button instanceof HTMLElement) {
-            activateRoleTab(tabs, state.activeRoleTab);
-            tabRestored = true;
-          }
+        if (shell instanceof HTMLElement) {
+          const result =
+            activateExpeditionShellTab(
+              shell,
+              state.activeShellTab
+            );
+
+          tabRestored =
+            Boolean(result?.green);
         }
       }
 
-      if (selectedRestored && tabRestored) return;
+      if (
+        selectedRestored &&
+        tabRestored
+      ) {
+        return;
+      }
     }
 
     remaining -= 1;
-    if (remaining <= 0) return;
 
-    await new Promise((resolve) => setTimeout(resolve, delay));
+    if (remaining <= 0) {
+      return;
+    }
+
+    await new Promise(
+      (resolve) =>
+        setTimeout(resolve, delay)
+    );
   }
 }
 
@@ -1067,31 +1109,6 @@ function findTechnicalNodes(expeditionWindow, browser, closeHost) {
   });
 }
 
-function activateRoleTab(tabs, name) {
-  if (!(tabs instanceof HTMLElement)) return;
-
-  for (const button of tabs.querySelectorAll("[data-dhct-tab]")) {
-    const active = button.dataset.dhctTab === name;
-    button.classList.toggle("active", active);
-    button.setAttribute("aria-selected", active ? "true" : "false");
-  }
-
-  for (const pane of tabs.querySelectorAll("[data-dhct-pane]")) {
-    pane.hidden = pane.dataset.dhctPane !== name;
-  }
-}
-
-function makeRoleTabButton(name, label) {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = `${ROLE_TABS_CLASS}__button`;
-  button.dataset.dhctTab = name;
-  button.setAttribute("role", "tab");
-  button.textContent = label;
-  return button;
-}
-
-
 function escapeHtml(value) {
   return String(value ?? "")
     .replaceAll("&", "&amp;")
@@ -1518,7 +1535,7 @@ function injectGmSharedAccessManagement(dialog, manifest, api) {
   if (!game.user?.isGM) return { green: false, reason: "not-gm" };
 
   const gmPane = dialog.querySelector(
-    `.${ROLE_TABS_CLASS} [data-dhct-pane="${GM_TAB_ID}"]`
+    ".dhct-expedition-shell__gm-panel"
   );
 
   if (!(gmPane instanceof HTMLElement)) {
@@ -1925,7 +1942,7 @@ function injectGmBackpackManagement(dialog, manifest, api) {
   if (!game.user?.isGM) return { green: false, reason: "not-gm" };
 
   const gmPane = dialog.querySelector(
-    `.${ROLE_TABS_CLASS} [data-dhct-pane="${GM_TAB_ID}"]`
+    ".dhct-expedition-shell__gm-panel"
   );
   if (!(gmPane instanceof HTMLElement)) {
     return { green: false, reason: "gm-pane-not-found" };
@@ -2112,143 +2129,281 @@ function injectGmBackpackManagement(dialog, manifest, api) {
   };
 }
 
-function configurePlayerInventoryView(dialog, manifest) {
-  const expeditionWindow = findExpeditionWindow(dialog);
-  if (!(expeditionWindow instanceof HTMLElement)) {
-    return { green: false, reason: "expedition-window-not-found" };
-  }
 
-  // A player must never receive the GM tab or its toolkit lifecycle panel.
-  dialog.querySelectorAll(`.${ROLE_TABS_CLASS}`).forEach((node) => node.remove());
-  dialog.querySelectorAll(`.${PANEL_CLASS}`).forEach((node) => node.remove());
+function expeditionShellPlaceholder(
+  title,
+  description
+) {
+  const section =
+    document.createElement("section");
 
-  const browser = expeditionWindow.querySelector(".dct-expedition-browser");
-  const closeHost = findCloseHost(expeditionWindow);
-  const technicalNodes = findTechnicalNodes(
-    expeditionWindow,
-    browser,
-    closeHost
+  section.className =
+    "dhct-expedition-shell-placeholder";
+
+  const heading =
+    document.createElement("h3");
+
+  heading.textContent = title;
+
+  const copy =
+    document.createElement("p");
+
+  copy.textContent = description;
+
+  section.append(
+    heading,
+    copy
   );
 
-  for (const node of technicalNodes) {
-    node.remove();
-  }
-
-  const containerAccess = filterPlayerContainers(
-    dialog,
-    manifest
-  );
-
-  return {
-    green: Boolean(browser),
-    mode: "player",
-    browser: Boolean(browser),
-    removedTechnicalNodes: technicalNodes.length,
-    containerAccess,
-  };
+  return section;
 }
 
-function configureGmTabbedView(dialog, lifecyclePanel) {
-  const expeditionWindow = findExpeditionWindow(dialog);
-  if (!(expeditionWindow instanceof HTMLElement)) {
-    return { green: false, reason: "expedition-window-not-found" };
-  }
+function configureExpeditionShell(
+  dialog,
+  manifest,
+  lifecyclePanel,
+  {
+    isGm = false,
+  } = {}
+) {
+  const expeditionWindow =
+    findExpeditionWindow(dialog);
 
-  const existingTabs = expeditionWindow.querySelector(
-    `.${ROLE_TABS_CLASS}`
-  );
-
-  if (existingTabs instanceof HTMLElement) {
-    const gmPane = existingTabs.querySelector(
-      `[data-dhct-pane="${GM_TAB_ID}"]`
-    );
-
-    if (
-      lifecyclePanel instanceof HTMLElement &&
-      gmPane instanceof HTMLElement &&
-      !gmPane.contains(lifecyclePanel)
-    ) {
-      gmPane.prepend(lifecyclePanel);
-    }
-
+  if (
+    !(expeditionWindow instanceof HTMLElement)
+  ) {
     return {
-      green: true,
-      mode: "gm",
-      reused: true,
+      green: false,
+      reason: "expedition-window-not-found",
     };
   }
 
-  const browser = expeditionWindow.querySelector(".dct-expedition-browser");
-  if (!(browser instanceof HTMLElement)) {
-    return { green: false, reason: "expedition-browser-not-found" };
+  const existingShell =
+    expeditionWindow.querySelector(
+      ".dhct-expedition-shell"
+    );
+
+  if (existingShell instanceof HTMLElement) {
+    return {
+      green: true,
+      mode: isGm ? "gm" : "player",
+      reused: true,
+      activeTab:
+        existingShell.dataset.dhctActiveTab ??
+        null,
+    };
   }
 
-  const closeHost = findCloseHost(expeditionWindow);
-  const technicalNodes = findTechnicalNodes(
-    expeditionWindow,
-    browser,
-    closeHost
+  // Remove the obsolete Inventaire | MJ wrapper if a previous
+  // refresh created it before the new shell was mounted.
+  const legacyTabs =
+    expeditionWindow.querySelector(
+      `.${ROLE_TABS_CLASS}`
+    );
+
+  const legacyInventoryPane =
+    legacyTabs?.querySelector(
+      `[data-dhct-pane="${INVENTORY_TAB_ID}"]`
+    );
+
+  const browser =
+    (
+      legacyInventoryPane instanceof HTMLElement
+        ? legacyInventoryPane.querySelector(
+            ".dct-expedition-browser"
+          )
+        : null
+    ) ??
+    expeditionWindow.querySelector(
+      ".dct-expedition-browser"
+    );
+
+  if (!(browser instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "expedition-browser-not-found",
+    };
+  }
+
+  // Moving the original browser preserves the listeners installed
+  // by expedition-window.mjs.
+  if (
+    legacyTabs instanceof HTMLElement &&
+    legacyTabs.contains(browser)
+  ) {
+    legacyTabs.insertAdjacentElement(
+      "beforebegin",
+      browser
+    );
+  }
+
+  legacyTabs?.remove();
+
+  // Players must never retain GM diagnostics/admin nodes.
+  dialog
+    .querySelectorAll(
+      `.${PANEL_CLASS}`
+    )
+    .forEach((node) => {
+      if (!isGm) node.remove();
+    });
+
+  const closeHost =
+    findCloseHost(expeditionWindow);
+
+  const technicalNodes =
+    findTechnicalNodes(
+      expeditionWindow,
+      browser,
+      closeHost
+    );
+
+  const shell =
+    createExpeditionShell({
+      activeTab: "inventory",
+      canManage: isGm,
+    });
+
+  browser.insertAdjacentElement(
+    "beforebegin",
+    shell
   );
 
-  const tabs = document.createElement("section");
-  tabs.className = ROLE_TABS_CLASS;
+  const inventoryPane =
+    expeditionShellPane(
+      shell,
+      "inventory"
+    );
 
-  const nav = document.createElement("div");
-  nav.className = `${ROLE_TABS_CLASS}__nav`;
-  nav.setAttribute("role", "tablist");
+  const expeditionPane =
+    expeditionShellPane(
+      shell,
+      "expedition"
+    );
 
-  const inventoryButton = makeRoleTabButton(
-    INVENTORY_TAB_ID,
-    "Inventaire"
-  );
+  const workshopPane =
+    expeditionShellPane(
+      shell,
+      "workshop"
+    );
 
-  const gmButton = makeRoleTabButton(
-    GM_TAB_ID,
-    "MJ"
-  );
+  const researchPane =
+    expeditionShellPane(
+      shell,
+      "research"
+    );
 
-  nav.append(inventoryButton, gmButton);
+  if (
+    !(inventoryPane instanceof HTMLElement) ||
+    !(expeditionPane instanceof HTMLElement) ||
+    !(workshopPane instanceof HTMLElement) ||
+    !(researchPane instanceof HTMLElement)
+  ) {
+    shell.remove();
 
-  const inventoryPane = document.createElement("div");
-  inventoryPane.className = `${ROLE_TABS_CLASS}__pane`;
-  inventoryPane.dataset.dhctPane = INVENTORY_TAB_ID;
-  inventoryPane.setAttribute("role", "tabpanel");
+    return {
+      green: false,
+      reason: "shell-pane-not-found",
+    };
+  }
 
-  const gmPane = document.createElement("div");
-  gmPane.className = `${ROLE_TABS_CLASS}__pane`;
-  gmPane.dataset.dhctPane = GM_TAB_ID;
-  gmPane.setAttribute("role", "tabpanel");
-
-  // Insert the wrapper where the browser lived, then move the original
-  // renderer nodes. Moving nodes preserves their existing event handlers.
-  browser.insertAdjacentElement("beforebegin", tabs);
-  tabs.append(nav, inventoryPane, gmPane);
   inventoryPane.append(browser);
 
-  if (lifecyclePanel instanceof HTMLElement) {
-    gmPane.append(lifecyclePanel);
+  expeditionPane.append(
+    expeditionShellPlaceholder(
+      "Expédition",
+      "Vue opérationnelle de l’expédition — prochaine étape."
+    )
+  );
+
+  workshopPane.append(
+    expeditionShellPlaceholder(
+      "Atelier",
+      "Recettes, matériaux compatibles et armes de chasse."
+    )
+  );
+
+  researchPane.append(
+    expeditionShellPlaceholder(
+      "Recherche",
+      "Bibliothèque de matériaux et connaissances découvertes."
+    )
+  );
+
+  let gmPanel = null;
+
+  if (isGm) {
+    gmPanel =
+      document.createElement("aside");
+
+    gmPanel.className =
+      "dhct-expedition-shell__gm-panel";
+
+    gmPanel.hidden = true;
+
+    if (
+      lifecyclePanel instanceof HTMLElement
+    ) {
+      gmPanel.append(lifecyclePanel);
+    }
+
+    for (const node of technicalNodes) {
+      gmPanel.append(node);
+    }
+
+    shell.append(gmPanel);
+
+    const gmButton =
+      shell.querySelector(
+        "[data-dhct-expedition-gm]"
+      );
+
+    if (gmButton instanceof HTMLButtonElement) {
+      gmButton.addEventListener(
+        "click",
+        () => {
+          gmPanel.hidden =
+            !gmPanel.hidden;
+
+          gmButton.classList.toggle(
+            "active",
+            !gmPanel.hidden
+          );
+
+          gmButton.setAttribute(
+            "aria-expanded",
+            gmPanel.hidden
+              ? "false"
+              : "true"
+          );
+        }
+      );
+
+      gmButton.setAttribute(
+        "aria-expanded",
+        "false"
+      );
+    }
+  } else {
+    for (const node of technicalNodes) {
+      node.remove();
+    }
+
+    filterPlayerContainers(
+      dialog,
+      manifest
+    );
   }
-
-  for (const node of technicalNodes) {
-    gmPane.append(node);
-  }
-
-  inventoryButton.addEventListener("click", () => {
-    activateRoleTab(tabs, INVENTORY_TAB_ID);
-  });
-
-  gmButton.addEventListener("click", () => {
-    activateRoleTab(tabs, GM_TAB_ID);
-  });
-
-  activateRoleTab(tabs, INVENTORY_TAB_ID);
 
   return {
     green: true,
-    mode: "gm",
+    mode: isGm ? "gm" : "player",
     reused: false,
-    technicalNodes: technicalNodes.length,
-    closeOutsideTabs: Boolean(closeHost),
+    activeTab: "inventory",
+    technicalNodes:
+      technicalNodes.length,
+    gmPanel:
+      Boolean(gmPanel),
   };
 }
 
@@ -2312,9 +2467,13 @@ export async function refreshExpeditionInventoryUx() {
     dialog.querySelectorAll(`.${PANEL_CLASS}`).forEach((node) => node.remove());
   }
 
-  const roleView = isGm
-    ? configureGmTabbedView(dialog, lifecyclePanel)
-    : configurePlayerInventoryView(dialog, manifest);
+  const roleView =
+    configureExpeditionShell(
+      dialog,
+      manifest,
+      lifecyclePanel,
+      { isGm }
+    );
 
   const backpackAdministration = isGm
     ? injectGmBackpackManagement(dialog, manifest, api)
@@ -2448,46 +2607,119 @@ function injectStyles() {
       opacity: .72;
     }
 
-    .${ROLE_TABS_CLASS} {
-      display: grid;
-      gap: .55rem;
+    .dhct-expedition-shell {
+      flex: 1 1 auto;
+      min-width: 0;
       min-height: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-rows: auto minmax(0, 1fr);
+      column-gap: .75rem;
+      row-gap: .65rem;
+      overflow: hidden;
     }
 
-    .${ROLE_TABS_CLASS}__nav {
+    .dhct-expedition-shell__header {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      min-width: 0;
       display: flex;
-      gap: .35rem;
-      padding-bottom: .4rem;
+      align-items: center;
+      gap: .5rem;
+      padding-bottom: .45rem;
       border-bottom: 1px solid var(--color-border-light-2, rgba(255,255,255,.16));
     }
 
-    .${ROLE_TABS_CLASS}__button {
+    .dhct-expedition-shell__nav {
+      flex: 1 1 auto;
+      display: flex;
+      align-items: center;
+      gap: .35rem;
+      min-width: 0;
+    }
+
+    .dhct-expedition-shell__tab,
+    .dhct-expedition-shell__gm {
       flex: 0 0 auto;
-      min-width: 7rem;
       padding: .4rem .75rem;
     }
 
-    .${ROLE_TABS_CLASS}__button.active {
+    .dhct-expedition-shell__tab.active {
       font-weight: 700;
       box-shadow: inset 0 -2px 0 currentColor;
     }
 
-    .${ROLE_TABS_CLASS}__pane {
-      min-height: 0;
+    .dhct-expedition-shell__gm {
+      margin-left: auto;
     }
 
-    .${ROLE_TABS_CLASS}__pane[hidden] {
+    .dhct-expedition-shell__gm.active {
+      font-weight: 700;
+      box-shadow: inset 0 -2px 0 currentColor;
+    }
+
+    .dhct-expedition-shell__panes {
+      grid-column: 1;
+      grid-row: 2;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .dhct-expedition-shell__pane {
+      height: 100%;
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
+      padding-bottom: 1rem;
+    }
+
+    .dhct-expedition-shell__pane[hidden] {
       display: none !important;
     }
 
-    .${ROLE_TABS_CLASS}__pane[data-dhct-pane="${GM_TAB_ID}"] {
+    .dhct-expedition-shell__pane[data-dhct-expedition-pane="inventory"] {
+      overflow: hidden;
+    }
+
+    .dhct-expedition-shell__gm-panel {
+      grid-column: 2;
+      grid-row: 2;
+      width: clamp(340px, 31vw, 420px);
+      min-width: 0;
+      min-height: 0;
+      overflow: auto;
       display: grid;
+      align-content: start;
       gap: .65rem;
+      padding: 0 0 1rem .75rem;
+      border-left: 1px solid var(--color-border-light-2, rgba(255,255,255,.16));
+    }
+
+    .dhct-expedition-shell__gm-panel[hidden] {
+      display: none !important;
+    }
+
+    .dhct-expedition-shell-placeholder {
+      display: grid;
+      place-content: center;
+      min-height: 14rem;
+      padding: 2rem;
+      text-align: center;
+      opacity: .72;
+    }
+
+    .dhct-expedition-shell-placeholder h3 {
+      margin: 0 0 .35rem;
+    }
+
+    .dhct-expedition-shell-placeholder p {
+      margin: 0;
     }
 
     dialog.dhct-expedition-layout {
-      width: min(96vw, 1200px) !important;
-      max-width: min(96vw, 1200px) !important;
+      min-width: min(760px, 90vw);
+      min-height: min(520px, 80vh);
     }
 
     dialog.dhct-expedition-layout .dhct-expedition-layout__window-content {
@@ -2524,13 +2756,13 @@ function injectStyles() {
       overflow: hidden;
     }
 
-    dialog.dhct-expedition-layout .${ROLE_TABS_CLASS} {
+    dialog.dhct-expedition-layout .dhct-expedition-shell {
       flex: 1 1 auto;
       min-height: 0;
       overflow: hidden;
     }
 
-    dialog.dhct-expedition-layout .${ROLE_TABS_CLASS}__pane {
+    dialog.dhct-expedition-layout .dhct-expedition-shell__pane {
       min-height: 0;
       overflow: auto;
       padding-bottom: 1rem;
