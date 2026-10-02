@@ -358,41 +358,274 @@ export function transferExpeditionEntry(manifest, {
   fromContainerId,
   toContainerId,
   toSlotId = null,
+  quantity = null,
 } = {}) {
-  const check = canTransferExpeditionEntry(manifest, { entryId, fromContainerId, toContainerId, toSlotId });
-  if (!check.green) return { moved: false, reason: check.reason, manifest };
+  const from =
+    manifest?.containers?.find(
+      (container) =>
+        container.containerId === fromContainerId
+    );
 
-  const { entry, from, to, slotId, reposition, mergeTarget = null } = check;
+  const sourceEntry =
+    from?.contents?.find(
+      (candidate) =>
+        candidate.entryId === entryId
+    );
 
-  if (reposition) {
-    entry.slotId = slotId;
-  } else {
-    const index = from.contents.findIndex((candidate) => candidate.entryId === entryId);
-    from.contents.splice(index, 1);
-    if (mergeTarget) {
-      mergeTarget.quantity = Math.max(1, Number(mergeTarget.quantity) || 1) + Math.max(1, Number(entry.quantity) || 1);
-    } else {
-      entry.slotId = slotId;
-      to.contents ??= [];
-      to.contents.push(entry);
-    }
+  if (!sourceEntry) {
+    return {
+      moved: false,
+      reason: `unknown entry ${entryId} in ${fromContainerId}`,
+      manifest,
+    };
   }
 
-  manifest.revision = Math.max(1, Number(manifest.revision) || 1) + 1;
+  const available =
+    Math.max(
+      1,
+      Number(sourceEntry.quantity) || 1
+    );
 
-  let ledgerEvent = null;
-  if (!reposition && fromContainerId !== toContainerId) {
-    ledgerEvent = appendExpeditionLedgerEvent(manifest, {
-      kind: "transferred",
-      entryId: entry.entryId,
-      itemRef: entry.itemRef,
-      quantity: entry.quantity ?? 1,
+  const requested =
+    quantity == null
+      ? available
+      : Math.max(
+          1,
+          Math.floor(Number(quantity) || 1)
+        );
+
+  if (requested > available) {
+    return {
+      moved: false,
+      reason:
+        `quantity ${requested} exceeds available ${available}`,
+      manifest,
+    };
+  }
+
+  const partial = requested < available;
+
+  if (!partial) {
+    const check =
+      canTransferExpeditionEntry(
+        manifest,
+        {
+          entryId,
+          fromContainerId,
+          toContainerId,
+          toSlotId,
+        }
+      );
+
+    if (!check.green) {
+      return {
+        moved: false,
+        reason: check.reason,
+        manifest,
+      };
+    }
+
+    const {
+      entry,
+      from,
+      to,
+      slotId,
+      reposition,
+      mergeTarget = null,
+    } = check;
+
+    if (reposition) {
+      entry.slotId = slotId;
+    } else {
+      const index =
+        from.contents.findIndex(
+          (candidate) =>
+            candidate.entryId === entryId
+        );
+
+      from.contents.splice(index, 1);
+
+      if (mergeTarget) {
+        mergeTarget.quantity =
+          Math.max(
+            1,
+            Number(mergeTarget.quantity) || 1
+          ) +
+          available;
+      } else {
+        entry.slotId = slotId;
+        to.contents ??= [];
+        to.contents.push(entry);
+      }
+    }
+
+    manifest.revision =
+      Math.max(
+        1,
+        Number(manifest.revision) || 1
+      ) + 1;
+
+    let ledgerEvent = null;
+
+    if (
+      !reposition &&
+      fromContainerId !== toContainerId
+    ) {
+      ledgerEvent =
+        appendExpeditionLedgerEvent(
+          manifest,
+          {
+            kind: "transferred",
+            entryId: entry.entryId,
+            itemRef: entry.itemRef,
+            quantity: available,
+            fromContainerId,
+            toContainerId,
+          }
+        );
+    }
+
+    return {
+      moved: true,
+      reposition,
+      merged: Boolean(mergeTarget),
+      partial: false,
+      quantity: available,
+      remaining: 0,
+      entryId,
       fromContainerId,
       toContainerId,
-    });
+      slotId,
+      ledgerEvent,
+      manifest,
+    };
   }
 
-  return { moved: true, reposition, merged: Boolean(mergeTarget), entryId, fromContainerId, toContainerId, slotId, ledgerEvent, manifest };
+  if (fromContainerId === toContainerId) {
+    return {
+      moved: false,
+      reason:
+        "partial same-container transfer is unsupported",
+      manifest,
+    };
+  }
+
+  const snapshot = clone(manifest);
+
+  const stagedEntry = clone(sourceEntry);
+  stagedEntry.quantity = requested;
+
+  const sourceIndex =
+    from.contents.findIndex(
+      (candidate) =>
+        candidate.entryId === entryId
+    );
+
+  from.contents[sourceIndex] = stagedEntry;
+
+  const check =
+    canTransferExpeditionEntry(
+      manifest,
+      {
+        entryId,
+        fromContainerId,
+        toContainerId,
+        toSlotId,
+      }
+    );
+
+  from.contents[sourceIndex] = sourceEntry;
+
+  if (!check.green) {
+    return {
+      moved: false,
+      reason: check.reason,
+      manifest,
+    };
+  }
+
+  try {
+    const to = check.to;
+    const mergeTarget =
+      check.mergeTarget ?? null;
+
+    sourceEntry.quantity =
+      available - requested;
+
+    if (mergeTarget) {
+      mergeTarget.quantity =
+        Math.max(
+          1,
+          Number(mergeTarget.quantity) || 1
+        ) +
+        requested;
+    } else {
+      const movedEntry = clone(sourceEntry);
+
+      movedEntry.entryId =
+        nextEntryId(
+          manifest,
+          movedEntry.itemRef
+        );
+
+      movedEntry.quantity = requested;
+      movedEntry.slotId =
+        check.slotId ?? null;
+
+      to.contents ??= [];
+      to.contents.push(movedEntry);
+    }
+
+    manifest.revision =
+      Math.max(
+        1,
+        Number(manifest.revision) || 1
+      ) + 1;
+
+    const ledgerEvent =
+      appendExpeditionLedgerEvent(
+        manifest,
+        {
+          kind: "transferred",
+          entryId,
+          itemRef: sourceEntry.itemRef,
+          quantity: requested,
+          fromContainerId,
+          toContainerId,
+        }
+      );
+
+    return {
+      moved: true,
+      reposition: false,
+      merged: Boolean(mergeTarget),
+      partial: true,
+      quantity: requested,
+      remaining:
+        available - requested,
+      entryId,
+      fromContainerId,
+      toContainerId,
+      slotId:
+        check.slotId ?? null,
+      ledgerEvent,
+      manifest,
+    };
+  } catch (error) {
+    for (const key of Object.keys(manifest)) {
+      delete manifest[key];
+    }
+
+    Object.assign(manifest, snapshot);
+
+    return {
+      moved: false,
+      reason:
+        error?.message ??
+        "partial-transfer-failed",
+      manifest,
+    };
+  }
 }
 
 export function appendExpeditionLedgerEvent(manifest, {

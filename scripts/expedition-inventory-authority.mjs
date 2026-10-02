@@ -57,6 +57,15 @@ export async function processInventoryAuthorityRequest(
       fromContainerId: message.fromContainerId,
       toContainerId: message.toContainerId,
       toSlotId: message.toSlotId ?? null,
+      quantity:
+        message.quantity == null
+          ? null
+          : Math.max(
+              1,
+              Math.floor(
+                Number(message.quantity) || 1
+              )
+            ),
     });
 
     if (!result?.moved) {

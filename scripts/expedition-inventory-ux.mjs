@@ -2432,6 +2432,209 @@ async function configureExpeditionShell(
       manifest
     );
 
+  inventoryView.addEventListener(
+    "dhct-inventory-transfer-request",
+    async (event) => {
+      const detail = event.detail ?? {};
+
+      const button =
+        event.target instanceof Element
+          ? event.target.closest("button")
+          : null;
+
+      if (button) {
+        button.disabled = true;
+      }
+
+      try {
+        const available =
+          Math.max(
+            1,
+            Number(detail.quantity) || 1
+          );
+
+        const quantity =
+          available > 1
+            ? await chooseActionQuantity({
+                quantity: available,
+              })
+            : 1;
+
+        if (quantity == null) {
+          if (button) {
+            button.disabled = false;
+          }
+          return;
+        }
+
+        const result =
+          await requestInventoryAuthorityAction({
+            expeditionId:
+              manifest.expeditionId,
+            action: "transfer",
+            fromContainerId:
+              detail.fromContainerId,
+            toContainerId:
+              detail.toContainerId,
+            entryId:
+              detail.entryId,
+            quantity,
+          });
+
+        if (!result?.green) {
+          throw new Error(
+            result?.reason ??
+            "Transfert refus\u00e9."
+          );
+        }
+
+        ui.notifications?.info(
+          "Objet transf\u00e9."
+        );
+      } catch (error) {
+        console.error(
+          `${MODULE_ID} | projected inventory transfer failed`,
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible de transf\u00e9rer cet objet."
+        );
+
+        if (button) {
+          button.disabled = false;
+        }
+      }
+    }
+  );
+
+  inventoryView.addEventListener(
+    "dhct-inventory-return-request",
+    async (event) => {
+      const detail = event.detail ?? {};
+
+      try {
+        const available =
+          Math.max(
+            1,
+            Number(detail.quantity) || 1
+          );
+
+        const quantity =
+          available > 1
+            ? await chooseActionQuantity({
+                quantity: available,
+              })
+            : 1;
+
+        if (quantity == null) {
+          return;
+        }
+
+        const result =
+          await requestInventoryAuthorityAction({
+            expeditionId:
+              manifest.expeditionId,
+            action: "backpack-to-actor",
+            fromContainerId:
+              detail.fromContainerId,
+            entryId:
+              detail.entryId,
+            quantity,
+          });
+
+        if (!result?.green) {
+          throw new Error(
+            result?.reason ??
+            "Restitution refus\u00e9e."
+          );
+        }
+
+        ui.notifications?.info(
+          "Objet renvoy\u00e9 au personnage."
+        );
+      } catch (error) {
+        console.error(
+          `${MODULE_ID} | projected inventory return failed`,
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible de renvoyer cet objet."
+        );
+      }
+    }
+  );
+
+  inventoryView.addEventListener(
+    "dhct-inventory-item-action-request",
+    async (event) => {
+      const detail = event.detail ?? {};
+
+      const action =
+        String(detail.action ?? "");
+
+      if (
+        action !== "consume" &&
+        action !== "delete"
+      ) {
+        return;
+      }
+
+      try {
+        const api = getApi();
+
+        const freshManifest =
+          await api.expeditionManifest.load(
+            manifest.expeditionId
+          );
+
+        const container =
+          (freshManifest?.containers ?? [])
+            .find(
+              (candidate) =>
+                candidate.containerId ===
+                detail.containerId
+            );
+
+        const entry =
+          (container?.contents ?? [])
+            .find(
+              (candidate) =>
+                candidate.entryId ===
+                detail.entryId
+            );
+
+        if (!container || !entry) {
+          throw new Error(
+            "Cet objet n'est plus disponible."
+          );
+        }
+
+        await handleInventoryItemAction(
+          action,
+          {
+            manifest: freshManifest,
+            container,
+            entry,
+          }
+        );
+      } catch (error) {
+        console.error(
+          `${MODULE_ID} | projected inventory item action failed`,
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Action d'inventaire impossible."
+        );
+      }
+    }
+  );
+
   inventoryPane.append(
     inventoryView,
     browser

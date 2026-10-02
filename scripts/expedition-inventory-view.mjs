@@ -485,7 +485,11 @@ function selectedEntry(
   };
 }
 
-function renderDetail(projection, state) {
+function renderDetail(
+  projection,
+  state,
+  rerender
+) {
   const detail =
     element(
       "section",
@@ -583,13 +587,194 @@ function renderDetail(projection, state) {
       "dhct-inventory-view__actions"
     );
 
-  actions.append(
-    text(
-      "span",
-      "Actions raccord\u00e9es en 7.3b",
-      "dhct-inventory-view__actions-placeholder"
-    )
-  );
+  const personal =
+    personalContainers(projection);
+
+  const selectedPersonal =
+    personal.find(
+      (candidate) =>
+        candidate.containerId ===
+        state.personalContainerId
+    ) ??
+    personal[0] ??
+    null;
+
+  const ground =
+    sharedContainers(projection).find(
+      (candidate) =>
+        candidate.role === "ground"
+    ) ?? null;
+
+  const isPersonal =
+    container.containerId ===
+    selectedPersonal?.containerId;
+
+  const isGround =
+    container.containerId ===
+    ground?.containerId;
+
+  let transferTarget = null;
+  let transferLabel = null;
+
+  if (
+    isPersonal &&
+    ground &&
+    container.capabilities?.transfer === true &&
+    ground.capabilities?.receive === true
+  ) {
+    transferTarget = ground;
+    transferLabel = "Envoyer au Sol";
+  } else if (
+    isGround &&
+    selectedPersonal &&
+    container.capabilities?.transfer === true &&
+    selectedPersonal.capabilities?.receive === true
+  ) {
+    transferTarget = selectedPersonal;
+    transferLabel = "Mettre dans le sac";
+  }
+
+  const appendActionButton = ({
+    label,
+    className,
+    eventName,
+    eventDetail,
+  }) => {
+    const button =
+      element(
+        "button",
+        `dhct-inventory-view__action ${className}`
+      );
+
+    button.type = "button";
+    button.textContent = label;
+
+    button.addEventListener(
+      "click",
+      () => {
+        detail.dispatchEvent(
+          new CustomEvent(
+            eventName,
+            {
+              bubbles: true,
+              detail: eventDetail,
+            }
+          )
+        );
+      }
+    );
+
+    actions.append(button);
+  };
+
+  if (
+    isPersonal &&
+    container.capabilities?.returnToActor === true
+  ) {
+    appendActionButton({
+      label: "Renvoyer au personnage",
+      className:
+        "dhct-inventory-view__action--return",
+      eventName:
+        "dhct-inventory-return-request",
+      eventDetail: {
+        entryId: entry.entryId,
+        fromContainerId:
+          container.containerId,
+        quantity:
+          Math.max(
+            1,
+            Number(entry.quantity) || 1
+          ),
+      },
+    });
+  }
+
+  if (transferTarget && transferLabel) {
+    const button =
+      element(
+        "button",
+        "dhct-inventory-view__action dhct-inventory-view__action--transfer"
+      );
+
+    button.type = "button";
+    button.textContent = transferLabel;
+
+    button.addEventListener(
+      "click",
+      () => {
+        detail.dispatchEvent(
+          new CustomEvent(
+            "dhct-inventory-transfer-request",
+            {
+              bubbles: true,
+              detail: {
+                entryId: entry.entryId,
+                fromContainerId:
+                  container.containerId,
+                toContainerId:
+                  transferTarget.containerId,
+                quantity:
+                  Math.max(
+                    1,
+                    Number(entry.quantity) || 1
+                  ),
+              },
+            }
+          )
+        );
+      }
+    );
+
+    actions.append(button);
+  }
+
+  if (
+    entry.item?.type === "consumable" &&
+    container.capabilities?.consume === true
+  ) {
+    appendActionButton({
+      label: "Consommer",
+      className:
+        "dhct-inventory-view__action--consume",
+      eventName:
+        "dhct-inventory-item-action-request",
+      eventDetail: {
+        action: "consume",
+        entryId: entry.entryId,
+        containerId:
+          container.containerId,
+      },
+    });
+  }
+
+  if (
+    container.capabilities?.delete === true
+  ) {
+    appendActionButton({
+      label: "Supprimer",
+      className:
+        "dhct-inventory-view__action--delete",
+      eventName:
+        "dhct-inventory-item-action-request",
+      eventDetail: {
+        action: "delete",
+        entryId: entry.entryId,
+        containerId:
+          container.containerId,
+      },
+    });
+  }
+
+  if (!actions.childElementCount) {
+    actions.append(
+      text(
+        "span",
+        "Aucune action disponible.",
+        "dhct-inventory-view__actions-placeholder"
+      )
+    );
+  }
 
   detail.append(actions);
 
@@ -667,7 +852,8 @@ export function renderExpeditionInventoryView(
       columns,
       renderDetail(
         projection,
-        state
+        state,
+        rerender
       )
     );
   }
