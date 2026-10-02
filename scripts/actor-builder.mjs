@@ -1,4 +1,10 @@
 ﻿import { applyContentLocale, getImportLocale } from "./content-locale.mjs";
+import {
+  mapEmbeddedSourceFeatures,
+  parseAdversaryExperiences,
+  mapAdversaryAttack,
+  nativeTemplate,
+} from "./native-mapping.mjs";
 
 const FLAG_SCOPE = "daggerheart-campaign-toolkit";
 
@@ -23,10 +29,6 @@ const sanitizeEmbeddedActorData = (...args) => builderDependencies().sanitizeEmb
 const baseDescription = (...args) => builderDependencies().baseDescription(...args);
 const normalizedChoice = (...args) => builderDependencies().normalizedChoice(...args);
 const normalizedToken = (...args) => builderDependencies().normalizedToken(...args);
-const mapEmbeddedSourceFeatures = (...args) => builderDependencies().mapEmbeddedSourceFeatures(...args);
-const parseAdversaryExperiences = (...args) => builderDependencies().parseAdversaryExperiences(...args);
-const mapAdversaryAttack = (...args) => builderDependencies().mapAdversaryAttack(...args);
-const nativeTemplate = (...args) => builderDependencies().nativeTemplate(...args);
 
 function huntingNotesHtml(raw) {
   const hunting = raw?.hunting;
