@@ -1,9 +1,0 @@
-{
-  "schemaVersion": 1,
-  "id": "mh.containers.pilot",
-  "containers": [
-    { "id": "mh.container.hard-case", "name": "Boîte renforcée", "container": { "accepts": ["hard-material"], "slots": 3, "stackLimit": 5 } },
-    { "id": "mh.container.specimen-case", "name": "Étui de prélèvement", "container": { "accepts": ["organ"], "slots": 2, "stackLimit": 3 } },
-    { "id": "mh.container.vial-case", "name": "Étui à flacons", "container": { "accepts": ["fluid"], "slots": 4, "stackLimit": 2 } }
-  ]
-}

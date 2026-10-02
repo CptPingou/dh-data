@@ -212,12 +212,6 @@ export function validateContainer(container) {
   return { green: true, id: container.id, slots: container.container.slots, stackLimit: container.container.stackLimit };
 }
 
-export function validateContainerCatalog(catalog) {
-  schemaVersion(catalog, "Container catalog", [1]); text(catalog.id, "Container catalog id"); if (!Array.isArray(catalog.containers)) throw new Error("Container catalog containers must be an array.");
-  const ids = new Set(); for (const container of catalog.containers) { validateContainer(container); if (ids.has(container.id)) throw new Error(`Duplicate container id: ${container.id}.`); ids.add(container.id); }
-  return { green: true, catalogId: catalog.id, containers: catalog.containers.length };
-}
-
 export function validateMaterialKnowledge(data) {
   schemaVersion(data, "Material knowledge", [1]); text(data.id, "Material knowledge id"); object(data.actorKnowledge, "actorKnowledge"); object(data.partyKnowledge, "partyKnowledge");
   if (data.partyKnowledge.scope !== "party") throw new Error("partyKnowledge.scope must be party."); object(data.partyKnowledge.materials, "partyKnowledge.materials");
