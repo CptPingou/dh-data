@@ -1,4 +1,6 @@
-﻿import { syncOwnedArtilleryCards } from "./artillery-owned-sync.mjs";
+import { syncOwnedArtilleryCards } from "./artillery-owned-sync.mjs";
+import { buildItem, buildLinkedSourceFeature } from "./item-builder.mjs";
+import { nativeTemplate } from "./native-mapping.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const FLAG_SCOPE = "daggerheart-campaign-toolkit";
@@ -18,13 +20,8 @@ function importDependencies() {
   return dependencies;
 }
 
-const buildItem = (...args) => importDependencies().buildItem(...args);
-const buildLinkedSourceFeature = (...args) =>
-  importDependencies().buildLinkedSourceFeature(...args);
 const ensureArtilleryDomain = (...args) =>
   importDependencies().ensureArtilleryDomain(...args);
-const nativeTemplate = (...args) =>
-  importDependencies().nativeTemplate(...args);
 const normalizedChoice = (...args) =>
   importDependencies().normalizedChoice(...args);
 const organizeDomainCardsByDomain = (...args) =>
