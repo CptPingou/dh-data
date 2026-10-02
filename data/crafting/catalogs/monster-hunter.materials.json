@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "id": "mh.materials.pilot-v2",
   "materials": [
     {
@@ -29,7 +29,8 @@
         "type": "creature",
         "creatureId": "mh.tetsucabra",
         "anatomy": "fang"
-      }
+      },
+      "img": "icons/commodities/bones/tooth-canine-white.webp"
     },
     {
       "id": "mh.tetsucabra.hide",
@@ -58,7 +59,8 @@
         "type": "creature",
         "creatureId": "mh.tetsucabra",
         "anatomy": "hide"
-      }
+      },
+      "img": "icons/commodities/leather/leather-pelt-cured.webp"
     },
     {
       "id": "mh.vespoid.gland",
@@ -86,7 +88,8 @@
         "type": "creature",
         "creatureId": "mh.vespoid",
         "anatomy": "gland"
-      }
+      },
+      "img": "icons/commodities/biological/organ-bladder-red.webp"
     },
     {
       "id": "mh.vespoid.wing",
@@ -115,7 +118,10 @@
         "type": "creature",
         "creatureId": "mh.vespoid",
         "anatomy": "wing"
-      }
+      },
+      "img": "icons/commodities/biological/wing-insect-blue.webp"
     }
-  ]
+  ],
+  "namespace": "monster-hunter",
+  "kind": "material-catalog"
 }

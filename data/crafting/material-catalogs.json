@@ -1,0 +1,13 @@
+{
+  "schemaVersion": 1,
+  "id": "material-catalog-registry",
+  "defaultCatalog": "mh.materials.pilot-v2",
+  "catalogs": [
+    {
+      "id": "mh.materials.pilot-v2",
+      "namespace": "monster-hunter",
+      "kind": "material-catalog",
+      "path": "data/crafting/catalogs/monster-hunter.materials.json"
+    }
+  ]
+}

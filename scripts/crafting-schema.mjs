@@ -100,8 +100,22 @@ export function validateMaterial(material, { schema = null } = {}) {
 }
 
 export function validateMaterialCatalog(catalog) {
-  const version = schemaVersion(catalog, "Material catalog", [1, 2]); text(catalog.id, "Material catalog id");
-  if (!Array.isArray(catalog.materials)) throw new Error("Material catalog materials must be an array.");
+  const version = schemaVersion(catalog, "Material catalog", [1, 2, 3]);
+  text(catalog.id, "Material catalog id");
+
+  if (version >= 3) {
+    text(catalog.namespace, "Material catalog namespace");
+
+    if (catalog.kind !== "material-catalog") {
+      throw new Error(
+        'Material catalog kind must be "material-catalog" for schemaVersion 3.',
+      );
+    }
+  }
+
+  if (!Array.isArray(catalog.materials)) {
+    throw new Error("Material catalog materials must be an array.");
+  }
   const ids = new Set();
   for (const material of catalog.materials) {
     validateMaterial(material, { schema: version });

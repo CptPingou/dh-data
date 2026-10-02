@@ -1,9 +1,11 @@
 import { materialPropertyIds, validateMaterialCatalog, validatePropertyCatalog } from "./crafting-schema.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
-const MATERIALS_URL = `modules/${MODULE_ID}/data/crafting/materials.json`;
+const MATERIAL_CATALOG_REGISTRY_URL =
+  `modules/${MODULE_ID}/data/crafting/material-catalogs.json`;
 const PROPERTIES_URL = `modules/${MODULE_ID}/data/crafting/properties.json`;
-let cache = null;
+let registryCache = null;
+const catalogCache = new Map();
 let propertyCache = null;
 
 function clone(value) { return value == null ? value : structuredClone(value); }
@@ -39,43 +41,227 @@ export async function getPropertyDefinition(propertyId) {
   return clone(catalog.properties.find((entry) => entry.id === propertyId) ?? null);
 }
 
-export async function loadMaterialCatalog({ force = false } = {}) {
-  if (cache && !force) return cache;
-  const response = await fetch(MATERIALS_URL, { cache: "no-store" });
-  if (!response.ok) throw new Error(`Unable to load material catalog (${response.status}).`);
+export async function loadMaterialCatalogRegistry({ force = false } = {}) {
+  if (registryCache && !force) return registryCache;
+
+  const response = await fetch(
+    MATERIAL_CATALOG_REGISTRY_URL,
+    { cache: "no-store" },
+  );
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to load material catalog registry (${response.status}).`,
+    );
+  }
+
+  const registry = await response.json();
+
+  if (
+    registry?.schemaVersion !== 1 ||
+    !registry?.defaultCatalog ||
+    !Array.isArray(registry?.catalogs)
+  ) {
+    throw new Error("Invalid material catalog registry.");
+  }
+
+  registryCache = registry;
+  return registry;
+}
+
+export async function loadMaterialCatalog(
+  {
+    force = false,
+    catalogId = null,
+  } = {},
+) {
+  const registry = await loadMaterialCatalogRegistry({ force });
+
+  const resolvedCatalogId =
+    catalogId ?? registry.defaultCatalog;
+
+  const registryEntry = registry.catalogs.find(
+    (entry) => entry.id === resolvedCatalogId,
+  );
+
+  if (!registryEntry) {
+    throw new Error(
+      `Unknown material catalog: ${resolvedCatalogId}.`,
+    );
+  }
+
+  if (!force && catalogCache.has(resolvedCatalogId)) {
+    return catalogCache.get(resolvedCatalogId);
+  }
+
+  const path = String(registryEntry.path ?? "")
+    .replace(/^data\//, "");
+
+  if (!path) {
+    throw new Error(
+      `Material catalog path missing: ${resolvedCatalogId}.`,
+    );
+  }
+
+  const url =
+    `modules/${MODULE_ID}/data/${path}`;
+
+  const response = await fetch(url, { cache: "no-store" });
+
+  if (!response.ok) {
+    throw new Error(
+      `Unable to load material catalog ${resolvedCatalogId} (${response.status}).`,
+    );
+  }
+
   const catalog = await response.json();
+
   validateMaterialCatalog(catalog);
+
+  if (catalog.id !== registryEntry.id) {
+    throw new Error(
+      `Material catalog id mismatch: expected ${registryEntry.id}, got ${catalog.id}.`,
+    );
+  }
+
+  if (catalog.namespace !== registryEntry.namespace) {
+    throw new Error(
+      `Material catalog namespace mismatch: ${registryEntry.id}.`,
+    );
+  }
+
+  if (catalog.kind !== registryEntry.kind) {
+    throw new Error(
+      `Material catalog kind mismatch: ${registryEntry.id}.`,
+    );
+  }
+
   const propertyCatalog = await loadPropertyCatalog({ force });
-  const knownProperties = new Set(propertyCatalog.properties.map((entry) => entry.id));
+  const knownProperties = new Set(
+    propertyCatalog.properties.map((entry) => entry.id),
+  );
+
   for (const material of catalog.materials) {
     for (const propertyId of materialPropertyIds(material)) {
-      if (!knownProperties.has(propertyId)) throw new Error(`Unknown material property ${propertyId} on ${material.id}.`);
+      if (!knownProperties.has(propertyId)) {
+        throw new Error(
+          `Unknown material property ${propertyId} on ${material.id}.`,
+        );
+      }
     }
   }
-  cache = catalog;
+
+  catalogCache.set(resolvedCatalogId, catalog);
   return catalog;
 }
 
+export async function loadMaterialCatalogs({ force = false } = {}) {
+  const registry = await loadMaterialCatalogRegistry({ force });
+
+  const catalogs = [];
+
+  for (const entry of registry.catalogs) {
+    catalogs.push(
+      await loadMaterialCatalog({
+        catalogId: entry.id,
+        force,
+      }),
+    );
+  }
+
+  return catalogs;
+}
+
+export async function resolveMaterialDefinition(
+  materialId,
+  { force = false } = {},
+) {
+  const catalogs = await loadMaterialCatalogs({ force });
+
+  let resolved = null;
+
+  for (const catalog of catalogs) {
+    const material =
+      catalog.materials.find((entry) => entry.id === materialId) ?? null;
+
+    if (!material) continue;
+
+    if (resolved) {
+      throw new Error(
+        `Duplicate material id across catalogs: ${materialId}.`,
+      );
+    }
+
+    resolved = {
+      catalog,
+      material,
+    };
+  }
+
+  if (!resolved) return null;
+
+  return clone(resolved);
+}
+
 export async function listMaterialDefinitions() {
-  const catalog = await loadMaterialCatalog();
-  return clone(catalog.materials);
+  const catalogs = await loadMaterialCatalogs();
+
+  const definitions = [];
+  const ids = new Set();
+
+  for (const catalog of catalogs) {
+    for (const material of catalog.materials) {
+      if (ids.has(material.id)) {
+        throw new Error(
+          `Duplicate material id across catalogs: ${material.id}.`,
+        );
+      }
+
+      ids.add(material.id);
+      definitions.push(material);
+    }
+  }
+
+  return clone(definitions);
 }
 
 export async function getMaterialDefinition(materialId) {
-  const catalog = await loadMaterialCatalog();
-  return clone(catalog.materials.find((entry) => entry.id === materialId) ?? null);
+  const resolved = await resolveMaterialDefinition(materialId);
+  return resolved ? clone(resolved.material) : null;
 }
 
-export function materialItemData(material, { quantity = 1 } = {}) {
+export function materialItemData(
+  material,
+  {
+    quantity = 1,
+    catalog = null,
+  } = {},
+) {
   positiveQuantity(quantity);
-  if (!material?.id || !material?.name) throw new Error("A validated material definition is required.");
+
+  if (!material?.id || !material?.name) {
+    throw new Error("A validated material definition is required.");
+  }
+
+  const namespace =
+    typeof catalog?.namespace === "string" && catalog.namespace.trim()
+      ? catalog.namespace.trim()
+      : null;
+
   return {
     name: material.name,
     type: "loot",
+    img: typeof material.img === "string" && material.img.trim()
+      ? material.img.trim()
+      : "icons/svg/item-bag.svg",
     system: {
-      description: `<p>Matériau de chasse.</p>`,
+      description: "",
       quantity,
-      attribution: { source: "Monster Hunter Daggerheart", page: null, artist: "" },
+      attribution: {
+        source: namespace ?? "Homebrew",
+        page: null,
+        artist: "",
+      },
       gmNotes: "",
       actions: {},
     },
@@ -84,6 +270,7 @@ export function materialItemData(material, { quantity = 1 } = {}) {
       [MODULE_ID]: {
         sourceId: material.id,
         canonicalSourceId: material.id,
+        sourceNamespace: namespace,
         contentOwner: MODULE_ID,
         contentOrigin: "homebrew",
         kind: "material",
@@ -128,8 +315,13 @@ export function actorMaterialQuantity(actor, materialId) {
 export async function grantMaterial(actor, materialId, quantity = 1) {
   if (!actor?.createEmbeddedDocuments) throw new Error("A Foundry Actor document is required.");
   quantity = positiveQuantity(quantity);
-  const material = await getMaterialDefinition(materialId);
-  if (!material) throw new Error(`Unknown material: ${materialId}.`);
+  const resolved = await resolveMaterialDefinition(materialId);
+
+  if (!resolved) {
+    throw new Error(`Unknown material: ${materialId}.`);
+  }
+
+  const { catalog, material } = resolved;
 
   const existing = listActorMaterials(actor).find((entry) => entry.materialId === materialId && material.inventory.stackable);
   if (existing?.item?.update) {
@@ -138,18 +330,23 @@ export async function grantMaterial(actor, materialId, quantity = 1) {
     return { green: true, operation: "stack", materialId, quantity, total: nextQuantity, item: existing.item };
   }
 
-  const created = await actor.createEmbeddedDocuments("Item", [materialItemData(material, { quantity })]);
+  const created = await actor.createEmbeddedDocuments("Item", [materialItemData(material, { quantity, catalog })]);
   const item = created?.[0] ?? null;
   return { green: Boolean(item), operation: "create", materialId, quantity, total: quantity, item };
 }
 
 export async function materialRuntimeStatus(actor = null) {
-  const catalog = await loadMaterialCatalog();
+  const registry = await loadMaterialCatalogRegistry();
+  const catalogs = await loadMaterialCatalogs();
+  const definitions = await listMaterialDefinitions();
   const materials = actor ? listActorMaterials(actor) : [];
+
   return {
     green: true,
-    catalogId: catalog.id,
-    definitions: catalog.materials.length,
+    catalogId: registry.defaultCatalog,
+    catalogIds: catalogs.map((catalog) => catalog.id),
+    catalogs: catalogs.length,
+    definitions: definitions.length,
     actorUuid: actor?.uuid ?? null,
     actorStacks: materials.length,
     actorUnits: materials.reduce((sum, entry) => sum + entry.quantity, 0),
@@ -158,6 +355,8 @@ export async function materialRuntimeStatus(actor = null) {
 
 export const craftingMaterialsApi = Object.freeze({
   load: loadMaterialCatalog,
+  loadAll: loadMaterialCatalogs,
+  resolve: resolveMaterialDefinition,
   loadProperties: loadPropertyCatalog,
   property: getPropertyDefinition,
   list: listMaterialDefinitions,

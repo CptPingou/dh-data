@@ -3,7 +3,7 @@
     "_id": "vhjIk5Vv0U72JqQo",
     "name": "Cuir de Tetsucabra",
     "type": "loot",
-    "img": "icons/commodities/leather/leather-hide-tan.webp",
+    "img": "icons/commodities/leather/leather-pelt-cured.webp",
     "system": {
       "description": "<p>Épaisse peau de Tetsucabra, prélevée sur une partie préservée ou récupérée lors du dépeçage. Composant de chasse de Tier 1.</p>",
       "quantity": 1,
@@ -18,8 +18,8 @@
     "effects": [],
     "flags": {
       "daggerheart-campaign-toolkit": {
-        "sourceId": "homebrew.monster-hunter.loot.tetsucabra-hide",
-        "canonicalSourceId": "homebrew.monster-hunter.loot.tetsucabra-hide",
+        "sourceId": "mh.tetsucabra.hide",
+        "canonicalSourceId": "mh.tetsucabra.hide",
         "contentLocale": "fr",
         "localeFallback": false,
         "localizedPaths": [
@@ -27,7 +27,7 @@
           "description"
         ],
         "managed": true,
-        "kind": "loot",
+        "kind": "material",
         "lootCategory": "material",
         "materialCategory": "hide",
         "contentOwner": "daggerheart-campaign-toolkit",
@@ -36,7 +36,20 @@
         "sourceSubset": "tetsucabra",
         "tier": 1,
         "monsterId": "homebrew.monster-hunter.adversary.tetsucabra",
-        "partId": "hide"
+        "partId": "hide",
+        "legacySourceId": "homebrew.monster-hunter.loot.tetsucabra-hide",
+        "material": {
+          "materialId": "mh.tetsucabra.hide",
+          "family": "tegument",
+          "quality": 2,
+          "properties": {
+            "flexible": 2,
+            "dense": 3,
+            "reinforcing": 4
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
       }
     }
   },
@@ -44,7 +57,7 @@
     "_id": "3Z3SuZPFQYnpjE01",
     "name": "Croc de Tetsucabra",
     "type": "loot",
-    "img": "icons/commodities/bones/tooth-long-white.webp",
+    "img": "icons/commodities/bones/tooth-canine-white.webp",
     "system": {
       "description": "<p>Croc massif de Tetsucabra. Matériau de chasse de Tier 1 traité comme une relique et prioritaire lors du dépeçage.</p>",
       "quantity": 1,
@@ -59,8 +72,8 @@
     "effects": [],
     "flags": {
       "daggerheart-campaign-toolkit": {
-        "sourceId": "homebrew.monster-hunter.loot.tetsucabra-tusk",
-        "canonicalSourceId": "homebrew.monster-hunter.loot.tetsucabra-tusk",
+        "sourceId": "mh.tetsucabra.fang",
+        "canonicalSourceId": "mh.tetsucabra.fang",
         "contentLocale": "fr",
         "localeFallback": false,
         "localizedPaths": [
@@ -68,8 +81,8 @@
           "description"
         ],
         "managed": true,
-        "kind": "loot",
-        "lootCategory": "relic",
+        "kind": "material",
+        "lootCategory": "material",
         "materialCategory": "relic",
         "contentOwner": "daggerheart-campaign-toolkit",
         "contentOrigin": "homebrew",
@@ -78,7 +91,20 @@
         "tier": 1,
         "monsterId": "homebrew.monster-hunter.adversary.tetsucabra",
         "partId": "tusks",
-        "relicPriority": true
+        "relicPriority": true,
+        "legacySourceId": "homebrew.monster-hunter.loot.tetsucabra-tusk",
+        "material": {
+          "materialId": "mh.tetsucabra.fang",
+          "family": "osseous",
+          "quality": 2,
+          "properties": {
+            "rigid": 4,
+            "piercing": 3,
+            "impact": 2
+          },
+          "containerClass": "hard-material",
+          "stackable": true
+        }
       }
     }
   },
