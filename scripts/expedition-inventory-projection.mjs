@@ -46,10 +46,23 @@ function projectEntry(entry) {
 }
 
 function normalizeCapabilities(value = {}) {
+  const transferTo = [
+    ...new Set(
+      (Array.isArray(value.transferTo)
+        ? value.transferTo
+        : [])
+        .map((containerId) =>
+          String(containerId ?? "").trim()
+        )
+        .filter(Boolean)
+    ),
+  ];
+
   return {
     view: value.view === true,
     receive: value.receive === true,
     transfer: value.transfer === true,
+    transferTo,
     returnToActor: value.returnToActor === true,
     consume: value.consume === true,
     delete: value.delete === true,
@@ -123,6 +136,7 @@ export function projectInventoryContainer(
 export function projectExpeditionInventory({
   manifest,
   capabilityResolver,
+  logisticsPhase = null,
 } = {}) {
   if (!manifest?.expeditionId) {
     throw new Error(
@@ -157,6 +171,11 @@ export function projectExpeditionInventory({
     kind: "expedition-inventory-projection",
 
     expeditionId: manifest.expeditionId,
+    logisticsPhase:
+      typeof logisticsPhase === "string" &&
+      logisticsPhase.trim()
+        ? logisticsPhase.trim()
+        : null,
     revision: Math.max(
       0,
       Number(manifest.revision) || 0

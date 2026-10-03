@@ -3,7 +3,12 @@ import {
 } from "./expedition-viewer-capabilities.mjs";
 
 import {
+  resolveManifestLogisticsPhase,
+} from "./expedition-logistics-phase.mjs";
+
+import {
   userCanAccessContainer,
+  userCanTransferBetweenContainers,
   userOwnsBackpack,
 } from "./expedition-inventory-policy.mjs";
 
@@ -89,14 +94,50 @@ export function createFoundryViewerCapabilities({
 
   const containers = {};
 
-  for (const container of manifest.containers ?? []) {
-    if (!container?.containerId) continue;
+  const logisticsPhase =
+    resolveManifestLogisticsPhase(manifest);
 
-    containers[container.containerId] =
+  const manifestContainers =
+    (manifest.containers ?? [])
+      .filter(
+        (container) =>
+          container?.containerId
+      );
+
+  for (const container of manifestContainers) {
+    const capabilities =
       containerCapabilities(
         user,
         container
       );
+
+    if (
+      capabilities.view &&
+      capabilities.transfer
+    ) {
+      capabilities.transferTo =
+        manifestContainers
+          .filter(
+            (destination) =>
+              destination.containerId !==
+                container.containerId &&
+              userCanTransferBetweenContainers({
+                user,
+                source: container,
+                destination,
+                phase: logisticsPhase,
+              })
+          )
+          .map(
+            (destination) =>
+              destination.containerId
+          );
+    } else {
+      capabilities.transferTo = [];
+    }
+
+    containers[container.containerId] =
+      capabilities;
   }
 
   const gm = user.isGM === true;

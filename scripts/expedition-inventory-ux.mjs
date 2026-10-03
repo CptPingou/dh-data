@@ -5,6 +5,7 @@ import {
   sharedPlayerAccessEnabled,
   userOwnsBackpack,
   userCanAccessContainer,
+  userCanTransferBetweenContainers,
   normalizeBackpackSlots,
 } from "./expedition-inventory-policy.mjs";
 
@@ -20,6 +21,12 @@ import {
 } from "./expedition-inventory-sync.mjs";
 
 import { processInventoryAuthorityRequest as processInventoryAuthorityRequestCore } from "./expedition-inventory-authority.mjs";
+
+import {
+  EXPEDITION_LOGISTICS_PHASES,
+  EXPEDITION_LOGISTICS_PHASE_PRESENTATION,
+  resolveManifestLogisticsPhase,
+} from "./expedition-logistics-phase.mjs";
 
 import {
   createExpeditionShell,
@@ -1056,7 +1063,14 @@ function applyExpeditionDialogLayout(dialog) {
   const viewportLimit = Math.floor(window.innerHeight * 0.94);
   const appliedHeight = Math.min(requestedHeight, viewportLimit);
 
-  dialog.style.height = `${appliedHeight}px`;
+  if (!dialog.dataset.dhctLayoutInitialized) {
+    dialog.style.height =
+      `${appliedHeight}px`;
+
+    dialog.dataset.dhctLayoutInitialized =
+      "1";
+  }
+
   dialog.style.maxHeight = "94vh";
   dialog.classList.add("dhct-expedition-layout");
 
@@ -1436,6 +1450,248 @@ function sharedRoleLabel(role) {
   }
 }
 
+function logisticsPhaseChoices(
+  selectedPhase
+) {
+  return Object.values(
+    EXPEDITION_LOGISTICS_PHASES
+  )
+    .map((phase) => {
+      const presentation =
+        EXPEDITION_LOGISTICS_PHASE_PRESENTATION[
+          phase
+        ];
+
+      const checked =
+        phase === selectedPhase
+          ? " checked"
+          : "";
+
+      const rules =
+        (presentation?.rules ?? [])
+          .join(" \u00b7 ");
+
+      return `
+        <label
+          class="dhct-logistics-phase-panel__choice"
+        >
+          <input
+            type="radio"
+            name="dhct-logistics-phase"
+            value="${phase}"
+            data-dhct-logistics-phase
+            ${checked}
+          />
+
+          <span
+            class="dhct-logistics-phase-panel__choice-content"
+          >
+            <strong>
+              ${presentation?.label ?? phase}
+            </strong>
+
+            <span>
+              ${presentation?.description ?? ""}
+            </span>
+
+            <small>
+              ${rules}
+            </small>
+          </span>
+        </label>
+      `;
+    })
+    .join("");
+}
+
+function renderGmLogisticsPhaseManagement(
+  manifest
+) {
+  const phase =
+    resolveManifestLogisticsPhase(manifest);
+
+  return `
+    <section class="dhct-logistics-phase-panel">
+      <header class="dhct-logistics-phase-panel__header">
+        <div>
+          <h3>Phase logistique</h3>
+          <p>D\u00e9finit les transferts autoris\u00e9s pendant l\u2019exp\u00e9dition.</p>
+        </div>
+      </header>
+
+      <fieldset
+        class="dhct-logistics-phase-panel__choices"
+      >
+        <legend>
+          Phase de l\u2019exp\u00e9dition
+        </legend>
+
+        ${logisticsPhaseChoices(phase)}
+      </fieldset>
+    </section>
+  `;
+}
+
+async function saveGmLogisticsPhase(
+  api,
+  manifest,
+  phase
+) {
+  if (!game.user?.isGM) {
+    return {
+      green: false,
+      reason: "not-gm",
+    };
+  }
+
+  if (
+    !Object.values(
+      EXPEDITION_LOGISTICS_PHASES
+    ).includes(phase)
+  ) {
+    return {
+      green: false,
+      reason: "invalid-logistics-phase",
+    };
+  }
+
+  manifest.logistics = {
+    ...(manifest.logistics ?? {}),
+    phase,
+  };
+
+  manifest.revision =
+    Math.max(
+      1,
+      Number(manifest.revision) || 1
+    ) + 1;
+
+  await saveAndBroadcastBulkInventoryChange(
+    api,
+    manifest,
+    {
+      reason: "gm-logistics-phase",
+    }
+  );
+
+  return {
+    green: true,
+    phase,
+  };
+}
+
+function injectGmLogisticsPhaseManagement(
+  dialog,
+  manifest,
+  api
+) {
+  if (!game.user?.isGM) {
+    return {
+      green: false,
+      reason: "not-gm",
+    };
+  }
+
+  const gmPane = dialog.querySelector(
+    ".dhct-expedition-shell__gm-panel"
+  );
+
+  if (!(gmPane instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "gm-pane-not-found",
+    };
+  }
+
+  gmPane
+    .querySelector(
+      ".dhct-logistics-phase-panel"
+    )
+    ?.remove();
+
+  const wrapper =
+    document.createElement("div");
+
+  wrapper.innerHTML =
+    renderGmLogisticsPhaseManagement(
+      manifest
+    ).trim();
+
+  const panel =
+    wrapper.firstElementChild;
+
+  if (!(panel instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "panel-build-failed",
+    };
+  }
+
+  gmPane.prepend(panel);
+
+  const choices =
+    panel.querySelectorAll(
+      "[data-dhct-logistics-phase]"
+    );
+
+  for (const choice of choices) {
+    choice.addEventListener(
+      "change",
+      async () => {
+        if (!choice.checked) return;
+
+        const phase =
+          String(choice.value ?? "");
+
+        for (const input of choices) {
+          input.disabled = true;
+        }
+
+        try {
+          const result =
+            await saveGmLogisticsPhase(
+              api,
+              manifest,
+              phase
+            );
+
+          if (!result?.green) {
+            throw new Error(
+              result?.reason ??
+                "logistics-phase-save-failed"
+            );
+          }
+
+          ui.notifications?.info(
+            `Phase logistique : ${
+              EXPEDITION_LOGISTICS_PHASE_PRESENTATION[
+                phase
+              ]?.label ?? phase
+            }`
+          );
+        } catch (error) {
+          for (const input of choices) {
+            input.disabled = false;
+          }
+
+          ui.notifications?.error(
+            error?.message ??
+              "Impossible de modifier la phase logistique."
+          );
+        }
+      }
+    );
+  }
+
+  return {
+    green: true,
+    phase:
+      resolveManifestLogisticsPhase(
+        manifest
+      ),
+  };
+}
+
 function renderGmSharedAccessManagement(manifest) {
   const containers = (manifest?.containers ?? []).filter(
     (container) => container?.type !== "backpack"
@@ -1712,6 +1968,8 @@ async function processInventoryAuthorityRequest(message) {
   return processInventoryAuthorityRequestCore(message, {
     getApi,
     userCanAccessContainer,
+    userCanTransferBetweenContainers,
+    resolveManifestLogisticsPhase,
     broadcastBackpackAccessChange,
   });
 }
@@ -2173,6 +2431,10 @@ function buildExpeditionInventoryView(
         containerCapabilityResolver(
           viewerCapabilities
         ),
+      logisticsPhase:
+        resolveManifestLogisticsPhase(
+          manifest
+        ),
     });
 
   return renderExpeditionInventoryView(
@@ -2199,6 +2461,10 @@ async function buildExpeditionDashboardView(
       capabilityResolver:
         containerCapabilityResolver(
           viewerCapabilities
+        ),
+      logisticsPhase:
+        resolveManifestLogisticsPhase(
+          manifest
         ),
     });
 
@@ -2687,6 +2953,128 @@ async function configureExpeditionShell(
 
     shell.append(gmPanel);
 
+    const gmSplitter =
+      document.createElement("div");
+
+    gmSplitter.className =
+      "dhct-expedition-shell__gm-splitter";
+
+    gmSplitter.setAttribute(
+      "role",
+      "separator"
+    );
+
+    gmSplitter.setAttribute(
+      "aria-orientation",
+      "vertical"
+    );
+
+    gmSplitter.title =
+      "Redimensionner le panneau MJ";
+
+    let splitterDrag = null;
+
+    const stopSplitterDrag = () => {
+      if (!splitterDrag) return;
+
+      splitterDrag = null;
+
+      shell.classList.remove(
+        "dhct-expedition-shell--resizing"
+      );
+
+      window.removeEventListener(
+        "mousemove",
+        moveSplitter
+      );
+
+      window.removeEventListener(
+        "mouseup",
+        stopSplitterDrag
+      );
+
+      window.removeEventListener(
+        "blur",
+        stopSplitterDrag
+      );
+    };
+
+    const moveSplitter = (event) => {
+      if (!splitterDrag) return;
+
+      event.preventDefault();
+
+      const delta =
+        splitterDrag.startX -
+        event.clientX;
+
+      const minWidth = 300;
+
+      const maxWidth =
+        Math.max(
+          minWidth,
+          splitterDrag.shellWidth * 0.70
+        );
+
+      const width =
+        Math.min(
+          maxWidth,
+          Math.max(
+            minWidth,
+            splitterDrag.startWidth +
+              delta
+          )
+        );
+
+      shell.style.setProperty(
+        "--dhct-gm-panel-width",
+        `${Math.round(width)}px`
+      );
+    };
+
+    gmSplitter.addEventListener(
+      "mousedown",
+      (event) => {
+        if (event.button !== 0) return;
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const shellRect =
+          shell.getBoundingClientRect();
+
+        const panelRect =
+          gmPanel.getBoundingClientRect();
+
+        splitterDrag = {
+          startX: event.clientX,
+          startWidth: panelRect.width,
+          shellWidth: shellRect.width,
+        };
+
+        shell.classList.add(
+          "dhct-expedition-shell--resizing"
+        );
+
+        window.addEventListener(
+          "mousemove",
+          moveSplitter
+        );
+
+        window.addEventListener(
+          "mouseup",
+          stopSplitterDrag
+        );
+
+        window.addEventListener(
+          "blur",
+          stopSplitterDrag
+        );
+      }
+    );
+
+    shell.append(gmSplitter);
+
     const gmButton =
       shell.querySelector(
         "[data-dhct-expedition-gm]"
@@ -2809,6 +3197,14 @@ export async function refreshExpeditionInventoryUx() {
       { isGm }
     );
 
+  const logisticsPhaseAdministration = isGm
+    ? injectGmLogisticsPhaseManagement(
+        dialog,
+        manifest,
+        api
+      )
+    : { green: false, reason: "not-gm" };
+
   const backpackAdministration = isGm
     ? injectGmBackpackManagement(dialog, manifest, api)
     : { green: false, reason: "not-gm" };
@@ -2841,6 +3237,7 @@ export async function refreshExpeditionInventoryUx() {
     scan,
     restitution,
     roleView,
+    logisticsPhaseAdministration,
     backpackAdministration,
     sharedAccessAdministration,
     annotatedItems,
@@ -2946,7 +3343,8 @@ function injectStyles() {
       min-width: 0;
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      --dhct-gm-panel-width: clamp(340px, 31vw, 420px);
+      grid-template-columns: minmax(0, 1fr);
       grid-template-rows: auto minmax(0, 1fr);
       column-gap: .75rem;
       row-gap: .65rem;
@@ -2992,6 +3390,19 @@ function injectStyles() {
       box-shadow: inset 0 -2px 0 currentColor;
     }
 
+    .dhct-expedition-shell:has(
+      .dhct-expedition-shell__gm-panel:not([hidden])
+    ) {
+      grid-template-columns:
+        minmax(0, 1fr)
+        8px
+        minmax(
+          300px,
+          var(--dhct-gm-panel-width)
+        );
+      column-gap: 0;
+    }
+
     .dhct-expedition-shell__panes {
       grid-column: 1;
       grid-row: 2;
@@ -3017,9 +3428,9 @@ function injectStyles() {
     }
 
     .dhct-expedition-shell__gm-panel {
-      grid-column: 2;
+      grid-column: 3;
       grid-row: 2;
-      width: clamp(340px, 31vw, 420px);
+      width: auto;
       min-width: 0;
       min-height: 0;
       overflow: auto;
@@ -3032,6 +3443,104 @@ function injectStyles() {
 
     .dhct-expedition-shell__gm-panel[hidden] {
       display: none !important;
+    }
+
+    .dhct-expedition-shell__gm-splitter {
+      grid-column: 2;
+      grid-row: 2;
+      position: relative;
+      min-width: 8px;
+      width: 8px;
+      cursor: col-resize;
+      user-select: none;
+    }
+
+    .dhct-expedition-shell__gm-splitter::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 3px;
+      width: 2px;
+      border-radius: 2px;
+      background:
+        var(
+          --color-border-light-2,
+          rgba(255, 255, 255, .20)
+        );
+      opacity: .65;
+    }
+
+    .dhct-expedition-shell__gm-splitter:hover::before,
+    .dhct-expedition-shell--resizing
+      .dhct-expedition-shell__gm-splitter::before {
+      width: 3px;
+      left: 2px;
+      opacity: 1;
+    }
+
+    .dhct-expedition-shell:has(
+      .dhct-expedition-shell__gm-panel[hidden]
+    )
+      .dhct-expedition-shell__gm-splitter {
+      display: none;
+    }
+
+    .dhct-expedition-shell--resizing {
+      cursor: col-resize;
+      user-select: none;
+    }
+
+    .dhct-logistics-phase-panel__choices {
+      display: grid;
+      gap: 0.35rem;
+      margin: 0.65rem 0 0;
+      padding: 0;
+      border: 0;
+    }
+
+    .dhct-logistics-phase-panel__choices legend {
+      margin-bottom: 0.35rem;
+      font-weight: 700;
+    }
+
+    .dhct-logistics-phase-panel__choice {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 0.6rem;
+      align-items: start;
+      padding: 0.55rem 0.65rem;
+      border: 1px solid
+        var(
+          --color-border-light-2,
+          rgba(255, 255, 255, .16)
+        );
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .dhct-logistics-phase-panel__choice:hover {
+      background: rgba(255, 255, 255, .04);
+    }
+
+    .dhct-logistics-phase-panel__choice input {
+      margin-top: 0.2rem;
+      cursor: pointer;
+    }
+
+    .dhct-logistics-phase-panel__choice-content {
+      display: grid;
+      gap: 0.15rem;
+      min-width: 0;
+    }
+
+    .dhct-logistics-phase-panel__choice-content span,
+    .dhct-logistics-phase-panel__choice-content small {
+      opacity: .8;
+    }
+
+    .dhct-logistics-phase-panel__choice-content small {
+      font-size: 0.78rem;
     }
 
     /* Expedition inventory view */
@@ -3767,8 +4276,7 @@ export function installExpeditionInventoryUx() {
             : null;
 
         if (
-          target?.matches?.("dialog.application.dialog") ||
-          target?.closest?.("dialog.application.dialog")
+          target?.matches?.("dialog.application.dialog")
         ) {
           return true;
         }
@@ -3789,6 +4297,8 @@ export function installExpeditionInventoryUx() {
         ".dhct-item-lifecycle-badge",
         ".dhct-backpack-admin-panel",
         ".dhct-shared-access-panel",
+        ".dhct-logistics-phase-panel",
+        ".dhct-expedition-shell__gm-splitter",
       ].join(", ");
 
       const toolkitOnlyMutation = mutations.every((mutation) => {

@@ -5,6 +5,8 @@ export async function processInventoryAuthorityRequest(
   {
     getApi,
     userCanAccessContainer,
+    userCanTransferBetweenContainers,
+    resolveManifestLogisticsPhase,
     broadcastBackpackAccessChange,
   }
 ) {
@@ -45,11 +47,23 @@ export async function processInventoryAuthorityRequest(
       return { green: false, reason: "container-not-found" };
     }
 
-    if (
-      !userCanAccessContainer(requester, from) ||
-      !userCanAccessContainer(requester, to)
-    ) {
-      return { green: false, reason: "container-access-denied" };
+    const logisticsPhase =
+      resolveManifestLogisticsPhase(manifest);
+
+    const transferAllowed =
+      userCanTransferBetweenContainers({
+        user: requester,
+        source: from,
+        destination: to,
+        phase: logisticsPhase,
+      });
+
+    if (!transferAllowed) {
+      return {
+        green: false,
+        reason: "logistics-transfer-denied",
+        logisticsPhase,
+      };
     }
 
     const result = api.expeditionManifest.transfer(manifest, {

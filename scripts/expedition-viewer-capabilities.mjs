@@ -5,10 +5,23 @@ function flag(value) {
 export function normalizeContainerCapabilities(
   value = {}
 ) {
+  const transferTo = [
+    ...new Set(
+      (Array.isArray(value.transferTo)
+        ? value.transferTo
+        : [])
+        .map((containerId) =>
+          String(containerId ?? "").trim()
+        )
+        .filter(Boolean)
+    ),
+  ];
+
   return {
     view: flag(value.view),
     receive: flag(value.receive),
     transfer: flag(value.transfer),
+    transferTo,
     returnToActor: flag(value.returnToActor),
     consume: flag(value.consume),
     delete: flag(value.delete),

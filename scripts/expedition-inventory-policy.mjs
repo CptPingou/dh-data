@@ -2,6 +2,10 @@ import {
   containerUsedSlots,
   resolveEntryStorageProfile,
 } from "./expedition-storage.mjs";
+import {
+  logisticsDirectionAllowed,
+  normalizeContainerRole,
+} from "./expedition-logistics-phase.mjs";
 
 export function backpackAccessState(container) {
   return container?.presentation?.accessState === "stored"
@@ -124,6 +128,84 @@ export function userCanAccessContainer(user, container) {
     ["fob", "caravan", "ground"].includes(role) &&
     sharedPlayerAccessEnabled(container)
   );
+}
+
+/**
+ * Resolve the logistics role used by directional transfer policy.
+ *
+ * Backpack is an intrinsic container type.
+ * Shared roles remain resolved through inferredSharedRole().
+ */
+export function containerLogisticsRole(container) {
+  if (!container) return null;
+
+  if (container.type === "backpack") {
+    return "backpack";
+  }
+
+  const sharedRole =
+    inferredSharedRole(container);
+
+  return normalizeContainerRole(
+    sharedRole,
+    null
+  );
+}
+
+/**
+ * Compose access policy with the pure directional logistics matrix.
+ *
+ * This function deliberately does NOT execute the transfer and does not
+ * decide storage capacity, stack limits or item compatibility.
+ */
+export function userCanTransferBetweenContainers({
+  user,
+  source,
+  destination,
+  phase,
+} = {}) {
+  if (
+    !user ||
+    !source ||
+    !destination
+  ) {
+    return false;
+  }
+
+  if (
+    source.id != null &&
+    destination.id != null &&
+    String(source.id) ===
+      String(destination.id)
+  ) {
+    return false;
+  }
+
+  if (
+    !userCanAccessContainer(user, source) ||
+    !userCanAccessContainer(user, destination)
+  ) {
+    return false;
+  }
+
+  const sourceRole =
+    containerLogisticsRole(source);
+
+  const destinationRole =
+    containerLogisticsRole(destination);
+
+  if (
+    !sourceRole ||
+    !destinationRole
+  ) {
+    return false;
+  }
+
+  return logisticsDirectionAllowed({
+    phase,
+    sourceRole,
+    destinationRole,
+  });
 }
 
 export function normalizeBackpackSlots(container, slotCount) {

@@ -380,12 +380,18 @@ function installContainerDropTarget(
         return;
       }
 
+      const transferTo =
+        Array.isArray(payload?.transferTo)
+          ? payload.transferTo
+          : [];
+
       if (
         !payload?.entryId ||
         !payload?.fromContainerId ||
         !toContainerId ||
         payload.fromContainerId ===
-          toContainerId
+          toContainerId ||
+        !transferTo.includes(toContainerId)
       ) {
         return;
       }
@@ -462,6 +468,16 @@ function installEntryDragSources(
                 1,
                 Number(entry.quantity) || 1
               ),
+            transferTo:
+              Array.isArray(
+                container.capabilities
+                  ?.transferTo
+              )
+                ? [
+                    ...container.capabilities
+                      .transferTo,
+                  ]
+                : [],
           })
         );
 
@@ -692,11 +708,21 @@ function renderDetail(
   let transferTarget = null;
   let transferLabel = null;
 
+  const transferTo =
+    Array.isArray(
+      container.capabilities?.transferTo
+    )
+      ? container.capabilities.transferTo
+      : [];
+
   if (
     isPersonal &&
     ground &&
     container.capabilities?.transfer === true &&
-    ground.capabilities?.receive === true
+    ground.capabilities?.receive === true &&
+    transferTo.includes(
+      ground.containerId
+    )
   ) {
     transferTarget = ground;
     transferLabel = "Envoyer au Sol";
@@ -704,7 +730,10 @@ function renderDetail(
     isGround &&
     selectedPersonal &&
     container.capabilities?.transfer === true &&
-    selectedPersonal.capabilities?.receive === true
+    selectedPersonal.capabilities?.receive === true &&
+    transferTo.includes(
+      selectedPersonal.containerId
+    )
   ) {
     transferTarget = selectedPersonal;
     transferLabel = "Mettre dans le sac";

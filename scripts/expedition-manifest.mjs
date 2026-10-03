@@ -52,12 +52,34 @@ export function migrateExpeditionManifestV1(manifest) {
 }
 
 export function normalizeExpeditionManifest(manifest) {
-  if (manifest?.schema === EXPEDITION_MANIFEST_SCHEMA_V1) return migrateExpeditionManifestV1(manifest);
-  return clone(manifest);
+  const normalized =
+    manifest?.schema === EXPEDITION_MANIFEST_SCHEMA_V1
+      ? migrateExpeditionManifestV1(manifest)
+      : clone(manifest);
+
+  const logisticsPhase =
+    normalized?.logistics?.phase;
+
+  if (logisticsPhase === "arc-logistics") {
+    normalized.logistics.phase =
+      "field-extraction";
+  } else if (logisticsPhase === "returned") {
+    normalized.logistics.phase =
+      "arc-extraction";
+  }
+
+  return normalized;
 }
 
 export function validateExpeditionManifest(input) {
-  const migrated = input?.schema === EXPEDITION_MANIFEST_SCHEMA_V1;
+  const legacyLogisticsPhase =
+    input?.logistics?.phase === "arc-logistics" ||
+    input?.logistics?.phase === "returned";
+
+  const migrated =
+    input?.schema === EXPEDITION_MANIFEST_SCHEMA_V1 ||
+    legacyLogisticsPhase;
+
   const manifest = normalizeExpeditionManifest(input);
   const errors = [];
   if (!manifest || typeof manifest !== "object" || Array.isArray(manifest)) {
@@ -68,6 +90,23 @@ export function validateExpeditionManifest(input) {
   if (!nonEmpty(manifest.expeditionId)) errors.push("expeditionId is required");
   if (!Number.isInteger(manifest.revision) || manifest.revision < 1) errors.push("revision must be an integer >= 1");
   if (!PHASES.has(manifest.phase)) errors.push("phase must be prepared, in_session or returned");
+
+  const logisticsPhase =
+    manifest?.logistics?.phase;
+
+  if (
+    logisticsPhase != null &&
+    ![
+      "field",
+      "field-extraction",
+      "arc-extraction",
+    ].includes(logisticsPhase)
+  ) {
+    errors.push(
+      "logistics.phase must be field, field-extraction or arc-extraction"
+    );
+  }
+
   if (!AUTHORITIES.has(manifest.authority)) errors.push("authority must be web or foundry");
   if (!Array.isArray(manifest.characters)) errors.push("characters must be an array");
   if (!Array.isArray(manifest.containers)) errors.push("containers must be an array");
@@ -930,6 +969,9 @@ export function createEmptyExpeditionManifest({ expeditionId = "new-expedition" 
     expeditionId,
     revision: 1,
     phase: "prepared",
+    logistics: {
+      phase: "field",
+    },
     authority: "web",
     characters: [],
     containers: [],
