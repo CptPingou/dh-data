@@ -94,7 +94,6 @@ export function buildExpeditionRestitutionPlan(manifest) {
         itemType: entry.itemRef?.type ?? null,
         sourceId: entry.itemRef?.sourceId ?? null,
         quantity: entry.quantity ?? null,
-        slotId: entry.slotId ?? null,
         lifecycle: readiness.lifecycle,
         snapshotAvailable: readiness.snapshotAvailable,
         sourceResolvableHint: readiness.sourceResolvableHint,

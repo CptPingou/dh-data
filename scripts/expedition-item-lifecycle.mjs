@@ -219,7 +219,6 @@ export function consumeExpeditionItem(entry, { quantity = 1, note = null } = {})
   entry.itemRef.lifecycle.version = EXPEDITION_ITEM_LIFECYCLE_VERSION;
 
   if (remainingQuantity === 0) {
-    entry.slotId = null;
     entry.itemRef.lifecycle.state = "consumed";
   }
 
@@ -317,7 +316,6 @@ export function deleteExpeditionItem(entry, { note = null } = {}) {
   const previousState = normalizeExpeditionItemState(entry.itemRef);
 
   entry.quantity = 0;
-  entry.slotId = null;
   entry.itemRef.lifecycle ??= createActiveItemLifecycle();
   entry.itemRef.lifecycle.version = EXPEDITION_ITEM_LIFECYCLE_VERSION;
   entry.itemRef.lifecycle.state = "deleted";

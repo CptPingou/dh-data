@@ -1,3 +1,8 @@
+import {
+  containerStorageCapacity,
+  resolveEntryStorageProfile,
+} from "./expedition-storage.mjs";
+
 const clone = (value) =>
   value == null
     ? value
@@ -14,18 +19,6 @@ function activeEntries(container) {
   });
 }
 
-function usedSlots(container) {
-  const contents = activeEntries(container);
-
-  const slotted = new Set(
-    contents
-      .map((entry) => entry?.slotId)
-      .filter(Boolean)
-  );
-
-  return slotted.size || contents.length;
-}
-
 function projectEntry(entry) {
   const ref = entry?.itemRef ?? {};
   const lifecycle = ref.lifecycle?.state ?? "legacy";
@@ -37,7 +30,6 @@ function projectEntry(entry) {
 
   return {
     entryId: entry?.entryId ?? null,
-    slotId: entry?.slotId ?? null,
     quantity: Math.max(0, Number(entry?.quantity) || 0),
 
     item: {
@@ -84,9 +76,9 @@ export function projectInventoryContainer(
   }
 
   const capacity =
-    Math.max(0, Number(container.capacity?.slots) || 0);
-
-  const used = usedSlots(container);
+    containerStorageCapacity(container, {
+      resolveStorage: resolveEntryStorageProfile,
+    });
 
   return {
     containerId: container.containerId,
@@ -109,18 +101,9 @@ export function projectInventoryContainer(
         : "available",
 
     capacity: {
-      slots: capacity,
-      used,
-      free: Math.max(0, capacity - used),
-    },
-
-    layout: {
-      slots: (container.layout?.slots ?? []).map(
-        (slot) => ({
-          slotId: slot?.slotId ?? null,
-          label: slot?.label ?? null,
-        })
-      ),
+      slots: capacity.slots,
+      used: capacity.used,
+      free: capacity.free,
     },
 
     materialStorage:

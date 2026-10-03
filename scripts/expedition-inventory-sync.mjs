@@ -64,7 +64,6 @@ async function requestInventoryAuthorityActionCore(payload = {}) {
     action: payload.action ?? null,
     fromContainerId: payload.fromContainerId ?? null,
     toContainerId: payload.toContainerId ?? null,
-    toSlotId: payload.toSlotId ?? null,
     entryId: payload.entryId ?? null,
     itemUuid: payload.itemUuid ?? null,
     quantity: payload.quantity ?? 1,

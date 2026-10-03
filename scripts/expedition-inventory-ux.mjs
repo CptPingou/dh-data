@@ -3525,16 +3525,6 @@ function injectStyles() {
       min-height: 0;
     }
 
-    dialog.dhct-expedition-layout .dct-expedition-grid {
-      grid-auto-rows: 128px !important;
-      row-gap: .85rem !important;
-    }
-
-    dialog.dhct-expedition-layout .dct-expedition-grid-slot {
-      min-height: 128px;
-      overflow: visible;
-    }
-
     dialog.dhct-expedition-layout .dct-expedition-item-tile {
       min-height: 118px;
       height: auto;
@@ -3569,32 +3559,6 @@ function injectStyles() {
     dialog.dhct-expedition-layout .dct-expedition-browser > *:nth-child(3) {
       background: rgba(26, 23, 31, .48);
     }
-
-    dialog.dhct-expedition-layout .dct-expedition-grid-slot {
-      box-sizing: border-box;
-      border: 1px solid rgba(203, 182, 147, .34);
-      border-radius: 7px;
-      transition:
-        background-color 120ms ease,
-        border-color 120ms ease,
-        box-shadow 120ms ease;
-    }
-
-    dialog.dhct-expedition-layout .dct-expedition-grid-slot.is-empty {
-      background: rgba(53, 56, 63, .30);
-      border-color: rgba(172, 176, 186, .25);
-    }
-
-    dialog.dhct-expedition-layout .dct-expedition-grid-slot.is-occupied {
-      background: rgba(87, 67, 45, .32);
-      border-color: rgba(205, 174, 128, .50);
-    }
-
-    dialog.dhct-expedition-layout .dct-expedition-grid-slot:hover {
-      border-color: rgba(229, 203, 159, .72);
-      box-shadow: inset 0 0 0 1px rgba(229, 203, 159, .12);
-    }
-
 
     dialog.dhct-expedition-layout
       .dct-expedition-item-detail

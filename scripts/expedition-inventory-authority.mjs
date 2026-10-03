@@ -56,7 +56,6 @@ export async function processInventoryAuthorityRequest(
       entryId: message.entryId,
       fromContainerId: message.fromContainerId,
       toContainerId: message.toContainerId,
-      toSlotId: message.toSlotId ?? null,
       quantity:
         message.quantity == null
           ? null

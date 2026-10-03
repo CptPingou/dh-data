@@ -1,3 +1,9 @@
+import {
+  containerStorageCapacity,
+  resolveEntryStorageProfile,
+  storageSlotCost,
+} from "./expedition-storage.mjs";
+
 const MODULE_ID = "daggerheart-campaign-toolkit";
 
 function esc(value) {
@@ -29,8 +35,17 @@ function holderLabel(container, characterById) {
   return "Sans détenteur";
 }
 
-function usedSlots(container) {
-  return new Set((container.contents ?? []).map((entry) => entry.slotId).filter(Boolean)).size || (container.contents ?? []).length;
+function storageCapacity(container) {
+  return containerStorageCapacity(container, {
+    resolveStorage: resolveEntryStorageProfile,
+  });
+}
+
+function entrySlotCost(entry) {
+  return storageSlotCost(
+    entry?.quantity ?? 0,
+    resolveEntryStorageProfile(entry)
+  );
 }
 
 function graphicImg(src, className, alt = "") {
@@ -45,63 +60,92 @@ function containerPresentation(container) {
 }
 
 function capacityPercent(container) {
-  const capacity = Math.max(0, Number(container.capacity?.slots ?? 0));
-  if (!capacity) return 0;
-  return Math.min(100, Math.round((usedSlots(container) / capacity) * 100));
+  const capacity = storageCapacity(container);
+
+  if (!capacity.slots) return 0;
+
+  return Math.min(
+    100,
+    Math.round(
+      (capacity.used / capacity.slots) * 100
+    )
+  );
 }
 
 function entryTileHtml(entry, containerId) {
-  const quantity = Number(entry.quantity ?? 1);
-  const quantityBadge = quantity > 1 ? `<span class="dct-expedition-quantity">×${esc(quantity)}</span>` : "";
-  const rawName = entry.itemRef?.name ?? entry.itemRef?.sourceId ?? "Objet";
+  const quantity = Math.max(
+    0,
+    Number(entry.quantity ?? 0)
+  );
+
+  const quantityBadge =
+    quantity > 1
+      ? `<span class="dct-expedition-quantity">?${esc(quantity)}</span>`
+      : "";
+
+  const rawName =
+    entry.itemRef?.name ??
+    entry.itemRef?.sourceId ??
+    "Objet";
+
   const name = esc(rawName);
-  const image = graphicImg(entry.itemRef?.img, "dct-expedition-item-art", rawName);
-  return `<div class="dct-expedition-entry dct-expedition-item-tile${image ? " has-art" : ""}" draggable="true"
-      data-entry-id="${esc(entry.entryId)}" data-source-container-id="${esc(containerId)}"
-      title="${name}" role="button" tabindex="0">
-    ${image}
-    <span class="dct-expedition-item-name">${name}</span>
-    ${quantityBadge}
+
+  const image = graphicImg(
+    entry.itemRef?.img,
+    "dct-expedition-item-art",
+    rawName
+  );
+
+  const slots = entrySlotCost(entry);
+
+  const slotLabel =
+    `${slots} slot${slots > 1 ? "s" : ""}`;
+
+  return `<div
+      class="dct-expedition-entry dct-expedition-item-tile dct-expedition-item-row${image ? " has-art" : ""}"
+      draggable="true"
+      data-entry-id="${esc(entry.entryId)}"
+      data-source-container-id="${esc(containerId)}"
+      title="${name}"
+      role="button"
+      tabindex="0">
+    <div class="dct-expedition-item-row-main">
+      ${image}
+      <span class="dct-expedition-item-name">${name}</span>
+      ${quantityBadge}
+    </div>
+    <span class="dct-expedition-item-slot-cost">
+      ${esc(slotLabel)}
+    </span>
   </div>`;
 }
 
-function inventoryGridHtml(container) {
-  const contents = container.contents ?? [];
-  const declaredSlots = container.layout?.slots ?? [];
-  const capacity = Math.max(0, Number(container.capacity?.slots ?? 0));
-  const slotCount = Math.max(capacity, declaredSlots.length);
-  const columns = Math.max(1, Math.min(Number(container.layout?.columns ?? 4) || 4, Math.max(slotCount, 1)));
-
-  const slots = Array.from({ length: slotCount }, (_, index) =>
-    declaredSlots[index] ?? { slotId: `slot-${index + 1}`, label: `Emplacement ${index + 1}` }
+function inventoryListHtml(container) {
+  const contents = (container.contents ?? []).filter(
+    (entry) =>
+      entry?.state !== "consumed" &&
+      entry?.state !== "deleted" &&
+      Math.max(
+        0,
+        Number(entry?.quantity ?? 0)
+      ) > 0
   );
-  const bySlot = new Map(contents.filter((entry) => entry.slotId).map((entry) => [entry.slotId, entry]));
-  const unslotted = contents.filter((entry) => !entry.slotId);
-  let unslottedIndex = 0;
 
-  const cells = slots.map((slot) => {
-    const entry = bySlot.get(slot.slotId) ?? unslotted[unslottedIndex++] ?? null;
-    const occupied = Boolean(entry);
-    const presentation = containerPresentation(container);
-    const slotArt = !entry ? graphicImg(presentation.slotBackground, "dct-expedition-slot-art", "") : "";
-    return `<div class="dct-expedition-grid-slot${occupied ? " is-occupied" : " is-empty"}"
-        data-drop-container-id="${esc(container.containerId)}"
-        data-slot-id="${esc(slot.slotId)}"
-        title="${esc(slot.label ?? slot.slotId)}">
-      ${slotArt}
-      ${entry ? entryTileHtml(entry, container.containerId) : `<span class="dct-expedition-slot-index">${esc(String(slots.indexOf(slot) + 1))}</span>`}
+  if (!contents.length) {
+    return `<div class="dct-expedition-inventory-empty">
+      Inventaire vide
     </div>`;
-  }).join("");
+  }
 
-  return `<div class="dct-expedition-grid" style="
-      display:grid;
-      grid-template-columns:repeat(${columns}, 82px);
-      grid-auto-rows:82px;
-      gap:.45rem;
-      width:max-content;
-      max-width:100%;
-      margin-top:.65rem;">
-    ${cells}
+  return `<div class="dct-expedition-inventory-list">
+    ${contents
+      .map((entry) =>
+        entryTileHtml(
+          entry,
+          container.containerId
+        )
+      )
+      .join("")}
   </div>`;
 }
 
@@ -141,94 +185,236 @@ function itemDetailHtml(container, entry) {
 }
 
 function containerDetailHtml(container, characterById) {
-  if (!container) return `<div class="dct-expedition-empty">Aucun conteneur dans cette expédition.</div>`;
-  const owner = holderLabel(container, characterById);
-  const used = usedSlots(container);
-  const capacity = container.capacity?.slots ?? 0;
-  const presentation = containerPresentation(container);
-  const icon = graphicImg(presentation.icon, "dct-expedition-container-icon", container.name);
-  const background = graphicImg(presentation.background, "dct-expedition-container-background", "");
-  const frame = graphicImg(presentation.frame, "dct-expedition-container-frame", "");
+  if (!container) {
+    return `<div class="dct-expedition-empty">
+      Aucun conteneur dans cette exp?dition.
+    </div>`;
+  }
+
+  const owner = holderLabel(
+    container,
+    characterById
+  );
+
+  const capacityState =
+    storageCapacity(container);
+
+  const used = capacityState.used;
+  const capacity = capacityState.slots;
+
+  const presentation =
+    containerPresentation(container);
+
+  const icon = graphicImg(
+    presentation.icon,
+    "dct-expedition-container-icon",
+    container.name
+  );
+
+  const background = graphicImg(
+    presentation.background,
+    "dct-expedition-container-background",
+    ""
+  );
+
+  const frame = graphicImg(
+    presentation.frame,
+    "dct-expedition-container-frame",
+    ""
+  );
+
   const rules = (container.rules ?? []).length
-    ? `<div class="dct-expedition-rules"><strong>Règles :</strong> ${container.rules.map((r) => esc(r.text ?? r.label ?? r.name ?? r.ruleId ?? r.id ?? "Règle spéciale")).join(" · ")}</div>`
-    : `<div class="dct-expedition-rules is-empty">Aucune règle spéciale</div>`;
+    ? `<div class="dct-expedition-rules">
+        <strong>R?gles :</strong>
+        ${container.rules
+          .map((r) =>
+            esc(
+              r.text ??
+              r.label ??
+              r.name ??
+              r.ruleId ??
+              r.id ??
+              "R?gle sp?ciale"
+            )
+          )
+          .join(" ? ")}
+      </div>`
+    : `<div class="dct-expedition-rules is-empty">
+        Aucune r?gle sp?ciale
+      </div>`;
 
-  const looseEntries = (container.contents ?? []).filter((entry) => !entry.slotId && used >= capacity);
-  const overflow = looseEntries.length
-    ? `<div class="dct-expedition-overflow"><strong>Hors grille :</strong> ${looseEntries.map((entry) => esc(entry.itemRef?.name ?? "Objet")).join(" · ")}</div>`
-    : "";
+  const overflow =
+    capacityState.overflow > 0
+      ? `<div class="dct-expedition-overflow">
+          <strong>Surcharge :</strong>
+          ${esc(capacityState.overflow)}
+          slot${capacityState.overflow > 1 ? "s" : ""}
+        </div>`
+      : "";
 
-  return `<section class="dct-expedition-container dct-expedition-container--${esc(container.type)}"
-      data-container-id="${esc(container.containerId)}" data-container-type="${esc(container.type)}">
+  const research =
+    container.containerId === "fob" ||
+    String(
+      presentation.playerRole ?? ""
+    ).toLowerCase() === "fob"
+      ? `<div style="margin:.6rem 0">
+          <button
+              type="button"
+              data-expedition-action="open-research-station"
+              data-container-id="${esc(container.containerId)}">
+            <i class="fa-solid fa-flask"></i>
+            Station de recherche
+          </button>
+        </div>`
+      : "";
+
+  return `<section
+      class="dct-expedition-container dct-expedition-container--${esc(container.type)}"
+      data-container-id="${esc(container.containerId)}"
+      data-container-type="${esc(container.type)}">
     <div class="dct-expedition-container-stage">
       ${background}
+
       <div class="dct-expedition-container-stage-content">
         <header class="dct-expedition-container-header">
           <div class="dct-expedition-container-identity">
-            <div class="dct-expedition-container-icon-slot">${icon || `<i class="fa-solid ${container.type === "caravan" ? "fa-wagon-covered" : "fa-bag-shopping"}"></i>`}</div>
+            <div class="dct-expedition-container-icon-slot">
+              ${icon || `<i class="fa-solid ${container.type === "caravan" ? "fa-wagon-covered" : "fa-bag-shopping"}"></i>`}
+            </div>
+
             <div>
-              <div class="dct-expedition-container-name">${esc(container.name)}</div>
-              <div class="dct-expedition-container-owner">${esc(owner)} · ${esc(typeLabel(container.type))} · ${esc(container.scope)}</div>
+              <div class="dct-expedition-container-name">
+                ${esc(container.name)}
+              </div>
+
+              <div class="dct-expedition-container-owner">
+                ${esc(owner)} ?
+                ${esc(typeLabel(container.type))} ?
+                ${esc(container.scope)}
+              </div>
             </div>
           </div>
+
           <div class="dct-expedition-capacity">
             <strong>${used}/${capacity}</strong>
-            <span>emplacements</span>
+            <span>slots</span>
           </div>
         </header>
 
-        <meter class="dct-expedition-capacity-meter"
-          min="0" max="${Math.max(1, capacity)}" value="${Math.min(used, Math.max(1, capacity))}"
-          aria-label="${used} emplacements utilisés sur ${capacity}">
+        <meter
+            class="dct-expedition-capacity-meter"
+            min="0"
+            max="${Math.max(1, capacity)}"
+            value="${Math.min(used, Math.max(1, capacity))}"
+            aria-label="${used} slots utilis?s sur ${capacity}">
           ${used}/${capacity}
         </meter>
 
         ${rules}
+        ${research}
 
-        ${(container.containerId === "fob" || String(presentation.playerRole ?? "").toLowerCase() === "fob") ? `<div style="margin:.6rem 0"><button type="button" data-expedition-action="open-research-station" data-container-id="${esc(container.containerId)}"><i class="fa-solid fa-flask"></i> Station de recherche</button></div>` : ""}
-
-        <div class="dct-expedition-grid-shell">
-          ${inventoryGridHtml(container)}
+        <div
+            class="dct-expedition-inventory-shell"
+            data-drop-container-id="${esc(container.containerId)}">
+          ${inventoryListHtml(container)}
         </div>
+
         ${overflow}
       </div>
+
       ${frame}
     </div>
   </section>`;
 }
-function containerListHtml(containers, characterById, selectedId) {
-  if (!containers.length) return `<div class="dct-expedition-empty">Aucun conteneur</div>`;
+
+function containerListHtml(
+  containers,
+  characterById,
+  selectedId
+) {
+  if (!containers.length) {
+    return `<div class="dct-expedition-empty">
+      Aucun conteneur
+    </div>`;
+  }
+
   const groups = [
     ["personal", "Personnels"],
     ["party", "Groupe"],
-    ["expedition", "Expédition"],
+    ["expedition", "Exp?dition"],
   ];
-  return groups.map(([scope, label]) => {
-    const scoped = containers.filter((c) => c.scope === scope);
-    if (!scoped.length) return "";
-    return `<section class="dct-expedition-list-group"><h4>${label}</h4>${scoped.map((container) => {
-      const used = usedSlots(container);
-      const capacity = container.capacity?.slots ?? 0;
-      const presentation = containerPresentation(container);
-      const icon = graphicImg(presentation.icon, "dct-expedition-list-icon", container.name);
-      return `<div class="dct-expedition-list-item${container.containerId === selectedId ? " is-selected" : ""}"
-          data-container-id="${esc(container.containerId)}"
-          data-drop-container-id="${esc(container.containerId)}">
-        <div class="dct-expedition-list-icon-slot">${icon || `<i class="fa-solid ${container.type === "caravan" ? "fa-wagon-covered" : "fa-bag-shopping"}"></i>`}</div>
-        <div class="dct-expedition-list-copy">
-          <strong>${esc(container.name)}</strong>
-          <span>${esc(holderLabel(container, characterById))} · ${esc(typeLabel(container.type))}</span>
-          <meter class="dct-expedition-list-meter"
-            min="0" max="${Math.max(1, capacity)}" value="${Math.min(used, Math.max(1, capacity))}"
-            aria-label="${used} emplacements utilisés sur ${capacity}">
-            ${used}/${capacity}
-          </meter>
-        </div>
-        <div class="dct-expedition-list-count">${used}/${capacity}</div>
-      </div>`;
-    }).join("")}</section>`;
-  }).join("");
+
+  return groups
+    .map(([scope, label]) => {
+      const scoped = containers.filter(
+        (container) =>
+          container.scope === scope
+      );
+
+      if (!scoped.length) return "";
+
+      return `<section class="dct-expedition-list-group">
+        <h4>${label}</h4>
+
+        ${scoped
+          .map((container) => {
+            const capacityState =
+              storageCapacity(container);
+
+            const used =
+              capacityState.used;
+
+            const capacity =
+              capacityState.slots;
+
+            const presentation =
+              containerPresentation(container);
+
+            const icon = graphicImg(
+              presentation.icon,
+              "dct-expedition-list-icon",
+              container.name
+            );
+
+            return `<div
+                class="dct-expedition-list-item${container.containerId === selectedId ? " is-selected" : ""}"
+                data-container-id="${esc(container.containerId)}"
+                data-drop-container-id="${esc(container.containerId)}">
+
+              <div class="dct-expedition-list-icon-slot">
+                ${icon || `<i class="fa-solid ${container.type === "caravan" ? "fa-wagon-covered" : "fa-bag-shopping"}"></i>`}
+              </div>
+
+              <div class="dct-expedition-list-copy">
+                <strong>${esc(container.name)}</strong>
+
+                <span>
+                  ${esc(holderLabel(container, characterById))}
+                  ?
+                  ${esc(typeLabel(container.type))}
+                </span>
+
+                <meter
+                    class="dct-expedition-list-meter"
+                    min="0"
+                    max="${Math.max(1, capacity)}"
+                    value="${Math.min(used, Math.max(1, capacity))}"
+                    aria-label="${used} slots utilis?s sur ${capacity}">
+                  ${used}/${capacity}
+                </meter>
+              </div>
+
+              <div class="dct-expedition-list-count">
+                ${used}/${capacity}
+              </div>
+            </div>`;
+          })
+          .join("")}
+      </section>`;
+    })
+    .join("");
 }
+
 function ledgerHtml(manifest) {
   const events = manifest.ledger ?? [];
   if (!events.length) return `<div class="dct-expedition-ledger"><strong>Journal :</strong> aucun événement</div>`;
@@ -297,22 +483,24 @@ export function expeditionWindowContent(manifest, validation = null, selectedId 
       .dct-expedition-capacity{display:flex;flex-direction:column;text-align:right}
       .dct-expedition-capacity strong{font-size:1.1rem}
       .dct-expedition-capacity span{font-size:.75rem;opacity:.68}
+      .dct-expedition-inventory-shell{margin-top:.65rem;min-height:72px;border:1px dashed transparent;border-radius:6px}
+      .dct-expedition-inventory-shell.is-drop-target{border-color:var(--color-warm-1);background:rgba(255,255,255,.04)}
+      .dct-expedition-inventory-list{display:flex;flex-direction:column;gap:.4rem}
+      .dct-expedition-item-row{display:flex;align-items:center;justify-content:space-between;gap:.65rem;min-height:52px;padding:.4rem .55rem}
+      .dct-expedition-item-row-main{display:flex;align-items:center;gap:.55rem;min-width:0;flex:1}
+      .dct-expedition-item-row .dct-expedition-item-name{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      .dct-expedition-item-slot-cost{font-size:.78rem;opacity:.72;white-space:nowrap}
+      .dct-expedition-inventory-empty{padding:1rem;text-align:center;opacity:.62;font-style:italic}
       .dct-expedition-capacity-track{margin:.6rem 0}
       .dct-expedition-rules{padding:.4rem .5rem;border-left:3px solid var(--color-warm-1);background:rgba(0,0,0,.08);border-radius:3px}
       .dct-expedition-rules.is-empty{opacity:.58}
-      .dct-expedition-grid-shell{overflow:auto;padding:.1rem 0 .25rem}
-      .dct-expedition-grid-slot{position:relative;width:var(--dct-slot-size);height:var(--dct-slot-size);box-sizing:border-box;border:1px solid var(--color-border-light-2);border-radius:5px;background:rgba(0,0,0,.14);display:flex;align-items:center;justify-content:center;overflow:hidden}
-      .dct-expedition-grid-slot.is-empty{border-style:dashed}
-      .dct-expedition-grid-slot.is-drop-target{outline:2px solid var(--color-warm-1)}
-      .dct-expedition-slot-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:.72;pointer-events:none}
-      .dct-expedition-item-tile{position:absolute;inset:0;padding:.35rem;display:flex;align-items:center;justify-content:center;text-align:center;cursor:grab;background:rgba(255,255,255,.055);font-weight:600}
+      .dct-expedition-item-tile{position:relative;padding:.35rem;display:flex;align-items:center;justify-content:center;text-align:center;cursor:grab;background:rgba(255,255,255,.055);font-weight:600}
       .dct-expedition-item-tile.has-art{padding:0}
       .dct-expedition-item-tile.is-selected{outline:3px solid var(--color-warm-1);outline-offset:-3px}
-      .dct-expedition-item-art{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+      .dct-expedition-item-art{position:relative;width:42px;height:42px;flex:0 0 42px;object-fit:cover;border-radius:4px}
       .dct-expedition-item-tile.has-art .dct-expedition-item-name{display:none}
       .dct-expedition-item-name{overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical}
-      .dct-expedition-quantity{position:absolute;right:.25rem;top:.2rem;padding:.05rem .25rem;border-radius:3px;background:rgba(0,0,0,.78);color:#fff;font-weight:700;z-index:2}
-      .dct-expedition-slot-index{position:absolute;right:.28rem;bottom:.18rem;z-index:1;font-size:.66rem;opacity:.42}
+      .dct-expedition-quantity{position:relative;padding:.05rem .25rem;border-radius:3px;background:rgba(0,0,0,.78);color:#fff;font-weight:700}
       .dct-expedition-item-panel{position:sticky;top:.25rem;min-width:0}
       .dct-expedition-item-panel .dct-expedition-item-detail{margin-top:0}
       .dct-expedition-item-detail{padding:.65rem;border:1px solid var(--color-border-light-2);border-radius:6px;background:rgba(0,0,0,.08);display:flex;flex-direction:column;gap:.75rem;align-items:stretch}
@@ -413,7 +601,6 @@ function parseExpeditionDrop(event) {
 
 async function requestAuthoritativeDrop(manifest, payload, {
   toContainerId,
-  toSlotId = null,
 } = {}) {
   const authority = globalThis.dhctExpeditionAuthority;
 
@@ -431,7 +618,6 @@ async function requestAuthoritativeDrop(manifest, payload, {
       entryId: payload.entryId,
       fromContainerId: payload.fromContainerId,
       toContainerId,
-      toSlotId,
     });
   }
 
@@ -442,7 +628,6 @@ async function requestAuthoritativeDrop(manifest, payload, {
       itemUuid: payload.itemUuid,
       quantity: 1,
       toContainerId,
-      toSlotId,
     });
   }
 
@@ -561,7 +746,11 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
         const payload = parseExpeditionDrop(event);
         if (!payload) return;
 
-        const toContainerId = row.dataset.containerId;
+        const toContainerId =
+          row.dataset.dropContainerId ??
+          row.dataset.containerId;
+
+        if (!toContainerId) return;
 
         if (!game.user?.isGM || payload.kind === "item") {
           const result = await requestAuthoritativeDrop(manifest, payload, {
@@ -609,43 +798,65 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
       });
     }
 
-    for (const slot of root.querySelectorAll(".dct-expedition-grid-slot[data-drop-container-id][data-slot-id]")) {
-      if (slot.dataset.dctBound === "1") continue;
-      slot.dataset.dctBound = "1";
+    for (const dropTarget of root.querySelectorAll(
+      ".dct-expedition-inventory-shell[data-drop-container-id]"
+    )) {
+      if (dropTarget.dataset.dctBound === "1") continue;
+      dropTarget.dataset.dctBound = "1";
 
-      slot.addEventListener("dragover", (event) => {
+      dropTarget.addEventListener("dragover", (event) => {
         event.preventDefault();
-        slot.classList.add("is-drop-target");
+        dropTarget.classList.add("is-drop-target");
       });
-      slot.addEventListener("dragleave", () => slot.classList.remove("is-drop-target"));
-      slot.addEventListener("drop", async (event) => {
+
+      dropTarget.addEventListener("dragleave", (event) => {
+        if (
+          event.relatedTarget &&
+          dropTarget.contains(event.relatedTarget)
+        ) {
+          return;
+        }
+
+        dropTarget.classList.remove("is-drop-target");
+      });
+
+      dropTarget.addEventListener("drop", async (event) => {
         event.preventDefault();
         event.stopPropagation();
-        slot.classList.remove("is-drop-target");
+
+        dropTarget.classList.remove("is-drop-target");
+
         if (typeof transfer !== "function") return;
 
         const payload = parseExpeditionDrop(event);
         if (!payload) return;
 
-        const toContainerId = slot.dataset.dropContainerId;
-        const toSlotId = slot.dataset.slotId;
+        const toContainerId =
+          dropTarget.dataset.dropContainerId;
+
+        if (!toContainerId) return;
 
         if (!game.user?.isGM || payload.kind === "item") {
-          const result = await requestAuthoritativeDrop(manifest, payload, {
-            toContainerId,
-            toSlotId,
-          });
+          const result =
+            await requestAuthoritativeDrop(
+              manifest,
+              payload,
+              { toContainerId }
+            );
 
           if (!result?.green) {
-            ui.notifications.warn(`Campaign Toolkit : ${authorityErrorMessage(result?.reason)}`);
+            ui.notifications.warn(
+              `Campaign Toolkit : ${authorityErrorMessage(result?.reason)}`
+            );
             return;
           }
 
           ui.notifications.info(
             payload.kind === "item"
-              ? `Campaign Toolkit : ${result.itemName ?? "objet"} déposé et validé par le MJ.`
-              : "Campaign Toolkit : transfert validé par le MJ."
+              ? `Campaign Toolkit : ${result.itemName ?? "objet"} d?pos? et valid? par le MJ.`
+              : "Campaign Toolkit : transfert valid? par le MJ."
           );
+
           return;
         }
 
@@ -653,26 +864,41 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
           entryId: payload.entryId,
           fromContainerId: payload.fromContainerId,
           toContainerId,
-          toSlotId,
         });
+
         if (!result?.moved) {
-          if (result?.reason && !["same-container", "same-slot"].includes(result.reason)) {
-            ui.notifications.warn(`Campaign Toolkit : transfert refusé — ${result.reason}.`);
+          if (
+            result?.reason &&
+            result.reason !== "same-container"
+          ) {
+            ui.notifications.warn(
+              `Campaign Toolkit : transfert refus? ? ${result.reason}.`
+            );
           }
+
           return;
         }
 
         currentSelectedId = toContainerId;
+
         if (typeof save === "function") {
           try {
             await save(manifest);
           } catch (error) {
-            console.error(`${MODULE_ID} | expedition autosave failed`, error);
-            ui.notifications.error("Campaign Toolkit : modification effectuée, mais sauvegarde World échouée.");
+            console.error(
+              `${MODULE_ID} | expedition autosave failed`,
+              error
+            );
+
+            ui.notifications.error(
+              "Campaign Toolkit : modification effectu?e, mais sauvegarde World ?chou?e."
+            );
+
             refreshLocal();
             return;
           }
         }
+
         refreshLocal();
       });
     }
@@ -714,7 +940,10 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
       if (button.dataset.dctBound === "1") continue;
       button.dataset.dctBound = "1";
 
-      button.addEventListener("click", async () => {
+      button.addEventListener("click", async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
         const containerId = button.dataset.containerId;
         const entryId = button.dataset.entryId;
 

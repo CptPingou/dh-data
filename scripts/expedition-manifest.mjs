@@ -1,3 +1,8 @@
+import {
+  containerStorageCapacity,
+  resolveEntryStorageProfile,
+} from "./expedition-storage.mjs";
+
 export const EXPEDITION_MANIFEST_SCHEMA = "daggerheart-campaign-toolkit/expedition-manifest@2";
 export const EXPEDITION_MANIFEST_SCHEMA_V1 = "daggerheart-campaign-toolkit/expedition-manifest@1";
 
@@ -100,7 +105,6 @@ export function validateExpeditionManifest(input) {
       if (container.holderRef.kind === "expedition" && container.holderRef.id !== manifest.expeditionId) errors.push(`container ${id}: expedition holder must reference ${manifest.expeditionId}`);
     }
     if (!Number.isInteger(container?.capacity?.slots) || container.capacity.slots < 0) errors.push(`container ${id}: capacity.slots must be >= 0`);
-    if (!Array.isArray(container?.layout?.slots)) errors.push(`container ${id}: layout.slots must be an array`);
     if (!Array.isArray(container?.rules)) errors.push(`container ${id}: rules must be an array`);
     if (!Array.isArray(container?.contents)) errors.push(`container ${id}: contents must be an array`);
     if (container?.materialStorage != null) {
@@ -130,12 +134,6 @@ export function validateExpeditionManifest(input) {
       }
     }
 
-    const slotIds = (container?.layout?.slots ?? []).map((slot) => slot?.slotId).filter(nonEmpty);
-    const slotSet = new Set(slotIds);
-    const duplicateSlots = [...new Set(duplicates(slotIds))];
-    if (duplicateSlots.length) errors.push(`container ${id}: duplicate slotId ${duplicateSlots.join(", ")}`);
-    if (slotIds.length > (container?.capacity?.slots ?? 0)) errors.push(`container ${id}: layout defines more slots than capacity`);
-
     for (const entry of container?.contents ?? []) {
       if (!nonEmpty(entry?.entryId)) errors.push(`container ${id}: entryId is required`);
       if (!nonEmpty(entry?.itemRef?.sourceId)) errors.push(`container ${id}/${entry?.entryId ?? "?"}: itemRef.sourceId is required`);
@@ -152,7 +150,6 @@ export function validateExpeditionManifest(input) {
           `container ${id}/${entry?.entryId ?? "?"}: quantity must be >= ${minimumQuantity}`
         );
       }
-      if (entry?.slotId != null && !slotSet.has(entry.slotId)) errors.push(`container ${id}/${entry?.entryId ?? "?"}: unknown slot ${entry.slotId}`);
     }
   }
 
@@ -185,24 +182,6 @@ export function validateExpeditionManifest(input) {
     ledgerEntries: manifest.ledger.length,
     errors,
   };
-}
-
-function occupiedSlots(container) {
-  return new Set((container?.contents ?? []).map((entry) => entry?.slotId).filter(nonEmpty));
-}
-
-function usedSlotsForTransfer(container) {
-  const occupied = occupiedSlots(container);
-  const unslotted = (container?.contents ?? []).filter((entry) => !nonEmpty(entry?.slotId)).length;
-  return occupied.size + unslotted;
-}
-
-function firstFreeSlot(container) {
-  const occupied = occupiedSlots(container);
-  for (const slot of container?.layout?.slots ?? []) {
-    if (nonEmpty(slot?.slotId) && !occupied.has(slot.slotId)) return slot.slotId;
-  }
-  return null;
 }
 
 function materialStorageData(entry) {
@@ -284,7 +263,6 @@ export function canTransferExpeditionEntry(manifest, {
   entryId,
   fromContainerId,
   toContainerId,
-  toSlotId = null,
 } = {}) {
   if (!manifest || typeof manifest !== "object") return { green: false, reason: "manifest is required" };
   if (!nonEmpty(entryId) || !nonEmpty(fromContainerId) || !nonEmpty(toContainerId)) {
@@ -299,25 +277,15 @@ export function canTransferExpeditionEntry(manifest, {
   const entry = (from.contents ?? []).find((candidate) => candidate.entryId === entryId);
   if (!entry) return { green: false, reason: `unknown entry ${entryId} in ${fromContainerId}` };
 
-  const sameContainer = fromContainerId === toContainerId;
-  const layoutSlots = to.layout?.slots ?? [];
-  let slotId = nonEmpty(toSlotId) ? toSlotId : null;
+  const sameContainer =
+    fromContainerId === toContainerId;
 
-  if (slotId && layoutSlots.length && !layoutSlots.some((slot) => slot.slotId === slotId)) {
-    return { green: false, reason: `unknown slot ${slotId} in ${toContainerId}` };
-  }
-
-  if (slotId) {
-    const occupant = (to.contents ?? []).find((candidate) => candidate.slotId === slotId && candidate.entryId !== entryId);
-    if (occupant) return { green: false, reason: `L’emplacement ${slotId} est déjà occupé` };
-  }
-
+  // Abstract capacity has no physical slot position.
   if (sameContainer) {
-    if (!layoutSlots.length) return { green: false, reason: "same-container" };
-    slotId ??= firstFreeSlot(to);
-    if (!slotId) return { green: false, reason: `${to.name} n’a aucun emplacement libre` };
-    if (entry.slotId === slotId) return { green: false, reason: "same-slot" };
-    return { green: true, entry, from, to, slotId, reposition: true };
+    return {
+      green: false,
+      reason: "same-container",
+    };
   }
 
   const rule = transferRuleResult(to, entry);
@@ -328,36 +296,110 @@ export function canTransferExpeditionEntry(manifest, {
 
   const mergeTarget = materialMergeTarget(to, entry);
   if (mergeTarget) {
-    const nextQuantity = Math.max(1, Number(mergeTarget.quantity) || 1) + Math.max(1, Number(entry.quantity) || 1);
-    const mergeRule = materialStorageRuleResult(to, mergeTarget, { additionalQuantity: nextQuantity });
+    const nextQuantity =
+      Math.max(1, Number(mergeTarget.quantity) || 1) +
+      Math.max(1, Number(entry.quantity) || 1);
+
+    const mergeRule = materialStorageRuleResult(
+      to,
+      mergeTarget,
+      { additionalQuantity: nextQuantity }
+    );
+
     if (!mergeRule.green) return mergeRule;
-    return { green: true, entry, from, to, slotId: mergeTarget.slotId ?? null, reposition: false, mergeTarget };
+
+    const capacity = containerStorageCapacity(to, {
+      resolveStorage: resolveEntryStorageProfile,
+    });
+
+    const beforeMerge = {
+      ...mergeTarget,
+      quantity: Math.max(1, Number(mergeTarget.quantity) || 1),
+    };
+
+    const afterMerge = {
+      ...mergeTarget,
+      quantity: nextQuantity,
+    };
+
+    const beforeSlots = containerStorageCapacity(
+      {
+        capacity: { slots: Number.MAX_SAFE_INTEGER },
+        contents: [beforeMerge],
+      },
+      {
+        resolveStorage: resolveEntryStorageProfile,
+      }
+    ).used;
+
+    const afterSlots = containerStorageCapacity(
+      {
+        capacity: { slots: Number.MAX_SAFE_INTEGER },
+        contents: [afterMerge],
+      },
+      {
+        resolveStorage: resolveEntryStorageProfile,
+      }
+    ).used;
+
+    const additionalSlots =
+      Math.max(0, afterSlots - beforeSlots);
+
+    if (capacity.used + additionalSlots > capacity.slots) {
+      return {
+        green: false,
+        reason: `${to.name} est plein (${capacity.used}/${capacity.slots} slots, +${additionalSlots} requis)`,
+        code: "container-capacity-exceeded",
+        capacity,
+        incomingSlots: additionalSlots,
+      };
+    }
+
+    return {
+      green: true,
+      entry,
+      from,
+      to,
+      mergeTarget,
+    };
   }
 
-  const capacity = to.capacity?.slots ?? 0;
-  if ((to.contents ?? []).filter((candidate) => {
-      const state = candidate?.itemRef?.lifecycle?.state ?? "legacy";
-      return (
-        Number(candidate?.quantity) > 0 &&
-        state !== "consumed" &&
-        state !== "deleted"
-      );
-    }).length >= capacity) {
-    return { green: false, reason: `${to.name} est plein (${usedSlotsForTransfer(to)}/${capacity} slots)` };
+  const capacity = containerStorageCapacity(to, {
+    resolveStorage: resolveEntryStorageProfile,
+  });
+
+  const incomingSlots = containerStorageCapacity(
+    {
+      capacity: { slots: Number.MAX_SAFE_INTEGER },
+      contents: [entry],
+    },
+    {
+      resolveStorage: resolveEntryStorageProfile,
+    }
+  ).used;
+
+  if (capacity.used + incomingSlots > capacity.slots) {
+    return {
+      green: false,
+      reason: `${to.name} est plein (${capacity.used}/${capacity.slots} slots, +${incomingSlots} requis)`,
+      code: "container-capacity-exceeded",
+      capacity,
+      incomingSlots,
+    };
   }
 
-  slotId ??= layoutSlots.length ? firstFreeSlot(to) : null;
-  if (layoutSlots.length && !slotId) {
-    return { green: false, reason: `${to.name} n’a aucun emplacement libre` };
-  }
-  return { green: true, entry, from, to, slotId, reposition: false };
+  return {
+    green: true,
+    entry,
+    from,
+    to,
+  };
 }
 
 export function transferExpeditionEntry(manifest, {
   entryId,
   fromContainerId,
   toContainerId,
-  toSlotId = null,
   quantity = null,
 } = {}) {
   const from =
@@ -413,7 +455,6 @@ export function transferExpeditionEntry(manifest, {
           entryId,
           fromContainerId,
           toContainerId,
-          toSlotId,
         }
       );
 
@@ -429,34 +470,27 @@ export function transferExpeditionEntry(manifest, {
       entry,
       from,
       to,
-      slotId,
-      reposition,
       mergeTarget = null,
     } = check;
 
-    if (reposition) {
-      entry.slotId = slotId;
+    const index =
+      from.contents.findIndex(
+        (candidate) =>
+          candidate.entryId === entryId
+      );
+
+    from.contents.splice(index, 1);
+
+    if (mergeTarget) {
+      mergeTarget.quantity =
+        Math.max(
+          1,
+          Number(mergeTarget.quantity) || 1
+        ) +
+        available;
     } else {
-      const index =
-        from.contents.findIndex(
-          (candidate) =>
-            candidate.entryId === entryId
-        );
-
-      from.contents.splice(index, 1);
-
-      if (mergeTarget) {
-        mergeTarget.quantity =
-          Math.max(
-            1,
-            Number(mergeTarget.quantity) || 1
-          ) +
-          available;
-      } else {
-        entry.slotId = slotId;
-        to.contents ??= [];
-        to.contents.push(entry);
-      }
+      to.contents ??= [];
+      to.contents.push(entry);
     }
 
     manifest.revision =
@@ -468,7 +502,6 @@ export function transferExpeditionEntry(manifest, {
     let ledgerEvent = null;
 
     if (
-      !reposition &&
       fromContainerId !== toContainerId
     ) {
       ledgerEvent =
@@ -487,7 +520,6 @@ export function transferExpeditionEntry(manifest, {
 
     return {
       moved: true,
-      reposition,
       merged: Boolean(mergeTarget),
       partial: false,
       quantity: available,
@@ -495,7 +527,6 @@ export function transferExpeditionEntry(manifest, {
       entryId,
       fromContainerId,
       toContainerId,
-      slotId,
       ledgerEvent,
       manifest,
     };
@@ -530,7 +561,6 @@ export function transferExpeditionEntry(manifest, {
         entryId,
         fromContainerId,
         toContainerId,
-        toSlotId,
       }
     );
 
@@ -569,8 +599,6 @@ export function transferExpeditionEntry(manifest, {
         );
 
       movedEntry.quantity = requested;
-      movedEntry.slotId =
-        check.slotId ?? null;
 
       to.contents ??= [];
       to.contents.push(movedEntry);
@@ -597,7 +625,6 @@ export function transferExpeditionEntry(manifest, {
 
     return {
       moved: true,
-      reposition: false,
       merged: Boolean(mergeTarget),
       partial: true,
       quantity: requested,
@@ -606,8 +633,6 @@ export function transferExpeditionEntry(manifest, {
       entryId,
       fromContainerId,
       toContainerId,
-      slotId:
-        check.slotId ?? null,
       ledgerEvent,
       manifest,
     };
@@ -765,7 +790,6 @@ export function acquireExpeditionEntry(manifest, {
     entryId: nonEmpty(entryId) ? entryId : nextEntryId(manifest, itemRef),
     itemRef: itemRef && typeof itemRef === "object" ? clone(itemRef) : {},
     quantity: qty,
-    slotId: null,
   };
 
   // P2.10h.3 backpack stack merge
@@ -831,7 +855,7 @@ export function acquireExpeditionEntry(manifest, {
   // Reuse the same capacity/rule preflight as transfers by staging a temporary source.
   const tempId = "__expedition-acquire__";
   const stagedCandidate = clone(candidate);
-  const temp = { containerId: tempId, type: "virtual", scope: "expedition", capacity: { slots: 1 }, layout: {}, rules: [], contents: [stagedCandidate] };
+  const temp = { containerId: tempId, type: "virtual", scope: "expedition", capacity: { slots: 1 }, rules: [], contents: [stagedCandidate] };
   manifest.containers.push(temp);
   let preflight;
   try {
@@ -846,7 +870,6 @@ export function acquireExpeditionEntry(manifest, {
   if (!preflight.green) return { acquired: false, reason: preflight.reason, code: preflight.code ?? null, manifest };
 
   candidate.quantity = qty;
-  candidate.slotId = preflight.slotId ?? null;
   container.contents ??= [];
   container.contents.push(candidate);
   manifest.revision = Math.max(1, Number(manifest.revision) || 1) + 1;

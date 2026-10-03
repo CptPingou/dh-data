@@ -38,11 +38,6 @@ export function buildSharedContainer(manifest, spec) {
     capacity: {
       slots: spec.slots,
     },
-    layout: {
-      slots: Array.from({ length: spec.slots }, (_, index) => ({
-        slotId: `slot-${index + 1}`,
-      })),
-    },
     materialStorage: spec.materialStorage ? structuredClone(spec.materialStorage) : undefined,
     rules: [],
     contents: [],
@@ -87,6 +82,19 @@ export async function ensureSharedContainers(
     }
 
     // Never overwrite existing content, capacity or name.
+    // Migrate legacy physical inventory fields to abstract capacity.
+    if (Object.prototype.hasOwnProperty.call(container, "layout")) {
+      delete container.layout;
+      metadataChanged = true;
+    }
+
+    for (const entry of container.contents ?? []) {
+      if (Object.prototype.hasOwnProperty.call(entry, "slotId")) {
+        delete entry.slotId;
+        metadataChanged = true;
+      }
+    }
+
     container.presentation ??= {};
 
     if (!container.presentation.playerRole) {

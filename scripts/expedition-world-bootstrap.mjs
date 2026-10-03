@@ -34,12 +34,6 @@ function backpackIdFor(actor) {
   return `foundry-backpack-${actor.id}`;
 }
 
-function makeSlots(containerId, count = DEFAULT_BACKPACK_SLOTS) {
-  return Array.from({ length: count }, (_, index) => ({
-    slotId: `${containerId}-slot-${index + 1}`,
-  }));
-}
-
 function findCharacter(manifest, actor) {
   return (manifest.characters ?? []).find((character) =>
     character?.foundryActorUuid === actor.uuid ||
@@ -131,10 +125,17 @@ function ensureBackpack(manifest, actor, character) {
       changed = true;
     }
 
-    container.layout ??= {};
-    if (!Array.isArray(container.layout.slots)) {
-      container.layout.slots = makeSlots(container.containerId, container.capacity.slots);
+    // Migrate legacy physical inventory fields to abstract capacity.
+    if (Object.prototype.hasOwnProperty.call(container, "layout")) {
+      delete container.layout;
       changed = true;
+    }
+
+    for (const entry of container.contents ?? []) {
+      if (Object.prototype.hasOwnProperty.call(entry, "slotId")) {
+        delete entry.slotId;
+        changed = true;
+      }
     }
 
     const backpackMaterialStorage = { accepts: [], stackLimit: 1, mergeStacks: false };
@@ -169,9 +170,6 @@ function ensureBackpack(manifest, actor, character) {
     },
     capacity: {
       slots: DEFAULT_BACKPACK_SLOTS,
-    },
-    layout: {
-      slots: makeSlots(containerId, DEFAULT_BACKPACK_SLOTS),
     },
     materialStorage: {
       accepts: [],

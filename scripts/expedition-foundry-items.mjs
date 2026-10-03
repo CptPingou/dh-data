@@ -691,7 +691,6 @@ export function createExpeditionFoundryItemsApi({ expeditionManifestApi } = {}) 
         green: Boolean(document),
         entryId: entry?.entryId ?? null,
         quantity: entry?.quantity ?? 1,
-        slotId: entry?.slotId ?? null,
         itemRef: clone(entry?.itemRef ?? null),
         lifecycle: expeditionItemLifecycleStatus(entry),
         document,

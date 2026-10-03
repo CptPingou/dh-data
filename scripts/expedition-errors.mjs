@@ -57,14 +57,6 @@ export function expeditionErrorMessage(reason, {
     return `${containerName} est plein.`;
   }
 
-  if (normalized.includes("déjà occupé") || normalized.includes("already occupied")) {
-    return "Cet emplacement est déjà occupé.";
-  }
-
-  if (normalized === "same-slot") {
-    return "L’objet est déjà dans cet emplacement.";
-  }
-
   if (normalized === "same-container") {
     return "Le transfert cible le même conteneur.";
   }

@@ -187,29 +187,23 @@ function renderContainerEntries(
   return list;
 }
 
-function renderPersonalPane(
-  containers,
+function renderContainerCard(
+  container,
   state,
-  rerender
+  rerender,
+  {
+    kind = "personal",
+    title = null,
+  } = {}
 ) {
-  const container =
-    containers.find(
-      (candidate) =>
-        candidate.containerId ===
-        state.personalContainerId
-    ) ??
-    containers[0] ??
-    null;
-
-  if (container) {
-    state.personalContainerId =
-      container.containerId;
-  }
-  const pane =
+  const card =
     element(
       "section",
-      "dhct-inventory-view__pane dhct-inventory-view__pane--personal"
+      `dhct-inventory-view__pane dhct-inventory-view__container-card dhct-inventory-view__container-card--${kind}`
     );
+
+  card.dataset.containerId =
+    container.containerId;
 
   const header =
     element(
@@ -220,80 +214,19 @@ function renderPersonalPane(
   header.append(
     text(
       "h3",
-      containers.length > 1
-        ? "Sac du chasseur"
-        : "Mon sac",
+      title ?? container.name,
       "dhct-inventory-view__pane-title"
+    ),
+    text(
+      "span",
+      capacityLabel(container),
+      "dhct-inventory-view__capacity"
     )
   );
 
-  if (container) {
-    header.append(
-      text(
-        "span",
-        capacityLabel(container),
-        "dhct-inventory-view__capacity"
-      )
-    );
-  }
+  card.append(header);
 
-  pane.append(header);
-
-  if (!container) {
-    pane.append(
-      renderEmpty("Aucun sac accessible.")
-    );
-
-    return pane;
-  }
-
-  if (containers.length > 1) {
-    const select =
-      element(
-        "select",
-        "dhct-inventory-view__hunter-select"
-      );
-
-    for (const candidate of containers) {
-      const option =
-        document.createElement("option");
-
-      option.value =
-        candidate.containerId;
-
-      option.textContent =
-        candidate.name;
-
-      option.selected =
-        candidate.containerId ===
-        container.containerId;
-
-      select.append(option);
-    }
-
-    select.addEventListener(
-      "change",
-      () => {
-        state.personalContainerId =
-          select.value;
-
-        state.selected = null;
-        rerender();
-      }
-    );
-
-    pane.append(select);
-  } else {
-    pane.append(
-      text(
-        "div",
-        container.name,
-        "dhct-inventory-view__container-name"
-      )
-    );
-  }
-
-  pane.append(
+  const entries =
     renderContainerEntries(
       container,
       {
@@ -303,58 +236,240 @@ function renderPersonalPane(
           rerender();
         },
       }
-    )
+    );
+
+  installEntryDragSources(
+    entries,
+    container
   );
 
-  return pane;
+  installContainerDropTarget(
+    card,
+    container.containerId
+  );
+
+  card.append(entries);
+
+  return card;
 }
 
-function renderSharedTabs(
+function renderPersonalPane(
   containers,
   state,
   rerender
 ) {
-  const tabs =
+  const pane =
+    element(
+      "section",
+      "dhct-inventory-view__pane-group dhct-inventory-view__pane-group--personal"
+    );
+
+  pane.append(
+    text(
+      "h2",
+      "Sacs du groupe",
+      "dhct-inventory-view__group-title"
+    )
+  );
+
+  if (!containers.length) {
+    pane.append(
+      renderEmpty("Aucun sac accessible.")
+    );
+    return pane;
+  }
+
+  const cards =
     element(
       "div",
-      "dhct-inventory-view__shared-tabs"
+      "dhct-inventory-view__container-stack"
     );
 
   for (const container of containers) {
-    const button =
-      element(
-        "button",
-        "dhct-inventory-view__shared-tab"
-      );
-
-    button.type = "button";
-    button.dataset.containerId =
-      container.containerId;
-    button.dataset.role =
-      container.role ?? "";
-
-    button.textContent =
-      ROLE_LABELS[container.role] ??
-      container.name;
-
-    if (
-      state.sharedContainerId ===
-      container.containerId
-    ) {
-      button.classList.add("active");
-    }
-
-    button.addEventListener("click", () => {
-      state.sharedContainerId =
-        container.containerId;
-
-      rerender();
-    });
-
-    tabs.append(button);
+    cards.append(
+      renderContainerCard(
+        container,
+        state,
+        rerender,
+        {
+          kind: "personal",
+          title: container.name,
+        }
+      )
+    );
   }
 
-  return tabs;
+  pane.append(cards);
+  return pane;
+}
+
+function installContainerDropTarget(
+  target,
+  toContainerId
+) {
+  if (!(target instanceof HTMLElement)) return;
+
+  target.dataset.dropContainerId =
+    toContainerId;
+
+  target.addEventListener(
+    "dragover",
+    (event) => {
+      const types =
+        [...(event.dataTransfer?.types ?? [])];
+
+      if (
+        !types.includes(
+          "application/x-dhct-inventory-entry"
+        )
+      ) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      target.classList.add(
+        "dhct-inventory-view__drop-target"
+      );
+
+      if (event.dataTransfer) {
+        event.dataTransfer.dropEffect = "move";
+      }
+    }
+  );
+
+  target.addEventListener(
+    "dragleave",
+    (event) => {
+      if (
+        event.relatedTarget &&
+        target.contains(event.relatedTarget)
+      ) {
+        return;
+      }
+
+      target.classList.remove(
+        "dhct-inventory-view__drop-target"
+      );
+    }
+  );
+
+  target.addEventListener(
+    "drop",
+    (event) => {
+      const raw =
+        event.dataTransfer?.getData(
+          "application/x-dhct-inventory-entry"
+        );
+
+      if (!raw) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      target.classList.remove(
+        "dhct-inventory-view__drop-target"
+      );
+
+      let payload;
+
+      try {
+        payload = JSON.parse(raw);
+      } catch (_error) {
+        return;
+      }
+
+      if (
+        !payload?.entryId ||
+        !payload?.fromContainerId ||
+        !toContainerId ||
+        payload.fromContainerId ===
+          toContainerId
+      ) {
+        return;
+      }
+
+      target.dispatchEvent(
+        new CustomEvent(
+          "dhct-inventory-transfer-request",
+          {
+            bubbles: true,
+            detail: {
+              entryId:
+                payload.entryId,
+              fromContainerId:
+                payload.fromContainerId,
+              toContainerId,
+              quantity:
+                Math.max(
+                  1,
+                  Number(payload.quantity) || 1
+                ),
+            },
+          }
+        )
+      );
+    }
+  );
+}
+
+function installEntryDragSources(
+  root,
+  container
+) {
+  if (!(root instanceof HTMLElement)) return;
+
+  for (
+    const node of root.querySelectorAll(
+      "[data-entry-id]"
+    )
+  ) {
+    if (!(node instanceof HTMLElement)) continue;
+
+    const entryId =
+      node.dataset.entryId;
+
+    if (!entryId) continue;
+
+    const entry =
+      activeEntries(container).find(
+        (candidate) =>
+          candidate.entryId === entryId
+      );
+
+    if (!entry) continue;
+
+    node.draggable = true;
+
+    node.classList.add(
+      "dhct-inventory-view__drag-source"
+    );
+
+    node.addEventListener(
+      "dragstart",
+      (event) => {
+        if (!event.dataTransfer) return;
+
+        event.dataTransfer.setData(
+          "application/x-dhct-inventory-entry",
+          JSON.stringify({
+            entryId,
+            fromContainerId:
+              container.containerId,
+            quantity:
+              Math.max(
+                1,
+                Number(entry.quantity) || 1
+              ),
+          })
+        );
+
+        event.dataTransfer.effectAllowed =
+          "move";
+      }
+    );
+  }
 }
 
 function renderSharedPane(
@@ -365,88 +480,49 @@ function renderSharedPane(
   const pane =
     element(
       "section",
-      "dhct-inventory-view__pane dhct-inventory-view__pane--shared"
+      "dhct-inventory-view__pane-group dhct-inventory-view__pane-group--shared"
     );
 
-  const header =
-    element(
-      "header",
-      "dhct-inventory-view__pane-header"
-    );
-
-  header.append(
+  pane.append(
     text(
-      "h3",
-      "Stockage partag\u00e9",
-      "dhct-inventory-view__pane-title"
+      "h2",
+      "Stockage partagé",
+      "dhct-inventory-view__group-title"
     )
   );
-
-  pane.append(header);
 
   if (!containers.length) {
     pane.append(
       renderEmpty(
-        "Aucun stockage partag\u00e9 accessible."
+        "Aucun stockage partagé accessible."
       )
     );
-
     return pane;
   }
 
-  const selected =
-    containers.find(
-      (container) =>
-        container.containerId ===
-        state.sharedContainerId
-    ) ??
-    containers[0];
-
-  state.sharedContainerId =
-    selected.containerId;
-
-  pane.append(
-    renderSharedTabs(
-      containers,
-      state,
-      rerender
-    )
-  );
-
-  const meta =
+  const cards =
     element(
       "div",
-      "dhct-inventory-view__shared-meta"
+      "dhct-inventory-view__container-stack"
     );
 
-  meta.append(
-    text(
-      "span",
-      selected.name,
-      "dhct-inventory-view__container-name"
-    ),
-    text(
-      "span",
-      capacityLabel(selected),
-      "dhct-inventory-view__capacity"
-    )
-  );
+  for (const container of containers) {
+    cards.append(
+      renderContainerCard(
+        container,
+        state,
+        rerender,
+        {
+          kind: "shared",
+          title:
+            ROLE_LABELS[container.role] ??
+            container.name,
+        }
+      )
+    );
+  }
 
-  pane.append(meta);
-
-  pane.append(
-    renderContainerEntries(
-      selected,
-      {
-        selected: state.selected,
-        onSelect(selection) {
-          state.selected = selection;
-          rerender();
-        },
-      }
-    )
-  );
-
+  pane.append(cards);
   return pane;
 }
 
@@ -787,6 +863,7 @@ export function renderExpeditionInventoryView(
     initialSharedRole = "ground",
   } = {}
 ) {
+  void initialSharedRole;
   if (
     projection?.kind !==
     "expedition-inventory-projection"
@@ -799,13 +876,102 @@ export function renderExpeditionInventoryView(
   const root =
     element(
       "div",
-      "dhct-inventory-view"
+      "dhct-inventory-view dhct-inventory-view--multicontainer"
     );
+
+  const style = document.createElement("style");
+  style.textContent = `
+    .dhct-inventory-view {
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+      height: 100%;
+      overflow: hidden;
+    }
+
+    .dhct-inventory-view__columns {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0.75rem;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+      align-items: stretch;
+    }
+
+    .dhct-inventory-view__pane-group {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    .dhct-inventory-view__group-title {
+      flex: 0 0 auto;
+      margin: 0 0 0.5rem;
+      font-size: 1rem;
+    }
+
+    .dhct-inventory-view__container-stack {
+      display: grid;
+      grid-auto-rows: max-content;
+      gap: 0.65rem;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding-right: 0.35rem;
+      align-content: start;
+    }
+
+    .dhct-inventory-view__container-card {
+      position: relative;
+      min-width: 0;
+      min-height: max-content;
+      overflow: visible;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 6px;
+      padding: 0.55rem;
+      transition:
+        border-color 120ms ease,
+        box-shadow 120ms ease;
+    }
+
+    .dhct-inventory-view__container-card .dhct-inventory-view__entries {
+      position: relative;
+      min-height: 0;
+      overflow: visible;
+    }
+
+    .dhct-inventory-view__detail {
+      position: relative;
+      flex: 0 0 auto;
+      min-height: 0;
+      max-height: 13rem;
+      overflow-y: auto;
+      margin-top: 0.75rem;
+      z-index: 1;
+    }
+
+    .dhct-inventory-view__container-card.dhct-inventory-view__drop-target {
+      border-color: currentColor;
+      box-shadow: inset 0 0 0 1px currentColor;
+    }
+
+    .dhct-inventory-view__drag-source {
+      cursor: grab;
+    }
+
+    .dhct-inventory-view__drag-source:active {
+      cursor: grabbing;
+    }
+  `;
+
+  root.append(style);
 
   const state = {
     selected: null,
     personalContainerId: null,
-    sharedContainerId: null,
   };
 
   const personal =
@@ -818,16 +984,8 @@ export function renderExpeditionInventoryView(
   const shared =
     sharedContainers(projection);
 
-  state.sharedContainerId =
-    shared.find(
-      (container) =>
-        container.role === initialSharedRole
-    )?.containerId ??
-    shared[0]?.containerId ??
-    null;
-
   function rerender() {
-    root.replaceChildren();
+    root.replaceChildren(style);
 
     const columns =
       element(

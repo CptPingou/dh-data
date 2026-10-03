@@ -1,3 +1,8 @@
+import {
+  containerUsedSlots,
+  resolveEntryStorageProfile,
+} from "./expedition-storage.mjs";
+
 export function backpackAccessState(container) {
   return container?.presentation?.accessState === "stored"
     ? "stored"
@@ -122,44 +127,30 @@ export function userCanAccessContainer(user, container) {
 }
 
 export function normalizeBackpackSlots(container, slotCount) {
-  const count = Math.max(0, Math.floor(Number(slotCount) || 0));
-  const contents = Array.isArray(container?.contents) ? container.contents : [];
+  const count = Math.max(
+    0,
+    Math.floor(Number(slotCount) || 0)
+  );
 
-  if (contents.length > count) {
+  const used = containerUsedSlots(container, {
+    resolveStorage: resolveEntryStorageProfile,
+  });
+
+  if (used > count) {
     return {
       green: false,
-      reason: `Impossible de réduire à ${count} slots : ${contents.length} objet(s) sont encore présents.`,
+      reason:
+        `Impossible de r?duire ? ${count} slots : ${used} slot(s) sont encore utilis?s.`,
     };
   }
 
-  const oldSlots = Array.isArray(container?.layout?.slots)
-    ? container.layout.slots
-    : [];
-
-  const oldById = new Map(
-    oldSlots
-      .filter((slot) => slot?.slotId)
-      .map((slot) => [slot.slotId, slot])
-  );
-
-  const slots = Array.from({ length: count }, (_, index) => {
-    const slotId = `slot-${index + 1}`;
-    return {
-      ...(oldById.get(slotId) ?? {}),
-      slotId,
-    };
-  });
-
   container.capacity ??= {};
   container.capacity.slots = count;
-  container.layout ??= {};
-  container.layout.slots = slots;
 
-  // Compact contents deterministically so every entry still points to
-  // an existing unique slot after a capacity edit.
-  contents.forEach((entry, index) => {
-    entry.slotId = slots[index]?.slotId ?? null;
-  });
-
-  return { green: true, slots: count };
+  return {
+    green: true,
+    slots: count,
+    used,
+    free: Math.max(0, count - used),
+  };
 }
