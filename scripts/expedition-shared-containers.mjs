@@ -15,15 +15,80 @@ export const SHARED_CONTAINER_SPECS = Object.freeze([
     slots: 24,
     playerAccess: false,
   }),
-  Object.freeze({
-    containerId: "caravan",
-    name: "Caravane",
-    role: "caravan",
-    slots: 40,
-    playerAccess: false,
-    materialStorage: { accepts: [], stackLimit: 30, mergeStacks: true },
-  }),
-]);
+  ]);
+
+export function retireLegacySharedCaravanContainer(
+  manifest
+) {
+  if (
+    !manifest ||
+    typeof manifest !== "object"
+  ) {
+    return {
+      changed: false,
+      removed: 0,
+      removedEntries: 0,
+    };
+  }
+
+  manifest.containers ??= [];
+
+  const referencedByComponent =
+    (manifest?.caravan?.components ?? [])
+      .some(
+        (component) =>
+          component?.containerId ===
+          "caravan"
+      );
+
+  if (referencedByComponent) {
+    throw new Error(
+      "Legacy caravan container is referenced by an installed caravan component"
+    );
+  }
+
+  const legacy =
+    manifest.containers.filter(
+      (container) =>
+        container?.containerId ===
+        "caravan"
+    );
+
+  if (!legacy.length) {
+    return {
+      changed: false,
+      removed: 0,
+      removedEntries: 0,
+    };
+  }
+
+  const removedEntries =
+    legacy.reduce(
+      (total, container) =>
+        total +
+        (
+          Array.isArray(
+            container?.contents
+          )
+            ? container.contents.length
+            : 0
+        ),
+      0
+    );
+
+  manifest.containers =
+    manifest.containers.filter(
+      (container) =>
+        container?.containerId !==
+        "caravan"
+    );
+
+  return {
+    changed: true,
+    removed: legacy.length,
+    removedEntries,
+  };
+}
 
 export function buildSharedContainer(manifest, spec) {
   return {
@@ -61,6 +126,12 @@ export async function ensureSharedContainers(
 
   manifest.containers ??= [];
 
+  const retiredLegacyCaravan =
+    retireLegacySharedCaravanContainer(
+      manifest
+    );
+
+
   const byId = new Map(
     manifest.containers
       .filter((container) => container?.containerId)
@@ -68,7 +139,8 @@ export async function ensureSharedContainers(
   );
 
   const created = [];
-  let metadataChanged = false;
+  let metadataChanged =
+    retiredLegacyCaravan.changed;
 
   for (const spec of SHARED_CONTAINER_SPECS) {
     let container = byId.get(spec.containerId);
