@@ -1,5 +1,63 @@
 const MODULE_ID = "daggerheart-campaign-toolkit";
 
+const activeResearchStationRefreshers =
+  new Set();
+
+let researchKnowledgeRefreshHookInstalled =
+  false;
+
+function installResearchKnowledgeRefreshHook() {
+  if (
+    researchKnowledgeRefreshHookInstalled ||
+    !globalThis.Hooks?.on
+  ) {
+    return;
+  }
+
+  researchKnowledgeRefreshHookInstalled =
+    true;
+
+  globalThis.Hooks.on(
+    "updateSetting",
+    (setting) => {
+      const key =
+        String(
+          setting?.key ??
+          setting?._source?.key ??
+          ""
+        );
+
+      if (
+        key !==
+        MODULE_ID +
+          ".materialKnowledge"
+      ) {
+        return;
+      }
+
+      for (
+        const refresh
+        of [
+          ...activeResearchStationRefreshers
+        ]
+      ) {
+        Promise.resolve(
+          refresh()
+        ).catch(
+          (error) => {
+            console.error(
+              MODULE_ID +
+                " | research station live refresh failed",
+              error
+            );
+          }
+        );
+      }
+    }
+  );
+}
+
+
 function esc(value) {
   return String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
@@ -120,10 +178,6 @@ export async function buildResearchStationModel({
             propertyId
           );
 
-      /*
-       * Invisible means no trace at all for players.
-       * GM keeps the row so it can be revealed.
-       */
       if (
         !game.user?.isGM &&
         status === "invisible"
@@ -156,7 +210,8 @@ export async function buildResearchStationModel({
           game.user?.isGM
             ? propertyDefinition?.label ??
               propertyId
-            : `Propri?t? inconnue ${index + 1}`,
+            : "Propri\u00e9t\u00e9 inconnue " +
+              String(index + 1),
 
         description:
           revealed
@@ -199,7 +254,17 @@ function content(
     actors
       .map(
         (actor) =>
-          `<option value="${esc(actor.id)}" ${actor.id === actorId ? "selected" : ""}>${esc(actor.name)}</option>`
+          '<option value="' +
+          esc(actor.id) +
+          '" ' +
+          (
+            actor.id === actorId
+              ? "selected"
+              : ""
+          ) +
+          ">" +
+          esc(actor.name) +
+          "</option>"
       )
       .join("");
 
@@ -211,10 +276,10 @@ function content(
       "Visible",
 
     discovered:
-      "D?couvert",
+      "D\u00e9couvert",
 
     shared:
-      "Partag?",
+      "Partag\u00e9",
   };
 
   const statusOptions =
@@ -224,103 +289,133 @@ function content(
       )
         .map(
           ([value, label]) =>
-            `<option value="${esc(value)}" ${value === current ? "selected" : ""}>${esc(label)}</option>`
+            '<option value="' +
+            esc(value) +
+            '" ' +
+            (
+              value === current
+                ? "selected"
+                : ""
+            ) +
+            ">" +
+            esc(label) +
+            "</option>"
         )
         .join("");
 
   const rows =
     model.materials
       .map(
-        (material) => `
-          <section
-            class="dct-research-material"
-            style="border:1px solid var(--color-border-light-2);border-radius:6px;padding:.65rem;margin:.5rem 0"
-          >
-            <header
-              style="display:flex;justify-content:space-between;gap:1rem"
-            >
-              <strong>${esc(material.name)}</strong>
-              <span>?${esc(material.quantity)}</span>
-            </header>
+        (material) => {
+          const propertyRows =
+            material.properties
+              .map(
+                (property) => {
+                  const suffix =
+                    property.status ===
+                    "shared"
+                      ? " \u00b7 partag\u00e9e"
+                      : property.status ===
+                        "discovered"
+                        ? " \u00b7 d\u00e9couverte"
+                        : property.status ===
+                          "visible"
+                          ? " \u00b7 indice"
+                          : game.user?.isGM
+                            ? " \u00b7 invisible"
+                            : "";
 
-            <div>
-              ${
-                material.properties
-                  .map(
-                    (property) => `
-                      <div
-                        style="display:grid;grid-template-columns:1fr auto;gap:.6rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--color-border-light-2)"
-                      >
-                        <span>
-                          ${esc(property.label)}
-                          ${
-                            property.status === "shared"
-                              ? " ? partag?e"
-                              : property.status === "discovered"
-                                ? " ? d?couverte"
-                                : property.status === "visible"
-                                  ? " ? indice"
-                                  : game.user?.isGM
-                                    ? " ? invisible"
-                                    : ""
-                          }
-                        </span>
+                  const control =
+                    game.user?.isGM
+                      ? '<select ' +
+                        'data-dct-knowledge-status ' +
+                        'data-material-id="' +
+                        esc(material.materialId) +
+                        '" ' +
+                        'data-property-id="' +
+                        esc(property.propertyId) +
+                        '" ' +
+                        'aria-label="\u00c9tat de connaissance">' +
+                        statusOptions(
+                          property.status
+                        ) +
+                        "</select>"
+                      : "";
 
-                        ${
-                          game.user?.isGM
-                            ? `
-                              <select
-                                data-dct-knowledge-status
-                                data-material-id="${esc(material.materialId)}"
-                                data-property-id="${esc(property.propertyId)}"
-                                aria-label="?tat de connaissance"
-                              >
-                                ${statusOptions(property.status)}
-                              </select>
-                            `
-                            : ""
-                        }
-                      </div>
-                    `
-                  )
-                  .join("")
-              }
-            </div>
-          </section>
-        `
+                  return (
+                    '<div style="' +
+                    "display:grid;" +
+                    "grid-template-columns:1fr auto;" +
+                    "gap:.6rem;" +
+                    "align-items:center;" +
+                    "padding:.4rem 0;" +
+                    "border-top:1px solid var(--color-border-light-2)" +
+                    '">' +
+                    "<span>" +
+                    esc(property.label) +
+                    suffix +
+                    "</span>" +
+                    control +
+                    "</div>"
+                  );
+                }
+              )
+              .join("");
+
+          return (
+            '<section class="dct-research-material" style="' +
+            "border:1px solid var(--color-border-light-2);" +
+            "border-radius:6px;" +
+            "padding:.65rem;" +
+            "margin:.5rem 0" +
+            '">' +
+            '<header style="' +
+            "display:flex;" +
+            "justify-content:space-between;" +
+            "gap:1rem" +
+            '">' +
+            "<strong>" +
+            esc(material.name) +
+            "</strong>" +
+            "<span>\u00d7" +
+            esc(material.quantity) +
+            "</span>" +
+            "</header>" +
+            "<div>" +
+            propertyRows +
+            "</div>" +
+            "</section>"
+          );
+        }
       )
       .join("");
 
-  return `
-    <div class="dct-research-station">
-      <p>
-        <label>
-          <strong>Chercheur :</strong>
-          <select data-dct-research-actor>
-            ${options}
-          </select>
-        </label>
-      </p>
+  const gmHelp =
+    game.user?.isGM
+      ? " Le MJ contr\u00f4le directement leur \u00e9tat."
+      : "";
 
-      <p style="opacity:.75">
-        Les propri?t?s visibles sont des indices encore
-        inexploitable. Les propri?t?s d?couvertes peuvent
-        ?tre utilis?es et parcourues dans la recherche.
-        ${
-          game.user?.isGM
-            ? " Le MJ contr?le directement leur ?tat."
-            : ""
-        }
-      </p>
-
-      <div data-dct-research-materials>
-        ${
-          rows ||
-          "<p>Aucun mat?riau de recherche connu ? la FOB.</p>"
-        }
-      </div>
-    </div>
-  `;
+  return (
+    '<div class="dct-research-station">' +
+    "<p><label><strong>Chercheur :</strong> " +
+    '<select data-dct-research-actor>' +
+    options +
+    "</select>" +
+    "</label></p>" +
+    '<p style="opacity:.75">' +
+    "Les propri\u00e9t\u00e9s visibles sont des indices encore " +
+    "inexploitables. Les propri\u00e9t\u00e9s d\u00e9couvertes peuvent " +
+    "\u00eatre utilis\u00e9es et parcourues dans la recherche." +
+    gmHelp +
+    "</p>" +
+    '<div data-dct-research-materials>' +
+    (
+      rows ||
+      "<p>Aucun mat\u00e9riau de recherche connu \u00e0 la FOB.</p>"
+    ) +
+    "</div>" +
+    "</div>"
+  );
 }
 
 export async function openCraftingResearchStation({
@@ -356,6 +451,42 @@ export async function openCraftingResearchStation({
     const body = root.querySelector(".window-content");
     if (body && next.green) body.innerHTML = content(next, actors, currentActor.id);
   };
+
+  installResearchKnowledgeRefreshHook();
+
+  let remoteRefreshRunning =
+    false;
+
+  const refreshFromKnowledgeChange =
+    async () => {
+      if (!root.isConnected) {
+        activeResearchStationRefreshers
+          .delete(
+            refreshFromKnowledgeChange
+          );
+
+        return;
+      }
+
+      if (remoteRefreshRunning) {
+        return;
+      }
+
+      remoteRefreshRunning =
+        true;
+
+      try {
+        await refresh();
+      } finally {
+        remoteRefreshRunning =
+          false;
+      }
+    };
+
+  activeResearchStationRefreshers
+    .add(
+      refreshFromKnowledgeChange
+    );
 
   root.addEventListener(
     "change",
