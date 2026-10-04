@@ -3261,6 +3261,209 @@ function installInventoryViewHandlers(
   );
 }
 
+function renderFobWorkshopCards(
+  manifest
+) {
+  const section =
+    document.createElement(
+      "section"
+    );
+
+  section.className =
+    "dhct-fob-workshops";
+
+  const heading =
+    document.createElement(
+      "h3"
+    );
+
+  heading.textContent =
+    "Ateliers";
+
+  section.append(
+    heading
+  );
+
+  const components =
+    new Map(
+      (
+        manifest?.fob
+          ?.components ?? []
+      )
+        .filter(
+          (component) =>
+            component?.id
+        )
+        .map(
+          (component) => [
+            component.id,
+            component,
+          ]
+        )
+    );
+
+  const installed =
+    (
+      manifest?.fob
+        ?.slots ?? []
+    )
+      .filter(
+        (slot) =>
+          slot?.enabled !== false &&
+          slot?.componentId
+      )
+      .map(
+        (slot) => ({
+          slot,
+          component:
+            components.get(
+              slot.componentId
+            ) ?? null,
+        })
+      )
+      .filter(
+        ({ component }) =>
+          component?.type ===
+          "workshop"
+      );
+
+  if (!installed.length) {
+    const empty =
+      document.createElement(
+        "p"
+      );
+
+    empty.textContent =
+      "Aucun atelier install\u00e9.";
+
+    section.append(
+      empty
+    );
+
+    return section;
+  }
+
+  const grid =
+    document.createElement(
+      "div"
+    );
+
+  grid.className =
+    "dhct-fob-workshops__grid";
+
+  for (
+    const {
+      slot,
+      component,
+    }
+    of installed
+  ) {
+    const card =
+      document.createElement(
+        "button"
+      );
+
+    card.type =
+      "button";
+
+    card.className =
+      "dhct-fob-workshop-card";
+
+    card.dataset
+      .dhctFobWorkshopCard =
+        component.id;
+
+    card.dataset
+      .dhctFobSlotId =
+        slot.id ?? "";
+
+    const title =
+      document.createElement(
+        "strong"
+      );
+
+    title.textContent =
+      component.name ??
+      component.id;
+
+    card.append(
+      title
+    );
+
+    const capabilities =
+      Array.isArray(
+        component.capabilities
+      )
+        ? component.capabilities
+        : [];
+
+    if (
+      capabilities.includes(
+        "research"
+      )
+    ) {
+      const detail =
+        document.createElement(
+          "span"
+        );
+
+      detail.textContent =
+        "Recherche et connaissances";
+
+      card.append(
+        detail
+      );
+
+      card.addEventListener(
+        "click",
+        async () => {
+          const api =
+            getApi();
+
+          const station =
+            api?.craftingResearchStation;
+
+          if (!station?.open) {
+            ui.notifications?.warn(
+              "Campaign Toolkit : centre d'\u00e9tude indisponible."
+            );
+
+            return;
+          }
+
+          const result =
+            await station.open({
+              expeditionId:
+                manifest.expeditionId,
+            });
+
+          if (
+            result?.green === false
+          ) {
+            ui.notifications?.warn(
+              "Campaign Toolkit : centre d'\u00e9tude - " +
+              result.reason
+            );
+          }
+        }
+      );
+    } else {
+      card.disabled =
+        true;
+    }
+
+    grid.append(
+      card
+    );
+  }
+
+  section.append(
+    grid
+  );
+
+  return section;
+}
+
 async function configureExpeditionShell(
   dialog,
   manifest,
@@ -3434,25 +3637,13 @@ async function configureExpeditionShell(
       "caravan"
     );
 
-  const workshopPane =
-    expeditionShellPane(
-      shell,
-      "workshop"
-    );
 
-  const researchPane =
-    expeditionShellPane(
-      shell,
-      "research"
-    );
 
   if (
     !(inventoryPane instanceof HTMLElement) ||
     !(expeditionPane instanceof HTMLElement) ||
     !(fobPane instanceof HTMLElement) ||
-    !(caravanPane instanceof HTMLElement) ||
-    !(workshopPane instanceof HTMLElement) ||
-    !(researchPane instanceof HTMLElement)
+    !(caravanPane instanceof HTMLElement)
   ) {
     shell.remove();
 
@@ -3487,6 +3678,16 @@ async function configureExpeditionShell(
       manifest,
       "fob"
     );
+
+  if (
+    fobView instanceof HTMLElement
+  ) {
+    fobView.prepend(
+      renderFobWorkshopCards(
+        manifest
+      )
+    );
+  }
 
   const caravanProjection =
     projectExpeditionCaravan({
@@ -3530,19 +3731,7 @@ async function configureExpeditionShell(
     expeditionView
   );
 
-  workshopPane.append(
-    expeditionShellPlaceholder(
-      "Atelier",
-      "Recettes, matériaux compatibles et armes de chasse."
-    )
-  );
 
-  researchPane.append(
-    expeditionShellPlaceholder(
-      "Recherche",
-      "Bibliothèque de matériaux et connaissances découvertes."
-    )
-  );
 
   let gmPanel = null;
 

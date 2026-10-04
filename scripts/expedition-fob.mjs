@@ -66,19 +66,123 @@ export function normalizeFobSlot(
 export function normalizeExpeditionFob(
   fob = {}
 ) {
-  const components =
+  let components =
     Array.isArray(fob?.components)
       ? fob.components.map(
           normalizeExpeditionComponent
         )
       : [];
 
-  const slots =
+  let slots =
     Array.isArray(fob?.slots)
       ? fob.slots.map(
           normalizeFobSlot
         )
       : [];
+
+  /*
+   * Canonical FOB workshop card.
+   * It owns no storage: research reads the
+   * canonical FOB deposit.
+   */
+  const studyCenterId =
+    "study-center";
+
+  if (
+    !components.some(
+      (component) =>
+        component?.id ===
+        studyCenterId
+    )
+  ) {
+    components = [
+      ...components,
+
+      normalizeExpeditionComponent({
+        id:
+          studyCenterId,
+
+        type:
+          "workshop",
+
+        name:
+          "Centre d\u2019\u00e9tude",
+
+        hp: {
+          value: 1,
+          max: 1,
+        },
+
+        containerId:
+          null,
+
+        slots:
+          [],
+
+        capabilities: [
+          "research",
+        ],
+
+        productions:
+          [],
+
+        state: {
+          cardKind:
+            "study-center",
+        },
+      }),
+    ];
+  }
+
+  if (
+    !slots.some(
+      (slot) =>
+        slot?.componentId ===
+        studyCenterId
+    )
+  ) {
+    const usedSlotIds =
+      new Set(
+        slots
+          .map(
+            (slot) =>
+              slot?.id
+          )
+          .filter(Boolean)
+      );
+
+    let slotId =
+      "study-center-slot";
+
+    let suffix = 2;
+
+    while (
+      usedSlotIds.has(slotId)
+    ) {
+      slotId =
+        "study-center-slot-" +
+        suffix;
+
+      suffix += 1;
+    }
+
+    slots = [
+      ...slots,
+
+      normalizeFobSlot({
+        id:
+          slotId,
+
+        componentId:
+          studyCenterId,
+
+        enabled:
+          true,
+
+        state: {},
+      }),
+    ];
+  }
 
   return {
     schema: FOB_SCHEMA,
@@ -108,9 +212,12 @@ export function normalizeExpeditionFob(
         : null,
 
     slotCount:
-      positiveInteger(
-        fob?.slotCount,
-        Math.max(1, slots.length)
+      Math.max(
+        positiveInteger(
+          fob?.slotCount,
+          1
+        ),
+        slots.length
       ),
 
     slots,

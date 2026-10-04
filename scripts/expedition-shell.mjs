@@ -17,14 +17,6 @@ export const EXPEDITION_TABS = Object.freeze([
     id: "caravan",
     label: "Caravane",
   },
-  {
-    id: "workshop",
-    label: "Atelier",
-  },
-  {
-    id: "research",
-    label: "Recherche",
-  },
 ]);
 
 function normalizedTabId(tabId) {
