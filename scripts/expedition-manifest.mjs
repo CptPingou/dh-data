@@ -16,6 +16,10 @@ import {
   containerProfileAcceptsEntry,
   normalizeContainerStorageProfile,
 } from "./expedition-container-profile.mjs";
+import {
+  normalizeExpeditionAccess,
+  validateExpeditionAccess,
+} from "./expedition-access.mjs";
 
 export const EXPEDITION_MANIFEST_SCHEMA = "daggerheart-campaign-toolkit/expedition-manifest@2";
 export const EXPEDITION_MANIFEST_SCHEMA_V1 = "daggerheart-campaign-toolkit/expedition-manifest@1";
@@ -102,6 +106,24 @@ export function normalizeExpeditionManifest(manifest) {
       });
   }
 
+  normalized.access =
+    normalizeExpeditionAccess(
+      normalized?.access,
+      {
+        characterIds:
+          (
+            normalized?.characters ??
+            []
+          )
+            .map(
+              (character) =>
+                character
+                  ?.characterId
+            )
+            .filter(nonEmpty),
+      }
+    );
+
   return normalized;
 }
 
@@ -156,6 +178,25 @@ export function validateExpeditionManifest(input) {
 
   const characterSet = new Set(characterIds);
   const containerSet = new Set(containerIds);
+
+  const accessValidation =
+    validateExpeditionAccess(
+      manifest.access,
+      {
+        characterIds,
+      }
+    );
+
+  if (!accessValidation.green) {
+    for (
+      const error of
+      accessValidation.errors
+    ) {
+      errors.push(
+        "access: " + error
+      );
+    }
+  }
 
   if (manifest.fob != null) {
     const fobValidation =
@@ -1509,6 +1550,13 @@ export function createEmptyExpeditionManifest({ expeditionId = "new-expedition" 
     authority: "web",
     characters: [],
     containers: [],
+    access:
+      normalizeExpeditionAccess(
+        null,
+        {
+          characterIds: [],
+        }
+      ),
     fob: null,
     caravan:
       createDefaultExpeditionCaravan({
