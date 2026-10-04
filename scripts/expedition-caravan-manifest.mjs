@@ -468,10 +468,58 @@ export function removeCaravanEquipmentFromManifest(
   };
 }
 
+export function caravanInstalledContainerIds(
+  manifest
+) {
+  return [
+    ...new Set(
+      (
+        manifest?.caravan
+          ?.components ?? []
+      )
+        .map(
+          (component) =>
+            typeof component
+              ?.containerId ===
+              "string"
+              ? component.containerId.trim()
+              : ""
+        )
+        .filter(Boolean)
+    ),
+  ];
+}
+
+export function isInstalledCaravanContainer(
+  manifest,
+  container
+) {
+  const id =
+    typeof container
+      ?.containerId ===
+      "string"
+      ? container.containerId.trim()
+      : "";
+
+  if (!id) {
+    return false;
+  }
+
+  return caravanInstalledContainerIds(
+    manifest
+  ).includes(id);
+}
+
 export const expeditionCaravanManifest = {
   install:
     installCaravanEquipmentInManifest,
 
   remove:
     removeCaravanEquipmentFromManifest,
+
+  installedContainerIds:
+    caravanInstalledContainerIds,
+
+  isInstalledContainer:
+    isInstalledCaravanContainer,
 };

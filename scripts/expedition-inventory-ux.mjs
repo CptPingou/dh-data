@@ -44,6 +44,7 @@ import {
 import {
   installCaravanEquipmentInManifest,
   removeCaravanEquipmentFromManifest,
+  caravanInstalledContainerIds,
 } from "./expedition-caravan-manifest.mjs";
 import {
   renderExpeditionInventoryView,
@@ -1705,9 +1706,24 @@ function injectGmLogisticsPhaseManagement(
 }
 
 function renderGmSharedAccessManagement(manifest) {
-  const containers = (manifest?.containers ?? []).filter(
-    (container) => container?.type !== "backpack"
-  );
+  const installedCaravanContainerIds =
+    new Set(
+      caravanInstalledContainerIds(
+        manifest
+      )
+    );
+
+  const containers =
+    (manifest?.containers ?? [])
+      .filter(
+        (container) =>
+          container?.type !==
+            "backpack" &&
+          !installedCaravanContainerIds
+            .has(
+              container?.containerId
+            )
+      );
 
   const rows = containers.map((container) => {
     const role = inferredSharedRole(container) ?? "";
@@ -2427,21 +2443,56 @@ function injectGmBackpackManagement(dialog, manifest, api) {
 }
 
 
+function manifestForGeneralInventory(
+  manifest
+) {
+  const installedIds =
+    new Set(
+      caravanInstalledContainerIds(
+        manifest
+      )
+    );
+
+  if (!installedIds.size) {
+    return manifest;
+  }
+
+  return {
+    ...manifest,
+
+    containers:
+      (manifest?.containers ?? [])
+        .filter(
+          (container) =>
+            !installedIds.has(
+              container?.containerId
+            )
+        ),
+  };
+}
+
 function buildExpeditionInventoryView(
   manifest,
   {
     initialSharedRole = "ground",
   } = {}
 ) {
+  const viewManifest =
+    manifestForGeneralInventory(
+      manifest
+    );
+
   const viewerCapabilities =
     createFoundryViewerCapabilities({
       user: game.user,
-      manifest,
+      manifest:
+        viewManifest,
     });
 
   const inventory =
     projectExpeditionInventory({
-      manifest,
+      manifest:
+        viewManifest,
       capabilityResolver:
         containerCapabilityResolver(
           viewerCapabilities
