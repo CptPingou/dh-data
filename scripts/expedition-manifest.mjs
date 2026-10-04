@@ -183,6 +183,89 @@ export function validateExpeditionManifest(input) {
     if (!Number.isInteger(container?.capacity?.slots) || container.capacity.slots < 0) errors.push(`container ${id}: capacity.slots must be >= 0`);
     if (!Array.isArray(container?.rules)) errors.push(`container ${id}: rules must be an array`);
     if (!Array.isArray(container?.contents)) errors.push(`container ${id}: contents must be an array`);
+
+    if (container?.storageProfile != null) {
+      if (
+        !container.storageProfile ||
+        typeof container.storageProfile !== "object" ||
+        Array.isArray(container.storageProfile)
+      ) {
+        errors.push(
+          `container ${id}: storageProfile must be an object`
+        );
+      } else {
+        const profile =
+          normalizeContainerStorageProfile(
+            container.storageProfile
+          );
+
+        if (
+          container.storageProfile.accepts != null &&
+          (
+            !Array.isArray(
+              container.storageProfile.accepts
+            ) ||
+            container.storageProfile.accepts.some(
+              (value) =>
+                !nonEmpty(value)
+            )
+          )
+        ) {
+          errors.push(
+            `container ${id}: storageProfile.accepts must be an array of non-empty strings`
+          );
+        }
+
+        if (
+          container.storageProfile.stackLimit != null &&
+          (
+            !Number.isInteger(
+              container.storageProfile.stackLimit
+            ) ||
+            container.storageProfile.stackLimit < 1
+          )
+        ) {
+          errors.push(
+            `container ${id}: storageProfile.stackLimit must be >= 1`
+          );
+        }
+
+        if (
+          container.storageProfile.mergeStacks != null &&
+          typeof container.storageProfile.mergeStacks !==
+            "boolean"
+        ) {
+          errors.push(
+            `container ${id}: storageProfile.mergeStacks must be a boolean`
+          );
+        }
+
+        if (
+          profile.accepts.length !==
+          (
+            Array.isArray(
+              container.storageProfile.accepts
+            )
+              ? [
+                  ...new Set(
+                    container.storageProfile.accepts
+                      .filter(nonEmpty)
+                      .map(
+                        (value) =>
+                          value.trim()
+                      )
+                  ),
+                ].length
+              : 0
+          )
+        ) {
+          errors.push(
+            `container ${id}: storageProfile.accepts contains invalid values`
+          );
+        }
+      }
+    }
+
     if (container?.materialStorage != null) {
       if (!container.materialStorage || typeof container.materialStorage !== "object" || Array.isArray(container.materialStorage)) {
         errors.push(`container ${id}: materialStorage must be an object`);

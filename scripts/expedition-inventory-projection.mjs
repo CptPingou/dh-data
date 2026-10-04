@@ -119,6 +119,11 @@ export function projectInventoryContainer(
       free: capacity.free,
     },
 
+    storageProfile:
+      container.storageProfile
+        ? clone(container.storageProfile)
+        : null,
+
     materialStorage:
       container.materialStorage
         ? clone(container.materialStorage)
