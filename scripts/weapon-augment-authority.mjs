@@ -139,7 +139,6 @@ async function processAuthorityRequest(message) {
       }
 
       const expeditionId = String(message?.expeditionId ?? "").trim();
-      const containerId = String(message?.containerId ?? "caravan").trim() || "caravan";
 
       if (!expeditionId) {
         return { green: false, reason: "expedition-id-required" };
@@ -150,7 +149,6 @@ async function processAuthorityRequest(message) {
         weapon,
         augmentId,
         expeditionId,
-        containerId,
       });
 
       if (!craft?.green) {
@@ -162,7 +160,6 @@ async function processAuthorityRequest(message) {
           weaponUuid: weapon.uuid,
           augmentId,
           expeditionId,
-          containerId,
         };
       }
 
@@ -175,7 +172,6 @@ async function processAuthorityRequest(message) {
         weaponUuid: weapon.uuid,
         augmentId,
         expeditionId,
-        containerId,
       };
     }
 
@@ -229,7 +225,6 @@ export async function requestWeaponAugmentAuthority({
   operation,
   augmentId,
   expeditionId = null,
-  containerId = "caravan",
 } = {}) {
   if (!game.socket?.emit) {
     return {
@@ -256,7 +251,6 @@ export async function requestWeaponAugmentAuthority({
     operation: operation ?? null,
     augmentId: augmentId ?? null,
     expeditionId: expeditionId ?? null,
-    containerId: containerId ?? "caravan",
   };
 
   // Same fast path as expedition inventory when the authority itself

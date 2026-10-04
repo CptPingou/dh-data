@@ -107,6 +107,13 @@ function workshopFailureLabel(response) {
     return "Matériaux biologiques insuffisants";
   }
 
+  if (
+    response?.reason ===
+    "fob-storage-unavailable"
+  ) {
+    return "Zone de d?p?t FOB indisponible";
+  }
+
   return response?.reason ?? "raison inconnue";
 }
 
@@ -419,7 +426,7 @@ async function renderAugmentManager({
             ${expeditionOptions || '<option value="">Aucune expédition disponible</option>'}
           </select>
         </label>
-        <span style="opacity:.65;font-size:.85em"> · stock : Caravane</span>
+        <span style="opacity:.65;font-size:.85em"> · stock : d?p?t FOB</span>
       </p>
 
       <p>
@@ -575,7 +582,6 @@ export async function openHuntWeaponWorkshop(crafter) {
           operation,
           augmentId,
           expeditionId,
-          containerId: "caravan",
         });
 
       console.info(

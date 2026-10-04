@@ -294,6 +294,35 @@ export function containerInventory(container) {
   return [...totals].map(([materialId, quantity]) => ({ materialId, quantity }));
 }
 
+export function resolveFobCraftContainerId(
+  manifest
+) {
+  const containerId =
+    String(
+      manifest?.fob
+        ?.storageContainerId ??
+      ""
+    ).trim();
+
+  if (!containerId) {
+    return null;
+  }
+
+  const exists =
+    (
+      manifest?.containers ??
+      []
+    ).some(
+      (container) =>
+        container?.containerId ===
+        containerId
+    );
+
+  return exists
+    ? containerId
+    : null;
+}
+
 export function knownMaterialDefinition(material, knowledgeApi, crafter) {
   const known = new Set(knowledgeApi.effective(crafter, material.id)?.properties ?? []);
   const copy = clone(material);
@@ -456,7 +485,6 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     crafter,
     recipeId,
     expeditionId,
-    containerId = "caravan",
   } = {}) {
     const recipe =
       await getCraftingRecipe(recipeId);
@@ -481,18 +509,37 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
       };
     }
 
+    const containerId =
+      resolveFobCraftContainerId(
+        manifest
+      );
+
+    if (!containerId) {
+      return {
+        green: false,
+        reason:
+          "fob-storage-unavailable",
+        expeditionId,
+        recipeId,
+        containerId: null,
+      };
+    }
+
     const container =
       manifest.containers?.find(
         (candidate) =>
-          candidate.containerId === containerId
+          candidate.containerId ===
+          containerId
       );
 
     if (!container) {
       return {
         green: false,
-        reason: "crafting-container-not-found",
-        containerId,
+        reason:
+          "fob-storage-unavailable",
+        expeditionId,
         recipeId,
+        containerId,
       };
     }
 
@@ -535,7 +582,11 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     };
   }
 
-  async function planWeaponAugment({ crafter, augmentId, expeditionId, containerId = "caravan" } = {}) {
+  async function planWeaponAugment({
+    crafter,
+    augmentId,
+    expeditionId,
+  } = {}) {
     const recipe =
       await getCraftingRecipeForOutput(
         "weaponAugment",
@@ -555,7 +606,6 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
         crafter,
         recipeId: recipe.id,
         expeditionId,
-        containerId,
       });
 
     return {
@@ -564,21 +614,48 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     };
   }
 
-  async function craftWeaponAugment({ crafter, weapon, augmentId, expeditionId, containerId = "caravan" } = {}) {
+  async function craftWeaponAugment({
+    crafter,
+    weapon,
+    augmentId,
+    expeditionId,
+  } = {}) {
     if (!game.user?.isGM) throw new Error("Biological craft mutation is GM-only.");
-    const plan = await planWeaponAugment({ crafter, augmentId, expeditionId, containerId });
+    const plan =
+      await planWeaponAugment({
+        crafter,
+        augmentId,
+        expeditionId,
+      });
     if (!plan.green) return plan;
 
     const original = await persistenceApi.load(expeditionId);
     const working = clone(original);
-    const consumed = consumeAllocationFromContainer(manifestApi, working, containerId, plan.allocations);
+    const consumed =
+      consumeAllocationFromContainer(
+        manifestApi,
+        working,
+        plan.containerId,
+        plan.allocations
+      );
     const validation = manifestApi.validate(working);
     if (!validation.green) throw new Error(`Craft would create invalid expedition manifest: ${(validation.errors ?? []).join("; ")}`);
 
     await persistenceApi.save(working);
     try {
       const state = await weaponAugmentStateApi.craft(weapon, augmentId);
-      return { green: true, operation: "craft", augmentId, expeditionId, containerId, allocations: plan.allocations, consumed, state };
+      return {
+        green: true,
+        operation: "craft",
+        augmentId,
+        expeditionId,
+        containerId:
+          plan.containerId,
+        allocations:
+          plan.allocations,
+        consumed,
+        state,
+      };
     } catch (error) {
       try {
         await persistenceApi.save(original);
