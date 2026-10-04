@@ -3,6 +3,11 @@ import {
   resolveEntryStorageProfile,
 } from "./expedition-storage.mjs";
 
+import {
+  normalizeExpeditionFob,
+  validateExpeditionFob,
+} from "./expedition-fob.mjs";
+
 export const EXPEDITION_MANIFEST_SCHEMA = "daggerheart-campaign-toolkit/expedition-manifest@2";
 export const EXPEDITION_MANIFEST_SCHEMA_V1 = "daggerheart-campaign-toolkit/expedition-manifest@1";
 
@@ -68,6 +73,13 @@ export function normalizeExpeditionManifest(manifest) {
       "arc-extraction";
   }
 
+  if (normalized?.fob != null) {
+    normalized.fob =
+      normalizeExpeditionFob(
+        normalized.fob
+      );
+  }
+
   return normalized;
 }
 
@@ -122,6 +134,27 @@ export function validateExpeditionManifest(input) {
 
   const characterSet = new Set(characterIds);
   const containerSet = new Set(containerIds);
+
+  if (manifest.fob != null) {
+    const fobValidation =
+      validateExpeditionFob(
+        manifest.fob,
+        {
+          containerIds: containerSet,
+        }
+      );
+
+    if (!fobValidation.green) {
+      for (
+        const error of
+        fobValidation.errors
+      ) {
+        errors.push(
+          "fob: " + error
+        );
+      }
+    }
+  }
 
   for (const character of manifest.characters) {
     if (!nonEmpty(character?.characterId)) errors.push("character.characterId is required");
@@ -975,6 +1008,7 @@ export function createEmptyExpeditionManifest({ expeditionId = "new-expedition" 
     authority: "web",
     characters: [],
     containers: [],
+    fob: null,
     ledger: [],
     metadata: {},
   };
