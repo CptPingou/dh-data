@@ -79,6 +79,56 @@ export function projectCaravanComponent(
   };
 }
 
+export function projectCaravanFobStorage(
+  manifest,
+  {
+    containerById = null,
+  } = {}
+) {
+  if (
+    !manifest?.fob ||
+    !manifest.fob.storageContainerId
+  ) {
+    return null;
+  }
+
+  const containers =
+    containerById ??
+    new Map(
+      (manifest.containers ?? [])
+        .map(
+          (container) => [
+            container.containerId,
+            container,
+          ]
+        )
+    );
+
+  const containerId =
+    manifest.fob.storageContainerId;
+
+  const container =
+    containers.get(
+      containerId
+    ) ?? null;
+
+  if (!container) {
+    throw new Error(
+      "FOB references unknown storage container " +
+      containerId
+    );
+  }
+
+  return projectInventoryContainer(
+    container,
+    {
+      capabilities: {
+        view: true,
+      },
+    }
+  );
+}
+
 export function projectExpeditionCaravan(
   {
     manifest,
@@ -111,12 +161,22 @@ export function projectExpeditionCaravan(
         )
     );
 
+  const fobStorage =
+    projectCaravanFobStorage(
+      manifest,
+      {
+        containerById,
+      }
+    );
+
   return {
     id:
       caravan.id,
 
     name:
       caravan.name,
+
+    fobStorage,
 
     asset:
       clone(
@@ -213,4 +273,7 @@ export const expeditionCaravanProjection = {
 
   projectComponent:
     projectCaravanComponent,
+
+  projectFobStorage:
+    projectCaravanFobStorage,
 };
