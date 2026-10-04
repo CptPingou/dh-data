@@ -4,12 +4,6 @@ function esc(value) {
   return String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
 }
 function materialData(entry) { return entry?.itemRef?.snapshot?.flags?.[MODULE_ID]?.material ?? null; }
-function isResearchContainer(container) {
-  if (!container) return false;
-  const id = String(container.containerId ?? "").toLowerCase();
-  const role = String(container.presentation?.playerRole ?? "").toLowerCase();
-  return ["fob", "caravan"].includes(id) || ["fob", "caravan"].includes(role);
-}
 export function isEligibleResearchActor(actor, user = game.user) {
   return Boolean(
     actor?.documentName === "Actor" &&
@@ -22,14 +16,55 @@ export function listOwnedResearchActors(user = game.user) {
   return [...(game.actors ?? [])].filter((actor) => isEligibleResearchActor(actor, user));
 }
 
-export async function buildResearchStationModel({ api, actor, expeditionId, containerId = "fob" } = {}) {
-  if (!api?.expeditionManifest?.load || !api?.craftingMaterials?.get || !api?.craftingKnowledge) return { green:false, reason:"research-station-api-unavailable" };
+export async function buildResearchStationModel({
+  api,
+  actor,
+  expeditionId,
+} = {}) {
+  if (
+    !api?.expeditionManifest?.load ||
+    !api?.craftingMaterials?.get ||
+    !api?.craftingKnowledge ||
+    !api?.crafting?.resolveFobCraftContainerId
+  ) {
+    return {
+      green: false,
+      reason:
+        "research-station-api-unavailable",
+    };
+  }
   if (!actor?.uuid) return { green:false, reason:"research-actor-required" };
   const manifest = await api.expeditionManifest.load(expeditionId);
   if (!manifest) return { green:false, reason:"expedition-not-found" };
-  const container = manifest.containers?.find((c) => c.containerId === containerId) ?? null;
-  if (!container) return { green:false, reason:"research-container-not-found" };
-  if (!isResearchContainer(container)) return { green:false, reason:"research-container-not-supported" };
+  const containerId =
+    api.crafting
+      .resolveFobCraftContainerId(
+        manifest
+      );
+
+  if (!containerId) {
+    return {
+      green: false,
+      reason:
+        "fob-storage-unavailable",
+    };
+  }
+
+  const container =
+    manifest.containers?.find(
+      (candidate) =>
+        candidate.containerId ===
+        containerId
+    ) ??
+    null;
+
+  if (!container) {
+    return {
+      green: false,
+      reason:
+        "fob-storage-unavailable",
+    };
+  }
 
   const byMaterial = new Map();
   for (const entry of container.contents ?? []) {
@@ -88,13 +123,20 @@ function content(model, actors, actorId) {
   </div>`;
 }
 
-export async function openCraftingResearchStation({ expeditionId, containerId = "fob", actor = null } = {}) {
+export async function openCraftingResearchStation({
+  expeditionId,
+  actor = null,
+} = {}) {
   const api = game.modules.get(MODULE_ID)?.api;
   const actors = listOwnedResearchActors();
   const preferredActor = actor ?? game.user?.character ?? null;
   const selectedActor = isEligibleResearchActor(preferredActor) ? preferredActor : (actors[0] ?? null);
   if (!selectedActor) return { green:false, reason:"no-owned-research-actor" };
-  const model = await buildResearchStationModel({ api, actor:selectedActor, expeditionId, containerId });
+  const model = await buildResearchStationModel({
+    api,
+    actor: selectedActor,
+    expeditionId,
+  });
   if (!model.green) return model;
   const DialogV2 = foundry?.applications?.api?.DialogV2;
   if (!DialogV2) throw new Error("Campaign Toolkit | DialogV2 unavailable");
@@ -106,7 +148,11 @@ export async function openCraftingResearchStation({ expeditionId, containerId = 
   const refresh = async () => {
     const actorId = root.querySelector("[data-dct-research-actor]")?.value;
     const currentActor = actors.find((candidate) => candidate.id === actorId) ?? selectedActor;
-    const next = await buildResearchStationModel({ api, actor:currentActor, expeditionId, containerId });
+    const next = await buildResearchStationModel({
+      api,
+      actor: currentActor,
+      expeditionId,
+    });
     const body = root.querySelector(".window-content");
     if (body && next.green) body.innerHTML = content(next, actors, currentActor.id);
   };
@@ -126,9 +172,7 @@ export async function openCraftingResearchStation({ expeditionId, containerId = 
         actor: currentActor,
         operation: button.dataset.dctResearchAction,
         materialId: button.dataset.materialId,
-        propertyId: button.dataset.propertyId,
-        expeditionId,
-        containerId,
+        propertyId: button.dataset.propertyId,        expeditionId,
       });
       if (!result?.green) ui.notifications?.warn(`Station de recherche : ${result?.reason ?? "opération refusée"}`);
       else ui.notifications?.info(button.dataset.dctResearchAction === "research" ? "Propriété découverte." : "Propriété documentée pour le groupe.");

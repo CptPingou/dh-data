@@ -375,12 +375,6 @@ function materialHasProperty(material, propertyId) {
   return materialPropertyIds(material).includes(propertyId);
 }
 
-function isResearchContainer(container) {
-  const id = String(container?.containerId ?? "").trim().toLowerCase();
-  const role = String(container?.presentation?.playerRole ?? "").trim().toLowerCase();
-  return ["fob", "caravan"].includes(id) || ["fob", "caravan"].includes(role);
-}
-
 export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestApi, persistenceApi, weaponAugmentStateApi } = {}) {
   if (!materialsApi?.list || !materialsApi?.get) throw new Error("craftingMaterials API is required.");
   if (!knowledgeApi?.effective || !knowledgeApi?.discover) throw new Error("craftingKnowledge API is required.");
@@ -388,7 +382,13 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
   if (!persistenceApi?.load || !persistenceApi?.save) throw new Error("expedition persistence API is required.");
   if (!weaponAugmentStateApi?.craft) throw new Error("weaponAugmentState API is required.");
 
-  async function researchMaterialProperty({ actor, materialId, propertyId, expeditionId, containerId = "fob", source = "fob" } = {}) {
+  async function researchMaterialProperty({
+    actor,
+    materialId,
+    propertyId,
+    expeditionId,
+    source = "fob",
+  } = {}) {
     if (!game.user?.isGM) throw new Error("Material research mutation is GM-only.");
     if (!actor?.uuid) return { green: false, reason: "research-actor-required" };
     if (!materialId) return { green: false, reason: "material-id-required" };
@@ -398,11 +398,36 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     const manifest = await persistenceApi.load(expeditionId);
     if (!manifest) return { green: false, reason: "expedition-not-found", expeditionId };
 
-    const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
-    if (!container) return { green: false, reason: "research-container-not-found", expeditionId, containerId };
+    const containerId =
+      resolveFobCraftContainerId(
+        manifest
+      );
 
-    if (!isResearchContainer(container)) {
-      return { green: false, reason: "research-container-not-supported", expeditionId, containerId };
+    if (!containerId) {
+      return {
+        green: false,
+        reason:
+          "fob-storage-unavailable",
+        expeditionId,
+        containerId: null,
+      };
+    }
+
+    const container =
+      manifest.containers?.find(
+        (candidate) =>
+          candidate.containerId ===
+          containerId
+      );
+
+    if (!container) {
+      return {
+        green: false,
+        reason:
+          "fob-storage-unavailable",
+        expeditionId,
+        containerId,
+      };
     }
 
     const material = await materialsApi.get(materialId);
@@ -444,7 +469,13 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     };
   }
 
-  async function documentMaterialProperty({ actor, materialId, propertyId, expeditionId, containerId = "fob", source = "fob" } = {}) {
+  async function documentMaterialProperty({
+    actor,
+    materialId,
+    propertyId,
+    expeditionId,
+    source = "fob",
+  } = {}) {
     if (!knowledgeApi?.document) throw new Error("craftingKnowledge document API is required.");
     if (!game.user?.isGM) throw new Error("Material documentation mutation is GM-only.");
     if (!actor?.uuid) return { green: false, reason: "documentation-actor-required" };
@@ -455,12 +486,36 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     const manifest = await persistenceApi.load(expeditionId);
     if (!manifest) return { green: false, reason: "expedition-not-found", expeditionId };
 
-    const container = manifest.containers?.find((candidate) => candidate.containerId === containerId);
-    if (!container) return { green: false, reason: "documentation-container-not-found", expeditionId, containerId };
+    const containerId =
+      resolveFobCraftContainerId(
+        manifest
+      );
 
-    const role = String(container.presentation?.playerRole ?? "").trim().toLowerCase();
-    if (containerId !== "fob" && role !== "fob") {
-      return { green: false, reason: "documentation-container-not-fob", expeditionId, containerId };
+    if (!containerId) {
+      return {
+        green: false,
+        reason:
+          "fob-storage-unavailable",
+        expeditionId,
+        containerId: null,
+      };
+    }
+
+    const container =
+      manifest.containers?.find(
+        (candidate) =>
+          candidate.containerId ===
+          containerId
+      );
+
+    if (!container) {
+      return {
+        green: false,
+        reason:
+          "fob-storage-unavailable",
+        expeditionId,
+        containerId,
+      };
     }
 
     const material = await materialsApi.get(materialId);
@@ -676,6 +731,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     resolveRecipe: resolveCraftingRecipe,
     researchMaterialProperty,
     documentMaterialProperty,
+    resolveFobCraftContainerId,
     planRecipe,
     planWeaponAugment,
     craftWeaponAugment,

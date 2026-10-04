@@ -35,7 +35,6 @@ async function process(message) {
     materialId: String(message?.materialId ?? "").trim(),
     propertyId: String(message?.propertyId ?? "").trim(),
     expeditionId: String(message?.expeditionId ?? "").trim(),
-    containerId: String(message?.containerId ?? "fob").trim() || "fob",
     source: "foundry-research-station",
   };
 
@@ -51,7 +50,13 @@ function emitResult(message, result) {
     ...result,
   });
 }
-export async function requestCraftingResearchAuthority({ actor, operation, materialId, propertyId, expeditionId, containerId = "fob" } = {}) {
+export async function requestCraftingResearchAuthority({
+  actor,
+  operation,
+  materialId,
+  propertyId,
+  expeditionId,
+} = {}) {
   if (!game.socket?.emit) return { green:false, reason:"socket-unavailable" };
   const authority = activeGm();
   if (!authority) return { green:false, reason:"no-active-gm" };
@@ -62,9 +67,7 @@ export async function requestCraftingResearchAuthority({ actor, operation, mater
     actorUuid: actor?.uuid ?? null,
     operation,
     materialId,
-    propertyId,
-    expeditionId,
-    containerId,
+    propertyId,    expeditionId,
   };
   if (game.user?.isGM && authority.id === game.user.id) return await process(message);
   return new Promise((resolve) => {
