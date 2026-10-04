@@ -492,18 +492,103 @@ async function openPropertyKnowledgeDialog({
       )
       .join("");
 
-  const recipes =
-    (model.recipes ?? [])
-      .map(
-        (recipe) =>
-          "<li>" +
+  const recipeRows = [];
+
+  for (
+    const recipeSummary
+    of model.recipes ?? []
+  ) {
+    const recipe =
+      await api
+        .craftingKnowledgeBrowser
+        .recipe(
+          actor,
+          recipeSummary.id
+        );
+
+    if (!recipe) {
+      continue;
+    }
+
+    let outputDefinition =
+      null;
+
+    if (
+      recipe.output?.type ===
+        "weaponAugment" &&
+      recipe.output?.id &&
+      api?.weaponAugments?.get
+    ) {
+      try {
+        outputDefinition =
+          await api.weaponAugments.get(
+            recipe.output.id
+          );
+      } catch {
+        outputDefinition =
+          null;
+      }
+    }
+
+    const effect =
+      outputDefinition?.description
+        ? '<p style="' +
+          "margin:.25rem 0 .4rem 0" +
+          '">' +
+          "<strong>Effet :</strong> " +
           esc(
-            recipe.name ??
-            recipe.id
+            outputDefinition.description
           ) +
-          "</li>"
-      )
-      .join("");
+          "</p>"
+        : "";
+
+    const requirementRows =
+      (recipe.requirements ?? [])
+        .map(
+          (requirement) =>
+            "<li>" +
+            esc(
+              requirement.label ??
+              requirement.propertyId
+            ) +
+            " : " +
+            esc(
+              requirement.value
+            ) +
+            "</li>"
+        )
+        .join("");
+
+    const requirements =
+      requirementRows
+        ? '<div style="' +
+          "margin-top:.35rem" +
+          '">' +
+          "<strong>Propri\u00e9t\u00e9s requises connues</strong>" +
+          "<ul>" +
+          requirementRows +
+          "</ul>" +
+          "</div>"
+        : "";
+
+    recipeRows.push(
+      '<li style="' +
+        "margin-bottom:.75rem" +
+      '">' +
+        "<strong>" +
+        esc(
+          recipe.name ??
+          recipe.id
+        ) +
+        "</strong>" +
+        effect +
+        requirements +
+      "</li>"
+    );
+  }
+
+  const recipes =
+    recipeRows.join("");
 
   const description =
     model.description

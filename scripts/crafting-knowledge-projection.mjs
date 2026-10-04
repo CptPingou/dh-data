@@ -376,6 +376,59 @@ export function projectKnowledgeRecipe(
     return null;
   }
 
+  const knownProperties =
+    new Map(
+      properties.map(
+        (property) => [
+          property.id,
+          property,
+        ]
+      )
+    );
+
+  const requirements =
+    (recipe.requirements ?? [])
+      .map(
+        (requirement) => {
+          const propertyId =
+            requirement?.match
+              ?.property;
+
+          if (
+            typeof propertyId !==
+              "string" ||
+            !propertyId
+          ) {
+            return null;
+          }
+
+          const property =
+            knownProperties.get(
+              propertyId
+            );
+
+          if (!property) {
+            return null;
+          }
+
+          return {
+            propertyId,
+
+            label:
+              property.label ??
+              propertyId,
+
+            value:
+              Number(
+                requirement?.value ??
+                requirement?.units ??
+                0
+              ) || 0,
+          };
+        }
+      )
+      .filter(Boolean);
+
   return {
     id:
       recipe.id,
@@ -390,6 +443,8 @@ export function projectKnowledgeRecipe(
       ),
 
     properties,
+
+    requirements,
   };
 }
 
