@@ -107,5 +107,108 @@
         }
       }
     }
+  },
+  {
+    "_id": "VspdGland0000001",
+    "name": "Glande de Vespoid",
+    "type": "loot",
+    "img": "icons/commodities/biological/organ-bladder-red.webp",
+    "system": {
+      "description": "<p>Glande de Vespoid capable de produire et transmettre une charge ?lectrique. Mat?riau de chasse de Tier 1.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter ? homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.vespoid.gland",
+        "canonicalSourceId": "mh.vespoid.gland",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "materialCategory": "organ",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "vespoid",
+        "tier": 1,
+        "partId": "gland",
+        "material": {
+          "materialId": "mh.vespoid.gland",
+          "family": "organ",
+          "quality": 1,
+          "properties": {
+            "conductive": 4,
+            "electric": 3
+          },
+          "containerClass": "organ",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "VspdWing00000001",
+    "name": "Aile de Vespoid",
+    "type": "loot",
+    "img": "icons/commodities/biological/wing-insect-blue.webp",
+    "system": {
+      "description": "<p>Aile l?g?re et r?sonante de Vespoid, pr?serv?e pour ses propri?t?s m?caniques. Mat?riau de chasse de Tier 1.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter ? homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.vespoid.wing",
+        "canonicalSourceId": "mh.vespoid.wing",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "materialCategory": "wing",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "vespoid",
+        "tier": 1,
+        "partId": "wing",
+        "material": {
+          "materialId": "mh.vespoid.wing",
+          "family": "fiber",
+          "quality": 1,
+          "properties": {
+            "light": 3,
+            "flexible": 2,
+            "resonant": 3
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
+      }
+    }
   }
 ]
