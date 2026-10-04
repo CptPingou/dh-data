@@ -136,15 +136,80 @@ export function userCanAccessContainer(user, container) {
  * Backpack is an intrinsic container type.
  * Shared roles remain resolved through inferredSharedRole().
  */
-export function containerLogisticsRole(container) {
-  if (!container) return null;
+export function caravanStorageContainerIds(
+  manifest
+) {
+  return new Set(
+    (
+      manifest?.caravan
+        ?.components ?? []
+    )
+      .map(
+        (component) =>
+          typeof component?.containerId ===
+            "string"
+            ? component.containerId.trim()
+            : ""
+      )
+      .filter(Boolean)
+  );
+}
 
-  if (container.type === "backpack") {
+export function isCaravanStorageContainer(
+  manifest,
+  container
+) {
+  const containerId =
+    typeof container?.containerId ===
+      "string"
+      ? container.containerId.trim()
+      : "";
+
+  if (!containerId) {
+    return false;
+  }
+
+  return caravanStorageContainerIds(
+    manifest
+  ).has(containerId);
+}
+
+/**
+ * Resolve the logistics role used by directional transfer policy.
+ *
+ * Backpack is intrinsic.
+ * Caravan storage is structural: a container is caravan storage only when
+ * referenced by manifest.caravan.components[].containerId.
+ * Ground and FOB still use the shared-role resolver until the cleanup pass.
+ */
+export function containerLogisticsRole(
+  manifest,
+  container
+) {
+  if (!container) {
+    return null;
+  }
+
+  if (
+    container.type ===
+    "backpack"
+  ) {
     return "backpack";
   }
 
+  if (
+    isCaravanStorageContainer(
+      manifest,
+      container
+    )
+  ) {
+    return "caravan-storage";
+  }
+
   const sharedRole =
-    inferredSharedRole(container);
+    inferredSharedRole(
+      container
+    );
 
   return normalizeContainerRole(
     sharedRole,
@@ -152,14 +217,9 @@ export function containerLogisticsRole(container) {
   );
 }
 
-/**
- * Compose access policy with the pure directional logistics matrix.
- *
- * This function deliberately does NOT execute the transfer and does not
- * decide storage capacity, stack limits or item compatibility.
- */
 export function userCanTransferBetweenContainers({
   user,
+  manifest = null,
   source,
   destination,
   phase,
@@ -189,10 +249,16 @@ export function userCanTransferBetweenContainers({
   }
 
   const sourceRole =
-    containerLogisticsRole(source);
+    containerLogisticsRole(
+      manifest,
+      source
+    );
 
   const destinationRole =
-    containerLogisticsRole(destination);
+    containerLogisticsRole(
+      manifest,
+      destination
+    );
 
   if (
     !sourceRole ||

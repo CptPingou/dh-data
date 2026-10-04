@@ -53,6 +53,7 @@ export async function processInventoryAuthorityRequest(
     const transferAllowed =
       userCanTransferBetweenContainers({
         user: requester,
+        manifest,
         source: from,
         destination: to,
         phase: logisticsPhase,
