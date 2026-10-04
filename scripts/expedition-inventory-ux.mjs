@@ -1710,6 +1710,399 @@ function injectGmLogisticsPhaseManagement(
   };
 }
 
+function renderGmLogisticsLocationManagement(
+  manifest
+) {
+  const fobLocation =
+    String(
+      manifest?.fob?.locationRef ??
+      ""
+    );
+
+  const caravanLocation =
+    String(
+      manifest?.caravan?.locationRef ??
+      ""
+    );
+
+  return `
+    <section class="dhct-logistics-location-panel">
+      <header>
+        <h3>Localisation logistique</h3>
+        <p>
+          La Caravane n'est visible des joueurs que lorsqu'elle partage
+          la m?me localisation que le FOB.
+        </p>
+      </header>
+
+      <div class="dhct-logistics-location-panel__fields">
+        <label>
+          <span>FOB</span>
+          <input
+            type="text"
+            data-dhct-fob-location
+            value="${escapeHtml(fobLocation)}"
+            placeholder="ex. ravine-camp"
+            ${manifest?.fob ? "" : "disabled"}
+          />
+        </label>
+
+        <label>
+          <span>Caravane</span>
+          <input
+            type="text"
+            data-dhct-caravan-location
+            value="${escapeHtml(caravanLocation)}"
+            placeholder="ex. ravine-camp"
+            ${manifest?.caravan ? "" : "disabled"}
+          />
+        </label>
+
+        <button
+          type="button"
+          data-dhct-logistics-location-save
+        >
+          <i class="fa-solid fa-floppy-disk"></i>
+          Enregistrer
+        </button>
+      </div>
+    </section>
+  `;
+}
+
+async function saveGmLogisticsLocations(
+  api,
+  manifest,
+  {
+    fobLocationRef,
+    caravanLocationRef,
+  } = {}
+) {
+  if (!game.user?.isGM) {
+    return {
+      green: false,
+      reason: "not-gm",
+    };
+  }
+
+  const normalizeLocation =
+    (value) => {
+      const clean =
+        String(value ?? "")
+          .trim();
+
+      return clean || null;
+    };
+
+  const nextFobLocation =
+    normalizeLocation(
+      fobLocationRef
+    );
+
+  const nextCaravanLocation =
+    normalizeLocation(
+      caravanLocationRef
+    );
+
+  if (
+    nextFobLocation &&
+    !manifest?.fob
+  ) {
+    return {
+      green: false,
+      reason: "fob-unavailable",
+    };
+  }
+
+  if (
+    nextCaravanLocation &&
+    !manifest?.caravan
+  ) {
+    return {
+      green: false,
+      reason: "caravan-unavailable",
+    };
+  }
+
+  const currentFobLocation =
+    normalizeLocation(
+      manifest?.fob?.locationRef
+    );
+
+  const currentCaravanLocation =
+    normalizeLocation(
+      manifest?.caravan?.locationRef
+    );
+
+  if (
+    currentFobLocation ===
+      nextFobLocation &&
+    currentCaravanLocation ===
+      nextCaravanLocation
+  ) {
+    return {
+      green: true,
+      changed: false,
+      fobLocationRef:
+        currentFobLocation,
+      caravanLocationRef:
+        currentCaravanLocation,
+    };
+  }
+
+  if (manifest?.fob) {
+    manifest.fob.locationRef =
+      nextFobLocation;
+  }
+
+  if (manifest?.caravan) {
+    manifest.caravan.locationRef =
+      nextCaravanLocation;
+  }
+
+  manifest.revision =
+    Math.max(
+      1,
+      Number(
+        manifest.revision
+      ) || 1
+    ) + 1;
+
+  const validation =
+    api.expeditionManifest
+      .validate?.(
+        manifest
+      );
+
+  if (
+    validation &&
+    validation.green === false
+  ) {
+    throw new Error(
+      "Manifest invalide : " +
+      (
+        validation.errors ??
+        []
+      ).join("; ")
+    );
+  }
+
+  await saveAndBroadcastBulkInventoryChange(
+    api,
+    manifest,
+    {
+      reason:
+        "gm-logistics-location",
+    }
+  );
+
+  return {
+    green: true,
+    changed: true,
+    fobLocationRef:
+      nextFobLocation,
+    caravanLocationRef:
+      nextCaravanLocation,
+  };
+}
+
+function injectGmLogisticsLocationManagement(
+  dialog,
+  manifest,
+  api
+) {
+  if (!game.user?.isGM) {
+    return {
+      green: false,
+      reason: "not-gm",
+    };
+  }
+
+  const gmPane =
+    dialog.querySelector(
+      ".dhct-expedition-shell__gm-panel"
+    );
+
+  if (!(gmPane instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "gm-pane-not-found",
+    };
+  }
+
+  gmPane
+    .querySelector(
+      ".dhct-logistics-location-panel"
+    )
+    ?.remove();
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+  wrapper.innerHTML =
+    renderGmLogisticsLocationManagement(
+      manifest
+    ).trim();
+
+  const panel =
+    wrapper.firstElementChild;
+
+  if (!(panel instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "panel-build-failed",
+    };
+  }
+
+  const phasePanel =
+    gmPane.querySelector(
+      ".dhct-logistics-phase-panel"
+    );
+
+  if (
+    phasePanel instanceof
+      HTMLElement
+  ) {
+    phasePanel.insertAdjacentElement(
+      "afterend",
+      panel
+    );
+  } else {
+    gmPane.prepend(
+      panel
+    );
+  }
+
+  const fobInput =
+    panel.querySelector(
+      "[data-dhct-fob-location]"
+    );
+
+  const caravanInput =
+    panel.querySelector(
+      "[data-dhct-caravan-location]"
+    );
+
+  const saveButton =
+    panel.querySelector(
+      "[data-dhct-logistics-location-save]"
+    );
+
+  saveButton?.addEventListener(
+    "pointerdown",
+    (event) => {
+      event.stopPropagation();
+    }
+  );
+
+  saveButton?.addEventListener(
+    "click",
+    async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (
+        saveButton instanceof
+          HTMLButtonElement
+      ) {
+        saveButton.disabled =
+          true;
+      }
+
+      try {
+        const fresh =
+          await api
+            .expeditionManifest
+            .load(
+              manifest.expeditionId
+            );
+
+        if (!fresh) {
+          throw new Error(
+            "Exp?dition introuvable."
+          );
+        }
+
+        const result =
+          await saveGmLogisticsLocations(
+            api,
+            fresh,
+            {
+              fobLocationRef:
+                fobInput?.value,
+
+              caravanLocationRef:
+                caravanInput?.value,
+            }
+          );
+
+        if (!result?.green) {
+          throw new Error(
+            result?.reason ??
+            "logistics-location-save-failed"
+          );
+        }
+
+        if (!result.changed) {
+          ui.notifications?.info(
+            "Localisations inchang?es."
+          );
+
+          if (
+            saveButton instanceof
+              HTMLButtonElement
+          ) {
+            saveButton.disabled =
+              false;
+          }
+
+          return;
+        }
+
+        ui.notifications?.info(
+          "Localisations logistiques enregistr?es."
+        );
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+          " | logistics location save failed",
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible d'enregistrer les localisations."
+        );
+
+        if (
+          saveButton instanceof
+            HTMLButtonElement
+        ) {
+          saveButton.disabled =
+            false;
+        }
+      }
+    }
+  );
+
+  return {
+    green: true,
+
+    fobLocationRef:
+      manifest?.fob
+        ?.locationRef ??
+      null,
+
+    caravanLocationRef:
+      manifest?.caravan
+        ?.locationRef ??
+      null,
+  };
+}
+
+
 function renderGmSharedAccessManagement(manifest) {
   const installedCaravanContainerIds =
     new Set(
@@ -3598,6 +3991,14 @@ export async function refreshExpeditionInventoryUx() {
     ? injectGmBackpackManagement(dialog, manifest, api)
     : { green: false, reason: "not-gm" };
 
+  const logisticsLocationAdministration = isGm
+    ? injectGmLogisticsLocationManagement(
+        dialog,
+        manifest,
+        api
+      )
+    : { green: false, reason: "not-gm" };
+
   const sharedAccessAdministration = isGm
     ? injectGmSharedAccessManagement(dialog, manifest, api)
     : { green: false, reason: "not-gm" };
@@ -3627,6 +4028,7 @@ export async function refreshExpeditionInventoryUx() {
     restitution,
     roleView,
     logisticsPhaseAdministration,
+    logisticsLocationAdministration,
     backpackAdministration,
     sharedAccessAdministration,
     annotatedItems,
@@ -3878,6 +4280,45 @@ function injectStyles() {
     .dhct-expedition-shell--resizing {
       cursor: col-resize;
       user-select: none;
+    }
+
+    .dhct-logistics-location-panel {
+      display: grid;
+      gap: .65rem;
+      padding: .75rem;
+      border:
+        1px solid
+        rgba(201, 177, 137, .32);
+      border-radius: 8px;
+      background:
+        rgba(18, 17, 22, .42);
+    }
+
+    .dhct-logistics-location-panel > header h3 {
+      margin: 0;
+    }
+
+    .dhct-logistics-location-panel > header p {
+      margin:
+        .25rem 0 0;
+      opacity: .78;
+    }
+
+    .dhct-logistics-location-panel__fields {
+      display: grid;
+      gap: .5rem;
+    }
+
+    .dhct-logistics-location-panel__fields label {
+      display: grid;
+      grid-template-columns:
+        90px minmax(0, 1fr);
+      align-items: center;
+      gap: .5rem;
+    }
+
+    .dhct-logistics-location-panel__fields input {
+      min-width: 0;
     }
 
     .dhct-logistics-phase-panel__choices {
@@ -4687,6 +5128,7 @@ export function installExpeditionInventoryUx() {
         ".dhct-backpack-admin-panel",
         ".dhct-shared-access-panel",
         ".dhct-logistics-phase-panel",
+        ".dhct-logistics-location-panel",
         ".dhct-expedition-shell__gm-splitter",
       ].join(", ");
 
