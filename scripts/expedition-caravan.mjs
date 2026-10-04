@@ -774,7 +774,7 @@ export function createDefaultExpeditionCaravan({
         type:
           "wheel",
         name:
-          "Roue arri?re gauche",
+          "Roue arri\u00e8re gauche",
         hp: {
           value: 10,
           max: 10,
@@ -796,7 +796,7 @@ export function createDefaultExpeditionCaravan({
         type:
           "wheel",
         name:
-          "Roue arri?re droite",
+          "Roue arri\u00e8re droite",
         hp: {
           value: 10,
           max: 10,

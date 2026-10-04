@@ -681,7 +681,7 @@ function renderFobStorage(
       "dhct-caravan-view__entry-quantity";
 
     quantity.textContent =
-      "?" +
+      "x" +
       String(
         entry.quantity ?? 1
       );
