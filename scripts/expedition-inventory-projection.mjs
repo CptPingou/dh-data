@@ -1,6 +1,6 @@
 import {
   containerStorageCapacity,
-  resolveEntryStorageProfile,
+  resolveEffectiveStorageProfile,
 } from "./expedition-storage.mjs";
 
 const clone = (value) =>
@@ -90,7 +90,7 @@ export function projectInventoryContainer(
 
   const capacity =
     containerStorageCapacity(container, {
-      resolveStorage: resolveEntryStorageProfile,
+      resolveStorage: resolveEffectiveStorageProfile,
     });
 
   return {

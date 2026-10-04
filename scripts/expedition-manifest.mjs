@@ -1,6 +1,6 @@
 import {
   containerStorageCapacity,
-  resolveEntryStorageProfile,
+  resolveEffectiveStorageProfile,
 } from "./expedition-storage.mjs";
 
 import {
@@ -381,7 +381,7 @@ export function canTransferExpeditionEntry(manifest, {
     if (!mergeRule.green) return mergeRule;
 
     const capacity = containerStorageCapacity(to, {
-      resolveStorage: resolveEntryStorageProfile,
+      resolveStorage: resolveEffectiveStorageProfile,
     });
 
     const beforeMerge = {
@@ -397,20 +397,24 @@ export function canTransferExpeditionEntry(manifest, {
     const beforeSlots = containerStorageCapacity(
       {
         capacity: { slots: Number.MAX_SAFE_INTEGER },
+        storageProfile:
+          to?.storageProfile ?? null,
         contents: [beforeMerge],
       },
       {
-        resolveStorage: resolveEntryStorageProfile,
+        resolveStorage: resolveEffectiveStorageProfile,
       }
     ).used;
 
     const afterSlots = containerStorageCapacity(
       {
         capacity: { slots: Number.MAX_SAFE_INTEGER },
+        storageProfile:
+          to?.storageProfile ?? null,
         contents: [afterMerge],
       },
       {
-        resolveStorage: resolveEntryStorageProfile,
+        resolveStorage: resolveEffectiveStorageProfile,
       }
     ).used;
 
@@ -437,16 +441,18 @@ export function canTransferExpeditionEntry(manifest, {
   }
 
   const capacity = containerStorageCapacity(to, {
-    resolveStorage: resolveEntryStorageProfile,
+    resolveStorage: resolveEffectiveStorageProfile,
   });
 
   const incomingSlots = containerStorageCapacity(
     {
       capacity: { slots: Number.MAX_SAFE_INTEGER },
+      storageProfile:
+        to?.storageProfile ?? null,
       contents: [entry],
     },
     {
-      resolveStorage: resolveEntryStorageProfile,
+      resolveStorage: resolveEffectiveStorageProfile,
     }
   ).used;
 

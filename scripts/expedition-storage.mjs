@@ -1,3 +1,7 @@
+import {
+  normalizeContainerStorageProfile,
+} from "./expedition-container-profile.mjs";
+
 const positiveInteger = (value, fallback = 1) => {
   const number = Math.floor(Number(value));
   return Number.isInteger(number) && number > 0
@@ -38,6 +42,40 @@ export function resolveEntryStorageProfile(entry) {
       1,
       Math.floor(Number(entry?.quantity) || 1)
     ),
+  };
+}
+
+export function resolveEffectiveStorageProfile(
+  entry,
+  container,
+  {
+    resolveEntryStorage =
+      resolveEntryStorageProfile,
+  } = {}
+) {
+  const itemProfile =
+    normalizeStorageProfile(
+      resolveEntryStorage(entry) ?? {}
+    );
+
+  if (!itemProfile.stackable) {
+    return {
+      ...itemProfile,
+      stackLimit: 1,
+    };
+  }
+
+  const containerProfile =
+    normalizeContainerStorageProfile(
+      container?.storageProfile ?? {}
+    );
+
+  return {
+    ...itemProfile,
+
+    stackLimit:
+      containerProfile.stackLimit ??
+      itemProfile.stackLimit,
   };
 }
 
@@ -86,7 +124,10 @@ export function containerUsedSlots(
     if (quantity === 0) continue;
 
     const storage =
-      resolveStorage(entry) ?? {};
+      resolveStorage(
+        entry,
+        container
+      ) ?? {};
 
     used += storageSlotCost(quantity, storage);
   }
@@ -120,6 +161,8 @@ export const expeditionStorageApi = Object.freeze({
   version: 1,
   normalizeProfile: normalizeStorageProfile,
   resolveEntryProfile: resolveEntryStorageProfile,
+  resolveEffectiveProfile:
+    resolveEffectiveStorageProfile,
   stackCount: storageStackCount,
   slotCost: storageSlotCost,
   usedSlots: containerUsedSlots,
