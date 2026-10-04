@@ -438,6 +438,562 @@ function content(
   );
 }
 
+function knowledgeCreatureLabel(
+  creatureId
+) {
+  const raw =
+    String(
+      creatureId ?? ""
+    )
+      .split(".")
+      .filter(Boolean)
+      .at(-1) ?? "";
+
+  if (!raw) {
+    return "Cr\u00e9ature";
+  }
+
+  return (
+    raw.charAt(0).toUpperCase() +
+    raw.slice(1)
+  );
+}
+
+function knowledgeDialogRoot(
+  dialog
+) {
+  return dialog?.element instanceof HTMLElement
+    ? dialog.element
+    : null;
+}
+
+function installKnowledgeNavigation(
+  root,
+  {
+    api,
+    actor,
+  } = {}
+) {
+  if (!(root instanceof HTMLElement)) {
+    return;
+  }
+
+  root.addEventListener(
+    "click",
+    async (event) => {
+      const target =
+        event.target?.closest?.(
+          [
+            "[data-dct-open-property]",
+            "[data-dct-open-material]",
+            "[data-dct-open-recipe]",
+            "[data-dct-open-creature]",
+          ].join(",")
+        );
+
+      if (!target) {
+        return;
+      }
+
+      try {
+        const propertyId =
+          target.dataset
+            .dctOpenProperty;
+
+        if (propertyId) {
+          await openPropertyKnowledgeDialog({
+            api,
+            actor,
+            propertyId,
+          });
+
+          return;
+        }
+
+        const materialId =
+          target.dataset
+            .dctOpenMaterial;
+
+        if (materialId) {
+          await openMaterialKnowledgeDialog({
+            api,
+            actor,
+            materialId,
+          });
+
+          return;
+        }
+
+        const recipeId =
+          target.dataset
+            .dctOpenRecipe;
+
+        if (recipeId) {
+          await openRecipeKnowledgeDialog({
+            api,
+            actor,
+            recipeId,
+          });
+
+          return;
+        }
+
+        const creatureId =
+          target.dataset
+            .dctOpenCreature;
+
+        if (creatureId) {
+          await openCreatureKnowledgeDialog({
+            api,
+            actor,
+            creatureId,
+          });
+        }
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+            " | knowledge navigation failed",
+          error
+        );
+
+        ui.notifications?.error(
+          "Centre d'\u00e9tude : " +
+          (
+            error?.message ??
+            "navigation impossible"
+          )
+        );
+      }
+    }
+  );
+}
+
+async function openMaterialKnowledgeDialog({
+  api,
+  actor,
+  materialId,
+} = {}) {
+  const model =
+    await api
+      ?.craftingKnowledgeBrowser
+      ?.material?.(
+        actor,
+        materialId
+      );
+
+  if (!model) {
+    ui.notifications?.warn(
+      "Cette partie n'est pas encore consultable."
+    );
+
+    return {
+      green: false,
+      reason: "material-not-visible",
+    };
+  }
+
+  const DialogV2 =
+    foundry?.applications?.api
+      ?.DialogV2;
+
+  if (!DialogV2) {
+    throw new Error(
+      "Campaign Toolkit | DialogV2 unavailable"
+    );
+  }
+
+  const properties =
+    (model.properties ?? [])
+      .map(
+        (property) => {
+          if (!property?.id) {
+            return (
+              "<li>Indice non identifi\u00e9</li>"
+            );
+          }
+
+          return (
+            "<li>" +
+            '<button type="button" ' +
+            'data-dct-open-property="' +
+            esc(property.id) +
+            '">' +
+            esc(
+              property.label ??
+              property.id
+            ) +
+            "</button>" +
+            (
+              property.description
+                ? "<br><small>" +
+                  esc(
+                    property.description
+                  ) +
+                  "</small>"
+                : ""
+            ) +
+            "</li>"
+          );
+        }
+      )
+      .join("");
+
+  const creature =
+    model.creatureId
+      ? '<p><strong>Origine :</strong> ' +
+        '<button type="button" ' +
+        'data-dct-open-creature="' +
+        esc(model.creatureId) +
+        '">' +
+        esc(
+          knowledgeCreatureLabel(
+            model.creatureId
+          )
+        ) +
+        "</button></p>"
+      : "";
+
+  const content =
+    '<div class="dct-knowledge-material">' +
+      creature +
+      (
+        model.anatomy
+          ? "<p><strong>Partie anatomique :</strong> " +
+            esc(model.anatomy) +
+            "</p>"
+          : ""
+      ) +
+      "<h3>Propri\u00e9t\u00e9s connues</h3>" +
+      (
+        properties
+          ? "<ul>" +
+            properties +
+            "</ul>"
+          : "<p>Aucune propri\u00e9t\u00e9 connue.</p>"
+      ) +
+    "</div>";
+
+  const dialog =
+    new DialogV2({
+      window: {
+        title:
+          model.name ??
+          model.id,
+      },
+
+      content,
+
+      buttons: [
+        {
+          action: "close",
+          label: "Fermer",
+          default: true,
+        },
+      ],
+    });
+
+  await dialog.render(true);
+
+  installKnowledgeNavigation(
+    knowledgeDialogRoot(dialog),
+    {
+      api,
+      actor,
+    }
+  );
+
+  return {
+    green: true,
+    dialog,
+    materialId: model.id,
+  };
+}
+
+async function openCreatureKnowledgeDialog({
+  api,
+  actor,
+  creatureId,
+} = {}) {
+  const model =
+    await api
+      ?.craftingKnowledgeBrowser
+      ?.creature?.(
+        actor,
+        creatureId
+      );
+
+  if (!model) {
+    ui.notifications?.warn(
+      "Cette cr\u00e9ature n'est pas encore consultable."
+    );
+
+    return {
+      green: false,
+      reason: "creature-not-visible",
+    };
+  }
+
+  const DialogV2 =
+    foundry?.applications?.api
+      ?.DialogV2;
+
+  if (!DialogV2) {
+    throw new Error(
+      "Campaign Toolkit | DialogV2 unavailable"
+    );
+  }
+
+  const materials =
+    (model.materials ?? [])
+      .map(
+        (material) =>
+          "<li>" +
+          '<button type="button" ' +
+          'data-dct-open-material="' +
+          esc(material.id) +
+          '">' +
+          esc(
+            material.name ??
+            material.id
+          ) +
+          "</button>" +
+          "</li>"
+      )
+      .join("");
+
+  const content =
+    '<div class="dct-knowledge-creature">' +
+      "<h3>Parties connues</h3>" +
+      (
+        materials
+          ? "<ul>" +
+            materials +
+            "</ul>"
+          : "<p>Aucune partie connue.</p>"
+      ) +
+    "</div>";
+
+  const dialog =
+    new DialogV2({
+      window: {
+        title:
+          knowledgeCreatureLabel(
+            model.id
+          ),
+      },
+
+      content,
+
+      buttons: [
+        {
+          action: "close",
+          label: "Fermer",
+          default: true,
+        },
+      ],
+    });
+
+  await dialog.render(true);
+
+  installKnowledgeNavigation(
+    knowledgeDialogRoot(dialog),
+    {
+      api,
+      actor,
+    }
+  );
+
+  return {
+    green: true,
+    dialog,
+    creatureId: model.id,
+  };
+}
+
+async function openRecipeKnowledgeDialog({
+  api,
+  actor,
+  recipeId,
+} = {}) {
+  const model =
+    await api
+      ?.craftingKnowledgeBrowser
+      ?.recipe?.(
+        actor,
+        recipeId
+      );
+
+  if (!model) {
+    ui.notifications?.warn(
+      "Cette recette n'est pas encore consultable."
+    );
+
+    return {
+      green: false,
+      reason: "recipe-not-visible",
+    };
+  }
+
+  const DialogV2 =
+    foundry?.applications?.api
+      ?.DialogV2;
+
+  if (!DialogV2) {
+    throw new Error(
+      "Campaign Toolkit | DialogV2 unavailable"
+    );
+  }
+
+  let outputDefinition =
+    null;
+
+  if (
+    model.output?.type ===
+      "weaponAugment" &&
+    model.output?.id &&
+    api?.weaponAugments?.get
+  ) {
+    try {
+      outputDefinition =
+        await api.weaponAugments.get(
+          model.output.id
+        );
+    } catch {
+      outputDefinition =
+        null;
+    }
+  }
+
+  const effect =
+    outputDefinition?.description
+      ? "<p><strong>Effet :</strong> " +
+        esc(
+          outputDefinition.description
+        ) +
+        "</p>"
+      : "";
+
+  const requirements =
+    (model.requirements ?? [])
+      .map(
+        (requirement) =>
+          "<li>" +
+          '<button type="button" ' +
+          'data-dct-open-property="' +
+          esc(
+            requirement.propertyId
+          ) +
+          '">' +
+          esc(
+            requirement.label ??
+            requirement.propertyId
+          ) +
+          "</button>" +
+          " : " +
+          esc(
+            requirement.value
+          ) +
+          "</li>"
+      )
+      .join("");
+
+  const compatible =
+    new Map();
+
+  for (
+    const property
+    of model.properties ?? []
+  ) {
+    for (
+      const material
+      of property.materials ?? []
+    ) {
+      if (material?.id) {
+        compatible.set(
+          material.id,
+          material
+        );
+      }
+    }
+  }
+
+  const materials =
+    [
+      ...compatible.values()
+    ]
+      .map(
+        (material) =>
+          "<li>" +
+          '<button type="button" ' +
+          'data-dct-open-material="' +
+          esc(material.id) +
+          '">' +
+          esc(
+            material.name ??
+            material.id
+          ) +
+          "</button>" +
+          "</li>"
+      )
+      .join("");
+
+  const content =
+    '<div class="dct-knowledge-recipe">' +
+      effect +
+      "<h3>Propri\u00e9t\u00e9s requises connues</h3>" +
+      (
+        requirements
+          ? "<ul>" +
+            requirements +
+            "</ul>"
+          : "<p>Aucune exigence connue.</p>"
+      ) +
+      "<h3>Parties compatibles connues</h3>" +
+      (
+        materials
+          ? "<ul>" +
+            materials +
+            "</ul>"
+          : "<p>Aucune partie compatible connue.</p>"
+      ) +
+    "</div>";
+
+  const dialog =
+    new DialogV2({
+      window: {
+        title:
+          model.name ??
+          model.id,
+      },
+
+      content,
+
+      buttons: [
+        {
+          action: "close",
+          label: "Fermer",
+          default: true,
+        },
+      ],
+    });
+
+  await dialog.render(true);
+
+  installKnowledgeNavigation(
+    knowledgeDialogRoot(dialog),
+    {
+      api,
+      actor,
+    }
+  );
+
+  return {
+    green: true,
+    dialog,
+    recipeId: model.id,
+  };
+}
+
 async function openPropertyKnowledgeDialog({
   api,
   actor,
@@ -484,10 +1040,15 @@ async function openPropertyKnowledgeDialog({
       .map(
         (material) =>
           "<li>" +
+          '<button type="button" ' +
+          'data-dct-open-material="' +
+          esc(material.id) +
+          '">' +
           esc(
             material.name ??
             material.id
           ) +
+          "</button>" +
           "</li>"
       )
       .join("");
@@ -575,12 +1136,17 @@ async function openPropertyKnowledgeDialog({
       '<li style="' +
         "margin-bottom:.75rem" +
       '">' +
+        '<button type="button" ' +
+        'data-dct-open-recipe="' +
+        esc(recipe.id) +
+        '">' +
         "<strong>" +
         esc(
           recipe.name ??
           recipe.id
         ) +
         "</strong>" +
+        "</button>" +
         effect +
         requirements +
       "</li>"
@@ -652,6 +1218,14 @@ async function openPropertyKnowledgeDialog({
     });
 
   await dialog.render(true);
+
+  installKnowledgeNavigation(
+    knowledgeDialogRoot(dialog),
+    {
+      api,
+      actor,
+    }
+  );
 
   return {
     green: true,
