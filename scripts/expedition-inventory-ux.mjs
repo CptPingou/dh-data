@@ -246,67 +246,141 @@ function findVisibleItemLabel(dialog, itemName) {
 }
 
 
-async function chooseActionQuantity(entry) {
-  const available = Math.max(1, Number(entry?.quantity) || 1);
+async function chooseActionQuantity(
+  entry,
+  {
+    actionLabel = "Consommer",
+    actionVerb = "consommer",
+  } = {}
+) {
+  const available =
+    Math.max(
+      1,
+      Number(entry?.quantity) || 1
+    );
 
-  if (available <= 1) return 1;
-
-  const DialogV2 = foundry?.applications?.api?.DialogV2;
-
-  if (DialogV2?.prompt) {
-    const result = await DialogV2.prompt({
-      window: {
-        title: `Consommer — ${entry.itemRef?.name ?? "Objet"}`,
-      },
-      content: `
-        <div class="form-group">
-          <label>Quantité</label>
-          <div class="form-fields">
-            <input
-              type="number"
-              name="quantity"
-              value="1"
-              min="1"
-              max="${available}"
-              step="1"
-              autofocus
-            />
-          </div>
-          <p class="hint">Disponible : ${available}</p>
-        </div>
-      `,
-      ok: {
-        label: "Consommer",
-        callback: (_event, _button, dialog) => {
-          const input =
-            dialog?.element?.querySelector?.('[name="quantity"]');
-          return Number(input?.value ?? 1);
-        },
-      },
-      rejectClose: false,
-    });
-
-    if (result == null) return null;
-
-    const quantity = Math.floor(Number(result));
-
-    if (!Number.isFinite(quantity) || quantity <= 0) return null;
-
-    return Math.min(available, quantity);
+  if (available <= 1) {
+    return 1;
   }
 
-  const raw = window.prompt(
-    `Quantité de "${entry.itemRef?.name ?? "Objet"}" à consommer (1-${available}) :`,
-    "1"
+  const DialogV2 =
+    foundry?.applications?.api
+      ?.DialogV2;
+
+  const itemName =
+    entry?.itemRef?.name ??
+    "Objet";
+
+  if (DialogV2?.prompt) {
+    const result =
+      await DialogV2.prompt({
+        window: {
+          title:
+            actionLabel +
+            " \u2014 " +
+            itemName,
+        },
+
+        content:
+          `
+            <div class="form-group">
+              <label>Quantit\u00e9</label>
+              <div class="form-fields">
+                <input
+                  type="number"
+                  name="quantity"
+                  value="1"
+                  min="1"
+                  max="${available}"
+                  step="1"
+                  autofocus
+                />
+              </div>
+              <p class="hint">
+                Disponible : ${available}
+              </p>
+            </div>
+          `,
+
+        ok: {
+          label:
+            actionLabel,
+
+          callback:
+            (
+              _event,
+              _button,
+              dialog
+            ) => {
+              const input =
+                dialog?.element
+                  ?.querySelector?.(
+                    '[name="quantity"]'
+                  );
+
+              return Number(
+                input?.value ?? 1
+              );
+            },
+        },
+
+        rejectClose: false,
+      });
+
+    if (result == null) {
+      return null;
+    }
+
+    const quantity =
+      Math.floor(
+        Number(result)
+      );
+
+    if (
+      !Number.isFinite(quantity) ||
+      quantity <= 0
+    ) {
+      return null;
+    }
+
+    return Math.min(
+      available,
+      quantity
+    );
+  }
+
+  const raw =
+    window.prompt(
+      "Quantit\u00e9 de \"" +
+      itemName +
+      "\" \u00e0 " +
+      actionVerb +
+      " (1-" +
+      available +
+      ") :",
+      "1"
+    );
+
+  if (raw == null) {
+    return null;
+  }
+
+  const quantity =
+    Math.floor(
+      Number(raw)
+    );
+
+  if (
+    !Number.isFinite(quantity) ||
+    quantity <= 0
+  ) {
+    return null;
+  }
+
+  return Math.min(
+    available,
+    quantity
   );
-
-  if (raw == null) return null;
-
-  const quantity = Math.floor(Number(raw));
-
-  if (!Number.isFinite(quantity) || quantity <= 0) return null;
-
-  return Math.min(available, quantity);
 }
 
 async function confirmInventoryAction({
@@ -2988,9 +3062,18 @@ function installInventoryViewHandlers(
 
         const quantity =
           available > 1
-            ? await chooseActionQuantity({
-                quantity: available,
-              })
+            ? await chooseActionQuantity(
+                {
+                  quantity:
+                    available,
+                },
+                {
+                  actionLabel:
+                    "Transf\u00e9rer",
+                  actionVerb:
+                    "transf\u00e9rer",
+                }
+              )
             : 1;
 
         if (quantity == null) {
@@ -3056,9 +3139,18 @@ function installInventoryViewHandlers(
 
         const quantity =
           available > 1
-            ? await chooseActionQuantity({
-                quantity: available,
-              })
+            ? await chooseActionQuantity(
+                {
+                  quantity:
+                    available,
+                },
+                {
+                  actionLabel:
+                    "Renvoyer",
+                  actionVerb:
+                    "renvoyer",
+                }
+              )
             : 1;
 
         if (quantity == null) {

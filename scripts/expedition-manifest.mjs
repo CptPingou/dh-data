@@ -479,9 +479,22 @@ function entriesShareStackIdentity(
   left,
   right
 ) {
+  const leftSourceId =
+    String(
+      left?.itemRef?.sourceId ??
+      ""
+    ).trim();
+
+  const rightSourceId =
+    String(
+      right?.itemRef?.sourceId ??
+      ""
+    ).trim();
+
   if (
-    left?.itemRef?.sourceId !==
-    right?.itemRef?.sourceId
+    !leftSourceId ||
+    !rightSourceId ||
+    leftSourceId !== rightSourceId
   ) {
     return false;
   }
@@ -496,11 +509,25 @@ function entriesShareStackIdentity(
       right?.itemRef
     );
 
-  return (
-    leftKey != null &&
-    rightKey != null &&
-    leftKey === rightKey
-  );
+  /*
+   * Compatibility for old expedition entries created
+   * before snapshots became systematic.
+   *
+   * Two legacy instances of the same source are allowed
+   * to stack. A legacy instance is never merged with a
+   * detailed snapshot because equivalence is unknown.
+   */
+  if (
+    leftKey == null ||
+    rightKey == null
+  ) {
+    return (
+      leftKey == null &&
+      rightKey == null
+    );
+  }
+
+  return leftKey === rightKey;
 }
 
 function legacyMaterialStorageAdapter(
