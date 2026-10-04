@@ -8,6 +8,7 @@ import {
   validateExpeditionFob,
 } from "./expedition-fob.mjs";
 import {
+  createDefaultExpeditionCaravan,
   normalizeExpeditionCaravan,
   validateExpeditionCaravan,
 } from "./expedition-caravan.mjs";
@@ -93,6 +94,12 @@ export function normalizeExpeditionManifest(manifest) {
       normalizeExpeditionCaravan(
         normalized.caravan
       );
+  } else {
+    normalized.caravan =
+      createDefaultExpeditionCaravan({
+        id: "caravan",
+        name: "Caravane",
+      });
   }
 
   return normalized;
@@ -1503,7 +1510,11 @@ export function createEmptyExpeditionManifest({ expeditionId = "new-expedition" 
     characters: [],
     containers: [],
     fob: null,
-    caravan: null,
+    caravan:
+      createDefaultExpeditionCaravan({
+        id: "caravan",
+        name: "Caravane",
+      }),
     ledger: [],
     metadata: {},
   };
