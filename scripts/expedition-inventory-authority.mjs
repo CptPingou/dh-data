@@ -6,7 +6,6 @@ export async function processInventoryAuthorityRequest(
     getApi,
     userCanAccessContainer,
     userCanTransferBetweenContainers,
-    resolveManifestLogisticsPhase,
     broadcastBackpackAccessChange,
   }
 ) {
@@ -47,23 +46,18 @@ export async function processInventoryAuthorityRequest(
       return { green: false, reason: "container-not-found" };
     }
 
-    const logisticsPhase =
-      resolveManifestLogisticsPhase(manifest);
-
     const transferAllowed =
       userCanTransferBetweenContainers({
         user: requester,
         manifest,
         source: from,
         destination: to,
-        phase: logisticsPhase,
       });
 
     if (!transferAllowed) {
       return {
         green: false,
-        reason: "logistics-transfer-denied",
-        logisticsPhase,
+        reason: "access-transfer-denied",
       };
     }
 
@@ -127,7 +121,7 @@ export async function processInventoryAuthorityRequest(
       return { green: false, reason: "container-not-found" };
     }
 
-    if (!userCanAccessContainer(requester, to)) {
+    if (!userCanAccessContainer(requester, to, manifest)) {
       return { green: false, reason: "container-access-denied" };
     }
 
@@ -260,7 +254,7 @@ export async function processInventoryAuthorityRequest(
       return { green: false, reason: "container-not-found" };
     }
 
-    if (!userCanAccessContainer(requester, from)) {
+    if (!userCanAccessContainer(requester, from, manifest)) {
       return { green: false, reason: "container-access-denied" };
     }
 
@@ -350,7 +344,7 @@ export async function processInventoryAuthorityRequest(
       return { green: false, reason: "container-not-found" };
     }
 
-    if (!userCanAccessContainer(requester, to)) {
+    if (!userCanAccessContainer(requester, to, manifest)) {
       return { green: false, reason: "container-access-denied" };
     }
 

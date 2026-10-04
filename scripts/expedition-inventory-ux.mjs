@@ -6,6 +6,7 @@ import {
   userOwnsBackpack,
   userCanAccessContainer,
   userCanTransferBetweenContainers,
+  userCanViewZone,
   normalizeBackpackSlots,
 } from "./expedition-inventory-policy.mjs";
 
@@ -38,10 +39,6 @@ import {
   activateExpeditionShellTab,
   setExpeditionShellTabVisibility,
 } from "./expedition-shell.mjs";
-
-import {
-  resolvePlayerLogisticsVisibility,
-} from "./expedition-logistics-visibility.mjs";
 
 import {
   projectExpeditionInventory,
@@ -1185,8 +1182,15 @@ function playerOwnsBackpack(container) {
   return userOwnsBackpack(game.user, container);
 }
 
-function playerCanAccessContainer(container) {
-  return userCanAccessContainer(game.user, container);
+function playerCanAccessContainer(
+  container,
+  manifest
+) {
+  return userCanAccessContainer(
+    game.user,
+    container,
+    manifest
+  );
 }
 
 function filterPlayerContainers(dialog, manifest) {
@@ -1199,7 +1203,13 @@ function filterPlayerContainers(dialog, manifest) {
 
   const allowedIds = new Set(
     (manifest?.containers ?? [])
-      .filter(playerCanAccessContainer)
+      .filter(
+        (container) =>
+          playerCanAccessContainer(
+            container,
+            manifest
+          )
+      )
       .map((container) => container.containerId)
       .filter(Boolean)
   );
@@ -3040,7 +3050,6 @@ async function processInventoryAuthorityRequest(message) {
     getApi,
     userCanAccessContainer,
     userCanTransferBetweenContainers,
-    resolveManifestLogisticsPhase,
     broadcastBackpackAccessChange,
   });
 }
@@ -4185,36 +4194,41 @@ async function configureExpeditionShell(
       canManage: isGm,
     });
 
-  const logisticsVisibility =
-    isGm
-      ? {
-          fob: true,
-          caravan: true,
-          sameLocation: true,
-        }
-      : resolvePlayerLogisticsVisibility(
-          manifest
-        );
+  const fobVisible =
+    isGm ||
+    userCanViewZone(
+      game.user,
+      manifest,
+      "fob"
+    );
+
+  const caravanVisible =
+    isGm ||
+    userCanViewZone(
+      game.user,
+      manifest,
+      "caravan"
+    );
 
   setExpeditionShellTabVisibility(
     shell,
     "fob",
-    logisticsVisibility.fob
+    fobVisible
   );
 
   setExpeditionShellTabVisibility(
     shell,
     "caravan",
-    logisticsVisibility.caravan
+    caravanVisible
   );
 
   shell.dataset.dhctFobVisible =
-    logisticsVisibility.fob
+    fobVisible
       ? "1"
       : "0";
 
   shell.dataset.dhctCaravanVisible =
-    logisticsVisibility.caravan
+    caravanVisible
       ? "1"
       : "0";
 

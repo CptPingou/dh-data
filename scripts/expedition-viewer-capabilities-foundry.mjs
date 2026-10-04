@@ -3,39 +3,23 @@ import {
 } from "./expedition-viewer-capabilities.mjs";
 
 import {
-  resolveManifestLogisticsPhase,
-} from "./expedition-logistics-phase.mjs";
-
-import {
   userCanAccessContainer,
   userCanTransferBetweenContainers,
   userOwnsBackpack,
+  userCharacterId,
 } from "./expedition-inventory-policy.mjs";
-
-function viewerCharacterId(user, manifest) {
-  const actorId = user?.character?.id ?? null;
-
-  if (!actorId) return null;
-
-  const character =
-    (manifest?.characters ?? []).find(
-      (candidate) =>
-        candidate?.foundryActorUuid ===
-          `Actor.${actorId}` ||
-        candidate?.actorUuid ===
-          `Actor.${actorId}` ||
-        candidate?.characterId === actorId
-    );
-
-  return character?.characterId ?? actorId;
-}
 
 function containerCapabilities(
   user,
-  container
+  container,
+  manifest
 ) {
   const view =
-    userCanAccessContainer(user, container);
+    userCanAccessContainer(
+      user,
+      container,
+      manifest
+    );
 
   if (!view) {
     return { view: false };
@@ -94,9 +78,6 @@ export function createFoundryViewerCapabilities({
 
   const containers = {};
 
-  const logisticsPhase =
-    resolveManifestLogisticsPhase(manifest);
-
   const manifestContainers =
     (manifest.containers ?? [])
       .filter(
@@ -108,7 +89,8 @@ export function createFoundryViewerCapabilities({
     const capabilities =
       containerCapabilities(
         user,
-        container
+        container,
+        manifest
       );
 
     if (
@@ -123,9 +105,9 @@ export function createFoundryViewerCapabilities({
                 container.containerId &&
               userCanTransferBetweenContainers({
                 user,
+                manifest,
                 source: container,
                 destination,
-                phase: logisticsPhase,
               })
           )
           .map(
@@ -144,7 +126,7 @@ export function createFoundryViewerCapabilities({
 
   return createViewerCapabilities({
     characterId:
-      viewerCharacterId(user, manifest),
+      userCharacterId(user, manifest),
 
     expedition: {
       view: true,

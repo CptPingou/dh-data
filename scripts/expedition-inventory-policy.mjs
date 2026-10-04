@@ -3,9 +3,9 @@ import {
   resolveEntryStorageProfile,
 } from "./expedition-storage.mjs";
 import {
-  logisticsDirectionAllowed,
-  normalizeContainerRole,
-} from "./expedition-logistics-phase.mjs";
+  characterCanViewZone,
+  characterCanTransferZone,
+} from "./expedition-access.mjs";
 
 export function backpackAccessState(container) {
   return container?.presentation?.accessState === "stored"
@@ -110,32 +110,6 @@ export function userOwnsBackpack(user, container) {
   return user.id === game.user?.id ? Boolean(actor.isOwner) : false;
 }
 
-export function userCanAccessContainer(user, container) {
-  if (!container || !user) return false;
-  if (user.isGM) return true;
-
-  if (container.type === "backpack") {
-    return (
-      userOwnsBackpack(user, container) &&
-      backpackAccessState(container) !== "stored"
-    );
-  }
-
-  const role = inferredSharedRole(container);
-
-  return Boolean(
-    role &&
-    ["fob", "caravan", "ground"].includes(role) &&
-    sharedPlayerAccessEnabled(container)
-  );
-}
-
-/**
- * Resolve the logistics role used by directional transfer policy.
- *
- * Backpack is an intrinsic container type.
- * Shared roles remain resolved through inferredSharedRole().
- */
 export function caravanStorageContainerIds(
   manifest
 ) {
@@ -174,28 +148,22 @@ export function isCaravanStorageContainer(
   ).has(containerId);
 }
 
-/**
- * Resolve the logistics role used by directional transfer policy.
- *
- * Backpack is intrinsic.
- * Caravan storage is structural: a container is caravan storage only when
- * referenced by manifest.caravan.components[].containerId.
- * Ground and FOB still use the shared-role resolver until the cleanup pass.
- */
-export function containerLogisticsRole(
+export function containerAccessZone(
   manifest,
   container
 ) {
-  if (!container) {
+  if (
+    !container ||
+    container.type === "backpack"
+  ) {
     return null;
   }
 
-  if (
-    container.type ===
-    "backpack"
-  ) {
-    return "backpack";
-  }
+  const containerId =
+    String(
+      container?.containerId ??
+      ""
+    ).trim();
 
   if (
     isCaravanStorageContainer(
@@ -203,17 +171,205 @@ export function containerLogisticsRole(
       container
     )
   ) {
-    return "caravan-storage";
+    return "caravan";
   }
 
-  const sharedRole =
+  if (
+    containerId &&
+    containerId ===
+      String(
+        manifest?.fob
+          ?.storageContainerId ??
+        ""
+      ).trim()
+  ) {
+    return "fob";
+  }
+
+  if (containerId === "ground") {
+    return "ground";
+  }
+
+  const legacyRole =
     inferredSharedRole(
       container
     );
 
-  return normalizeContainerRole(
-    sharedRole,
-    null
+  if (
+    legacyRole === "fob" ||
+    legacyRole === "ground"
+  ) {
+    return legacyRole;
+  }
+
+  return null;
+}
+
+export function userCharacterId(
+  user,
+  manifest
+) {
+  if (!user) {
+    return null;
+  }
+
+  const actorId =
+    user?.character?.id ??
+    null;
+
+  if (actorId) {
+    const character =
+      (
+        manifest?.characters ??
+        []
+      ).find(
+        (candidate) =>
+          candidate?.foundryActorUuid ===
+            "Actor." + actorId ||
+          candidate?.actorUuid ===
+            "Actor." + actorId ||
+          candidate?.characterId ===
+            actorId
+      );
+
+    if (character?.characterId) {
+      return character.characterId;
+    }
+  }
+
+  const ownedBackpack =
+    (
+      manifest?.containers ??
+      []
+    ).find(
+      (container) =>
+        container?.type ===
+          "backpack" &&
+        container?.holderRef
+          ?.kind ===
+          "character" &&
+        userOwnsBackpack(
+          user,
+          container
+        )
+    );
+
+  const holderCharacterId =
+    String(
+      ownedBackpack?.holderRef
+        ?.id ??
+      ""
+    ).trim();
+
+  if (holderCharacterId) {
+    return holderCharacterId;
+  }
+
+  return actorId;
+}
+
+export function userCanViewZone(
+  user,
+  manifest,
+  zone
+) {
+  if (!user) {
+    return false;
+  }
+
+  if (user.isGM) {
+    return true;
+  }
+
+  const characterId =
+    userCharacterId(
+      user,
+      manifest
+    );
+
+  if (!characterId) {
+    return false;
+  }
+
+  return characterCanViewZone(
+    manifest,
+    characterId,
+    zone
+  );
+}
+
+export function userCanTransferZone(
+  user,
+  manifest,
+  zone
+) {
+  if (!user) {
+    return false;
+  }
+
+  if (user.isGM) {
+    return true;
+  }
+
+  const characterId =
+    userCharacterId(
+      user,
+      manifest
+    );
+
+  if (!characterId) {
+    return false;
+  }
+
+  return characterCanTransferZone(
+    manifest,
+    characterId,
+    zone
+  );
+}
+
+export function userCanAccessContainer(
+  user,
+  container,
+  manifest = null
+) {
+  if (!container || !user) {
+    return false;
+  }
+
+  if (user.isGM) {
+    return true;
+  }
+
+  if (
+    container.type ===
+    "backpack"
+  ) {
+    return (
+      userOwnsBackpack(
+        user,
+        container
+      ) &&
+      backpackAccessState(
+        container
+      ) !== "stored"
+    );
+  }
+
+  const zone =
+    containerAccessZone(
+      manifest,
+      container
+    );
+
+  if (!zone) {
+    return false;
+  }
+
+  return userCanViewZone(
+    user,
+    manifest,
+    zone
   );
 }
 
@@ -222,7 +378,6 @@ export function userCanTransferBetweenContainers({
   manifest = null,
   source,
   destination,
-  phase,
 } = {}) {
   if (
     !user ||
@@ -232,46 +387,81 @@ export function userCanTransferBetweenContainers({
     return false;
   }
 
+  const sourceId =
+    String(
+      source?.containerId ??
+      source?.id ??
+      ""
+    );
+
+  const destinationId =
+    String(
+      destination?.containerId ??
+      destination?.id ??
+      ""
+    );
+
   if (
-    source.id != null &&
-    destination.id != null &&
-    String(source.id) ===
-      String(destination.id)
+    sourceId &&
+    destinationId &&
+    sourceId ===
+      destinationId
   ) {
     return false;
   }
 
+  if (user.isGM) {
+    return true;
+  }
+
   if (
-    !userCanAccessContainer(user, source) ||
-    !userCanAccessContainer(user, destination)
+    !userCanAccessContainer(
+      user,
+      source,
+      manifest
+    ) ||
+    !userCanAccessContainer(
+      user,
+      destination,
+      manifest
+    )
   ) {
     return false;
   }
 
-  const sourceRole =
-    containerLogisticsRole(
+  const sourceZone =
+    containerAccessZone(
       manifest,
       source
     );
 
-  const destinationRole =
-    containerLogisticsRole(
+  const destinationZone =
+    containerAccessZone(
       manifest,
       destination
     );
 
-  if (
-    !sourceRole ||
-    !destinationRole
-  ) {
-    return false;
+  const zones =
+    [
+      sourceZone,
+      destinationZone,
+    ].filter(Boolean);
+
+  if (!zones.length) {
+    return (
+      source.type === "backpack" &&
+      destination.type === "backpack"
+    );
   }
 
-  return logisticsDirectionAllowed({
-    phase,
-    sourceRole,
-    destinationRole,
-  });
+  return zones.every(
+    (zone) =>
+      userCanTransferZone(
+        user,
+        manifest,
+        zone
+      )
+  );
 }
 
 export function normalizeBackpackSlots(container, slotCount) {
