@@ -7,6 +7,10 @@ import {
   normalizeExpeditionFob,
   validateExpeditionFob,
 } from "./expedition-fob.mjs";
+import {
+  containerProfileAcceptsEntry,
+  normalizeContainerStorageProfile,
+} from "./expedition-container-profile.mjs";
 
 export const EXPEDITION_MANIFEST_SCHEMA = "daggerheart-campaign-toolkit/expedition-manifest@2";
 export const EXPEDITION_MANIFEST_SCHEMA_V1 = "daggerheart-campaign-toolkit/expedition-manifest@1";
@@ -256,6 +260,62 @@ export function validateExpeditionManifest(input) {
   };
 }
 
+function stackSnapshotKey(itemRef) {
+  const snapshot = itemRef?.snapshot;
+
+  if (
+    !snapshot ||
+    typeof snapshot !== "object"
+  ) {
+    return null;
+  }
+
+  const normalized = clone(snapshot);
+
+  delete normalized._id;
+  delete normalized._stats;
+  delete normalized.sort;
+  delete normalized.folder;
+
+  if (
+    normalized.system &&
+    typeof normalized.system === "object"
+  ) {
+    delete normalized.system.quantity;
+    delete normalized.system.amount;
+  }
+
+  return JSON.stringify(normalized);
+}
+
+function entriesShareStackIdentity(
+  left,
+  right
+) {
+  if (
+    left?.itemRef?.sourceId !==
+    right?.itemRef?.sourceId
+  ) {
+    return false;
+  }
+
+  const leftKey =
+    stackSnapshotKey(
+      left?.itemRef
+    );
+
+  const rightKey =
+    stackSnapshotKey(
+      right?.itemRef
+    );
+
+  return (
+    leftKey != null &&
+    rightKey != null &&
+    leftKey === rightKey
+  );
+}
+
 function materialStorageData(entry) {
   const material = entry?.itemRef?.snapshot?.flags?.["daggerheart-campaign-toolkit"]?.material;
   if (!material?.materialId || !material?.containerClass) return null;
@@ -318,6 +378,89 @@ function materialMergeTarget(container, entry) {
   ) ?? null;
 }
 
+function storageProfileRuleResult(
+  container,
+  entry
+) {
+  if (
+    !container?.storageProfile ||
+    typeof container.storageProfile !== "object" ||
+    Array.isArray(container.storageProfile)
+  ) {
+    return {
+      green: true,
+      managed: false,
+    };
+  }
+
+  const result =
+    containerProfileAcceptsEntry(
+      container.storageProfile,
+      entry
+    );
+
+  if (!result.green) {
+    return {
+      green: false,
+      reason:
+        container.name +
+        " ne peut pas contenir cet objet",
+      code:
+        result.code ??
+        "container-class-rejected",
+      classes:
+        result.classes ?? [],
+      acceptedClasses:
+        result.acceptedClasses ?? [],
+    };
+  }
+
+  return {
+    green: true,
+    managed: true,
+    profile:
+      normalizeContainerStorageProfile(
+        container.storageProfile
+      ),
+    classes:
+      result.classes ?? [],
+  };
+}
+
+function storageProfileMergeTarget(
+  container,
+  entry
+) {
+  if (
+    !container?.storageProfile ||
+    typeof container.storageProfile !== "object" ||
+    Array.isArray(container.storageProfile)
+  ) {
+    return null;
+  }
+
+  const profile =
+    normalizeContainerStorageProfile(
+      container.storageProfile
+    );
+
+  if (!profile.mergeStacks) {
+    return null;
+  }
+
+  return (
+    container.contents ?? []
+  ).find(
+    (candidate) =>
+      candidate !== entry &&
+      Number(candidate?.quantity) > 0 &&
+      entriesShareStackIdentity(
+        candidate,
+        entry
+      )
+  ) ?? null;
+}
+
 function transferRuleResult(container, entry) {
   for (const rule of container?.rules ?? []) {
     if (!rule || rule.enabled === false) continue;
@@ -363,22 +506,64 @@ export function canTransferExpeditionEntry(manifest, {
   const rule = transferRuleResult(to, entry);
   if (!rule.green) return rule;
 
-  const materialRule = materialStorageRuleResult(to, entry);
-  if (!materialRule.green) return materialRule;
+  const genericStorageRule =
+    storageProfileRuleResult(
+      to,
+      entry
+    );
 
-  const mergeTarget = materialMergeTarget(to, entry);
+  if (!genericStorageRule.green) {
+    return genericStorageRule;
+  }
+
+  const materialRule =
+    genericStorageRule.managed
+      ? {
+          green: true,
+        }
+      : materialStorageRuleResult(
+          to,
+          entry
+        );
+
+  if (!materialRule.green) {
+    return materialRule;
+  }
+
+  const mergeTarget =
+    genericStorageRule.managed
+      ? storageProfileMergeTarget(
+          to,
+          entry
+        )
+      : materialMergeTarget(
+          to,
+          entry
+        );
+
   if (mergeTarget) {
     const nextQuantity =
       Math.max(1, Number(mergeTarget.quantity) || 1) +
       Math.max(1, Number(entry.quantity) || 1);
 
-    const mergeRule = materialStorageRuleResult(
-      to,
-      mergeTarget,
-      { additionalQuantity: nextQuantity }
-    );
+    const mergeRule =
+      genericStorageRule.managed
+        ? storageProfileRuleResult(
+            to,
+            mergeTarget
+          )
+        : materialStorageRuleResult(
+            to,
+            mergeTarget,
+            {
+              additionalQuantity:
+                nextQuantity,
+            }
+          );
 
-    if (!mergeRule.green) return mergeRule;
+    if (!mergeRule.green) {
+      return mergeRule;
+    }
 
     const capacity = containerStorageCapacity(to, {
       resolveStorage: resolveEffectiveStorageProfile,
@@ -870,57 +1055,181 @@ export function acquireExpeditionEntry(manifest, {
     quantity: qty,
   };
 
-  // P2.10h.3 backpack stack merge
-  // Merge only when both entries carry snapshots and their mechanical data
-  // are identical once volatile identity/quantity fields are removed.
-  const stackSnapshotKey = (itemRef) => {
-    const snapshot = itemRef?.snapshot;
-    if (!snapshot || typeof snapshot !== "object") return null;
+  const genericStorageRule =
+    storageProfileRuleResult(
+      container,
+      candidate
+    );
 
-    const normalized = clone(snapshot);
-    delete normalized._id;
-    delete normalized._stats;
-    delete normalized.sort;
-    delete normalized.folder;
+  if (!genericStorageRule.green) {
+    return {
+      acquired: false,
+      reason: genericStorageRule.reason,
+      code: genericStorageRule.code ?? null,
+      manifest,
+    };
+  }
 
-    if (normalized.system && typeof normalized.system === "object") {
-      if (Object.prototype.hasOwnProperty.call(normalized.system, "quantity")) {
-        delete normalized.system.quantity;
+  const genericManaged =
+    genericStorageRule.managed === true;
+
+  const genericProfile =
+    genericManaged
+      ? normalizeContainerStorageProfile(
+          container.storageProfile
+        )
+      : null;
+
+  const existingStack =
+    genericManaged
+      ? (
+          genericProfile.mergeStacks
+            ? (
+                container.contents ?? []
+              ).find(
+                (existing) =>
+                  Number(existing?.quantity) > 0 &&
+                  entriesShareStackIdentity(
+                    existing,
+                    candidate
+                  )
+              ) ?? null
+            : null
+        )
+      : (
+          container?.materialStorage?.mergeStacks === false
+            ? null
+            : (
+                container.contents ?? []
+              ).find(
+                (existing) =>
+                  Number(existing?.quantity) > 0 &&
+                  entriesShareStackIdentity(
+                    existing,
+                    candidate
+                  )
+              ) ?? null
+        );
+
+  if (existingStack) {
+    const nextQuantity =
+      Math.max(
+        1,
+        Number(existingStack.quantity) || 1
+      ) + qty;
+
+    if (genericManaged) {
+      const tempId =
+        "__expedition-acquire-merge__";
+
+      const stagedCandidate =
+        clone(candidate);
+
+      const temp = {
+        containerId: tempId,
+        type: "virtual",
+        scope: "expedition",
+        capacity: {
+          slots:
+            Number.MAX_SAFE_INTEGER,
+        },
+        rules: [],
+        contents: [
+          stagedCandidate,
+        ],
+      };
+
+      manifest.containers.push(temp);
+
+      let preflight;
+
+      try {
+        preflight =
+          canTransferExpeditionEntry(
+            manifest,
+            {
+              entryId:
+                stagedCandidate.entryId,
+              fromContainerId:
+                tempId,
+              toContainerId:
+                containerId,
+            }
+          );
+      } finally {
+        manifest.containers.pop();
       }
-      if (Object.prototype.hasOwnProperty.call(normalized.system, "amount")) {
-        delete normalized.system.amount;
+
+      if (!preflight.green) {
+        return {
+          acquired: false,
+          reason: preflight.reason,
+          code:
+            preflight.code ?? null,
+          manifest,
+        };
+      }
+
+      if (
+        preflight.mergeTarget !==
+        existingStack
+      ) {
+        return {
+          acquired: false,
+          reason:
+            "generic acquisition merge target mismatch",
+          code:
+            "acquisition-merge-target-mismatch",
+          manifest,
+        };
+      }
+    } else {
+      const materialRule =
+        materialStorageRuleResult(
+          container,
+          existingStack,
+          {
+            additionalQuantity:
+              nextQuantity,
+          }
+        );
+
+      if (!materialRule.green) {
+        return {
+          acquired: false,
+          reason:
+            materialRule.reason,
+          code:
+            materialRule.code,
+          manifest,
+        };
       }
     }
 
-    return JSON.stringify(normalized);
-  };
+    existingStack.quantity =
+      nextQuantity;
 
-  const candidateStackKey = stackSnapshotKey(candidate.itemRef);
-  const existingStack =
-    candidateStackKey == null || container?.materialStorage?.mergeStacks === false
-      ? null
-      : (container.contents ?? []).find((existing) => {
-          if (existing?.itemRef?.sourceId !== candidate.itemRef?.sourceId) return false;
-          return stackSnapshotKey(existing.itemRef) === candidateStackKey;
-        });
+    manifest.revision =
+      Math.max(
+        1,
+        Number(manifest.revision) || 1
+      ) + 1;
 
-  if (existingStack) {
-    const nextQuantity = Math.max(1, Number(existingStack.quantity) || 1) + qty;
-    const materialRule = materialStorageRuleResult(container, existingStack, { additionalQuantity: nextQuantity });
-    if (!materialRule.green) return { acquired: false, reason: materialRule.reason, code: materialRule.code, manifest };
-
-    existingStack.quantity = nextQuantity;
-
-    manifest.revision = Math.max(1, Number(manifest.revision) || 1) + 1;
-
-    const ledgerEvent = appendExpeditionLedgerEvent(manifest, {
-      kind: "acquired",
-      entryId: existingStack.entryId,
-      itemRef: existingStack.itemRef,
-      quantity: qty,
-      toContainerId: containerId,
-      note,
-    });
+    const ledgerEvent =
+      appendExpeditionLedgerEvent(
+        manifest,
+        {
+          kind: "acquired",
+          entryId:
+            existingStack.entryId,
+          itemRef:
+            existingStack.itemRef,
+          quantity: qty,
+          toContainerId:
+            containerId,
+          note,
+        }
+      );
 
     return {
       acquired: true,
