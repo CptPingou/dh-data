@@ -100,15 +100,37 @@ export function createFoundryViewerCapabilities({
       capabilities.transferTo =
         manifestContainers
           .filter(
-            (destination) =>
-              destination.containerId !==
-                container.containerId &&
-              userCanTransferBetweenContainers({
+            (destination) => {
+              if (
+                destination.containerId ===
+                container.containerId
+              ) {
+                return false;
+              }
+
+              /*
+               * Direct backpack -> backpack transfer
+               * is a GM-only inventory administration
+               * capability.
+               *
+               * Backpacks intentionally remain outside
+               * the shared-zone ACL matrix for players.
+               */
+              if (
+                user?.isGM === true &&
+                container?.type === "backpack" &&
+                destination?.type === "backpack"
+              ) {
+                return true;
+              }
+
+              return userCanTransferBetweenContainers({
                 user,
                 manifest,
                 source: container,
                 destination,
-              })
+              });
+            }
           )
           .map(
             (destination) =>
