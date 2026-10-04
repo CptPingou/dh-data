@@ -44,15 +44,20 @@ export const EXPEDITION_LOGISTICS_PHASE_PRESENTATION =
         "Sac \u2194 Sol",
         "Sac \u2194 Sac",
         "Sac \u2194 FOB",
+        "Sol \u2194 FOB",
       ]),
     }),
 
     "arc-extraction": Object.freeze({
       label: "Extraction d\u2019arc",
       description:
-        "Les ressources s\u00e9curis\u00e9es quittent le FOB avec la Caravane.",
+        "Les ressources s\u00e9curis\u00e9es peuvent \u00eatre charg\u00e9es ou d\u00e9charg\u00e9es de la Caravane.",
       rules: Object.freeze([
-        "FOB \u2192 Caravane",
+        "Sac \u2194 Sol",
+        "Sac \u2194 Sac",
+        "Sac \u2194 FOB",
+        "Sol \u2194 FOB",
+        "FOB \u2194 Caravane",
       ]),
     }),
   });
@@ -61,7 +66,7 @@ export const EXPEDITION_CONTAINER_ROLES = Object.freeze({
   BACKPACK: "backpack",
   GROUND: "ground",
   FOB: "fob",
-  CARAVAN: "caravan",
+  CARAVAN_STORAGE: "caravan-storage",
   BASE: "base",
 });
 
@@ -129,25 +134,70 @@ export function normalizeContainerRole(
  * - stack limits;
  * - Foundry document access.
  */
-const TRANSFER_DIRECTIONS = Object.freeze({
-  [EXPEDITION_LOGISTICS_PHASES.FIELD]: Object.freeze([
-    Object.freeze(["backpack", "ground"]),
-    Object.freeze(["ground", "backpack"]),
-    Object.freeze(["backpack", "backpack"]),
-  ]),
+const FIELD_TRANSFER_DIRECTIONS =
+  Object.freeze([
+    Object.freeze([
+      "backpack",
+      "ground"
+    ]),
+    Object.freeze([
+      "ground",
+      "backpack"
+    ]),
+    Object.freeze([
+      "backpack",
+      "backpack"
+    ]),
+  ]);
 
-  [EXPEDITION_LOGISTICS_PHASES.FIELD_EXTRACTION]: Object.freeze([
-    Object.freeze(["backpack", "ground"]),
-    Object.freeze(["ground", "backpack"]),
-    Object.freeze(["backpack", "backpack"]),
-    Object.freeze(["backpack", "fob"]),
-    Object.freeze(["fob", "backpack"]),
-  ]),
+const FIELD_EXTRACTION_TRANSFER_DIRECTIONS =
+  Object.freeze([
+    ...FIELD_TRANSFER_DIRECTIONS,
 
-  [EXPEDITION_LOGISTICS_PHASES.ARC_EXTRACTION]: Object.freeze([
-    Object.freeze(["fob", "caravan"]),
-  ]),
-});
+    Object.freeze([
+      "backpack",
+      "fob"
+    ]),
+    Object.freeze([
+      "fob",
+      "backpack"
+    ]),
+
+    Object.freeze([
+      "ground",
+      "fob"
+    ]),
+    Object.freeze([
+      "fob",
+      "ground"
+    ]),
+  ]);
+
+const ARC_EXTRACTION_TRANSFER_DIRECTIONS =
+  Object.freeze([
+    ...FIELD_EXTRACTION_TRANSFER_DIRECTIONS,
+
+    Object.freeze([
+      "fob",
+      "caravan-storage"
+    ]),
+    Object.freeze([
+      "caravan-storage",
+      "fob"
+    ]),
+  ]);
+
+const TRANSFER_DIRECTIONS =
+  Object.freeze({
+    [EXPEDITION_LOGISTICS_PHASES.FIELD]:
+      FIELD_TRANSFER_DIRECTIONS,
+
+    [EXPEDITION_LOGISTICS_PHASES.FIELD_EXTRACTION]:
+      FIELD_EXTRACTION_TRANSFER_DIRECTIONS,
+
+    [EXPEDITION_LOGISTICS_PHASES.ARC_EXTRACTION]:
+      ARC_EXTRACTION_TRANSFER_DIRECTIONS,
+  });
 
 export function logisticsTransferDirections(
   phase
