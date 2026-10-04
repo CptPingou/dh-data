@@ -88,6 +88,7 @@ import { registerMaterialKnowledgeSetting, createCraftingKnowledgeApi } from "./
 import { createCraftingRuntimeApi } from "./crafting-runtime.mjs";
 import { craftingResearchAuthorityApi } from "./crafting-research-authority.mjs";
 import { craftingResearchStationApi } from "./crafting-research-station.mjs";
+import { createCraftingKnowledgeBrowserApi } from "./crafting-knowledge-browser.mjs";
 import { registerWeaponAugmentSheetIntegration } from "./weapon-augment-sheet.mjs";
 import {
   registerWeaponAugmentNativeFeatures,
@@ -335,6 +336,18 @@ Hooks.once("init", () => {
     persistenceApi: toolkitApi.expeditionManifest,
     weaponAugmentStateApi: toolkitApi.weaponAugmentState,
   });
+
+  toolkitApi.craftingKnowledgeBrowser =
+    createCraftingKnowledgeBrowserApi({
+      materialsApi:
+        toolkitApi.craftingMaterials,
+
+      craftingApi:
+        toolkitApi.crafting,
+
+      knowledgeApi:
+        toolkitApi.craftingKnowledge,
+    });
   toolkitApi.engagement = createEngagementApi({
     opportunity: toolkitApi.engagementOpportunity,
     opener: toolkitApi.engagementOpener,
