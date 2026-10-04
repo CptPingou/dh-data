@@ -412,6 +412,15 @@ function ensureCaravanStyles(
       opacity: .72;
     }
 
+    .dhct-caravan-view__transfer {
+      flex: 0 0 auto;
+      margin-left: .4rem;
+      padding: .2rem .45rem;
+      font-size: .7rem;
+      line-height: 1.1;
+      white-space: nowrap;
+    }
+
     .dhct-caravan-view__equipment-controls {
       display: flex;
       align-items: center;
@@ -1150,6 +1159,221 @@ function renderSelectedStorage(
   return section;
 }
 
+function refreshCaravanTransferControls({
+  root,
+  detail,
+  model,
+  selection,
+  documentRef,
+} = {}) {
+  if (
+    !(root instanceof HTMLElement) ||
+    !(detail instanceof HTMLElement)
+  ) {
+    return;
+  }
+
+  for (
+    const node of
+      root.querySelectorAll(
+        "[data-dhct-caravan-transfer]"
+      )
+  ) {
+    node.remove();
+  }
+
+  const fobStorage =
+    model?.fobStorage ?? null;
+
+  if (
+    !fobStorage?.containerId ||
+    !selection
+  ) {
+    return;
+  }
+
+  const detailModel =
+    buildCaravanSelectionDetail(
+      model,
+      selection
+    );
+
+  const cargoStorage =
+    detailModel?.storage ?? null;
+
+  if (!cargoStorage?.containerId) {
+    return;
+  }
+
+  /*
+   * FOB -> cargo s?lectionn?.
+   */
+  for (
+    const row of
+      root.querySelectorAll(
+        ".dhct-caravan-view__fob " +
+        ".dhct-caravan-view__entry[data-entry-id]"
+      )
+  ) {
+    const entryId =
+      row.dataset.entryId ?? "";
+
+    if (!entryId) {
+      continue;
+    }
+
+    const entry =
+      (fobStorage.entries ?? [])
+        .find(
+          (candidate) =>
+            candidate?.entryId ===
+            entryId
+        );
+
+    const button =
+      documentRef.createElement(
+        "button"
+      );
+
+    button.type =
+      "button";
+
+    button.className =
+      "dhct-caravan-view__transfer";
+
+    button.dataset.dhctCaravanTransfer =
+      "fob-to-cargo";
+
+    button.textContent =
+      "\u2192 Cargo";
+
+    button.addEventListener(
+      "click",
+      (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        root.dispatchEvent(
+          new CustomEvent(
+            "dhct-inventory-transfer-request",
+            {
+              bubbles: true,
+
+              detail: {
+                fromContainerId:
+                  fobStorage.containerId,
+
+                toContainerId:
+                  cargoStorage.containerId,
+
+                entryId,
+
+                quantity:
+                  Math.max(
+                    1,
+                    Number(
+                      entry?.quantity
+                    ) || 1
+                  ),
+              },
+            }
+          )
+        );
+      }
+    );
+
+    row.append(button);
+  }
+
+  /*
+   * Cargo s?lectionn? -> FOB.
+   */
+  for (
+    const row of
+      detail.querySelectorAll(
+        ".dhct-caravan-view__detail-entry" +
+        "[data-entry-id]" +
+        "[data-container-id]"
+      )
+  ) {
+    const entryId =
+      row.dataset.entryId ?? "";
+
+    const fromContainerId =
+      row.dataset.containerId ?? "";
+
+    if (
+      !entryId ||
+      !fromContainerId ||
+      fromContainerId !==
+        cargoStorage.containerId
+    ) {
+      continue;
+    }
+
+    const entry =
+      (cargoStorage.entries ?? [])
+        .find(
+          (candidate) =>
+            candidate?.entryId ===
+            entryId
+        );
+
+    const button =
+      documentRef.createElement(
+        "button"
+      );
+
+    button.type =
+      "button";
+
+    button.className =
+      "dhct-caravan-view__transfer";
+
+    button.dataset.dhctCaravanTransfer =
+      "cargo-to-fob";
+
+    button.textContent =
+      "\u2192 FOB";
+
+    button.addEventListener(
+      "click",
+      (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        root.dispatchEvent(
+          new CustomEvent(
+            "dhct-inventory-transfer-request",
+            {
+              bubbles: true,
+
+              detail: {
+                fromContainerId,
+
+                toContainerId:
+                  fobStorage.containerId,
+
+                entryId,
+
+                quantity:
+                  Math.max(
+                    1,
+                    Number(
+                      entry?.quantity
+                    ) || 1
+                  ),
+              },
+            }
+          )
+        );
+      }
+    );
+
+    row.append(button);
+  }
+}
+
 function renderCaravanEquipmentControls(
   detailModel,
   {
@@ -1651,6 +1875,14 @@ export function renderExpeditionCaravanView(
         )
       );
     }
+
+    refreshCaravanTransferControls({
+      root,
+      detail,
+      model,
+      selection,
+      documentRef,
+    });
 
     if (isGm) {
       const controls =
