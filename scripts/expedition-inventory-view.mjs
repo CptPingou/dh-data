@@ -886,13 +886,91 @@ function renderDetail(
   return detail;
 }
 
+export function renderExpeditionContainerView(
+  projection,
+  {
+    role,
+  } = {}
+) {
+  if (
+    projection?.kind !==
+    "expedition-inventory-projection"
+  ) {
+    throw new Error(
+      "Container view requires an expedition inventory projection."
+    );
+  }
+
+  if (!SHARED_ROLES.includes(role)) {
+    throw new Error(
+      "Container view requires a valid shared role."
+    );
+  }
+
+  const container =
+    sharedContainers(projection).find(
+      (candidate) =>
+        candidate.role === role
+    ) ??
+    null;
+
+  const root =
+    element(
+      "div",
+      "dhct-inventory-view dhct-inventory-view--single-container"
+    );
+
+  const state = {
+    selected: container
+      ? {
+          containerId:
+            container.containerId,
+          entryId: null,
+        }
+      : null,
+    personalContainerId: null,
+  };
+
+  function rerender() {
+    root.replaceChildren();
+
+    if (!container) {
+      root.append(
+        renderEmpty(
+          "Aucun conteneur disponible."
+        )
+      );
+      return;
+    }
+
+    root.append(
+      renderContainerCard(
+        container,
+        state,
+        rerender,
+        {
+          kind: "shared",
+        }
+      ),
+      renderDetail(
+        projection,
+        state,
+        rerender
+      )
+    );
+  }
+
+  rerender();
+
+  return root;
+}
+
 export function renderExpeditionInventoryView(
   projection,
   {
     initialSharedRole = "ground",
   } = {}
 ) {
-  void initialSharedRole;
   if (
     projection?.kind !==
     "expedition-inventory-projection"
@@ -1012,6 +1090,23 @@ export function renderExpeditionInventoryView(
 
   const shared =
     sharedContainers(projection);
+
+  const initialSharedContainer =
+    shared.find(
+      (container) =>
+        container.role ===
+        initialSharedRole
+    ) ??
+    shared[0] ??
+    null;
+
+  if (initialSharedContainer) {
+    state.selected = {
+      containerId:
+        initialSharedContainer.containerId,
+      entryId: null,
+    };
+  }
 
   function rerender() {
     root.replaceChildren(style);

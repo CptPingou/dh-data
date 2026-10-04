@@ -10,6 +10,14 @@ export const EXPEDITION_TABS = Object.freeze([
     label: "Inventaire",
   },
   {
+    id: "fob",
+    label: "FOB",
+  },
+  {
+    id: "caravan",
+    label: "Caravane",
+  },
+  {
     id: "workshop",
     label: "Atelier",
   },
