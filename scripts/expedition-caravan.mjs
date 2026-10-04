@@ -159,6 +159,48 @@ export function normalizeCaravanComponent(
   };
 }
 
+export function normalizeCaravanCargoSlot(
+  slot = {}
+) {
+  return {
+    id:
+      nonEmpty(slot?.id)
+        ? slot.id.trim()
+        : "",
+
+    name:
+      nonEmpty(slot?.name)
+        ? slot.name.trim()
+        : (
+            nonEmpty(slot?.id)
+              ? slot.id.trim()
+              : "Emplacement cargo"
+          ),
+
+    componentId:
+      nonEmpty(
+        slot?.componentId
+      )
+        ? slot.componentId.trim()
+        : null,
+
+    layout:
+      normalizeCaravanLayout(
+        slot?.layout
+      ),
+
+    state:
+      slot?.state &&
+      typeof slot.state ===
+        "object" &&
+      !Array.isArray(
+        slot.state
+      )
+        ? clone(slot.state)
+        : {},
+  };
+}
+
 export function normalizeExpeditionCaravan(
   caravan = {}
 ) {
@@ -168,6 +210,15 @@ export function normalizeExpeditionCaravan(
     )
       ? caravan.components.map(
           normalizeCaravanComponent
+        )
+      : [];
+
+  const cargoSlots =
+    Array.isArray(
+      caravan?.cargoSlots
+    )
+      ? caravan.cargoSlots.map(
+          normalizeCaravanCargoSlot
         )
       : [];
 
@@ -198,6 +249,8 @@ export function normalizeExpeditionCaravan(
     },
 
     components,
+
+    cargoSlots,
 
     state:
       caravan?.state &&
@@ -276,6 +329,9 @@ export function validateExpeditionCaravan(
     );
   }
 
+  const componentIds =
+    new Set();
+
   if (
     !Array.isArray(
       caravan.components
@@ -285,8 +341,6 @@ export function validateExpeditionCaravan(
       "caravan.components must be an array"
     );
   } else {
-    const ids =
-      new Set();
 
     for (
       const component of
@@ -311,14 +365,14 @@ export function validateExpeditionCaravan(
           "caravan component id is required"
         );
       } else if (
-        ids.has(component.id)
+        componentIds.has(component.id)
       ) {
         errors.push(
           "duplicate caravan component id " +
           component.id
         );
       } else {
-        ids.add(component.id);
+        componentIds.add(component.id);
       }
 
       if (
@@ -466,6 +520,174 @@ export function validateExpeditionCaravan(
   }
 
   if (
+    !Array.isArray(
+      caravan.cargoSlots
+    )
+  ) {
+    errors.push(
+      "caravan.cargoSlots must be an array"
+    );
+  } else {
+    const slotIds =
+      new Set();
+
+    const assignedComponents =
+      new Set();
+
+    for (
+      const slot of
+      caravan.cargoSlots
+    ) {
+      if (
+        !slot ||
+        typeof slot !== "object" ||
+        Array.isArray(slot)
+      ) {
+        errors.push(
+          "caravan cargo slot must be an object"
+        );
+        continue;
+      }
+
+      if (!nonEmpty(slot.id)) {
+        errors.push(
+          "caravan cargo slot id is required"
+        );
+      } else if (
+        slotIds.has(slot.id)
+      ) {
+        errors.push(
+          "duplicate caravan cargo slot id " +
+          slot.id
+        );
+      } else {
+        slotIds.add(slot.id);
+      }
+
+      if (!nonEmpty(slot.name)) {
+        errors.push(
+          "caravan cargo slot " +
+          slot.id +
+          ": name is required"
+        );
+      }
+
+      if (
+        slot.componentId != null
+      ) {
+        if (
+          !nonEmpty(
+            slot.componentId
+          )
+        ) {
+          errors.push(
+            "caravan cargo slot " +
+            slot.id +
+            ": componentId must be a non-empty string or null"
+          );
+        } else if (
+          !componentIds.has(
+            slot.componentId
+          )
+        ) {
+          errors.push(
+            "caravan cargo slot " +
+            slot.id +
+            ": unknown componentId " +
+            slot.componentId
+          );
+        } else if (
+          assignedComponents.has(
+            slot.componentId
+          )
+        ) {
+          errors.push(
+            "caravan component " +
+            slot.componentId +
+            " cannot occupy multiple cargo slots"
+          );
+        } else {
+          assignedComponents.add(
+            slot.componentId
+          );
+        }
+      }
+
+      const layout =
+        slot.layout;
+
+      if (
+        !layout ||
+        typeof layout !==
+          "object" ||
+        Array.isArray(layout)
+      ) {
+        errors.push(
+          "caravan cargo slot " +
+          slot.id +
+          ": layout must be an object"
+        );
+      } else {
+        for (
+          const key of [
+            "x",
+            "y",
+            "width",
+            "height",
+          ]
+        ) {
+          if (
+            typeof layout[key] !==
+              "number" ||
+            !Number.isFinite(
+              layout[key]
+            ) ||
+            layout[key] < 0 ||
+            layout[key] > 1
+          ) {
+            errors.push(
+              "caravan cargo slot " +
+              slot.id +
+              ": layout." +
+              key +
+              " must be between 0 and 1"
+            );
+          }
+        }
+
+        if (
+          typeof layout.rotation !==
+            "number" ||
+          !Number.isFinite(
+            layout.rotation
+          )
+        ) {
+          errors.push(
+            "caravan cargo slot " +
+            slot.id +
+            ": layout.rotation must be finite"
+          );
+        }
+      }
+
+      if (
+        !slot.state ||
+        typeof slot.state !==
+          "object" ||
+        Array.isArray(
+          slot.state
+        )
+      ) {
+        errors.push(
+          "caravan cargo slot " +
+          slot.id +
+          ": state must be an object"
+        );
+      }
+    }
+  }
+
+  if (
     !caravan.state ||
     typeof caravan.state !==
       "object" ||
@@ -483,6 +705,215 @@ export function validateExpeditionCaravan(
       errors.length === 0,
     errors,
   };
+}
+
+export function createDefaultExpeditionCaravan({
+  id = "caravan",
+  name = "Caravane",
+  assetSrc = null,
+} = {}) {
+  return normalizeExpeditionCaravan({
+    id,
+    name,
+
+    asset: {
+      src:
+        nonEmpty(assetSrc)
+          ? assetSrc.trim()
+          : null,
+    },
+
+    components: [
+      {
+        id:
+          "wheel-front-left",
+        type:
+          "wheel",
+        name:
+          "Roue avant gauche",
+        hp: {
+          value: 10,
+          max: 10,
+        },
+        containerId: null,
+        layout: {
+          x: 0.12,
+          y: 0.16,
+          width: 0.10,
+          height: 0.12,
+          rotation: 0,
+        },
+        state: {},
+      },
+
+      {
+        id:
+          "wheel-front-right",
+        type:
+          "wheel",
+        name:
+          "Roue avant droite",
+        hp: {
+          value: 10,
+          max: 10,
+        },
+        containerId: null,
+        layout: {
+          x: 0.78,
+          y: 0.16,
+          width: 0.10,
+          height: 0.12,
+          rotation: 0,
+        },
+        state: {},
+      },
+
+      {
+        id:
+          "wheel-rear-left",
+        type:
+          "wheel",
+        name:
+          "Roue arri?re gauche",
+        hp: {
+          value: 10,
+          max: 10,
+        },
+        containerId: null,
+        layout: {
+          x: 0.12,
+          y: 0.74,
+          width: 0.10,
+          height: 0.12,
+          rotation: 0,
+        },
+        state: {},
+      },
+
+      {
+        id:
+          "wheel-rear-right",
+        type:
+          "wheel",
+        name:
+          "Roue arri?re droite",
+        hp: {
+          value: 10,
+          max: 10,
+        },
+        containerId: null,
+        layout: {
+          x: 0.78,
+          y: 0.74,
+          width: 0.10,
+          height: 0.12,
+          rotation: 0,
+        },
+        state: {},
+      },
+    ],
+
+    cargoSlots: [
+      {
+        id: "cargo-01",
+        name: "Cargo 01",
+        componentId: null,
+        layout: {
+          x: 0.25,
+          y: 0.31,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+      {
+        id: "cargo-02",
+        name: "Cargo 02",
+        componentId: null,
+        layout: {
+          x: 0.38,
+          y: 0.31,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+      {
+        id: "cargo-03",
+        name: "Cargo 03",
+        componentId: null,
+        layout: {
+          x: 0.51,
+          y: 0.31,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+      {
+        id: "cargo-04",
+        name: "Cargo 04",
+        componentId: null,
+        layout: {
+          x: 0.64,
+          y: 0.31,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+      {
+        id: "cargo-05",
+        name: "Cargo 05",
+        componentId: null,
+        layout: {
+          x: 0.25,
+          y: 0.54,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+      {
+        id: "cargo-06",
+        name: "Cargo 06",
+        componentId: null,
+        layout: {
+          x: 0.38,
+          y: 0.54,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+      {
+        id: "cargo-07",
+        name: "Cargo 07",
+        componentId: null,
+        layout: {
+          x: 0.51,
+          y: 0.54,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+      {
+        id: "cargo-08",
+        name: "Cargo 08",
+        componentId: null,
+        layout: {
+          x: 0.64,
+          y: 0.54,
+          width: 0.11,
+          height: 0.14,
+          rotation: 0,
+        },
+      },
+    ],
+
+    state: {},
+  });
 }
 
 export function serializeExpeditionCaravan(
@@ -553,8 +984,14 @@ export const expeditionCaravan = {
   parse:
     parseExpeditionCaravan,
 
+  createDefault:
+    createDefaultExpeditionCaravan,
+
   normalizeComponent:
     normalizeCaravanComponent,
+
+  normalizeCargoSlot:
+    normalizeCaravanCargoSlot,
 
   normalizeLayout:
     normalizeCaravanLayout,

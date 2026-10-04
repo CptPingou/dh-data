@@ -138,6 +138,68 @@ export function projectExpeditionCaravan(
           )
       ),
 
+    cargoSlots:
+      (
+        caravan.cargoSlots ?? []
+      ).map(
+        (slot) => {
+          const component =
+            slot.componentId == null
+              ? null
+              : (
+                  caravan.components ?? []
+                ).find(
+                  (candidate) =>
+                    candidate.id ===
+                    slot.componentId
+                ) ?? null;
+
+          if (
+            slot.componentId != null &&
+            !component
+          ) {
+            throw new Error(
+              "Caravan cargo slot " +
+              slot.id +
+              " references unknown component " +
+              slot.componentId
+            );
+          }
+
+          return {
+            id:
+              slot.id,
+
+            name:
+              slot.name,
+
+            componentId:
+              slot.componentId ??
+              null,
+
+            layout:
+              clone(
+                slot.layout
+              ),
+
+            state:
+              clone(
+                slot.state ?? {}
+              ),
+
+            component:
+              component
+                ? projectCaravanComponent(
+                    component,
+                    {
+                      containerById,
+                    }
+                  )
+                : null,
+          };
+        }
+      ),
+
     state:
       clone(
         caravan.state ?? {}
