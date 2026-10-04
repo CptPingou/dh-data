@@ -38,9 +38,15 @@ import {
   projectExpeditionInventory,
 } from "./expedition-inventory-projection.mjs";
 import {
+  projectExpeditionCaravan,
+} from "./expedition-caravan-projection.mjs";
+import {
   renderExpeditionInventoryView,
   renderExpeditionContainerView,
 } from "./expedition-inventory-view.mjs";
+import {
+  renderExpeditionCaravanView,
+} from "./expedition-caravan-view.mjs";
 
 import {
   createFoundryViewerCapabilities,
@@ -2971,10 +2977,14 @@ async function configureExpeditionShell(
       "fob"
     );
 
-  const caravanView =
-    buildExpeditionContainerView(
+  const caravanProjection =
+    projectExpeditionCaravan({
       manifest,
-      "caravan"
+    });
+
+  const caravanView =
+    renderExpeditionCaravanView(
+      caravanProjection
     );
 
   installInventoryViewHandlers(
