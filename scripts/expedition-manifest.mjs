@@ -86,6 +86,30 @@ export function normalizeExpeditionManifest(manifest) {
       "arc-extraction";
   }
 
+  /*
+   * Legacy manifests may already contain the shared
+   * storage container "fob" without a FOB domain object.
+   *
+   * The domain object and the storage container must be
+   * two references to the same physical stock.
+   */
+  if (
+    normalized?.fob == null &&
+    (normalized?.containers ?? []).some(
+      (container) =>
+        container?.containerId ===
+        "fob"
+    )
+  ) {
+    normalized.fob =
+      normalizeExpeditionFob({
+        id: "fob",
+        name: "FOB",
+        storageContainerId:
+          "fob",
+      });
+  }
+
   if (normalized?.fob != null) {
     normalized.fob =
       normalizeExpeditionFob(
