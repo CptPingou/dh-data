@@ -342,6 +342,29 @@ function content(
                         "</select>"
                       : "";
 
+                  const propertyLabel =
+                    property.discovered
+                      ? '<button ' +
+                        'type="button" ' +
+                        'data-dct-open-property="' +
+                        esc(property.propertyId) +
+                        '" ' +
+                        'style="' +
+                          "padding:0;" +
+                          "border:0;" +
+                          "background:none;" +
+                          "text-align:left;" +
+                          "cursor:pointer;" +
+                          "text-decoration:underline" +
+                        '">' +
+                        esc(property.label) +
+                        suffix +
+                        "</button>"
+                      : "<span>" +
+                        esc(property.label) +
+                        suffix +
+                        "</span>";
+
                   return (
                     '<div style="' +
                     "display:grid;" +
@@ -351,10 +374,7 @@ function content(
                     "padding:.4rem 0;" +
                     "border-top:1px solid var(--color-border-light-2)" +
                     '">' +
-                    "<span>" +
-                    esc(property.label) +
-                    suffix +
-                    "</span>" +
+                    propertyLabel +
                     control +
                     "</div>"
                   );
@@ -416,6 +436,143 @@ function content(
     "</div>" +
     "</div>"
   );
+}
+
+async function openPropertyKnowledgeDialog({
+  api,
+  actor,
+  propertyId,
+} = {}) {
+  if (
+    !api?.craftingKnowledgeBrowser?.property
+  ) {
+    throw new Error(
+      "Knowledge browser API unavailable."
+    );
+  }
+
+  const model =
+    await api.craftingKnowledgeBrowser
+      .property(
+        actor,
+        propertyId
+      );
+
+  if (!model) {
+    ui.notifications?.warn(
+      "Cette propri\u00e9t\u00e9 n'est pas encore consultable."
+    );
+
+    return {
+      green: false,
+      reason: "property-not-visible",
+    };
+  }
+
+  const DialogV2 =
+    foundry?.applications?.api
+      ?.DialogV2;
+
+  if (!DialogV2) {
+    throw new Error(
+      "Campaign Toolkit | DialogV2 unavailable"
+    );
+  }
+
+  const materials =
+    (model.materials ?? [])
+      .map(
+        (material) =>
+          "<li>" +
+          esc(
+            material.name ??
+            material.id
+          ) +
+          "</li>"
+      )
+      .join("");
+
+  const recipes =
+    (model.recipes ?? [])
+      .map(
+        (recipe) =>
+          "<li>" +
+          esc(
+            recipe.name ??
+            recipe.id
+          ) +
+          "</li>"
+      )
+      .join("");
+
+  const description =
+    model.description
+      ? "<p>" +
+        esc(model.description) +
+        "</p>"
+      : "";
+
+  const content =
+    '<div class="dct-knowledge-property">' +
+      description +
+      '<div style="' +
+        "display:grid;" +
+        "grid-template-columns:minmax(0,1fr) minmax(0,1fr);" +
+        "gap:1rem;" +
+        "align-items:start" +
+      '">' +
+
+        "<section>" +
+          "<h3>Parties connues</h3>" +
+          (
+            materials
+              ? "<ul>" +
+                materials +
+                "</ul>"
+              : "<p>Aucune partie connue.</p>"
+          ) +
+        "</section>" +
+
+        "<section>" +
+          "<h3>Recettes d\u00e9pendantes</h3>" +
+          (
+            recipes
+              ? "<ul>" +
+                recipes +
+                "</ul>"
+              : "<p>Aucune recette connue.</p>"
+          ) +
+        "</section>" +
+
+      "</div>" +
+    "</div>";
+
+  const dialog =
+    new DialogV2({
+      window: {
+        title:
+          model.label ??
+          model.id,
+      },
+
+      content,
+
+      buttons: [
+        {
+          action: "close",
+          label: "Fermer",
+          default: true,
+        },
+      ],
+    });
+
+  await dialog.render(true);
+
+  return {
+    green: true,
+    dialog,
+    propertyId: model.id,
+  };
 }
 
 export async function openCraftingResearchStation({
@@ -576,6 +733,62 @@ export async function openCraftingResearchStation({
         if (select.isConnected) {
           select.disabled = false;
         }
+      }
+    }
+  );
+
+  root.addEventListener(
+    "click",
+    async (event) => {
+      const button =
+        event.target?.closest?.(
+          "[data-dct-open-property]"
+        );
+
+      if (!button) {
+        return;
+      }
+
+      const propertyId =
+        button.dataset
+          .dctOpenProperty;
+
+      if (!propertyId) {
+        return;
+      }
+
+      const actorId =
+        root.querySelector(
+          "[data-dct-research-actor]"
+        )?.value;
+
+      const currentActor =
+        actors.find(
+          (candidate) =>
+            candidate.id === actorId
+        ) ?? selectedActor;
+
+      try {
+        await openPropertyKnowledgeDialog({
+          api,
+          actor:
+            currentActor,
+          propertyId,
+        });
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+            " | property knowledge dialog failed",
+          error
+        );
+
+        ui.notifications?.error(
+          "Centre d'\u00e9tude : " +
+          (
+            error?.message ??
+            "ouverture impossible"
+          )
+        );
       }
     }
   );
