@@ -138,6 +138,27 @@ function ensureBackpack(manifest, actor, character) {
       }
     }
 
+    const backpackStorageProfile = {
+      accepts: [],
+      mergeStacks: true,
+    };
+
+    if (
+      JSON.stringify(
+        container.storageProfile ?? null
+      ) !==
+      JSON.stringify(
+        backpackStorageProfile
+      )
+    ) {
+      container.storageProfile =
+        structuredClone(
+          backpackStorageProfile
+        );
+
+      changed = true;
+    }
+
     const backpackMaterialStorage = { accepts: [], stackLimit: 1, mergeStacks: false };
     if (JSON.stringify(container.materialStorage ?? null) !== JSON.stringify(backpackMaterialStorage)) {
       container.materialStorage = backpackMaterialStorage;
@@ -170,6 +191,10 @@ function ensureBackpack(manifest, actor, character) {
     },
     capacity: {
       slots: DEFAULT_BACKPACK_SLOTS,
+    },
+    storageProfile: {
+      accepts: [],
+      mergeStacks: true,
     },
     materialStorage: {
       accepts: [],

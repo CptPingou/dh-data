@@ -6,6 +6,10 @@ export const SHARED_CONTAINER_SPECS = Object.freeze([
     name: "Sol",
 
     slots: 12,
+    storageProfile: {
+      accepts: [],
+      mergeStacks: true,
+    },
 
   }),
   Object.freeze({
@@ -13,6 +17,10 @@ export const SHARED_CONTAINER_SPECS = Object.freeze([
     name: "FOB",
 
     slots: 24,
+    storageProfile: {
+      accepts: [],
+      mergeStacks: true,
+    },
 
   }),
   ]);
@@ -127,6 +135,12 @@ export function buildSharedContainer(manifest, spec) {
       slots: spec.slots,
     },
     materialStorage: spec.materialStorage ? structuredClone(spec.materialStorage) : undefined,
+    storageProfile:
+      spec.storageProfile
+        ? structuredClone(
+            spec.storageProfile
+          )
+        : undefined,
     rules: [],
     contents: [],
   };
@@ -218,6 +232,23 @@ export async function ensureSharedContainers(
       ) {
         delete container.presentation;
       }
+    }
+
+    if (
+      spec.storageProfile &&
+      JSON.stringify(
+        container.storageProfile ?? null
+      ) !==
+      JSON.stringify(
+        spec.storageProfile
+      )
+    ) {
+      container.storageProfile =
+        structuredClone(
+          spec.storageProfile
+        );
+
+      metadataChanged = true;
     }
 
     if (spec.materialStorage && JSON.stringify(container.materialStorage ?? null) !== JSON.stringify(spec.materialStorage)) {
