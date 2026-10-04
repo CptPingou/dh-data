@@ -29,6 +29,10 @@ import {
 } from "./expedition-logistics-phase.mjs";
 
 import {
+  normalizeExpeditionAccess,
+} from "./expedition-access.mjs";
+
+import {
   createExpeditionShell,
   expeditionShellPane,
   activateExpeditionShellTab,
@@ -2103,6 +2107,647 @@ function injectGmLogisticsLocationManagement(
 }
 
 
+function renderAccessMatrixCheckbox({
+  characterId,
+  zone,
+  permission,
+  checked,
+} = {}) {
+  return `
+    <input
+      type="checkbox"
+      data-dhct-access-character="${escapeHtml(characterId)}"
+      data-dhct-access-zone="${escapeHtml(zone)}"
+      data-dhct-access-permission="${escapeHtml(permission)}"
+      ${checked ? "checked" : ""}
+    />
+  `;
+}
+
+function renderGmAccessMatrix(
+  manifest
+) {
+  const characterIds =
+    (manifest?.characters ?? [])
+      .map(
+        (character) =>
+          String(
+            character?.characterId ??
+            ""
+          ).trim()
+      )
+      .filter(Boolean);
+
+  const access =
+    normalizeExpeditionAccess(
+      manifest?.access,
+      {
+        characterIds,
+      }
+    );
+
+  const rows =
+    (manifest?.characters ?? [])
+      .map((character) => {
+        const characterId =
+          String(
+            character?.characterId ??
+            ""
+          ).trim();
+
+        if (!characterId) {
+          return "";
+        }
+
+        const name =
+          String(
+            character?.name ??
+            characterId
+          );
+
+        const rules =
+          access.characters[
+            characterId
+          ];
+
+        const cell =
+          (
+            zone,
+            permission
+          ) =>
+            renderAccessMatrixCheckbox({
+              characterId,
+              zone,
+              permission,
+              checked:
+                rules?.[zone]
+                  ?.[permission] === true,
+            });
+
+        return `
+          <tr data-dhct-access-row="${escapeHtml(characterId)}">
+            <th scope="row">
+              ${escapeHtml(name)}
+            </th>
+
+            <td>
+              ${cell("ground", "view")}
+            </td>
+            <td>
+              ${cell("ground", "transfer")}
+            </td>
+
+            <td>
+              ${cell("fob", "view")}
+            </td>
+            <td>
+              ${cell("fob", "transfer")}
+            </td>
+
+            <td>
+              ${cell("caravan", "view")}
+            </td>
+            <td>
+              ${cell("caravan", "transfer")}
+            </td>
+          </tr>
+        `;
+      })
+      .join("");
+
+  return `
+    <section class="dhct-access-matrix-panel">
+      <header>
+        <div>
+          <h3>Acc?s logistiques des PJ</h3>
+          <p>
+            Ce tableau devient la source unique pour la visibilit?
+            et les transferts Sol, FOB et Caravane.
+          </p>
+        </div>
+      </header>
+
+      <div class="dhct-access-matrix-panel__scroll">
+        <table class="dhct-access-matrix">
+          <thead>
+            <tr>
+              <th rowspan="2">PJ</th>
+              <th colspan="2">Sol</th>
+              <th colspan="2">FOB</th>
+              <th colspan="2">Caravane</th>
+            </tr>
+
+            <tr>
+              <th>Voir</th>
+              <th>Transf.</th>
+
+              <th>Voir</th>
+              <th>Transf.</th>
+
+              <th>Voir</th>
+              <th>Transf.</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            ${
+              rows ||
+              '<tr><td colspan="7">Aucun PJ dans l?exp?dition.</td></tr>'
+            }
+          </tbody>
+        </table>
+      </div>
+
+      <footer>
+        <button
+          type="button"
+          data-dhct-access-matrix-save
+        >
+          <i class="fa-solid fa-floppy-disk"></i>
+          Enregistrer les acc?s
+        </button>
+      </footer>
+    </section>
+  `;
+}
+
+function readGmAccessMatrix(
+  panel,
+  manifest
+) {
+  const characterIds =
+    (manifest?.characters ?? [])
+      .map(
+        (character) =>
+          String(
+            character?.characterId ??
+            ""
+          ).trim()
+      )
+      .filter(Boolean);
+
+  const access =
+    normalizeExpeditionAccess(
+      manifest?.access,
+      {
+        characterIds,
+      }
+    );
+
+  for (
+    const checkbox of
+      panel.querySelectorAll(
+        "[data-dhct-access-character]" +
+        "[data-dhct-access-zone]" +
+        "[data-dhct-access-permission]"
+      )
+  ) {
+    if (
+      !(checkbox instanceof HTMLInputElement)
+    ) {
+      continue;
+    }
+
+    const characterId =
+      String(
+        checkbox.dataset
+          .dhctAccessCharacter ??
+        ""
+      ).trim();
+
+    const zone =
+      String(
+        checkbox.dataset
+          .dhctAccessZone ??
+        ""
+      ).trim();
+
+    const permission =
+      String(
+        checkbox.dataset
+          .dhctAccessPermission ??
+        ""
+      ).trim();
+
+    const rule =
+      access.characters
+        ?.[characterId]
+        ?.[zone];
+
+    if (
+      !rule ||
+      ![
+        "view",
+        "transfer",
+      ].includes(permission)
+    ) {
+      continue;
+    }
+
+    rule[permission] =
+      checkbox.checked === true;
+  }
+
+  /*
+   * Normalize once more so transfer=true always forces view=true.
+   */
+  return normalizeExpeditionAccess(
+    access,
+    {
+      characterIds,
+    }
+  );
+}
+
+async function saveGmAccessMatrix(
+  api,
+  manifest,
+  access
+) {
+  if (!game.user?.isGM) {
+    return {
+      green: false,
+      reason: "not-gm",
+    };
+  }
+
+  const characterIds =
+    (manifest?.characters ?? [])
+      .map(
+        (character) =>
+          String(
+            character?.characterId ??
+            ""
+          ).trim()
+      )
+      .filter(Boolean);
+
+  const normalized =
+    normalizeExpeditionAccess(
+      access,
+      {
+        characterIds,
+      }
+    );
+
+  const before =
+    JSON.stringify(
+      normalizeExpeditionAccess(
+        manifest?.access,
+        {
+          characterIds,
+        }
+      )
+    );
+
+  const after =
+    JSON.stringify(
+      normalized
+    );
+
+  if (before === after) {
+    return {
+      green: true,
+      changed: false,
+      access: normalized,
+    };
+  }
+
+  manifest.access =
+    normalized;
+
+  manifest.revision =
+    Math.max(
+      1,
+      Number(
+        manifest.revision
+      ) || 1
+    ) + 1;
+
+  const validation =
+    api.expeditionManifest
+      .validate?.(
+        manifest
+      );
+
+  if (
+    validation &&
+    validation.green === false
+  ) {
+    throw new Error(
+      "Manifest invalide : " +
+      (
+        validation.errors ??
+        []
+      ).join("; ")
+    );
+  }
+
+  await saveAndBroadcastBulkInventoryChange(
+    api,
+    manifest,
+    {
+      reason:
+        "gm-access-matrix",
+    }
+  );
+
+  return {
+    green: true,
+    changed: true,
+    access: normalized,
+  };
+}
+
+function installAccessMatrixCoupling(
+  panel
+) {
+  for (
+    const checkbox of
+      panel.querySelectorAll(
+        "[data-dhct-access-character]" +
+        "[data-dhct-access-zone]" +
+        "[data-dhct-access-permission]"
+      )
+  ) {
+    if (
+      !(checkbox instanceof HTMLInputElement)
+    ) {
+      continue;
+    }
+
+    checkbox.addEventListener(
+      "change",
+      () => {
+        const characterId =
+          checkbox.dataset
+            .dhctAccessCharacter;
+
+        const zone =
+          checkbox.dataset
+            .dhctAccessZone;
+
+        if (
+          !characterId ||
+          !zone
+        ) {
+          return;
+        }
+
+        const selectorBase =
+          '[data-dhct-access-character="' +
+          CSS.escape(
+            characterId
+          ) +
+          '"]' +
+          '[data-dhct-access-zone="' +
+          CSS.escape(
+            zone
+          ) +
+          '"]';
+
+        const view =
+          panel.querySelector(
+            selectorBase +
+            '[data-dhct-access-permission="view"]'
+          );
+
+        const transfer =
+          panel.querySelector(
+            selectorBase +
+            '[data-dhct-access-permission="transfer"]'
+          );
+
+        if (
+          !(view instanceof HTMLInputElement) ||
+          !(transfer instanceof HTMLInputElement)
+        ) {
+          return;
+        }
+
+        if (
+          checkbox.dataset
+            .dhctAccessPermission ===
+            "transfer" &&
+          transfer.checked
+        ) {
+          view.checked = true;
+        }
+
+        if (
+          checkbox.dataset
+            .dhctAccessPermission ===
+            "view" &&
+          !view.checked
+        ) {
+          transfer.checked = false;
+        }
+      }
+    );
+  }
+}
+
+function injectGmAccessMatrix(
+  dialog,
+  manifest,
+  api
+) {
+  if (!game.user?.isGM) {
+    return {
+      green: false,
+      reason: "not-gm",
+    };
+  }
+
+  const gmPane =
+    dialog.querySelector(
+      ".dhct-expedition-shell__gm-panel"
+    );
+
+  if (!(gmPane instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "gm-pane-not-found",
+    };
+  }
+
+  gmPane
+    .querySelector(
+      ".dhct-access-matrix-panel"
+    )
+    ?.remove();
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+  wrapper.innerHTML =
+    renderGmAccessMatrix(
+      manifest
+    ).trim();
+
+  const panel =
+    wrapper.firstElementChild;
+
+  if (!(panel instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "panel-build-failed",
+    };
+  }
+
+  /*
+   * Put the future single source of truth near the top of the GM panel.
+   */
+  const phasePanel =
+    gmPane.querySelector(
+      ".dhct-logistics-phase-panel"
+    );
+
+  if (
+    phasePanel instanceof HTMLElement
+  ) {
+    phasePanel.insertAdjacentElement(
+      "afterend",
+      panel
+    );
+  } else {
+    gmPane.prepend(panel);
+  }
+
+  installAccessMatrixCoupling(
+    panel
+  );
+
+  const save =
+    panel.querySelector(
+      "[data-dhct-access-matrix-save]"
+    );
+
+  save?.addEventListener(
+    "pointerdown",
+    (event) => {
+      event.stopPropagation();
+    }
+  );
+
+  save?.addEventListener(
+    "click",
+    async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (
+        save instanceof
+          HTMLButtonElement
+      ) {
+        save.disabled =
+          true;
+      }
+
+      try {
+        const fresh =
+          await api
+            .expeditionManifest
+            .load(
+              manifest.expeditionId
+            );
+
+        if (!fresh) {
+          throw new Error(
+            "Exp?dition introuvable."
+          );
+        }
+
+        const access =
+          readGmAccessMatrix(
+            panel,
+            fresh
+          );
+
+        const result =
+          await saveGmAccessMatrix(
+            api,
+            fresh,
+            access
+          );
+
+        if (!result?.green) {
+          throw new Error(
+            result?.reason ??
+            "access-matrix-save-failed"
+          );
+        }
+
+        if (!result.changed) {
+          ui.notifications?.info(
+            "Acc?s inchang?s."
+          );
+
+          if (
+            save instanceof
+              HTMLButtonElement
+          ) {
+            save.disabled =
+              false;
+          }
+
+          return;
+        }
+
+        ui.notifications?.info(
+          "Acc?s logistiques enregistr?s."
+        );
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+          " | access matrix save failed",
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible d'enregistrer les acc?s."
+        );
+
+        if (
+          save instanceof
+            HTMLButtonElement
+        ) {
+          save.disabled =
+            false;
+        }
+      }
+    }
+  );
+
+  return {
+    green: true,
+
+    characters:
+      Object.keys(
+        normalizeExpeditionAccess(
+          manifest?.access,
+          {
+            characterIds:
+              (
+                manifest?.characters ??
+                []
+              )
+                .map(
+                  (character) =>
+                    character
+                      ?.characterId
+                )
+                .filter(Boolean),
+          }
+        ).characters
+      ).length,
+  };
+}
+
+
 function renderGmSharedAccessManagement(manifest) {
   const installedCaravanContainerIds =
     new Set(
@@ -3991,6 +4636,14 @@ export async function refreshExpeditionInventoryUx() {
     ? injectGmBackpackManagement(dialog, manifest, api)
     : { green: false, reason: "not-gm" };
 
+  const accessMatrixAdministration = isGm
+    ? injectGmAccessMatrix(
+        dialog,
+        manifest,
+        api
+      )
+    : { green: false, reason: "not-gm" };
+
   const logisticsLocationAdministration = isGm
     ? injectGmLogisticsLocationManagement(
         dialog,
@@ -4029,6 +4682,7 @@ export async function refreshExpeditionInventoryUx() {
     roleView,
     logisticsPhaseAdministration,
     logisticsLocationAdministration,
+    accessMatrixAdministration,
     backpackAdministration,
     sharedAccessAdministration,
     annotatedItems,
@@ -4280,6 +4934,62 @@ function injectStyles() {
     .dhct-expedition-shell--resizing {
       cursor: col-resize;
       user-select: none;
+    }
+
+    .dhct-access-matrix-panel {
+      display: grid;
+      gap: .65rem;
+      padding: .75rem;
+      border:
+        1px solid
+        rgba(201, 177, 137, .32);
+      border-radius: 8px;
+      background:
+        rgba(18, 17, 22, .42);
+    }
+
+    .dhct-access-matrix-panel > header h3 {
+      margin: 0;
+    }
+
+    .dhct-access-matrix-panel > header p {
+      margin:
+        .25rem 0 0;
+      opacity: .78;
+    }
+
+    .dhct-access-matrix-panel__scroll {
+      overflow-x: auto;
+    }
+
+    .dhct-access-matrix {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    .dhct-access-matrix th,
+    .dhct-access-matrix td {
+      padding:
+        .35rem .45rem;
+      border-bottom:
+        1px solid
+        rgba(201, 177, 137, .16);
+      white-space: nowrap;
+    }
+
+    .dhct-access-matrix tbody th {
+      text-align: left;
+    }
+
+    .dhct-access-matrix input[type="checkbox"] {
+      margin: 0;
+      cursor: pointer;
+    }
+
+    .dhct-access-matrix-panel footer {
+      display: flex;
+      justify-content: flex-end;
     }
 
     .dhct-logistics-location-panel {
@@ -5129,6 +5839,7 @@ export function installExpeditionInventoryUx() {
         ".dhct-shared-access-panel",
         ".dhct-logistics-phase-panel",
         ".dhct-logistics-location-panel",
+        ".dhct-access-matrix-panel",
         ".dhct-expedition-shell__gm-splitter",
       ].join(", ");
 
