@@ -28,10 +28,12 @@ export function retireLegacySharedCaravanContainer(
       changed: false,
       removed: 0,
       removedEntries: 0,
+      removedLedgerEvents: 0,
     };
   }
 
   manifest.containers ??= [];
+  manifest.ledger ??= [];
 
   const referencedByComponent =
     (manifest?.caravan?.components ?? [])
@@ -59,6 +61,7 @@ export function retireLegacySharedCaravanContainer(
       changed: false,
       removed: 0,
       removedEntries: 0,
+      removedLedgerEvents: 0,
     };
   }
 
@@ -76,6 +79,24 @@ export function retireLegacySharedCaravanContainer(
       0
     );
 
+  const legacyLedgerEvents =
+    manifest.ledger.filter(
+      (event) =>
+        event?.fromContainerId ===
+          "caravan" ||
+        event?.toContainerId ===
+          "caravan"
+    );
+
+  manifest.ledger =
+    manifest.ledger.filter(
+      (event) =>
+        event?.fromContainerId !==
+          "caravan" &&
+        event?.toContainerId !==
+          "caravan"
+    );
+
   manifest.containers =
     manifest.containers.filter(
       (container) =>
@@ -87,6 +108,8 @@ export function retireLegacySharedCaravanContainer(
     changed: true,
     removed: legacy.length,
     removedEntries,
+    removedLedgerEvents:
+      legacyLedgerEvents.length,
   };
 }
 
