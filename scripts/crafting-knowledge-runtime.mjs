@@ -1,5 +1,11 @@
 import { validateMaterialKnowledge } from "./crafting-schema.mjs";
 
+import {
+  PROPERTY_KNOWLEDGE_STATUSES,
+  normalizePropertyKnowledgeStatus,
+  propertyKnowledgeProjection as projectPropertyKnowledgeStatus,
+} from "./crafting-knowledge-status.mjs";
+
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const SETTING_KEY = "materialKnowledge";
 const SCHEMA_VERSION = 1;
@@ -124,6 +130,319 @@ export function createCraftingKnowledgeApi(materialsApi, { now = () => Date.now(
     };
   }
 
+  function propertyStatus(
+    actor,
+    materialId,
+    propertyId
+  ) {
+    const state =
+      readState();
+
+    const partyEntry =
+      state.partyKnowledge
+        .materials?.[materialId];
+
+    if (
+      partyEntry
+        ?.documentedProperties
+        ?.[propertyId]
+    ) {
+      return (
+        PROPERTY_KNOWLEDGE_STATUSES.SHARED
+      );
+    }
+
+    const actorMaterials =
+      actorEntry(
+        state,
+        actor
+      )?.materials ?? {};
+
+    const actorMaterial =
+      actorMaterials[
+        materialId
+      ];
+
+    if (
+      actorMaterial
+        ?.discoveredProperties
+        ?.[propertyId]
+    ) {
+      return (
+        PROPERTY_KNOWLEDGE_STATUSES.DISCOVERED
+      );
+    }
+
+    const explicit =
+      normalizePropertyKnowledgeStatus(
+        actorMaterial
+          ?.propertyStatuses
+          ?.[propertyId]
+          ?.status
+      );
+
+    if (
+      explicit ===
+      PROPERTY_KNOWLEDGE_STATUSES.VISIBLE
+    ) {
+      return explicit;
+    }
+
+    return (
+      PROPERTY_KNOWLEDGE_STATUSES.INVISIBLE
+    );
+  }
+
+  function propertyProjection(
+    actor,
+    materialId,
+    propertyId
+  ) {
+    return projectPropertyKnowledgeStatus(
+      propertyStatus(
+        actor,
+        materialId,
+        propertyId
+      )
+    );
+  }
+
+  async function setPropertyStatus({
+    actor,
+    materialId,
+    propertyId,
+    status,
+    source = {
+      type:
+        "gm-status",
+    },
+  } = {}) {
+    assertGm();
+
+    await resolveProperty(
+      materialsApi,
+      materialId,
+      propertyId
+    );
+
+    /*
+     * actorKey also guarantees that the status is
+     * attached to a permanent Foundry actor.
+     */
+    actorKey(actor);
+
+    const target =
+      normalizePropertyKnowledgeStatus(
+        status
+      );
+
+    const state =
+      readState();
+
+    const actorMaterials =
+      actorEntry(
+        state,
+        actor,
+        {
+          create:
+            true,
+        }
+      ).materials;
+
+    const actorMaterial =
+      materialEntry(
+        actorMaterials,
+        materialId,
+        "discoveredProperties",
+        {
+          create:
+            true,
+        }
+      );
+
+    actorMaterial.propertyStatuses =
+      actorMaterial.propertyStatuses &&
+      typeof actorMaterial
+        .propertyStatuses ===
+        "object"
+        ? actorMaterial.propertyStatuses
+        : {};
+
+    const partyMaterials =
+      state.partyKnowledge
+        .materials;
+
+    const partyMaterial =
+      materialEntry(
+        partyMaterials,
+        materialId,
+        "documentedProperties",
+        {
+          create:
+            true,
+        }
+      );
+
+    /*
+     * Moving away from SHARED removes only the
+     * collective publication. Other actors keep
+     * their own personal discoveries.
+     */
+    if (
+      target !==
+      PROPERTY_KNOWLEDGE_STATUSES.SHARED
+    ) {
+      delete (
+        partyMaterial
+          .documentedProperties[
+            propertyId
+          ]
+      );
+    }
+
+    if (
+      target ===
+      PROPERTY_KNOWLEDGE_STATUSES.INVISIBLE
+    ) {
+      delete (
+        actorMaterial
+          .discoveredProperties[
+            propertyId
+          ]
+      );
+
+      delete (
+        actorMaterial
+          .propertyStatuses[
+            propertyId
+          ]
+      );
+    }
+
+    if (
+      target ===
+      PROPERTY_KNOWLEDGE_STATUSES.VISIBLE
+    ) {
+      delete (
+        actorMaterial
+          .discoveredProperties[
+            propertyId
+          ]
+      );
+
+      actorMaterial
+        .propertyStatuses[
+          propertyId
+        ] = {
+          status:
+            PROPERTY_KNOWLEDGE_STATUSES.VISIBLE,
+
+          revealedAt:
+            now(),
+
+          source:
+            clone(
+              source ?? {
+                type:
+                  "unknown",
+              }
+            ),
+        };
+    }
+
+    if (
+      target ===
+      PROPERTY_KNOWLEDGE_STATUSES.DISCOVERED
+    ) {
+      delete (
+        actorMaterial
+          .propertyStatuses[
+            propertyId
+          ]
+      );
+
+      actorMaterial
+        .discoveredProperties[
+          propertyId
+        ] = {
+          discoveredAt:
+            now(),
+
+          source:
+            clone(
+              source ?? {
+                type:
+                  "unknown",
+              }
+            ),
+        };
+    }
+
+    if (
+      target ===
+      PROPERTY_KNOWLEDGE_STATUSES.SHARED
+    ) {
+      delete (
+        actorMaterial
+          .propertyStatuses[
+            propertyId
+          ]
+      );
+
+      actorMaterial
+        .discoveredProperties[
+          propertyId
+        ] ??= {
+          discoveredAt:
+            now(),
+
+          source:
+            clone(
+              source ?? {
+                type:
+                  "unknown",
+              }
+            ),
+        };
+
+      partyMaterial
+        .documentedProperties[
+          propertyId
+        ] = {
+          documentedAt:
+            now(),
+
+          documentedBy:
+            actor.uuid,
+        };
+    }
+
+    await writeState(
+      state
+    );
+
+    return {
+      green:
+        true,
+
+      changed:
+        true,
+
+      actorUuid:
+        actor.uuid,
+
+      materialId,
+      propertyId,
+
+      status:
+        propertyStatus(
+          actor,
+          materialId,
+          propertyId
+        ),
+    };
+  }
+
   async function discoverMaterialProperty({ actor, materialId, propertyId, source = { type: "research-station" }, specimenQuantity = null } = {}) {
     assertGm();
     const material = await resolveProperty(materialsApi, materialId, propertyId);
@@ -181,6 +500,11 @@ export function createCraftingKnowledgeApi(materialsApi, { now = () => Date.now(
     personal,
     documented,
     effective,
+
+    propertyStatus,
+    propertyProjection,
+    setPropertyStatus,
+
     discoverMaterialProperty,
     discover: discoverMaterialProperty,
     documentMaterialProperty,
