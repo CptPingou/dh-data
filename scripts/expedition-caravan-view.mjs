@@ -339,6 +339,79 @@ function ensureCaravanStyles(
         0 0 .35rem;
     }
 
+    .dhct-caravan-view__detail-storage {
+      margin-top: .65rem;
+      padding-top: .6rem;
+      border-top:
+        1px solid rgba(220, 190, 135, .2);
+    }
+
+    .dhct-caravan-view__detail-storage h4 {
+      margin:
+        0 0 .45rem;
+    }
+
+    .dhct-caravan-view__detail-entries {
+      display: grid;
+      grid-template-columns:
+        repeat(
+          auto-fill,
+          minmax(190px, 1fr)
+        );
+      gap: .4rem;
+    }
+
+    .dhct-caravan-view__detail-entry {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .5rem;
+      min-width: 0;
+      padding: .4rem .5rem;
+      border:
+        1px solid rgba(220, 190, 135, .35);
+      border-radius: 4px;
+      background:
+        rgba(20, 18, 16, .32);
+    }
+
+    .dhct-caravan-view__detail-entry-identity {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      min-width: 0;
+    }
+
+    .dhct-caravan-view__detail-entry-icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dhct-caravan-view__detail-entry-icon img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border: 0;
+    }
+
+    .dhct-caravan-view__detail-entry-name {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .dhct-caravan-view__detail-entry-quantity {
+      flex: 0 0 auto;
+    }
+
+    .dhct-caravan-view__detail-storage-empty {
+      margin: 0;
+      opacity: .72;
+    }
+
     .dhct-caravan-view__empty {
       grid-column: 1 / -1;
       padding: 1rem;
@@ -726,6 +799,7 @@ export function buildCaravanSelectionDetail(
       lines: [
         "S\u00e9lectionnez une roue, un emplacement cargo ou un composant."
       ],
+      storage: null,
     };
   }
 
@@ -749,6 +823,7 @@ export function buildCaravanSelectionDetail(
         title:
           "Composant introuvable",
         lines: [],
+        storage: null,
       };
     }
 
@@ -784,6 +859,9 @@ export function buildCaravanSelectionDetail(
         component.name ??
         component.id,
       lines,
+      storage:
+        component.storage ??
+        null,
     };
   }
 
@@ -807,6 +885,7 @@ export function buildCaravanSelectionDetail(
         title:
           "Emplacement introuvable",
         lines: [],
+        storage: null,
       };
     }
 
@@ -822,6 +901,7 @@ export function buildCaravanSelectionDetail(
         lines: [
           "Emplacement vide"
         ],
+        storage: null,
       };
     }
 
@@ -873,6 +953,9 @@ export function buildCaravanSelectionDetail(
           component.id
         ),
       lines,
+      storage:
+        component.storage ??
+        null,
     };
   }
 
@@ -884,7 +967,163 @@ export function buildCaravanSelectionDetail(
     title:
       "S\u00e9lection inconnue",
     lines: [],
+    storage: null,
   };
+}
+
+function renderSelectedStorage(
+  storage,
+  documentRef
+) {
+  const section =
+    documentRef.createElement(
+      "section"
+    );
+
+  section.className =
+    "dhct-caravan-view__detail-storage";
+
+  if (!storage) {
+    return section;
+  }
+
+  section.dataset.containerId =
+    storage.containerId ?? "";
+
+  const heading =
+    documentRef.createElement(
+      "h4"
+    );
+
+  heading.textContent =
+    "Contenu";
+
+  section.append(
+    heading
+  );
+
+  const entries =
+    documentRef.createElement(
+      "div"
+    );
+
+  entries.className =
+    "dhct-caravan-view__detail-entries";
+
+  for (
+    const entry of
+    storage.entries ?? []
+  ) {
+    const row =
+      documentRef.createElement(
+        "div"
+      );
+
+    row.className =
+      "dhct-caravan-view__detail-entry";
+
+    row.dataset.containerId =
+      storage.containerId ?? "";
+
+    row.dataset.entryId =
+      entry.entryId ?? "";
+
+    const identity =
+      documentRef.createElement(
+        "span"
+      );
+
+    identity.className =
+      "dhct-caravan-view__detail-entry-identity";
+
+    const icon =
+      documentRef.createElement(
+        "span"
+      );
+
+    icon.className =
+      "dhct-caravan-view__detail-entry-icon";
+
+    if (entry?.item?.img) {
+      const image =
+        documentRef.createElement(
+          "img"
+        );
+
+      image.src =
+        entry.item.img;
+
+      image.alt = "";
+
+      icon.append(
+        image
+      );
+    }
+
+    const name =
+      documentRef.createElement(
+        "span"
+      );
+
+    name.className =
+      "dhct-caravan-view__detail-entry-name";
+
+    name.textContent =
+      entryLabel(entry);
+
+    identity.append(
+      icon,
+      name
+    );
+
+    const quantity =
+      documentRef.createElement(
+        "strong"
+      );
+
+    quantity.className =
+      "dhct-caravan-view__detail-entry-quantity";
+
+    quantity.textContent =
+      "x" +
+      String(
+        entry.quantity ?? 1
+      );
+
+    row.append(
+      identity,
+      quantity
+    );
+
+    entries.append(
+      row
+    );
+  }
+
+  if (
+    !entries.children.length
+  ) {
+    const empty =
+      documentRef.createElement(
+        "p"
+      );
+
+    empty.className =
+      "dhct-caravan-view__detail-storage-empty";
+
+    empty.textContent =
+      "Conteneur vide.";
+
+    entries.append(
+      empty
+    );
+  }
+
+  section.append(
+    entries
+  );
+
+  return section;
 }
 
 export function renderExpeditionCaravanView(
@@ -1116,6 +1355,22 @@ export function renderExpeditionCaravanView(
 
       detail.append(
         paragraph
+      );
+    }
+
+    delete detail.dataset
+      .containerId;
+
+    if (detailModel.storage) {
+      detail.dataset.containerId =
+        detailModel.storage
+          .containerId ?? "";
+
+      detail.append(
+        renderSelectedStorage(
+          detailModel.storage,
+          documentRef
+        )
       );
     }
   }
