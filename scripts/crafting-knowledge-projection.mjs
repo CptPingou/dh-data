@@ -258,12 +258,6 @@ export function projectKnowledgeProperty(
               recipe.output ??
               null
             ),
-
-          requirements:
-            clone(
-              recipe.requirements ??
-              []
-            ),
         })
       );
 
