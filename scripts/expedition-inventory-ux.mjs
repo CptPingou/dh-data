@@ -3679,16 +3679,6 @@ async function configureExpeditionShell(
       "fob"
     );
 
-  if (
-    fobView instanceof HTMLElement
-  ) {
-    fobView.prepend(
-      renderFobWorkshopCards(
-        manifest
-      )
-    );
-  }
-
   const caravanProjection =
     projectExpeditionCaravan({
       manifest,
@@ -3718,8 +3708,19 @@ async function configureExpeditionShell(
     getApi()
   );
 
-  fobPane.append(fobView);
-  caravanPane.append(caravanView);
+  const fobWorkshopCards =
+    renderFobWorkshopCards(
+      manifest
+    );
+
+  fobPane.append(
+    fobWorkshopCards,
+    fobView
+  );
+
+  caravanPane.append(
+    caravanView
+  );
 
   const expeditionView =
     await buildExpeditionDashboardView(
