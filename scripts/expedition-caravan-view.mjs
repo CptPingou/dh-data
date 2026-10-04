@@ -12,10 +12,8 @@ function escapeText(value) {
 
 function entryLabel(entry) {
   return (
-    entry?.name ??
-    entry?.itemName ??
-    entry?.itemRef?.name ??
-    entry?.sourceName ??
+    entry?.item?.name ??
+    entry?.item?.sourceId ??
     entry?.entryId ??
     "Objet"
   );
@@ -184,6 +182,34 @@ function ensureCaravanStyles(
       border-radius: 50%;
     }
 
+    .dhct-caravan-view__wheel {
+      min-width: 78px;
+      min-height: 78px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: .38rem;
+      padding: .5rem;
+      line-height: 1.15;
+      overflow: visible;
+    }
+
+    .dhct-caravan-view__wheel .dhct-caravan-view__component-name {
+      max-width: 70px;
+      font-size: .74rem;
+      font-weight: 700;
+      line-height: 1.18;
+      text-align: center;
+    }
+
+    .dhct-caravan-view__wheel .dhct-caravan-view__hp {
+      font-size: .68rem;
+      line-height: 1;
+      white-space: nowrap;
+      opacity: .82;
+    }
+
     .dhct-caravan-view__cargo {
       border:
         1px dashed rgba(220, 190, 135, .7);
@@ -240,12 +266,45 @@ function ensureCaravanStyles(
 
     .dhct-caravan-view__entry {
       display: flex;
+      align-items: center;
       justify-content: space-between;
       gap: .5rem;
       padding: .35rem .45rem;
       border:
         1px solid rgba(255, 255, 255, .08);
       border-radius: 4px;
+    }
+
+    .dhct-caravan-view__entry-identity {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      min-width: 0;
+    }
+
+    .dhct-caravan-view__entry-icon {
+      flex: 0 0 32px;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .dhct-caravan-view__entry-icon img {
+      width: 32px;
+      height: 32px;
+      object-fit: contain;
+      border: 0;
+    }
+
+    .dhct-caravan-view__entry-name {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+
+    .dhct-caravan-view__entry-quantity {
+      flex: 0 0 auto;
     }
 
     .dhct-caravan-view__detail {
@@ -333,6 +392,14 @@ function renderComponent(
   node.className =
     "dhct-caravan-view__component";
 
+  if (
+    component.type === "wheel"
+  ) {
+    node.classList.add(
+      "dhct-caravan-view__wheel"
+    );
+  }
+
   node.dataset.componentId =
     component.id ?? "";
 
@@ -348,6 +415,9 @@ function renderComponent(
     documentRef.createElement(
       "div"
     );
+
+  label.className =
+    "dhct-caravan-view__component-name";
 
   label.textContent =
     escapeText(
@@ -373,7 +443,7 @@ function renderComponent(
       String(
         component.hp.value ?? 0
       ) +
-      " / " +
+      "/" +
       String(
         component.hp.max ?? 0
       );
@@ -511,7 +581,7 @@ function renderFobStorage(
 
   capacity.textContent =
     capacityLabel(storage) ??
-    "Capacit? inconnue";
+    "Capacit\u00e9 inconnue";
 
   panel.append(capacity);
 
@@ -538,18 +608,59 @@ function renderFobStorage(
     row.dataset.entryId =
       entry.entryId ?? "";
 
+    const identity =
+      documentRef.createElement(
+        "span"
+      );
+
+    identity.className =
+      "dhct-caravan-view__entry-identity";
+
+    const icon =
+      documentRef.createElement(
+        "span"
+      );
+
+    icon.className =
+      "dhct-caravan-view__entry-icon";
+
+    if (entry?.item?.img) {
+      const image =
+        documentRef.createElement(
+          "img"
+        );
+
+      image.src =
+        entry.item.img;
+
+      image.alt = "";
+
+      icon.append(image);
+    }
+
     const name =
       documentRef.createElement(
         "span"
       );
 
+    name.className =
+      "dhct-caravan-view__entry-name";
+
     name.textContent =
       entryLabel(entry);
+
+    identity.append(
+      icon,
+      name
+    );
 
     const quantity =
       documentRef.createElement(
         "strong"
       );
+
+    quantity.className =
+      "dhct-caravan-view__entry-quantity";
 
     quantity.textContent =
       "?" +
@@ -558,7 +669,7 @@ function renderFobStorage(
       );
 
     row.append(
-      name,
+      identity,
       quantity
     );
 
@@ -740,7 +851,7 @@ export function renderExpeditionCaravanView(
     );
 
   detailTitle.textContent =
-    "Composant s?lectionn?";
+    "Composant s\u00e9lectionn\u00e9";
 
   const detailText =
     documentRef.createElement(
@@ -748,7 +859,7 @@ export function renderExpeditionCaravanView(
     );
 
   detailText.textContent =
-    "S?lectionnez une roue, un emplacement cargo ou un composant.";
+    "S\u00e9lectionnez une roue, un emplacement cargo ou un composant.";
 
   detail.append(
     detailTitle,
