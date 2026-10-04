@@ -32,7 +32,12 @@ import {
   createExpeditionShell,
   expeditionShellPane,
   activateExpeditionShellTab,
+  setExpeditionShellTabVisibility,
 } from "./expedition-shell.mjs";
+
+import {
+  resolvePlayerLogisticsVisibility,
+} from "./expedition-logistics-visibility.mjs";
 
 import {
   projectExpeditionInventory,
@@ -3141,6 +3146,39 @@ async function configureExpeditionShell(
       activeTab: "expedition",
       canManage: isGm,
     });
+
+  const logisticsVisibility =
+    isGm
+      ? {
+          fob: true,
+          caravan: true,
+          sameLocation: true,
+        }
+      : resolvePlayerLogisticsVisibility(
+          manifest
+        );
+
+  setExpeditionShellTabVisibility(
+    shell,
+    "fob",
+    logisticsVisibility.fob
+  );
+
+  setExpeditionShellTabVisibility(
+    shell,
+    "caravan",
+    logisticsVisibility.caravan
+  );
+
+  shell.dataset.dhctFobVisible =
+    logisticsVisibility.fob
+      ? "1"
+      : "0";
+
+  shell.dataset.dhctCaravanVisible =
+    logisticsVisibility.caravan
+      ? "1"
+      : "0";
 
   browser.insertAdjacentElement(
     "beforebegin",

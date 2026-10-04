@@ -239,6 +239,101 @@ export function createExpeditionShell({
   return shell;
 }
 
+export function setExpeditionShellTabVisibility(
+  shell,
+  tabId,
+  visible,
+  {
+    fallbackTab = DEFAULT_TAB,
+  } = {}
+) {
+  if (!(shell instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "shell-not-found",
+    };
+  }
+
+  const normalized =
+    normalizedTabId(tabId);
+
+  const button =
+    shell.querySelector(
+      '[data-dhct-expedition-tab="' +
+      CSS.escape(normalized) +
+      '"]'
+    );
+
+  const pane =
+    shell.querySelector(
+      '[data-dhct-expedition-pane="' +
+      CSS.escape(normalized) +
+      '"]'
+    );
+
+  if (
+    !(button instanceof HTMLElement) ||
+    !(pane instanceof HTMLElement)
+  ) {
+    return {
+      green: false,
+      reason: "tab-not-found",
+      tabId: normalized,
+    };
+  }
+
+  const shown =
+    Boolean(visible);
+
+  button.hidden =
+    !shown;
+
+  button.setAttribute(
+    "aria-hidden",
+    shown
+      ? "false"
+      : "true"
+  );
+
+  if (!shown) {
+    pane.hidden = true;
+
+    if (
+      shell.dataset.dhctActiveTab ===
+      normalized
+    ) {
+      const fallback =
+        normalizedTabId(
+          fallbackTab
+        );
+
+      const fallbackButton =
+        shell.querySelector(
+          '[data-dhct-expedition-tab="' +
+          CSS.escape(fallback) +
+          '"]'
+        );
+
+      if (
+        fallbackButton instanceof
+          HTMLElement &&
+        !fallbackButton.hidden
+      ) {
+        activateExpeditionShellTab(
+          shell,
+          fallback
+        );
+      }
+    }
+  }
+
+  return {
+    green: true,
+    tabId: normalized,
+    visible: shown,
+  };
+}
+
 export function expeditionShellPane(
   shell,
   tabId
@@ -262,6 +357,8 @@ export const expeditionShellApi =
       createExpeditionShell,
     activate:
       activateExpeditionShellTab,
+    setTabVisibility:
+      setExpeditionShellTabVisibility,
     pane:
       expeditionShellPane,
   });
