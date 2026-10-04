@@ -1,7 +1,6 @@
 import {
   backpackAccessState,
   backpackStoredAt,
-  inferredSharedRole,
   userOwnsBackpack,
   userCanAccessContainer,
   userCanTransferBetweenContainers,
@@ -1322,7 +1321,7 @@ async function clearGroundContainer(api, manifest, container) {
   }
 
   if (
-    inferredSharedRole(container) !== "ground" ||
+    container?.containerId !== "ground" ||
     !api?.expeditionManifest?.lose
   ) {
     return { green: false, reason: "ground-container-unavailable" };
@@ -1391,9 +1390,13 @@ async function transferBackpackContentsToGround(api, manifest, backpack) {
     return { green: false, reason: "backpack-unavailable" };
   }
 
-  const ground = (manifest.containers ?? []).find(
-    (container) => inferredSharedRole(container) === "ground"
-  );
+  const ground =
+    (manifest.containers ?? [])
+      .find(
+        (container) =>
+          container?.containerId ===
+          "ground"
+      );
 
   if (!ground) {
     return { green: false, reason: "ground-container-not-found" };
@@ -1465,19 +1468,6 @@ async function transferBackpackContentsToGround(api, manifest, backpack) {
   };
 }
 
-
-function sharedRoleLabel(role) {
-  switch (role) {
-    case "fob":
-      return "FOB";
-    case "caravan":
-      return "Caravane";
-    case "ground":
-      return "Sol";
-    default:
-      return "Masqué";
-  }
-}
 
 function renderAccessMatrixCheckbox({
   characterId,

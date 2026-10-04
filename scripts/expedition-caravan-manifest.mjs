@@ -237,14 +237,6 @@ export function installCaravanEquipmentInManifest(
               mergeStacks: true,
             },
 
-      presentation: {
-        playerRole:
-          "caravan",
-
-        playerAccess:
-          true,
-      },
-
       rules: [],
       contents: [],
     };

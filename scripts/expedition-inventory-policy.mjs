@@ -17,55 +17,6 @@ export function backpackStoredAt(container) {
   return String(container?.presentation?.storedAt ?? "").trim();
 }
 
-function normalizeAccessToken(value) {
-  return String(value ?? "")
-    .trim()
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "");
-}
-
-export function inferredSharedRole(container) {
-  const explicit = normalizeAccessToken(
-    container?.presentation?.playerRole
-  );
-
-  if (["fob", "caravan", "ground"].includes(explicit)) {
-    return explicit;
-  }
-
-  const type = normalizeAccessToken(container?.type);
-  const name = normalizeAccessToken(container?.name);
-
-  if (type === "caravan" || name.includes("caravane") || name.includes("caravan")) {
-    return "caravan";
-  }
-
-  if (
-    ["fob", "camp", "forward-base", "forward_base", "forwardbase"].includes(type) ||
-    name === "fob" ||
-    name.includes("camp avance") ||
-    name.includes("forward operating base")
-  ) {
-    return "fob";
-  }
-
-  if (
-    ["ground", "floor", "sol"].includes(type) ||
-    name === "sol" ||
-    name.includes("zone au sol") ||
-    name.includes("ground")
-  ) {
-    return "ground";
-  }
-
-  return null;
-}
-
-export function sharedPlayerAccessEnabled(container) {
-  return container?.presentation?.playerAccess === true;
-}
-
 function actorFromHolderRef(holderRef) {
   const uuid =
     holderRef?.foundryActorUuid ??
@@ -174,32 +125,27 @@ export function containerAccessZone(
     return "caravan";
   }
 
+  const fobContainerId =
+    String(
+      manifest?.fob
+        ?.storageContainerId ??
+      ""
+    ).trim();
+
   if (
     containerId &&
-    containerId ===
-      String(
-        manifest?.fob
-          ?.storageContainerId ??
-        ""
-      ).trim()
+    (
+      containerId ===
+        fobContainerId ||
+      containerId ===
+        "fob"
+    )
   ) {
     return "fob";
   }
 
   if (containerId === "ground") {
     return "ground";
-  }
-
-  const legacyRole =
-    inferredSharedRole(
-      container
-    );
-
-  if (
-    legacyRole === "fob" ||
-    legacyRole === "ground"
-  ) {
-    return legacyRole;
   }
 
   return null;

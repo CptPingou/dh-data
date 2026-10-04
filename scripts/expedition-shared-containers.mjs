@@ -4,16 +4,16 @@ export const SHARED_CONTAINER_SPECS = Object.freeze([
   Object.freeze({
     containerId: "ground",
     name: "Sol",
-    role: "ground",
+
     slots: 12,
-    playerAccess: true,
+
   }),
   Object.freeze({
     containerId: "fob",
     name: "FOB",
-    role: "fob",
+
     slots: 24,
-    playerAccess: false,
+
   }),
   ]);
 
@@ -129,10 +129,6 @@ export function buildSharedContainer(manifest, spec) {
     materialStorage: spec.materialStorage ? structuredClone(spec.materialStorage) : undefined,
     rules: [],
     contents: [],
-    presentation: {
-      playerRole: spec.role,
-      playerAccess: spec.playerAccess,
-    },
   };
 }
 
@@ -190,16 +186,38 @@ export async function ensureSharedContainers(
       }
     }
 
-    container.presentation ??= {};
+    if (
+      container.presentation &&
+      typeof container.presentation ===
+        "object"
+    ) {
+      if (
+        Object.prototype.hasOwnProperty.call(
+          container.presentation,
+          "playerRole"
+        )
+      ) {
+        delete container.presentation.playerRole;
+        metadataChanged = true;
+      }
 
-    if (!container.presentation.playerRole) {
-      container.presentation.playerRole = spec.role;
-      metadataChanged = true;
-    }
+      if (
+        Object.prototype.hasOwnProperty.call(
+          container.presentation,
+          "playerAccess"
+        )
+      ) {
+        delete container.presentation.playerAccess;
+        metadataChanged = true;
+      }
 
-    if (container.presentation.playerAccess == null) {
-      container.presentation.playerAccess = spec.playerAccess;
-      metadataChanged = true;
+      if (
+        Object.keys(
+          container.presentation
+        ).length === 0
+      ) {
+        delete container.presentation;
+      }
     }
 
     if (spec.materialStorage && JSON.stringify(container.materialStorage ?? null) !== JSON.stringify(spec.materialStorage)) {
