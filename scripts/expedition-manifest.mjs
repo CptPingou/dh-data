@@ -316,6 +316,37 @@ function entriesShareStackIdentity(
   );
 }
 
+function legacyMaterialStorageAdapter(
+  container
+) {
+  const policy =
+    container?.materialStorage;
+
+  if (
+    !policy ||
+    typeof policy !== "object" ||
+    Array.isArray(policy)
+  ) {
+    return null;
+  }
+
+  return {
+    accepts:
+      Array.isArray(policy.accepts)
+        ? policy.accepts
+        : [],
+
+    stackLimit:
+      Number(policy.stackLimit),
+
+    mergeStacks:
+      policy.mergeStacks !== false,
+
+    splitOversize:
+      policy.mergeStacks === false,
+  };
+}
+
 function materialStorageData(entry) {
   const material = entry?.itemRef?.snapshot?.flags?.["daggerheart-campaign-toolkit"]?.material;
   if (!material?.materialId || !material?.containerClass) return null;
@@ -326,12 +357,22 @@ function materialStorageData(entry) {
   };
 }
 
-function materialStorageRuleResult(container, entry, { additionalQuantity = null } = {}) {
+function legacyMaterialStorageRuleResult(container, entry, { additionalQuantity = null } = {}) {
   const material = materialStorageData(entry);
   if (!material) return { green: true, material: null };
 
-  const policy = container?.materialStorage;
-  if (!policy) return { green: true, material, unmanaged: true };
+  const policy =
+    legacyMaterialStorageAdapter(
+      container
+    );
+
+  if (!policy) {
+    return {
+      green: true,
+      material,
+      unmanaged: true,
+    };
+  }
 
   const accepts = Array.isArray(policy.accepts) ? policy.accepts : [];
   if (accepts.length && !accepts.includes(material.containerClass)) {
@@ -366,9 +407,18 @@ function materialStorageRuleResult(container, entry, { additionalQuantity = null
   };
 }
 
-function materialMergeTarget(container, entry) {
-  const policy = container?.materialStorage;
-  if (!policy || policy.mergeStacks === false) return null;
+function legacyMaterialMergeTarget(container, entry) {
+  const policy =
+    legacyMaterialStorageAdapter(
+      container
+    );
+
+  if (
+    !policy ||
+    !policy.mergeStacks
+  ) {
+    return null;
+  }
   const material = materialStorageData(entry);
   if (!material?.materialId) return null;
   return (container.contents ?? []).find((candidate) =>
@@ -521,7 +571,7 @@ export function canTransferExpeditionEntry(manifest, {
       ? {
           green: true,
         }
-      : materialStorageRuleResult(
+      : legacyMaterialStorageRuleResult(
           to,
           entry
         );
@@ -536,7 +586,7 @@ export function canTransferExpeditionEntry(manifest, {
           to,
           entry
         )
-      : materialMergeTarget(
+      : legacyMaterialMergeTarget(
           to,
           entry
         );
@@ -552,7 +602,7 @@ export function canTransferExpeditionEntry(manifest, {
             to,
             mergeTarget
           )
-        : materialStorageRuleResult(
+        : legacyMaterialStorageRuleResult(
             to,
             mergeTarget,
             {
@@ -996,12 +1046,24 @@ export function acquireExpeditionEntry(manifest, {
   // Split a multi-unit acquisition into stack-sized entries atomically instead
   // of rejecting the whole request because a single staged entry is too large.
   const materialProbe = { itemRef: itemRef && typeof itemRef === "object" ? clone(itemRef) : {}, quantity: 1 };
-  const material = materialStorageData(materialProbe);
-  const policy = container?.materialStorage;
-  const stackLimit = Number(policy?.stackLimit);
+  const material =
+    materialStorageData(
+      materialProbe
+    );
+
+  const legacyPolicy =
+    legacyMaterialStorageAdapter(
+      container
+    );
+
+  const stackLimit =
+    Number(
+      legacyPolicy?.stackLimit
+    );
+
   if (
     material &&
-    policy?.mergeStacks === false &&
+    legacyPolicy?.splitOversize === true &&
     Number.isInteger(stackLimit) &&
     stackLimit > 0 &&
     qty > stackLimit
@@ -1097,7 +1159,9 @@ export function acquireExpeditionEntry(manifest, {
             : null
         )
       : (
-          container?.materialStorage?.mergeStacks === false
+          legacyMaterialStorageAdapter(
+            container
+          )?.mergeStacks === false
             ? null
             : (
                 container.contents ?? []
@@ -1185,7 +1249,7 @@ export function acquireExpeditionEntry(manifest, {
       }
     } else {
       const materialRule =
-        materialStorageRuleResult(
+        legacyMaterialStorageRuleResult(
           container,
           existingStack,
           {
