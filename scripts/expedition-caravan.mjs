@@ -107,6 +107,42 @@ export function normalizeCaravanLayout(
   };
 }
 
+const CANONICAL_WHEEL_NAMES =
+  Object.freeze({
+    "wheel-front-left":
+      "Roue avant gauche",
+
+    "wheel-front-right":
+      "Roue avant droite",
+
+    "wheel-rear-left":
+      "Roue arri\u00e8re gauche",
+
+    "wheel-rear-right":
+      "Roue arri\u00e8re droite",
+  });
+
+function canonicalCaravanComponentName(
+  component
+) {
+  const id =
+    nonEmpty(component?.id)
+      ? component.id.trim()
+      : "";
+
+  return (
+    CANONICAL_WHEEL_NAMES[id] ??
+    (
+      nonEmpty(component?.name)
+        ? component.name.trim()
+        : (
+            id ||
+            "Composant"
+          )
+    )
+  );
+}
+
 export function normalizeCaravanComponent(
   component = {}
 ) {
@@ -122,13 +158,9 @@ export function normalizeCaravanComponent(
         : "generic",
 
     name:
-      nonEmpty(component?.name)
-        ? component.name.trim()
-        : (
-            nonEmpty(component?.id)
-              ? component.id.trim()
-              : "Composant"
-          ),
+      canonicalCaravanComponentName(
+        component
+      ),
 
     hp:
       normalizeCaravanHp(
