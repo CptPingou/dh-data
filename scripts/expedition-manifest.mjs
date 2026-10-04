@@ -8,6 +8,10 @@ import {
   validateExpeditionFob,
 } from "./expedition-fob.mjs";
 import {
+  normalizeExpeditionCaravan,
+  validateExpeditionCaravan,
+} from "./expedition-caravan.mjs";
+import {
   containerProfileAcceptsEntry,
   normalizeContainerStorageProfile,
 } from "./expedition-container-profile.mjs";
@@ -84,6 +88,13 @@ export function normalizeExpeditionManifest(manifest) {
       );
   }
 
+  if (normalized?.caravan != null) {
+    normalized.caravan =
+      normalizeExpeditionCaravan(
+        normalized.caravan
+      );
+  }
+
   return normalized;
 }
 
@@ -155,6 +166,27 @@ export function validateExpeditionManifest(input) {
       ) {
         errors.push(
           "fob: " + error
+        );
+      }
+    }
+  }
+
+  if (manifest.caravan != null) {
+    const caravanValidation =
+      validateExpeditionCaravan(
+        manifest.caravan,
+        {
+          containerIds: containerSet,
+        }
+      );
+
+    if (!caravanValidation.green) {
+      for (
+        const error of
+        caravanValidation.errors
+      ) {
+        errors.push(
+          "caravan: " + error
         );
       }
     }
@@ -1471,6 +1503,7 @@ export function createEmptyExpeditionManifest({ expeditionId = "new-expedition" 
     characters: [],
     containers: [],
     fob: null,
+    caravan: null,
     ledger: [],
     metadata: {},
   };
