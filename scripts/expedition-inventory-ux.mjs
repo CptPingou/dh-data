@@ -1,4 +1,5 @@
 import {
+  containerAccessZone,
   backpackAccessState,
   backpackStoredAt,
   userOwnsBackpack,
@@ -2602,6 +2603,15 @@ function buildExpeditionInventoryView(
         containerCapabilityResolver(
           viewerCapabilities
         ),
+
+      roleResolver:
+        (container) =>
+          container?.type === "backpack"
+            ? "backpack"
+            : containerAccessZone(
+                manifest,
+                container
+              ),
       logisticsPhase:
         resolveManifestLogisticsPhase(
           manifest
@@ -2633,6 +2643,15 @@ function buildExpeditionContainerView(
         containerCapabilityResolver(
           viewerCapabilities
         ),
+
+      roleResolver:
+        (container) =>
+          container?.type === "backpack"
+            ? "backpack"
+            : containerAccessZone(
+                manifest,
+                container
+              ),
       logisticsPhase:
         resolveManifestLogisticsPhase(
           manifest
@@ -2664,6 +2683,15 @@ async function buildExpeditionDashboardView(
         containerCapabilityResolver(
           viewerCapabilities
         ),
+
+      roleResolver:
+        (container) =>
+          container?.type === "backpack"
+            ? "backpack"
+            : containerAccessZone(
+                manifest,
+                container
+              ),
       logisticsPhase:
         resolveManifestLogisticsPhase(
           manifest

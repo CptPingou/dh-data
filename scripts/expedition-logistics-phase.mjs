@@ -24,52 +24,6 @@ const LOGISTICS_PHASE_SET = new Set(
   Object.values(EXPEDITION_LOGISTICS_PHASES)
 );
 
-export const EXPEDITION_LOGISTICS_PHASE_PRESENTATION =
-  Object.freeze({
-    "field": Object.freeze({
-      label: "Terrain",
-      description:
-        "Collecte et circulation locale pendant la chasse.",
-      rules: Object.freeze([
-        "Sac \u2194 Sol",
-        "Sac \u2194 Sac",
-      ]),
-    }),
-
-    "field-extraction": Object.freeze({
-      label: "Extraction terrain",
-      description:
-        "Les chasseurs s\u00e9curisent leur r\u00e9colte au FOB.",
-      rules: Object.freeze([
-        "Sac \u2194 Sol",
-        "Sac \u2194 Sac",
-        "Sac \u2194 FOB",
-        "Sol \u2194 FOB",
-      ]),
-    }),
-
-    "arc-extraction": Object.freeze({
-      label: "Extraction d\u2019arc",
-      description:
-        "Les ressources s\u00e9curis\u00e9es peuvent \u00eatre charg\u00e9es ou d\u00e9charg\u00e9es de la Caravane.",
-      rules: Object.freeze([
-        "Sac \u2194 Sol",
-        "Sac \u2194 Sac",
-        "Sac \u2194 FOB",
-        "Sol \u2194 FOB",
-        "FOB \u2194 Caravane",
-      ]),
-    }),
-  });
-
-export const EXPEDITION_CONTAINER_ROLES = Object.freeze({
-  BACKPACK: "backpack",
-  GROUND: "ground",
-  FOB: "fob",
-  CARAVAN_STORAGE: "caravan-storage",
-  BASE: "base",
-});
-
 function normalizeString(value) {
   return typeof value === "string"
     ? value.trim().toLowerCase()
@@ -99,158 +53,6 @@ export function normalizeLogisticsPhase(
 
 export function isLogisticsPhase(value) {
   return normalizeLogisticsPhase(value) !== null;
-}
-
-export function normalizeContainerRole(
-  value,
-  fallback = null
-) {
-  const normalized = normalizeString(value);
-
-  if (
-    Object.values(
-      EXPEDITION_CONTAINER_ROLES
-    ).includes(normalized)
-  ) {
-    return normalized;
-  }
-
-  return fallback;
-}
-
-/**
- * Directional transfer matrix.
- *
- * This answers only:
- * "Is this source -> destination direction meaningful
- *  during this logistics phase?"
- *
- * It deliberately does NOT decide:
- * - viewer permissions;
- * - ownership;
- * - item/container compatibility;
- * - capacity;
- * - quantity;
- * - stack limits;
- * - Foundry document access.
- */
-const FIELD_TRANSFER_DIRECTIONS =
-  Object.freeze([
-    Object.freeze([
-      "backpack",
-      "ground"
-    ]),
-    Object.freeze([
-      "ground",
-      "backpack"
-    ]),
-    Object.freeze([
-      "backpack",
-      "backpack"
-    ]),
-  ]);
-
-const FIELD_EXTRACTION_TRANSFER_DIRECTIONS =
-  Object.freeze([
-    ...FIELD_TRANSFER_DIRECTIONS,
-
-    Object.freeze([
-      "backpack",
-      "fob"
-    ]),
-    Object.freeze([
-      "fob",
-      "backpack"
-    ]),
-
-    Object.freeze([
-      "ground",
-      "fob"
-    ]),
-    Object.freeze([
-      "fob",
-      "ground"
-    ]),
-  ]);
-
-const ARC_EXTRACTION_TRANSFER_DIRECTIONS =
-  Object.freeze([
-    ...FIELD_EXTRACTION_TRANSFER_DIRECTIONS,
-
-    Object.freeze([
-      "fob",
-      "caravan-storage"
-    ]),
-    Object.freeze([
-      "caravan-storage",
-      "fob"
-    ]),
-  ]);
-
-const TRANSFER_DIRECTIONS =
-  Object.freeze({
-    [EXPEDITION_LOGISTICS_PHASES.FIELD]:
-      FIELD_TRANSFER_DIRECTIONS,
-
-    [EXPEDITION_LOGISTICS_PHASES.FIELD_EXTRACTION]:
-      FIELD_EXTRACTION_TRANSFER_DIRECTIONS,
-
-    [EXPEDITION_LOGISTICS_PHASES.ARC_EXTRACTION]:
-      ARC_EXTRACTION_TRANSFER_DIRECTIONS,
-  });
-
-export function logisticsTransferDirections(
-  phase
-) {
-  const normalized =
-    normalizeLogisticsPhase(phase);
-
-  if (!normalized) return [];
-
-  return TRANSFER_DIRECTIONS[normalized] ?? [];
-}
-
-export function logisticsDirectionAllowed({
-  phase,
-  sourceRole,
-  destinationRole,
-} = {}) {
-  const normalizedPhase =
-    normalizeLogisticsPhase(phase);
-
-  const source =
-    normalizeContainerRole(sourceRole);
-
-  const destination =
-    normalizeContainerRole(destinationRole);
-
-  if (
-    !normalizedPhase ||
-    !source ||
-    !destination
-  ) {
-    return false;
-  }
-
-  if (source === destination) {
-    return source ===
-      EXPEDITION_CONTAINER_ROLES.BACKPACK &&
-      logisticsTransferDirections(
-        normalizedPhase
-      ).some(
-        ([from, to]) =>
-          from === source &&
-          to === destination
-      );
-  }
-
-  return logisticsTransferDirections(
-    normalizedPhase
-  ).some(
-    ([from, to]) =>
-      from === source &&
-      to === destination
-  );
 }
 
 /**
@@ -304,12 +106,8 @@ export const expeditionLogisticsPhaseApi =
     version: 1,
 
     phases: EXPEDITION_LOGISTICS_PHASES,
-    containerRoles: EXPEDITION_CONTAINER_ROLES,
 
     normalizeLogisticsPhase,
     resolveManifestLogisticsPhase,
     isLogisticsPhase,
-    normalizeContainerRole,
-    logisticsTransferDirections,
-    logisticsDirectionAllowed,
   });

@@ -184,7 +184,11 @@ function itemDetailHtml(container, entry) {
   </section>`;
 }
 
-function containerDetailHtml(container, characterById) {
+function containerDetailHtml(
+  container,
+  characterById,
+  manifest
+) {
   if (!container) {
     return `<div class="dct-expedition-empty">
       Aucun conteneur dans cette exp?dition.
@@ -253,15 +257,12 @@ function containerDetailHtml(container, characterById) {
       : "";
 
   const research =
-    container.containerId === "fob" ||
-    String(
-      presentation.playerRole ?? ""
-    ).toLowerCase() === "fob"
+    container.containerId ===
+      manifest?.fob?.storageContainerId
       ? `<div style="margin:.6rem 0">
           <button
               type="button"
-              data-expedition-action="open-research-station"
-              data-container-id="${esc(container.containerId)}">
+              data-expedition-action="open-research-station">
             <i class="fa-solid fa-flask"></i>
             Station de recherche
           </button>
@@ -543,7 +544,7 @@ export function expeditionWindowContent(manifest, validation = null, selectedId 
       </aside>
       <main class="dct-expedition-container-detail">
         <h3>Contenu</h3>
-        ${containerDetailHtml(selected, characterById)}
+        ${containerDetailHtml(selected, characterById, manifest)}
       </main>
       <aside class="dct-expedition-item-panel">
         <h3>Objet</h3>
@@ -708,7 +709,7 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
 
       list.innerHTML = `<h3>Conteneurs (${manifest.containers?.length ?? 0})</h3>
         ${containerListHtml(manifest.containers ?? [], characterById, currentSelectedId)}`;
-      detail.innerHTML = `<h3>Contenu</h3>${containerDetailHtml(selected, characterById)}`;
+      detail.innerHTML = `<h3>Contenu</h3>${containerDetailHtml(selected, characterById, manifest)}`;
 
       const selectedEntry = selected?.contents?.find((entry) => entry.entryId === currentSelectedEntryId) ?? null;
       if (!selectedEntry) currentSelectedEntryId = null;
@@ -928,8 +929,11 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
           ui.notifications?.warn("Campaign Toolkit : station de recherche indisponible.");
           return;
         }
-        const containerId = button.dataset.containerId || "fob";
-        const result = await api.open({ expeditionId: manifest.expeditionId, containerId });
+        const result =
+          await api.open({
+            expeditionId:
+              manifest.expeditionId,
+          });
         if (result?.green === false) {
           ui.notifications?.warn(`Campaign Toolkit : station de recherche — ${result.reason}.`);
         }
@@ -1048,7 +1052,7 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
         ${containerListHtml(manifest.containers ?? [], characterById, currentSelectedId)}`;
     }
     if (detail) {
-      detail.innerHTML = `<h3>Contenu</h3>${containerDetailHtml(selected, characterById)}`;
+      detail.innerHTML = `<h3>Contenu</h3>${containerDetailHtml(selected, characterById, manifest)}`;
     }
     if (itemPanel) {
       itemPanel.innerHTML = `<h3>Objet</h3>${itemDetailHtml(selected, null)}`;

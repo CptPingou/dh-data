@@ -82,38 +82,14 @@ export function projectCaravanComponent(
 export function resolveCaravanFobContainerId(
   manifest
 ) {
-  const explicitId =
-    manifest?.fob?.storageContainerId ??
-    null;
+  const containerId =
+    String(
+      manifest?.fob
+        ?.storageContainerId ??
+      ""
+    ).trim();
 
-  if (explicitId) {
-    return explicitId;
-  }
-
-  const roleMatches =
-    (manifest?.containers ?? [])
-      .filter(
-        (container) =>
-          container?.presentation
-            ?.playerRole === "fob"
-      );
-
-  if (roleMatches.length === 0) {
-    return null;
-  }
-
-  if (roleMatches.length > 1) {
-    throw new Error(
-      "Multiple FOB containers found; " +
-      "manifest.fob.storageContainerId is required"
-    );
-  }
-
-  return (
-    roleMatches[0]
-      ?.containerId ??
-    null
-  );
+  return containerId || null;
 }
 
 export function projectCaravanFobStorage(

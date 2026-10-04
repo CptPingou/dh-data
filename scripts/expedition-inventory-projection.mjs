@@ -73,6 +73,7 @@ export function projectInventoryContainer(
   container,
   {
     capabilities = {},
+    role = null,
   } = {}
 ) {
   if (!container?.containerId) {
@@ -105,8 +106,10 @@ export function projectInventoryContainer(
     },
 
     role:
-      container.presentation?.playerRole ??
-      null,
+      typeof role === "string" &&
+      role.trim()
+        ? role.trim()
+        : null,
 
     accessState:
       container.presentation?.accessState === "stored"
@@ -141,6 +144,7 @@ export function projectInventoryContainer(
 export function projectExpeditionInventory({
   manifest,
   capabilityResolver,
+  roleResolver = null,
   logisticsPhase = null,
 } = {}) {
   if (!manifest?.expeditionId) {
@@ -164,6 +168,10 @@ export function projectExpeditionInventory({
     const projected =
       projectInventoryContainer(container, {
         capabilities,
+        role:
+          typeof roleResolver === "function"
+            ? roleResolver(container)
+            : null,
       });
 
     if (projected) {
