@@ -93,6 +93,13 @@ export function normalizeExpeditionFob(
         ? fob.name.trim()
         : "FOB",
 
+    locationRef:
+      nonEmpty(
+        fob?.locationRef
+      )
+        ? fob.locationRef.trim()
+        : null,
+
     storageContainerId:
       nonEmpty(
         fob?.storageContainerId
@@ -129,6 +136,17 @@ export function validateExpeditionFob(
     normalizeExpeditionFob(input);
 
   const errors = [];
+
+  if (
+    fob.locationRef != null &&
+    !nonEmpty(
+      fob.locationRef
+    )
+  ) {
+    errors.push(
+      "fob.locationRef must be a non-empty string or null"
+    );
+  }
 
   if (!fob.storageContainerId) {
     errors.push(

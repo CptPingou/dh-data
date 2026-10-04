@@ -275,6 +275,13 @@ export function normalizeExpeditionCaravan(
         ? caravan.name.trim()
         : "Caravane",
 
+    locationRef:
+      nonEmpty(
+        caravan?.locationRef
+      )
+        ? caravan.locationRef.trim()
+        : null,
+
     asset: {
       src:
         assetSource,
@@ -336,6 +343,17 @@ export function validateExpeditionCaravan(
   if (!nonEmpty(caravan.name)) {
     errors.push(
       "caravan.name is required"
+    );
+  }
+
+  if (
+    caravan.locationRef != null &&
+    !nonEmpty(
+      caravan.locationRef
+    )
+  ) {
+    errors.push(
+      "caravan.locationRef must be a non-empty string or null"
     );
   }
 
@@ -743,10 +761,12 @@ export function createDefaultExpeditionCaravan({
   id = "caravan",
   name = "Caravane",
   assetSrc = null,
+  locationRef = null,
 } = {}) {
   return normalizeExpeditionCaravan({
     id,
     name,
+    locationRef,
 
     asset: {
       src:
