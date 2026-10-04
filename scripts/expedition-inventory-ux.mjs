@@ -40,6 +40,11 @@ import {
 import {
   projectExpeditionCaravan,
 } from "./expedition-caravan-projection.mjs";
+
+import {
+  installCaravanEquipmentInManifest,
+  removeCaravanEquipmentFromManifest,
+} from "./expedition-caravan-manifest.mjs";
 import {
   renderExpeditionInventoryView,
   renderExpeditionContainerView,
@@ -2580,6 +2585,198 @@ function expeditionShellPlaceholder(
   return section;
 }
 
+function installCaravanEquipmentViewHandlers(
+  view,
+  manifest,
+  api
+) {
+  if (
+    !(view instanceof HTMLElement)
+  ) {
+    return;
+  }
+
+  view.addEventListener(
+    "dhct-caravan-equipment-install",
+    async (event) => {
+      if (!game.user?.isGM) {
+        ui.notifications?.warn(
+          "Action r\u00e9serv\u00e9e au MJ."
+        );
+        return;
+      }
+
+      const detail =
+        event.detail ?? {};
+
+      try {
+        const fresh =
+          await api.expeditionManifest.load(
+            manifest.expeditionId
+          );
+
+        const componentId =
+          String(
+            detail.slotId ?? ""
+          ) +
+          "-" +
+          String(
+            detail.definitionId ?? ""
+          );
+
+        const result =
+          installCaravanEquipmentInManifest(
+            fresh,
+            {
+              slotId:
+                detail.slotId,
+
+              definitionId:
+                detail.definitionId,
+
+              componentId,
+
+              capacitySlots:
+                detail.capacitySlots,
+            }
+          );
+
+        await saveAndBroadcastBulkInventoryChange(
+          api,
+          result.manifest,
+          {
+            containerId:
+              result.container
+                ?.containerId ??
+              null,
+
+            reason:
+              "gm-caravan-equipment-install",
+          }
+        );
+
+        ui.notifications?.info(
+          (
+            result.component?.name ??
+            "Composant"
+          ) +
+          " install\u00e9 dans " +
+          String(
+            result.slotId
+          )
+        );
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+          " | caravan equipment install failed",
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible d'installer le composant."
+        );
+      }
+    }
+  );
+
+  view.addEventListener(
+    "dhct-caravan-equipment-remove",
+    async (event) => {
+      if (!game.user?.isGM) {
+        ui.notifications?.warn(
+          "Action r\u00e9serv\u00e9e au MJ."
+        );
+        return;
+      }
+
+      const detail =
+        event.detail ?? {};
+
+      try {
+        const fresh =
+          await api.expeditionManifest.load(
+            manifest.expeditionId
+          );
+
+        const result =
+          removeCaravanEquipmentFromManifest(
+            fresh,
+            {
+              slotId:
+                detail.slotId,
+            }
+          );
+
+        if (!result.changed) {
+          if (
+            result.reason ===
+              "container-not-empty"
+          ) {
+            ui.notifications?.warn(
+              "Videz ce conteneur avant de retirer le composant."
+            );
+
+            return;
+          }
+
+          if (
+            result.reason ===
+              "cargo-slot-empty"
+          ) {
+            ui.notifications?.info(
+              "Cet emplacement est d\u00e9j\u00e0 vide."
+            );
+
+            return;
+          }
+
+          throw new Error(
+            result.reason ??
+            "Retrait refus\u00e9."
+          );
+        }
+
+        await saveAndBroadcastBulkInventoryChange(
+          api,
+          result.manifest,
+          {
+            containerId:
+              result.container
+                ?.containerId ??
+              null,
+
+            reason:
+              "gm-caravan-equipment-remove",
+          }
+        );
+
+        ui.notifications?.info(
+          (
+            result.component?.name ??
+            "Composant"
+          ) +
+          " retir\u00e9 de " +
+          String(
+            result.slotId
+          )
+        );
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+          " | caravan equipment remove failed",
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible de retirer le composant."
+        );
+      }
+    }
+  );
+}
+
 function installInventoryViewHandlers(
   view,
   manifest
@@ -2984,7 +3181,10 @@ async function configureExpeditionShell(
 
   const caravanView =
     renderExpeditionCaravanView(
-      caravanProjection
+      caravanProjection,
+      {
+        isGm,
+      }
     );
 
   installInventoryViewHandlers(
@@ -2995,6 +3195,12 @@ async function configureExpeditionShell(
   installInventoryViewHandlers(
     caravanView,
     manifest
+  );
+
+  installCaravanEquipmentViewHandlers(
+    caravanView,
+    manifest,
+    getApi()
   );
 
   fobPane.append(fobView);

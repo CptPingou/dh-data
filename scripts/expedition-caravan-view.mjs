@@ -412,6 +412,30 @@ function ensureCaravanStyles(
       opacity: .72;
     }
 
+    .dhct-caravan-view__equipment-controls {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      flex-wrap: wrap;
+      margin-top: .7rem;
+      padding-top: .65rem;
+      border-top:
+        1px solid rgba(220, 190, 135, .2);
+    }
+
+    .dhct-caravan-view__equipment-type {
+      min-width: 140px;
+    }
+
+    .dhct-caravan-view__equipment-capacity {
+      width: 85px;
+    }
+
+    .dhct-caravan-view__equipment-install,
+    .dhct-caravan-view__equipment-remove {
+      min-height: 30px;
+    }
+
     .dhct-caravan-view__empty {
       grid-column: 1 / -1;
       padding: 1rem;
@@ -1126,11 +1150,265 @@ function renderSelectedStorage(
   return section;
 }
 
+function renderCaravanEquipmentControls(
+  detailModel,
+  {
+    documentRef,
+    root,
+  }
+) {
+  const controls =
+    documentRef.createElement(
+      "section"
+    );
+
+  controls.className =
+    "dhct-caravan-view__equipment-controls";
+
+  if (
+    detailModel?.kind !==
+      "cargo"
+  ) {
+    return controls;
+  }
+
+  if (detailModel.storage != null) {
+    const remove =
+      documentRef.createElement(
+        "button"
+      );
+
+    remove.type =
+      "button";
+
+    remove.className =
+      "dhct-caravan-view__equipment-remove";
+
+    remove.textContent =
+      "Retirer le composant";
+
+    remove.addEventListener(
+      "click",
+      (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+
+        root.dispatchEvent(
+          new CustomEvent(
+            "dhct-caravan-equipment-remove",
+            {
+              bubbles: true,
+
+              detail: {
+                slotId:
+                  detailModel.id,
+              },
+            }
+          )
+        );
+      }
+    );
+
+    controls.append(
+      remove
+    );
+
+    return controls;
+  }
+
+  if (
+    !detailModel.lines
+      ?.includes(
+        "Emplacement vide"
+      )
+  ) {
+    return controls;
+  }
+
+  const select =
+    documentRef.createElement(
+      "select"
+    );
+
+  select.className =
+    "dhct-caravan-view__equipment-type";
+
+  for (
+    const optionData of [
+      {
+        value: "chest",
+        label: "Coffre",
+        storage: true,
+      },
+      {
+        value: "barrel",
+        label: "Tonneau",
+        storage: true,
+      },
+      {
+        value: "stretcher",
+        label: "Civi\u00e8re",
+        storage: false,
+      },
+    ]
+  ) {
+    const option =
+      documentRef.createElement(
+        "option"
+      );
+
+    option.value =
+      optionData.value;
+
+    option.textContent =
+      optionData.label;
+
+    option.dataset.storage =
+      optionData.storage
+        ? "1"
+        : "0";
+
+    select.append(
+      option
+    );
+  }
+
+  const capacity =
+    documentRef.createElement(
+      "input"
+    );
+
+  capacity.type =
+    "number";
+
+  capacity.min =
+    "1";
+
+  capacity.step =
+    "1";
+
+  capacity.placeholder =
+    "Slots";
+
+  capacity.className =
+    "dhct-caravan-view__equipment-capacity";
+
+  const install =
+    documentRef.createElement(
+      "button"
+    );
+
+  install.type =
+    "button";
+
+  install.className =
+    "dhct-caravan-view__equipment-install";
+
+  install.textContent =
+    "Installer";
+
+  const refreshCapacityState =
+    () => {
+      const selected =
+        select.selectedOptions?.[0];
+
+      const storage =
+        selected?.dataset
+          ?.storage === "1";
+
+      capacity.disabled =
+        !storage;
+
+      capacity.required =
+        storage;
+
+      if (!storage) {
+        capacity.value = "";
+      }
+    };
+
+  refreshCapacityState();
+
+  select.addEventListener(
+    "change",
+    refreshCapacityState
+  );
+
+  install.addEventListener(
+    "click",
+    (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      const selected =
+        select.selectedOptions?.[0];
+
+      const storage =
+        selected?.dataset
+          ?.storage === "1";
+
+      const capacitySlots =
+        storage
+          ? Number(
+              capacity.value
+            )
+          : null;
+
+      if (
+        storage &&
+        (
+          !Number.isInteger(
+            capacitySlots
+          ) ||
+          capacitySlots < 1
+        )
+      ) {
+        globalThis.ui
+          ?.notifications
+          ?.warn(
+            "Indiquez une capacit\u00e9 en slots."
+          );
+
+        return;
+      }
+
+      root.dispatchEvent(
+        new CustomEvent(
+          "dhct-caravan-equipment-install",
+          {
+            bubbles: true,
+
+            detail: {
+              slotId:
+                detailModel.id,
+
+              definitionId:
+                select.value,
+
+              capacitySlots,
+            },
+          }
+        )
+      );
+    }
+  );
+
+  controls.append(
+    select,
+    capacity,
+    install
+  );
+
+  return controls;
+}
+
 export function renderExpeditionCaravanView(
   projection,
   {
     documentRef =
       globalThis.document,
+
+    isGm = false,
   } = {}
 ) {
   if (!documentRef) {
@@ -1372,6 +1650,25 @@ export function renderExpeditionCaravanView(
           documentRef
         )
       );
+    }
+
+    if (isGm) {
+      const controls =
+        renderCaravanEquipmentControls(
+          detailModel,
+          {
+            documentRef,
+            root,
+          }
+        );
+
+      if (
+        controls.children.length
+      ) {
+        detail.append(
+          controls
+        );
+      }
     }
   }
 
