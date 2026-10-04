@@ -226,6 +226,24 @@ function ensureCaravanStyles(
         rgba(90, 70, 40, .55);
     }
 
+    .dhct-caravan-view__component,
+    .dhct-caravan-view__cargo {
+      cursor: pointer;
+      transition:
+        outline-color 120ms ease,
+        box-shadow 120ms ease,
+        transform 120ms ease;
+    }
+
+    .dhct-caravan-view__component.is-selected,
+    .dhct-caravan-view__cargo.is-selected {
+      outline:
+        2px solid rgba(230, 195, 125, .95);
+      outline-offset: 2px;
+      box-shadow:
+        0 0 0 2px rgba(0, 0, 0, .55);
+    }
+
     .dhct-caravan-view__cargo-index {
       font-weight: 700;
     }
@@ -695,6 +713,180 @@ function renderFobStorage(
   return panel;
 }
 
+export function buildCaravanSelectionDetail(
+  model,
+  selection
+) {
+  if (!selection) {
+    return {
+      kind: null,
+      id: null,
+      title:
+        "Composant s\u00e9lectionn\u00e9",
+      lines: [
+        "S\u00e9lectionnez une roue, un emplacement cargo ou un composant."
+      ],
+    };
+  }
+
+  if (
+    selection.kind === "component"
+  ) {
+    const component =
+      (model?.components ?? [])
+        .find(
+          (candidate) =>
+            candidate.id ===
+            selection.id
+        ) ?? null;
+
+    if (!component) {
+      return {
+        kind:
+          "component",
+        id:
+          selection.id,
+        title:
+          "Composant introuvable",
+        lines: [],
+      };
+    }
+
+    const lines = [
+      "Type : " +
+        String(
+          component.type ??
+          "generic"
+        ),
+    ];
+
+    if (
+      component.hp?.max != null
+    ) {
+      lines.push(
+        "PV : " +
+        String(
+          component.hp.value ?? 0
+        ) +
+        "/" +
+        String(
+          component.hp.max ?? 0
+        )
+      );
+    }
+
+    return {
+      kind:
+        "component",
+      id:
+        component.id,
+      title:
+        component.name ??
+        component.id,
+      lines,
+    };
+  }
+
+  if (
+    selection.kind === "cargo"
+  ) {
+    const slot =
+      (model?.cargoSlots ?? [])
+        .find(
+          (candidate) =>
+            candidate.id ===
+            selection.id
+        ) ?? null;
+
+    if (!slot) {
+      return {
+        kind:
+          "cargo",
+        id:
+          selection.id,
+        title:
+          "Emplacement introuvable",
+        lines: [],
+      };
+    }
+
+    if (!slot.component) {
+      return {
+        kind:
+          "cargo",
+        id:
+          slot.id,
+        title:
+          slot.name ??
+          slot.id,
+        lines: [
+          "Emplacement vide"
+        ],
+      };
+    }
+
+    const component =
+      slot.component;
+
+    const lines = [];
+
+    if (
+      component.hp?.max != null
+    ) {
+      lines.push(
+        "PV : " +
+        String(
+          component.hp.value ?? 0
+        ) +
+        "/" +
+        String(
+          component.hp.max ?? 0
+        )
+      );
+    }
+
+    const capacity =
+      capacityLabel(
+        component.storage
+      );
+
+    if (capacity) {
+      lines.push(
+        "Stockage : " +
+        capacity
+      );
+    }
+
+    return {
+      kind:
+        "cargo",
+      id:
+        slot.id,
+      title:
+        (
+          slot.name ??
+          slot.id
+        ) +
+        " ? " +
+        (
+          component.name ??
+          component.id
+        ),
+      lines,
+    };
+  }
+
+  return {
+    kind:
+      selection.kind ?? null,
+    id:
+      selection.id ?? null,
+    title:
+      "S\u00e9lection inconnue",
+    lines: [],
+  };
+}
+
 export function renderExpeditionCaravanView(
   projection,
   {
@@ -845,28 +1037,136 @@ export function renderExpeditionCaravanView(
   detail.className =
     "dhct-caravan-view__detail";
 
-  const detailTitle =
-    documentRef.createElement(
-      "h3"
-    );
-
-  detailTitle.textContent =
-    "Composant s\u00e9lectionn\u00e9";
-
-  const detailText =
-    documentRef.createElement(
-      "p"
-    );
-
-  detailText.textContent =
-    "S\u00e9lectionnez une roue, un emplacement cargo ou un composant.";
-
-  detail.append(
-    detailTitle,
-    detailText
-  );
-
   root.append(detail);
+
+  let selection = null;
+
+  function updateSelectionVisuals() {
+    for (
+      const node of
+      board.querySelectorAll(
+        ".is-selected"
+      )
+    ) {
+      node.classList.remove(
+        "is-selected"
+      );
+    }
+
+    if (!selection) {
+      return;
+    }
+
+    const selector =
+      selection.kind ===
+        "component"
+        ? (
+            '[data-component-id="' +
+            CSS.escape(selection.id) +
+            '"]'
+          )
+        : (
+            '[data-cargo-slot-id="' +
+            CSS.escape(selection.id) +
+            '"]'
+          );
+
+    const selectedNode =
+      board.querySelector(
+        selector
+      );
+
+    selectedNode?.classList.add(
+      "is-selected"
+    );
+  }
+
+  function renderDetail() {
+    const detailModel =
+      buildCaravanSelectionDetail(
+        model,
+        selection
+      );
+
+    detail.replaceChildren();
+
+    const detailTitle =
+      documentRef.createElement(
+        "h3"
+      );
+
+    detailTitle.textContent =
+      detailModel.title;
+
+    detail.append(
+      detailTitle
+    );
+
+    for (
+      const line of
+      detailModel.lines
+    ) {
+      const paragraph =
+        documentRef.createElement(
+          "p"
+        );
+
+      paragraph.textContent =
+        line;
+
+      detail.append(
+        paragraph
+      );
+    }
+  }
+
+  for (
+    const componentNode of
+    board.querySelectorAll(
+      "[data-component-id]"
+    )
+  ) {
+    componentNode.addEventListener(
+      "click",
+      () => {
+        selection = {
+          kind:
+            "component",
+          id:
+            componentNode.dataset
+              .componentId,
+        };
+
+        updateSelectionVisuals();
+        renderDetail();
+      }
+    );
+  }
+
+  for (
+    const cargoNode of
+    board.querySelectorAll(
+      "[data-cargo-slot-id]"
+    )
+  ) {
+    cargoNode.addEventListener(
+      "click",
+      () => {
+        selection = {
+          kind:
+            "cargo",
+          id:
+            cargoNode.dataset
+              .cargoSlotId,
+        };
+
+        updateSelectionVisuals();
+        renderDetail();
+      }
+    );
+  }
+
+  renderDetail();
 
   return root;
 }
@@ -874,6 +1174,9 @@ export function renderExpeditionCaravanView(
 export const expeditionCaravanView = {
   buildModel:
     buildExpeditionCaravanViewModel,
+
+  buildSelectionDetail:
+    buildCaravanSelectionDetail,
 
   render:
     renderExpeditionCaravanView,
