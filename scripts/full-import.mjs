@@ -39,6 +39,332 @@ function markManaged(data, kind) {
   return data;
 }
 
+
+function stableContentJson(value) {
+  if (value === undefined) {
+    return '"__undefined__"';
+  }
+
+  if (Array.isArray(value)) {
+    return "[" +
+      value.map(stableContentJson).join(",") +
+      "]";
+  }
+
+  if (
+    value === null ||
+    typeof value !== "object"
+  ) {
+    return JSON.stringify(value);
+  }
+
+  return "{" +
+    Object.keys(value)
+      .sort()
+      .map(key =>
+        JSON.stringify(key) +
+        ":" +
+        stableContentJson(value[key])
+      )
+      .join(",") +
+    "}";
+}
+
+async function actorSourceSignature(
+  entry,
+  locale
+) {
+  const payload = stableContentJson({
+    mappingVersion: MAPPING_VERSION,
+    locale,
+    kind: entry.kind,
+    sourcePath: entry.source_path,
+    data: entry.data,
+  });
+
+  const bytes =
+    new TextEncoder().encode(payload);
+
+  const digest =
+    await crypto.subtle.digest(
+      "SHA-256",
+      bytes
+    );
+
+  const hex = Array.from(
+    new Uint8Array(digest)
+  )
+    .map(byte =>
+      byte.toString(16).padStart(2, "0")
+    )
+    .join("");
+
+  return `sha256:${hex}`;
+}
+
+async function syncManagedActors(
+  packId,
+  docs,
+  documentClass,
+  {
+    sourcePrefix,
+  } = {}
+) {
+  const pack =
+    game.packs.get(
+      `${MODULE_ID}.${packId}`
+    );
+
+  if (!pack) {
+    throw new Error(
+      `Compendium absent: ${packId}`
+    );
+  }
+
+  if (
+    typeof sourcePrefix !== "string" ||
+    !sourcePrefix
+  ) {
+    throw new Error(
+      `sourcePrefix absent pour ${packId}`
+    );
+  }
+
+  const result = {
+    attempted: docs.length,
+    created: 0,
+    updated: 0,
+    unchanged: 0,
+    removed: 0,
+    failed: 0,
+    failures: [],
+  };
+
+  await pack.configure({
+    locked: false,
+  });
+
+  try {
+    const existing =
+      await pack.getDocuments();
+
+    const managedSrd =
+      existing.filter(doc => {
+        const flags =
+          doc.flags?.[FLAG_SCOPE] ?? {};
+
+        return (
+          flags.managed === true &&
+          typeof flags.sourceId === "string" &&
+          flags.sourceId.startsWith(
+            sourcePrefix
+          )
+        );
+      });
+
+    const bySourceId = new Map();
+    const duplicateIds = [];
+
+    for (const doc of managedSrd) {
+      const sourceId =
+        doc.flags?.[FLAG_SCOPE]?.sourceId;
+
+      if (!bySourceId.has(sourceId)) {
+        bySourceId.set(
+          sourceId,
+          doc
+        );
+      } else {
+        duplicateIds.push(doc.id);
+      }
+    }
+
+    if (duplicateIds.length) {
+      await documentClass.deleteDocuments(
+        duplicateIds,
+        {
+          pack: pack.collection,
+        }
+      );
+
+      result.removed +=
+        duplicateIds.length;
+    }
+
+    const expectedSourceIds =
+      new Set();
+
+    for (const source of docs) {
+      const sourceId =
+        source?.flags?.[FLAG_SCOPE]
+          ?.sourceId;
+
+      if (
+        typeof sourceId !== "string" ||
+        !sourceId
+      ) {
+        result.failed += 1;
+
+        result.failures.push({
+          name: source?.name ?? null,
+          sourceId: null,
+          message:
+            "Actor managed sans sourceId",
+        });
+
+        continue;
+      }
+
+      expectedSourceIds.add(sourceId);
+
+      const current =
+        bySourceId.get(sourceId) ??
+        null;
+
+      try {
+        if (!current) {
+          await documentClass.create(
+            source,
+            {
+              pack: pack.collection,
+            }
+          );
+
+          result.created += 1;
+          continue;
+        }
+
+        const currentSignature =
+          current.flags?.[FLAG_SCOPE]
+            ?.contentSignature ??
+          null;
+
+        const sourceSignature =
+          source.flags?.[FLAG_SCOPE]
+            ?.contentSignature ??
+          null;
+
+        if (
+          sourceSignature &&
+          currentSignature ===
+            sourceSignature
+        ) {
+          result.unchanged += 1;
+          continue;
+        }
+
+        const updateData =
+          foundry.utils.deepClone(
+            source
+          );
+
+        const embeddedItems =
+          Array.isArray(
+            updateData.items
+          )
+            ? updateData.items
+            : [];
+
+        delete updateData.items;
+        delete updateData._id;
+        delete updateData._stats;
+
+        await current.update(
+          updateData
+        );
+
+        const oldEmbeddedIds =
+          current.items
+            ?.map(item => item.id)
+            .filter(Boolean) ??
+          [];
+
+        if (oldEmbeddedIds.length) {
+          await current
+            .deleteEmbeddedDocuments(
+              "Item",
+              oldEmbeddedIds
+            );
+        }
+
+        if (embeddedItems.length) {
+          const cleanEmbedded =
+            embeddedItems.map(item => {
+              const copy =
+                foundry.utils.deepClone(
+                  item
+                );
+
+              delete copy._id;
+              delete copy._stats;
+
+              return copy;
+            });
+
+          await current
+            .createEmbeddedDocuments(
+              "Item",
+              cleanEmbedded
+            );
+        }
+
+        result.updated += 1;
+      } catch (error) {
+        result.failed += 1;
+
+        result.failures.push({
+          name:
+            source?.name ?? null,
+          sourceId,
+          message:
+            error?.message ??
+            String(error),
+        });
+
+        console.error(
+          `${MODULE_ID} | actor sync failed`,
+          packId,
+          sourceId,
+          error
+        );
+      }
+    }
+
+    const staleIds =
+      Array.from(
+        bySourceId.entries()
+      )
+        .filter(
+          ([sourceId]) =>
+            !expectedSourceIds.has(
+              sourceId
+            )
+        )
+        .map(
+          ([, doc]) => doc.id
+        );
+
+    if (staleIds.length) {
+      await documentClass
+        .deleteDocuments(
+          staleIds,
+          {
+            pack: pack.collection,
+          }
+        );
+
+      result.removed +=
+        staleIds.length;
+    }
+
+    return result;
+  } finally {
+    await pack.configure({
+      locked: true,
+    });
+  }
+}
+
 async function replaceManaged(packId, docs, documentClass) {
   const pack = game.packs.get(`${MODULE_ID}.${packId}`);
   if (!pack) throw new Error(`Compendium absent: ${packId}`);
@@ -544,6 +870,16 @@ export async function importActorsMapped() {
         importLocale
       );
 
+      data.flags ??= {};
+      data.flags[FLAG_SCOPE] ??= {};
+
+      data.flags[FLAG_SCOPE]
+        .contentSignature =
+          await actorSourceSignature(
+            entry,
+            importLocale
+          );
+
       grouped
         .get(route.packId)
         .push(data);
@@ -574,46 +910,78 @@ export async function importActorsMapped() {
     const route = ROUTES[kind];
 
     packs[kind] =
-      await replaceManaged(
+      await syncManagedActors(
         route.packId,
         grouped.get(route.packId),
-        route.documentClass
+        route.documentClass,
+        {
+          sourcePrefix:
+            `srd-2.0.${kind}.`,
+        }
       );
   }
 
   const environmentPotentialAdversaries =
     await resolveEnvironmentPotentialAdversaries();
 
-  const created =
+  const totals =
     Object.values(packs)
       .reduce(
-        (total, result) =>
-          total +
-          Number(result?.created ?? 0),
-        0
+        (acc, result) => {
+          acc.created +=
+            Number(
+              result?.created ?? 0
+            );
+
+          acc.updated +=
+            Number(
+              result?.updated ?? 0
+            );
+
+          acc.unchanged +=
+            Number(
+              result?.unchanged ?? 0
+            );
+
+          acc.removed +=
+            Number(
+              result?.removed ?? 0
+            );
+
+          acc.failed +=
+            Number(
+              result?.failed ?? 0
+            );
+
+          return acc;
+        },
+        {
+          created: 0,
+          updated: 0,
+          unchanged: 0,
+          removed: 0,
+          failed: 0,
+        }
       );
 
-  const failed =
-    Object.values(packs)
-      .reduce(
-        (total, result) =>
-          total +
-          Number(result?.failed ?? 0),
-        0
-      );
+  const expected =
+    entries.length;
 
-  const expected = entries.length;
+  const accounted =
+    totals.created +
+    totals.updated +
+    totals.unchanged;
 
   const green =
-    failed === 0 &&
+    totals.failed === 0 &&
     buildFailures.length === 0 &&
-    created === expected;
+    accounted === expected;
 
   const result = {
     green,
     expected,
-    created,
-    failed,
+    accounted,
+    ...totals,
     buildFailures,
     counts: {
       adversary:
@@ -636,8 +1004,16 @@ export async function importActorsMapped() {
       result.counts.environment,
     expected:
       result.expected,
+    accounted:
+      result.accounted,
     created:
       result.created,
+    updated:
+      result.updated,
+    unchanged:
+      result.unchanged,
+    removed:
+      result.removed,
     failed:
       result.failed,
     buildFailures:

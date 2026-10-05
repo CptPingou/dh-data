@@ -1,16 +1,66 @@
-Sur le PC boulot, le flux sera désormais simplement :
+PROCÉDURE DE SYNCHRONISATION — DAGGERHEART CAMPAIGN TOOLKIT
+
+1. Mettre à jour le dépôt source
 
 git pull
 
-puis ton robocopy vers le module Foundry, puis :
 
-powershell -ExecutionPolicy Bypass `
-  -File ".\tools\verify-p2.10f.2b.ps1"
+2. Déployer vers le module Foundry
 
-Et si les compendia sont vides sur une machine neuve, côté Foundry :
+robocopy "E:\Dev\DH Data" "E:\FoundryvttDataV14\Data\modules\daggerheart-campaign-toolkit" /E /PURGE /XD .git /XF .gitignore
 
-const api = game.modules.get("daggerheart-campaign-toolkit").api;
-await api.syncAutonomousSources();
-await api.autonomousSourceStatus();
+Un code robocopy inférieur ou égal à 7 est normal.
 
-On a enfin un workflow où Git conserve la fonctionnalité, DH Data reste source d’autorité, et le module Foundry redevient uniquement une cible de déploiement.
+
+3. Recharger Foundry
+
+Ctrl+F5
+
+
+4. Vérifier l'état du contenu
+
+await game.modules
+  .get("daggerheart-campaign-toolkit")
+  .api.content.status()
+
+status() est en lecture seule.
+Cette commande ne modifie pas les compendiums.
+
+
+5. Si nécessaire, synchroniser le contenu
+
+await game.modules
+  .get("daggerheart-campaign-toolkit")
+  .api.content.syncAll()
+
+syncAll() est une synchronisation explicite réservée au MJ.
+
+Elle synchronise :
+- les Items autonomes ;
+- les adversaires SRD ;
+- les environnements SRD ;
+- les liens environnements -> adversaires ;
+- le contenu Monster Hunter pris en charge par le rail de synchro.
+
+
+6. Vérifier de nouveau
+
+await game.modules
+  .get("daggerheart-campaign-toolkit")
+  .api.content.status()
+
+
+RÉSUMÉ
+
+git pull
+-> robocopy
+-> Ctrl+F5
+-> api.content.status()
+-> api.content.syncAll() si nécessaire
+-> api.content.status()
+
+
+RÈGLE
+
+status()  = diagnostic en lecture seule
+syncAll() = synchronisation explicite du contenu
