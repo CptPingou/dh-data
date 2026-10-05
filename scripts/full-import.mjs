@@ -427,6 +427,232 @@ async function resolveEnvironmentPotentialAdversaries() {
   return { resolvedEnvironments, linkedUuids, textOnlyGroups };
 }
 
+
+const ACTOR_SOURCE_SPECS = Object.freeze([
+  Object.freeze({
+    kind: "adversary",
+    path: "data/srd-2.0/adversaries/adversaries.json",
+  }),
+  Object.freeze({
+    kind: "environment",
+    path: "data/srd-2.0/environments/environments.json",
+  }),
+]);
+
+async function loadCanonicalActorEntries() {
+  const entries = [];
+
+  for (const spec of ACTOR_SOURCE_SPECS) {
+    const url =
+      `modules/${MODULE_ID}/${spec.path}`;
+
+    const response = await fetch(url, {
+      cache: "no-store",
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `${spec.path} introuvable (${response.status}).`
+      );
+    }
+
+    const rows = await response.json();
+
+    if (!Array.isArray(rows)) {
+      throw new Error(
+        `${spec.path} doit contenir un tableau.`
+      );
+    }
+
+    for (const raw of rows) {
+      if (
+        raw?.kind !== spec.kind ||
+        typeof raw?.id !== "string" ||
+        !raw.id
+      ) {
+        throw new Error(
+          `Entr?e ${spec.kind} canonique invalide dans ${spec.path}.`
+        );
+      }
+
+      entries.push({
+        kind: spec.kind,
+        key: raw.id,
+        corpus:
+          raw?.source?.corpus ??
+          "daggerheart-srd",
+        source_path: spec.path,
+        data: raw,
+      });
+    }
+  }
+
+  return entries;
+}
+
+export async function importActorsMapped() {
+  if (!game.user?.isGM) {
+    throw new Error(
+      "Campaign Toolkit actor sync is GM-only."
+    );
+  }
+
+  const entries =
+    await loadCanonicalActorEntries();
+
+  const grouped = new Map([
+    ["dh-adversaries", []],
+    ["dh-environments", []],
+  ]);
+
+  const buildFailures = [];
+  const importLocale =
+    getImportLocale();
+
+  for (const entry of entries) {
+    const route = ROUTES[entry.kind];
+
+    if (
+      !route ||
+      route.documentClass !== Actor
+    ) {
+      buildFailures.push({
+        sourceId:
+          entry.data?.id ?? null,
+        kind: entry.kind,
+        message:
+          "Aucune route Actor de compendium",
+      });
+      continue;
+    }
+
+    try {
+      const data = markManaged(
+        await route.build(entry),
+        entry.kind
+      );
+
+      const sourceId =
+        entry.data?.id ??
+        entry.sourceId ??
+        data.flags?.[FLAG_SCOPE]?.sourceId ??
+        null;
+
+      await applyContentLocale(
+        data,
+        sourceId,
+        importLocale
+      );
+
+      grouped
+        .get(route.packId)
+        .push(data);
+    } catch (error) {
+      buildFailures.push({
+        sourceId:
+          entry.data?.id ?? null,
+        kind: entry.kind,
+        message:
+          error?.message ??
+          String(error),
+      });
+
+      console.error(
+        `${MODULE_ID} | actor mapping failed`,
+        entry,
+        error
+      );
+    }
+  }
+
+  const packs = {};
+
+  for (const kind of [
+    "adversary",
+    "environment",
+  ]) {
+    const route = ROUTES[kind];
+
+    packs[kind] =
+      await replaceManaged(
+        route.packId,
+        grouped.get(route.packId),
+        route.documentClass
+      );
+  }
+
+  const environmentPotentialAdversaries =
+    await resolveEnvironmentPotentialAdversaries();
+
+  const created =
+    Object.values(packs)
+      .reduce(
+        (total, result) =>
+          total +
+          Number(result?.created ?? 0),
+        0
+      );
+
+  const failed =
+    Object.values(packs)
+      .reduce(
+        (total, result) =>
+          total +
+          Number(result?.failed ?? 0),
+        0
+      );
+
+  const expected = entries.length;
+
+  const green =
+    failed === 0 &&
+    buildFailures.length === 0 &&
+    created === expected;
+
+  const result = {
+    green,
+    expected,
+    created,
+    failed,
+    buildFailures,
+    counts: {
+      adversary:
+        grouped
+          .get("dh-adversaries")
+          .length,
+      environment:
+        grouped
+          .get("dh-environments")
+          .length,
+    },
+    environmentPotentialAdversaries,
+    packs,
+  };
+
+  console.table({
+    adversaries:
+      result.counts.adversary,
+    environments:
+      result.counts.environment,
+    expected:
+      result.expected,
+    created:
+      result.created,
+    failed:
+      result.failed,
+    buildFailures:
+      result.buildFailures.length,
+  });
+
+  if (!green) {
+    throw new Error(
+      "Campaign Toolkit actor sync completed but verification is not GREEN."
+    );
+  }
+
+  return result;
+}
+
 export async function importFullMapped() {
   if (!game.user?.isGM) throw new Error("P2.3.3o-a Blood Hunter feature import is GM-only.");
   const payload = await loadPayload();

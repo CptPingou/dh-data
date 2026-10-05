@@ -1,4 +1,4 @@
-﻿import { registerNativeLongRestInfusionBridge } from "./artificer-rest-bridge.mjs";
+import { registerNativeLongRestInfusionBridge } from "./artificer-rest-bridge.mjs";
 import { registerWorldInfusionsSetting } from "./artificer-infusion-runtime.mjs";
 import { installExpeditionInventoryUx } from "./expedition-inventory-ux.mjs";
 import {
@@ -16,6 +16,7 @@ import { frenchSourceDebtAudit, frenchSourceDebtSummary } from "./source-fr-debt
 import { autonomousSourceStatus, autonomousSourceDiff, autonomousSourceDiffSummary, syncAutonomousSources, rebuildAutonomousSources } from "./autonomous-source-loader.mjs";
 import "./content-locale-settings.mjs";
 import { importFullMapped as importFullMappedData, fullStatus } from "./full-import.mjs";
+import { contentSyncApi } from "./content-sync.mjs";
 import { importCanonicalAdversary, importTetsucabra, tetsucabraStatus } from "./pilot-import.mjs";
 import { registerHuntingStatusEffects, huntingEffectsApi } from "./hunting-effects.mjs";
 import { createMonsterPartsApi } from "./monster-parts.mjs";
@@ -232,6 +233,7 @@ Hooks.once("init", () => {
       return localizeNativeCharacterOptions(locale);
     },
     fullStatus,
+    content: contentSyncApi,
     importTetsucabra,
     tetsucabraStatus,
     huntingEffects: huntingEffectsApi,
