@@ -1,5 +1,10 @@
 import { registerNativeLongRestInfusionBridge } from "./artificer-rest-bridge.mjs";
-import { registerWorldInfusionsSetting } from "./artificer-infusion-runtime.mjs";
+import { artificerInfusionAuthorityApi } from "./artificer-infusion-authority.mjs";
+import {
+  registerWorldInfusionsSetting,
+  registerArtificerInfusionWeaponSync,
+  artificerInfusionApi,
+} from "./artificer-infusion-runtime.mjs";
 import { installExpeditionInventoryUx } from "./expedition-inventory-ux.mjs";
 import {
   installToolkitCardPresentationBridge,
@@ -344,7 +349,10 @@ Hooks.once("init", () => {
     huntingCards: huntingCardsApi,
     weaponProgression: weaponProgressionApi,
     weaponAugments: motherboardAugmentCatalogApi,
-    weaponAugmentState: createWeaponAugmentStateApi(motherboardAugmentCatalogApi),
+    weaponAugmentState: createWeaponAugmentStateApi(
+      motherboardAugmentCatalogApi,
+      artificerInfusionApi,
+    ),
     weaponAugmentAuthority: weaponAugmentAuthorityApi,
     weaponAugmentWorkshop: weaponAugmentWorkshopApi,
     huntArtisanWorkshopFeature: huntArtisanWorkshopFeatureApi,
@@ -357,9 +365,21 @@ Hooks.once("init", () => {
     fob: fobTurnApi,
     fobActivity: createFobActivityLedgerApi(),
     artificerResource: artificerResourceApi,
+    artificerInfusionAuthority: artificerInfusionAuthorityApi,
+    artificerInfusion: artificerInfusionApi,
   };
 
   const toolkitApi = game.modules.get(MODULE_ID).api;
+
+  const infusionWeaponSync =
+    registerArtificerInfusionWeaponSync(
+      toolkitApi.weaponAugmentState
+    );
+
+  console.info(
+    `${MODULE_ID} | Artificer infusion weapon sync`,
+    infusionWeaponSync
+  );
   toolkitApi.crafting = createCraftingRuntimeApi({
     materialsApi: toolkitApi.craftingMaterials,
     knowledgeApi: toolkitApi.craftingKnowledge,
@@ -448,6 +468,14 @@ Hooks.once("init", () => {
     craftingResearchAuthority
   );
   registerToolkitCardSheetIntegration();
+  const artificerInfusionAuthority =
+    artificerInfusionAuthorityApi.install();
+
+  console.info(
+    `${MODULE_ID} | Artificer Infusion authority`,
+    artificerInfusionAuthority
+  );
+
   registerArtificerResourceRuntime();
 });
 

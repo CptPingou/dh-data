@@ -1,10 +1,183 @@
+import {
+  getMotherboardAugment,
+  listMotherboardAugments,
+} from "./weapon-augment-catalog.mjs";
+
 /** P2.11d.3f — World-authoritative Infusions; recipient-scoped lifecycle. */
 const SCOPE = "daggerheart-campaign-toolkit";
+
+/** P2.13b.5a ? automatic add/remove weapon sync */
+let weaponAugmentStateApi = null;
+
+export function registerArtificerInfusionWeaponSync(
+  api
+) {
+  if (
+    !api ||
+    typeof api.resync !== "function"
+  ) {
+    throw new Error(
+      "Weapon Augment state API with resync() required."
+    );
+  }
+
+  weaponAugmentStateApi =
+    api;
+
+  return {
+    installed: true,
+    version: "P2.13c.2",
+  };
+}
+
+/** P2.13c.2 ? hunt weapon eligibility + permanent/infusion anti-duplicate */
+function assertInfusionWeaponEligibility(
+  weapon,
+  augmentId
+) {
+  if (
+    !weapon ||
+    weapon.documentName !== "Item" ||
+    weapon.type !== "weapon" ||
+    weapon.parent?.documentName !== "Actor"
+  ) {
+    throw new Error(
+      "Une arme de chasse embarqu?e sur un personnage est requise."
+    );
+  }
+
+  if (
+    !weaponAugmentStateApi ||
+    typeof weaponAugmentStateApi.get !== "function"
+  ) {
+    throw new Error(
+      "Weapon Augment state API unavailable."
+    );
+  }
+
+  const current =
+    weaponAugmentStateApi.get(
+      weapon
+    );
+
+  if (!current?.initialized) {
+    throw new Error(
+      "Cette arme n'est pas une arme de chasse Motherboard initialis?e."
+    );
+  }
+
+  const installed =
+    Array.isArray(
+      current?.state?.installed
+    )
+      ? current.state.installed
+      : [];
+
+  if (
+    installed.includes(
+      augmentId
+    )
+  ) {
+    throw new Error(
+      `Cet augment est d?j? install? de fa?on permanente : ${augmentId}.`
+    );
+  }
+
+  return current;
+}
+
+
+async function resyncInfusionWeapons(
+  weaponUuids
+) {
+  if (
+    !weaponAugmentStateApi ||
+    !game.user?.isGM
+  ) {
+    return [];
+  }
+
+  const uuids =
+    [
+      ...new Set(
+        (weaponUuids ?? [])
+          .filter(
+            uuid =>
+              typeof uuid === "string" &&
+              /^Actor\.[^.]+\.Item\.[^.]+$/.test(
+                uuid
+              )
+          )
+      ),
+    ];
+
+  const results = [];
+
+  for (const uuid of uuids) {
+    const weapon =
+      await fromUuid(uuid);
+
+    if (
+      !weapon ||
+      weapon.documentName !== "Item" ||
+      weapon.type !== "weapon" ||
+      weapon.parent?.documentName !== "Actor"
+    ) {
+      results.push({
+        weaponUuid: uuid,
+        green: false,
+        reason: "weapon-not-resolved",
+      });
+
+      continue;
+    }
+
+    try {
+      const result =
+        await weaponAugmentStateApi
+          .resync(weapon);
+
+      results.push({
+        weaponUuid: uuid,
+        green: true,
+        result,
+      });
+    } catch (error) {
+      console.error(
+        `${SCOPE} | infusion weapon resync failed`,
+        uuid,
+        error
+      );
+
+      results.push({
+        weaponUuid: uuid,
+        green: false,
+        reason:
+          error?.message ??
+          String(error),
+      });
+    }
+  }
+
+  return results;
+}
 const WORLD_KEY = "activeInfusions";
 const OLD_FLAG = "artificerInfusions";
 const CLASS_ID = "homebrew.artificer.class.artificer";
 const FEATURE_ID = "homebrew.artificer.class.artificer.feature.infusions-d-artificier";
-const CAPACITY = [[9, 10], [7, 8], [5, 6], [3, 4], [1, 2]];
+/** P2.13a.1 ? Artificer Tier infusion capacity.
+ * Daggerheart tiers:
+ *   level 1     -> tier 1
+ *   levels 2-4  -> tier 2
+ *   levels 5-7  -> tier 3
+ *   levels 8-10 -> tier 4
+ */
+const ARTIFICER_TIERS = [
+  [8, 4],
+  [5, 3],
+  [2, 2],
+  [1, 1],
+];
 const TYPES = new Set(["weapon", "armor", "item", "equipment", "consumable", "loot"]);
 const clone = value => foundry.utils.deepClone(value);
 
@@ -45,11 +218,31 @@ function normalize(raw) {
 }
 function read() { assertWorld(); return normalize(game.settings.get(SCOPE, WORLD_KEY)); }
 async function write(state) { gm(); await game.settings.set(SCOPE, WORLD_KEY, normalize(state)); }
-export function infusionCapacity(level) {
-  const n = Number(level);
-  if (!Number.isInteger(n) || n < 1 || n > 10) throw new Error("Niveau entier de 1 à 10 requis.");
-  return CAPACITY.find(([lv]) => n >= lv)[1];
+export function artificerTierFromLevel(level) {
+  const n =
+    Number(level);
+
+  if (
+    !Number.isInteger(n) ||
+    n < 1 ||
+    n > 10
+  ) {
+    throw new Error(
+      "Niveau entier de 1 ? 10 requis."
+    );
+  }
+
+  return ARTIFICER_TIERS
+    .find(
+      ([minimumLevel]) =>
+        n >= minimumLevel
+    )[1];
 }
+
+export function infusionCapacity(level) {
+  return artificerTierFromLevel(level);
+}
+
 function levelOf(a) {
   const n = [a.system?.levelData?.level?.current, a.system?.level?.current, a.system?.level].map(Number).find(x => Number.isInteger(x) && x >= 1 && x <= 10);
   if (n === undefined) throw new Error("Niveau de l'Artificier introuvable.");
@@ -70,7 +263,21 @@ function decorate(e) {
 function status(creator = null) {
   const r = read(), key = creatorKey(creator);
   const entries = (key ? r.entries.filter(e => e.creatorKey === key) : r.entries).map(decorate);
-  const capacity = key ? (r.creatorSlots[key]?.capacity ?? null) : null;
+  const slot =
+    key
+      ? r.creatorSlots[key] ?? null
+      : null;
+
+  const capacity =
+    slot?.lastKnownLevel != null
+      ? infusionCapacity(
+          slot.lastKnownLevel
+        )
+      : (
+          key
+            ? slot?.capacity ?? null
+            : null
+        );
   return { storage: "world", capacity, used: entries.length,
     available: capacity == null ? null : Math.max(0, capacity - entries.length),
     entries, nextOrder: r.nextOrder, preventionUsed: r.preventionUsed,
@@ -88,39 +295,305 @@ function chooseTarget(creator, targetOrId, itemId) {
   return { target, item };
 }
 /** GM creation with NO Artificer Actor: virtual source key + explicit level. */
-async function addWorld({ creatorKey: key, creatorName = "Artificier (hors session)", sourceLevel,
-  targetActorUuid, itemId } = {}) {
-  gm();
-  if (typeof key !== "string" || !key.trim() || key.length > 128) throw new Error("creatorKey stable requis (ex. artificer:giovanni).");
-  const capacity = infusionCapacity(sourceLevel), target = actorByUuid(targetActorUuid);
-  assertActor(target);
-  const item = itemById(target, itemId);
-  if (!item || !TYPES.has(item.type)) throw new Error("Équipement cible absent ou type non admissible.");
-  const r = read(), used = r.entries.filter(e => e.creatorKey === key).length;
-  if (used >= capacity) throw new Error(`Capacité d'Infusions atteinte (${capacity}).`);
-  if (r.entries.some(e => e.targetActorUuid === target.uuid && e.itemId === item.id)) {
-    throw new Error("Cet équipement porte déjà une infusion active dans le registre mondial.");
+/** P2.13b.1 ? Motherboard-backed infusions */
+function motherboardAugmentTier(augment) {
+  if (
+    !augment ||
+    typeof augment !== "object"
+  ) {
+    throw new Error(
+      "Augment Motherboard invalide."
+    );
   }
-  r.creatorSlots[key] = { capacity, sourceName: String(creatorName), lastKnownLevel: Number(sourceLevel) };
-  r.entries.push({ id: foundry.utils.randomID(), creatorKey:key, creatorName: String(creatorName),
-    sourceLevel: Number(sourceLevel), targetActorUuid:target.uuid, itemId:item.id, itemName:item.name,
-    order:r.nextOrder++, createdAt:Date.now(), effect:null });
-  await write(r); return status(key);
-}
-async function add(creator, targetOrId, itemId) {
-  assertCreator(creator);
-  const { target, item } = chooseTarget(creator, targetOrId, itemId);
-  return addWorld({ creatorKey: creator.uuid, creatorName: creator.name, sourceLevel: levelOf(creator),
-    targetActorUuid: target.uuid, itemId:item.id });
+
+  const precompile =
+    augment.precompile ?? null;
+
+  if (!precompile) {
+    return 1;
+  }
+
+  if (
+    precompile.primitive !== "tier" ||
+    !Number.isInteger(
+      precompile.minimum
+    ) ||
+    precompile.minimum < 2 ||
+    precompile.minimum > 4
+  ) {
+    throw new Error(
+      `Pr?compilation Motherboard non prise en charge : ${augment.id ?? "inconnu"}.`
+    );
+  }
+
+  return precompile.minimum;
 }
 
-async function remove(_creatorOrId, maybeId) {
-  gm(); const id = maybeId ?? _creatorOrId;
-  const r = read(), initial = r.entries.length;
-  r.entries = r.entries.filter(e => e.id !== id);
-  if (r.entries.length === initial) throw new Error("Infusion inconnue.");
-  await write(r); return status();
+async function addWorld({
+  creatorKey: key,
+  creatorName =
+    "Artificier (hors session)",
+  sourceLevel,
+  targetActorUuid,
+  itemId,
+  augmentId,
+} = {}) {
+  gm();
+
+  if (
+    typeof key !== "string" ||
+    !key.trim() ||
+    key.length > 128
+  ) {
+    throw new Error(
+      "creatorKey stable requis."
+    );
+  }
+
+  if (
+    typeof augmentId !== "string" ||
+    !augmentId.trim()
+  ) {
+    throw new Error(
+      "augmentId Motherboard requis."
+    );
+  }
+
+  const capacity =
+    infusionCapacity(sourceLevel);
+
+  const sourceTier =
+    capacity;
+
+  const target =
+    actorByUuid(targetActorUuid);
+
+  assertActor(target);
+
+  const weapon =
+    itemById(
+      target,
+      itemId
+    );
+
+  if (
+    !weapon ||
+    weapon.type !== "weapon"
+  ) {
+    throw new Error(
+      "Une arme appartenant ? un personnage est requise."
+    );
+  }
+
+  const augment =
+    await getMotherboardAugment(
+      augmentId
+    );
+
+  assertInfusionWeaponEligibility(
+    weapon,
+    augment.id
+  );
+
+  const augmentTier =
+    motherboardAugmentTier(
+      augment
+    );
+
+  if (
+    augmentTier >
+    sourceTier
+  ) {
+    throw new Error(
+      `Tier insuffisant : Artificier T${sourceTier}, augment T${augmentTier}.`
+    );
+  }
+
+  const r =
+    read();
+
+  const used =
+    r.entries.filter(
+      entry =>
+        entry.creatorKey === key
+    ).length;
+
+  if (
+    used >= capacity
+  ) {
+    throw new Error(
+      `Capacit? d'Infusions atteinte (${capacity}).`
+    );
+  }
+
+  if (
+    r.entries.some(
+      entry =>
+        entry.targetActorUuid ===
+          target.uuid &&
+        entry.itemId ===
+          weapon.id &&
+        entry.augmentId ===
+          augment.id
+    )
+  ) {
+    throw new Error(
+      "Cette arme porte d?j? cette infusion."
+    );
+  }
+
+  r.creatorSlots[key] = {
+    capacity,
+    sourceName:
+      String(creatorName),
+    lastKnownLevel:
+      Number(sourceLevel),
+    lastKnownTier:
+      sourceTier,
+  };
+
+  r.entries.push({
+    id:
+      foundry.utils.randomID(),
+
+    creatorKey:
+      key,
+
+    creatorName:
+      String(creatorName),
+
+    sourceLevel:
+      Number(sourceLevel),
+
+    sourceTier,
+
+    targetActorUuid:
+      target.uuid,
+
+    itemId:
+      weapon.id,
+
+    weaponUuid:
+      weapon.uuid,
+
+    itemName:
+      weapon.name,
+
+    augmentId:
+      augment.id,
+
+    augmentTier,
+
+    source:
+      "artificer-infusion",
+
+    temporary:
+      true,
+
+    order:
+      r.nextOrder++,
+
+    createdAt:
+      Date.now(),
+
+    effect:
+      null,
+  });
+
+  await write(r);
+
+  await resyncInfusionWeapons([
+    weapon.uuid,
+  ]);
+
+  return status(key);
 }
+
+async function add(
+  creator,
+  targetOrId,
+  itemId,
+  augmentId
+) {
+  assertCreator(creator);
+
+  const {
+    target,
+    item,
+  } = chooseTarget(
+    creator,
+    targetOrId,
+    itemId
+  );
+
+  if (
+    item.type !== "weapon"
+  ) {
+    throw new Error(
+      "Les infusions d'Artificier ne ciblent que les armes."
+    );
+  }
+
+  return addWorld({
+    creatorKey:
+      creator.uuid,
+
+    creatorName:
+      creator.name,
+
+    sourceLevel:
+      levelOf(creator),
+
+    targetActorUuid:
+      target.uuid,
+
+    itemId:
+      item.id,
+
+    augmentId,
+  });
+}
+
+async function remove(
+  _creatorOrId,
+  maybeId
+) {
+  gm();
+
+  const id =
+    maybeId ??
+    _creatorOrId;
+
+  const r =
+    read();
+
+  const removed =
+    r.entries.find(
+      entry =>
+        entry.id === id
+    );
+
+  if (!removed) {
+    throw new Error(
+      "Infusion inconnue."
+    );
+  }
+
+  r.entries =
+    r.entries.filter(
+      entry =>
+        entry.id !== id
+    );
+
+  await write(r);
+
+  await resyncInfusionWeapons([
+    removed.weaponUuid,
+  ]);
+
+  return status();
+}
+
 function newest(creator = null) { return status(creator).entries.sort((a,b) => b.order-a.order)[0] ?? null; }
 function recipientUuid(value) { return typeof value === "string" ? value : value?.uuid; }
 function newestForRecipient(first, second) {
@@ -165,31 +638,146 @@ async function resolveCriticalDamage(first, second, third) {
   r.lastIncident = result;
   if (dedupeKey) r.processedIncidentKeys.push(dedupeKey);
   await write(r);
+
+  if (
+    consequence === "infusion-lost"
+  ) {
+    await resyncInfusionWeapons([
+      recent.weaponUuid,
+    ]);
+  }
   return { ...result, status: status() };
 }
-async function clearAtLongRest(creatorOrOptions = {}, options = {}) {
+async function clearAtLongRest(
+  creatorOrOptions = {},
+  options = {}
+) {
   gm();
-  const opts = creatorOrOptions && typeof creatorOrOptions === "object" && "confirmed" in creatorOrOptions ? creatorOrOptions : options;
-  if (!opts.confirmed) throw new Error("Repos long explicitement confirmé : {confirmed:true}.");
-  const r = read(), key = creatorOrOptions && typeof creatorOrOptions === "object" && "confirmed" in creatorOrOptions ? null : creatorKey(creatorOrOptions);
-  // With no creator, expire all world infusions at the table's confirmed long rest.
-  r.entries = key ? r.entries.filter(e => e.creatorKey !== key) : [];
-  await write(r); return status();
-}
-/** Repos long du porteur : seules SES infusions expirent, tous fabricants confondus.
- * Le repos long collectif reste disponible via clearAtLongRest({confirmed:true}).
- */
-async function clearForRecipientAtLongRest(recipient, { confirmed = false } = {}) {
-  gm();
-  if (!confirmed) throw new Error("Repos long du porteur explicitement confirmé : {confirmed:true}.");
-  const uuid = recipientUuid(recipient);
-  const target = actorByUuid(uuid);
-  if (!target) throw new Error("Personnage porteur permanent introuvable.");
-  const r = read(), expired = r.entries.filter(e => e.targetActorUuid === uuid);
-  r.entries = r.entries.filter(e => e.targetActorUuid !== uuid);
+
+  const opts =
+    creatorOrOptions &&
+    typeof creatorOrOptions === "object" &&
+    "confirmed" in creatorOrOptions
+      ? creatorOrOptions
+      : options;
+
+  if (!opts.confirmed) {
+    throw new Error(
+      "Repos long explicitement confirm? : {confirmed:true}."
+    );
+  }
+
+  const r =
+    read();
+
+  const key =
+    creatorOrOptions &&
+    typeof creatorOrOptions === "object" &&
+    "confirmed" in creatorOrOptions
+      ? null
+      : creatorKey(
+          creatorOrOptions
+        );
+
+  const expired =
+    key
+      ? r.entries.filter(
+          entry =>
+            entry.creatorKey === key
+        )
+      : [...r.entries];
+
+  r.entries =
+    key
+      ? r.entries.filter(
+          entry =>
+            entry.creatorKey !== key
+        )
+      : [];
+
   await write(r);
-  return { recipientUuid: uuid, recipientName: target.name, expiredIds: expired.map(e => e.id), expiredCount: expired.length, status: status() };
+
+  await resyncInfusionWeapons(
+    expired.map(
+      entry =>
+        entry.weaponUuid
+    )
+  );
+
+  return status();
 }
+
+async function clearForRecipientAtLongRest(
+  recipient,
+  { confirmed = false } = {}
+) {
+  gm();
+
+  if (!confirmed) {
+    throw new Error(
+      "Repos long du porteur explicitement confirm? : {confirmed:true}."
+    );
+  }
+
+  const uuid =
+    recipientUuid(
+      recipient
+    );
+
+  const target =
+    actorByUuid(uuid);
+
+  if (!target) {
+    throw new Error(
+      "Personnage porteur permanent introuvable."
+    );
+  }
+
+  const r =
+    read();
+
+  const expired =
+    r.entries.filter(
+      entry =>
+        entry.targetActorUuid === uuid
+    );
+
+  r.entries =
+    r.entries.filter(
+      entry =>
+        entry.targetActorUuid !== uuid
+    );
+
+  await write(r);
+
+  await resyncInfusionWeapons(
+    expired.map(
+      entry =>
+        entry.weaponUuid
+    )
+  );
+
+  return {
+    recipientUuid:
+      uuid,
+
+    recipientName:
+      target.name,
+
+    expiredIds:
+      expired.map(
+        entry =>
+          entry.id
+      ),
+
+    expiredCount:
+      expired.length,
+
+    status:
+      status(),
+  };
+}
+
 /** P2.11d.3f: one persisted world mutation per committed native long-rest chat card.
  * Called only by the strict Foundryborne chat bridge; never from dialogue opening.
  * A duplicate message is idempotent even if the first rest removed zero entries.
@@ -209,6 +797,13 @@ export async function expireForNativeLongRest({ messageId, recipientUuid: uuid }
   r.entries = r.entries.filter(e => e.targetActorUuid !== uuid);
   r.processedRestMessageIds.push(messageId);
   await write(r);
+
+  await resyncInfusionWeapons(
+    expired.map(
+      entry =>
+        entry.weaponUuid
+    )
+  );
   return { handled: true, duplicate: false, messageId, recipientUuid: uuid,
     recipientName: target.name, expiredCount: expired.length, expiredIds: expired.map(e => e.id) };
 }
@@ -246,7 +841,100 @@ async function migrateLegacyInfusions({ confirmed = false } = {}) {
   }
   await write(r); return { ...report, status: status() };
 }
-export const artificerInfusionApi = Object.freeze({ version: "P2.11d.3f", storage: "world",
-  capacity: infusionCapacity, status, eligibleItems, add, addWorld, remove, newest,
+/** P2.13b.2 ? Artificer augment catalog */
+async function availableAugments(
+  creator
+) {
+  assertCreator(creator);
+
+  const level =
+    levelOf(creator);
+
+  const tier =
+    artificerTierFromLevel(
+      level
+    );
+
+  const augments =
+    await listMotherboardAugments({
+      tier,
+    });
+
+  return {
+    creatorUuid:
+      creator.uuid,
+
+    creatorName:
+      creator.name,
+
+    level,
+
+    tier,
+
+    capacity:
+      infusionCapacity(level),
+
+    augments,
+  };
+}
+
+/** P2.13b.3 ? weapon infusion projection */
+function infusionsForWeapon(
+  weaponOrUuid
+) {
+  const weapon =
+    typeof weaponOrUuid === "string"
+      ? null
+      : weaponOrUuid;
+
+  const weaponUuid =
+    typeof weaponOrUuid === "string"
+      ? weaponOrUuid
+      : weapon?.uuid;
+
+  if (
+    typeof weaponUuid !== "string" ||
+    !/^Actor\.[^.]+\.Item\.[^.]+$/.test(
+      weaponUuid
+    )
+  ) {
+    throw new Error(
+      "UUID d'une arme embarqu?e dans un Actor requis."
+    );
+  }
+
+  const r =
+    read();
+
+  const actorUuid =
+    weapon?.parent?.uuid ?? (
+      weaponUuid
+        .split(".Item.")[0]
+    );
+
+  const itemId =
+    weapon?.id ?? (
+      weaponUuid
+        .split(".Item.")[1]
+    );
+
+  return r.entries
+    .filter(
+      entry =>
+        entry.weaponUuid ===
+          weaponUuid ||
+        (
+          entry.targetActorUuid ===
+            actorUuid &&
+          entry.itemId ===
+            itemId
+        )
+    )
+    .map(decorate);
+}
+
+/** P2.13b.5b ? automatic expiration weapon sync */
+export const artificerInfusionApi = Object.freeze({ version: "P2.13b.5a", storage: "world",
+  capacity: infusionCapacity, tierFromLevel: artificerTierFromLevel, availableAugments, forWeapon: infusionsForWeapon, status, eligibleItems, add, addWorld, remove, newest,
   newestForRecipient, resolveCriticalDamage, clearAtLongRest, clearForRecipientAtLongRest, startNewSession,
   migrateLegacyInfusions, expireForNativeLongRest });

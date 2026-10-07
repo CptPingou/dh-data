@@ -284,9 +284,105 @@ export async function setWeaponAugmentSlots(weapon, slots) {
   return writeState(weapon, next);
 }
 
-export function createWeaponAugmentStateApi(catalogApi) {
+export function createWeaponAugmentStateApi(
+  catalogApi,
+  infusionApi = null
+) {
   return {
     get: getWeaponAugmentState,
+
+    /** P2.13b.3 ? effective weapon Augments
+     * Projection read-only:
+     * permanent installed[] + active Artificer infusions.
+     * Does not mutate crafted[], installed[] or native weapon features.
+     */
+    effective(weapon) {
+      assertOwnedWeapon(weapon);
+
+      const current =
+        getWeaponAugmentState(
+          weapon
+        );
+
+      const permanentIds =
+        [...current.state.installed];
+
+      const infusionEntries =
+        typeof infusionApi?.forWeapon ===
+          "function"
+          ? infusionApi.forWeapon(
+              weapon
+            )
+          : [];
+
+      const usableInfusions =
+        infusionEntries.filter(
+          entry =>
+            typeof entry?.augmentId ===
+              "string" &&
+            entry.augmentId.trim()
+        );
+
+      const infusionIds =
+        [
+          ...new Set(
+            usableInfusions.map(
+              entry =>
+                entry.augmentId
+            )
+          ),
+        ];
+
+      const permanentSet =
+        new Set(
+          permanentIds
+        );
+
+      const duplicates =
+        infusionIds.filter(
+          augmentId =>
+            permanentSet.has(
+              augmentId
+            )
+        );
+
+      const effectiveIds =
+        [
+          ...new Set([
+            ...permanentIds,
+            ...infusionIds,
+          ]),
+        ];
+
+      return {
+        green: true,
+
+        weaponUuid:
+          weapon.uuid,
+
+        permanentIds,
+
+        infusionIds,
+
+        effectiveIds,
+
+        duplicates,
+
+        permanentCount:
+          permanentIds.length,
+
+        infusionCount:
+          infusionIds.length,
+
+        effectiveCount:
+          effectiveIds.length,
+
+        infusionEntries:
+          clone(
+            usableInfusions
+          ),
+      };
+    },
     validate: validateWeaponAugmentState,
 
     initialize: initializeWeaponAugments,
@@ -385,6 +481,27 @@ export function createWeaponAugmentStateApi(catalogApi) {
         throw new Error(`Augment is already installed: ${augment.id}.`);
       }
 
+      /*
+       * P2.13g.1b - reject permanent install while infusion is active
+       *
+       * Permanent and temporary provenance must never own the same
+       * Motherboard augment on the same weapon at the same time.
+       */
+      const activeInfusions =
+        infusionApi?.forWeapon?.(weapon) ?? [];
+
+      if (
+        activeInfusions.some(
+          entry =>
+            entry?.augmentId ===
+            augment.id
+        )
+      ) {
+        throw new Error(
+          `Augment is currently active as an Artificer infusion: ${augment.id}.`,
+        );
+      }
+
       if (current.state.installed.length >= current.state.slots) {
         throw new Error(
           `No Weapon Augment slots available: ${current.state.installed.length}/${current.state.slots} occupied.`,
@@ -410,41 +527,386 @@ export function createWeaponAugmentStateApi(catalogApi) {
       );
     },
 
+    /** P2.13b.4 ? native sync from effective Augments */
     async resync(weapon) {
+      /** P2.13f.1 ? temporary Scope structural lifecycle */
+
       assertOwnedWeapon(weapon);
       assertGM();
 
-      const current = getWeaponAugmentState(weapon);
+      const current =
+        getWeaponAugmentState(
+          weapon
+        );
+
       if (!current.initialized) {
-        throw new Error("Weapon Augment state must be initialized first.");
+        throw new Error(
+          "Weapon Augment state must be initialized first."
+        );
       }
 
-      validateWeaponAugmentStateData(current.state);
-
-      const preservedFeatures = getWeaponFeatureEntries(weapon).filter(
-        (feature) => !String(feature?.value ?? "").startsWith("motherboard-"),
+      validateWeaponAugmentStateData(
+        current.state
       );
 
-      // Remove Toolkit-owned Motherboard features first so Foundryborne runs
-      // its native cleanup lifecycle for linked effects/actions.
-      await weapon.update({
-        "system.weaponFeatures": clone(preservedFeatures),
-      });
+      const permanentIds =
+        [
+          ...current.state.installed,
+        ];
 
-      // Rebuild only the Augments currently installed in Toolkit state.
-      let rebuiltFeatures = clone(preservedFeatures);
+      const infusionEntries =
+        infusionApi?.forWeapon?.(
+          weapon
+        ) ?? [];
 
-      for (const augmentId of current.state.installed) {
-        rebuiltFeatures = addNativeWeaponFeature(rebuiltFeatures, augmentId);
+      const infusionIds =
+        [
+          ...new Set(
+            infusionEntries
+              .map(
+                entry =>
+                  entry?.augmentId
+              )
+              .filter(
+                augmentId =>
+                  typeof augmentId ===
+                    "string" &&
+                  augmentId.length > 0
+              )
+          ),
+        ];
+
+      const effectiveIds =
+        [
+          ...new Set([
+            ...permanentIds,
+            ...infusionIds,
+          ]),
+        ];
+
+
+      /*
+       * ------------------------------------------------------
+       * Temporary structural lifecycle ? Scope
+       * ------------------------------------------------------
+       *
+       * Permanent Scope owns:
+       *   state.structural.scope
+       *
+       * Temporary infusion Scope owns:
+       *   state.structural.infusionScope
+       *
+       * Keeping distinct ownership prevents a temporary
+       * infusion from corrupting permanent craft state.
+       */
+
+      const next =
+        clone(
+          current.state
+        );
+
+      const structuralUpdate =
+        {};
+
+      const permanentScope =
+        permanentIds.includes(
+          "motherboard.scope"
+        );
+
+      const infusionScope =
+        infusionIds.includes(
+          "motherboard.scope"
+        );
+
+      const temporaryScopeState =
+        next.structural
+          ?.infusionScope ??
+        null;
+
+
+      /*
+       * Permanent + temporary Scope on the same weapon should
+       * already be prevented by runtime eligibility.
+       *
+       * Refuse to guess if corrupted/legacy state contains both.
+       */
+      if (
+        permanentScope &&
+        temporaryScopeState
+      ) {
+        throw new Error(
+          "Invalid Scope state: permanent and temporary structural ownership overlap."
+        );
       }
 
+
+      /*
+       * Apply temporary Scope once.
+       */
+      if (
+        !permanentScope &&
+        infusionScope &&
+        !temporaryScopeState
+      ) {
+        const currentRange =
+          weapon.system
+            ?.attack
+            ?.range;
+
+        if (
+          !WEAPON_RANGE_STEPS.includes(
+            currentRange
+          )
+        ) {
+          throw new Error(
+            `Scope cannot increase unsupported weapon range: ${
+              currentRange ??
+              "missing"
+            }.`
+          );
+        }
+
+        const appliedRange =
+          nextWeaponRange(
+            currentRange
+          );
+
+        next.structural ??=
+          {};
+
+        next.structural
+          .infusionScope = {
+            baseRange:
+              currentRange,
+
+            appliedRange,
+          };
+
+        structuralUpdate[
+          "system.attack.range"
+        ] =
+          appliedRange;
+      }
+
+
+      /*
+       * Remove temporary Scope.
+       *
+       * Restore only if the weapon still has exactly the range
+       * value owned by this infusion. An external edit wins.
+       */
+      if (
+        !infusionScope &&
+        temporaryScopeState
+      ) {
+        const currentRange =
+          weapon.system
+            ?.attack
+            ?.range;
+
+        if (
+          temporaryScopeState
+            .baseRange &&
+          currentRange ===
+            temporaryScopeState
+              .appliedRange &&
+          currentRange !==
+            temporaryScopeState
+              .baseRange
+        ) {
+          structuralUpdate[
+            "system.attack.range"
+          ] =
+            temporaryScopeState
+              .baseRange;
+        }
+
+        /** P2.13f.1b ? explicit temporary Scope flag deletion */
+
+        delete next.structural
+          .infusionScope;
+
+        /*
+         * Foundry recursively merges nested flag objects.
+         * Omitting infusionScope from the rewritten object is
+         * therefore not sufficient to remove the persisted key.
+         *
+         * Explicitly delete the nested key with Foundry's
+         * -= update syntax.
+         */
+        /*
+         * P2.13f.1d ? Foundry v14 ForcedDeletion cleanup
+         *
+         * Nested flag deletion happens after the normal state
+         * write using Foundry v14 ForcedDeletion.
+         */
+
+        if (
+          Object.keys(
+            next.structural
+          ).length === 0
+        ) {
+          delete next.structural;
+        }
+      }
+
+
+      /*
+       * ------------------------------------------------------
+       * Native Motherboard projection
+       * ------------------------------------------------------
+       */
+
+      const preservedFeatures =
+        getWeaponFeatureEntries(
+          weapon
+        ).filter(
+          feature =>
+            !String(
+              feature?.value ??
+              ""
+            ).startsWith(
+              "motherboard-"
+            )
+        );
+
+      /*
+       * Let Foundryborne run its native cleanup lifecycle for
+       * linked effects/actions before rebuilding the projection.
+       */
       await weapon.update({
-        "system.weaponFeatures": clone(rebuiltFeatures),
+        "system.weaponFeatures":
+          clone(
+            preservedFeatures
+          ),
       });
 
+
+      let rebuiltFeatures =
+        clone(
+          preservedFeatures
+        );
+
+      for (
+        const augmentId
+        of effectiveIds
+      ) {
+        rebuiltFeatures =
+          addNativeWeaponFeature(
+            rebuiltFeatures,
+            augmentId
+          );
+      }
+
+
+      /*
+       * Persist permanent state plus temporary structural
+       * ownership together with the rebuilt native projection.
+       */
+      let result =
+        await writeStateAndNativeFeatures(
+          weapon,
+          next,
+          rebuiltFeatures,
+          structuralUpdate
+        );
+
+
+      /*
+       * P2.13f.1c ? two-phase temporary Scope flag cleanup
+       *
+       * Foundry recursively merges the parent weaponAugments flag.
+       * A nested -= deletion sent in the same update as the parent
+       * write can therefore be recreated by that parent write.
+       *
+       * Perform temporary Scope cleanup only after the normal
+       * state/native projection has completed.
+       */
+      if (
+        !infusionScope &&
+        temporaryScopeState
+      ) {
+        await weapon.update({
+          flags: {
+            [MODULE_ID]: {
+              [FLAG_KEY]: {
+                structural: {
+                  infusionScope:
+                    new foundry.data.operators
+                      .ForcedDeletion(),
+                },
+              },
+            },
+          },
+        });
+
+        const afterNestedDelete =
+          getWeaponAugmentState(
+            weapon
+          );
+
+        const remainingStructural =
+          afterNestedDelete
+            .state
+            .structural ??
+          null;
+
+        if (
+          remainingStructural &&
+          Object.keys(
+            remainingStructural
+          ).length === 0
+        ) {
+          await weapon.update({
+            flags: {
+              [MODULE_ID]: {
+                [FLAG_KEY]: {
+                  structural:
+                    new foundry.data.operators
+                      .ForcedDeletion(),
+                },
+              },
+            },
+          });
+        }
+
+        result = {
+          ...getWeaponAugmentState(
+            weapon
+          ),
+
+          nativeWeaponFeatures:
+            getWeaponFeatureEntries(
+              weapon
+            ),
+        };
+      }
+
+
       return {
-        ...getWeaponAugmentState(weapon),
-        nativeWeaponFeatures: getWeaponFeatureEntries(weapon),
+        ...result,
+
+        permanentIds,
+        infusionIds,
+        effectiveIds,
+
+        permanentCount:
+          permanentIds.length,
+
+        infusionCount:
+          infusionIds.length,
+
+        effectiveCount:
+          effectiveIds.length,
+
+        infusionEntries,
+
+        temporaryStructural: {
+          scope:
+            next.structural
+              ?.infusionScope ??
+            null,
+        },
       };
     },
 
