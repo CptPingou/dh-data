@@ -1168,10 +1168,24 @@ function content(
           'flex-wrap:wrap;' +
         '}' +
 
+        '.dct-research-station{' +
+          'width:min(1050px,88vw);' +
+          'max-width:1050px;' +
+        '}' +
+
         '.dct-research-focus{' +
           'display:grid;' +
           'justify-items:center;' +
           'gap:.75rem;' +
+          'width:100%;' +
+        '}' +
+
+        '.dct-research-focus .dct-research-card{' +
+          'width:280px;' +
+          'max-width:280px;' +
+        '}' +
+
+        '.dct-research-focus{' +
           'padding:.9rem;' +
           'border:1px solid var(--color-border-light-2);' +
           'border-radius:8px;' +
@@ -1185,8 +1199,9 @@ function content(
         '.dct-research-zone,' +
         '.dct-research-related{' +
           'display:grid;' +
-          'gap:.55rem;' +
+          'gap:.75rem;' +
           'width:100%;' +
+          'margin-top:.8rem;' +
         '}' +
 
         '.dct-research-zone h3,' +
@@ -1197,8 +1212,25 @@ function content(
         '.dct-research-grid{' +
           'display:grid;' +
           'grid-template-columns:' +
-            'repeat(auto-fill,minmax(128px,1fr));' +
-          'gap:.65rem;' +
+            'repeat(3,minmax(0,1fr));' +
+          'gap:.75rem;' +
+          'width:100%;' +
+        '}' +
+
+        '@media (max-width:900px){' +
+          '.dct-research-station{' +
+            'width:84vw;' +
+          '}' +
+          '.dct-research-grid{' +
+            'grid-template-columns:' +
+              'repeat(2,minmax(0,1fr));' +
+          '}' +
+        '}' +
+
+        '@media (max-width:620px){' +
+          '.dct-research-grid{' +
+            'grid-template-columns:1fr;' +
+          '}' +
         '}' +
 
         '.dct-research-card{' +
