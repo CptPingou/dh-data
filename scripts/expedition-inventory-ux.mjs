@@ -1984,6 +1984,171 @@ function installAccessMatrixCoupling(
   }
 }
 
+function injectGmGroundCleanup(
+  dialog,
+  manifest,
+  api
+) {
+  if (!game.user?.isGM) {
+    return {
+      green: false,
+      reason: "not-gm",
+    };
+  }
+
+  const gmPane =
+    dialog.querySelector(
+      ".dhct-expedition-shell__gm-panel"
+    );
+
+  if (!(gmPane instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "gm-pane-not-found",
+    };
+  }
+
+  gmPane
+    .querySelector(
+      "[data-dhct-gm-clear-ground]"
+    )
+    ?.closest(
+      ".dhct-gm-ground-cleanup"
+    )
+    ?.remove();
+
+  const section =
+    document.createElement("section");
+
+  section.className =
+    "dhct-gm-ground-cleanup";
+
+  section.style.display =
+    "grid";
+
+  section.style.gap =
+    ".45rem";
+
+  section.style.padding =
+    ".65rem";
+
+  section.style.marginBottom =
+    ".75rem";
+
+  section.style.border =
+    "1px solid var(--color-border-light-2, rgba(255,255,255,.16))";
+
+  section.style.borderRadius =
+    "6px";
+
+  const title =
+    document.createElement("strong");
+
+  title.textContent =
+    "Gestion du terrain";
+
+  const button =
+    document.createElement("button");
+
+  button.type =
+    "button";
+
+  button.dataset.dhctGmClearGround =
+    "true";
+
+  button.innerHTML =
+    '<i class="fa-solid fa-trash-can"></i> Supprimer les objets au sol';
+
+  button.addEventListener(
+    "click",
+    async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+
+      button.disabled =
+        true;
+
+      try {
+        const fresh =
+          await api
+            ?.expeditionManifest
+            ?.load?.(
+              manifest.expeditionId
+            );
+
+        if (!fresh) {
+          throw new Error(
+            "Exp?dition introuvable."
+          );
+        }
+
+        const ground =
+          (fresh.containers ?? [])
+            .find(
+              (container) =>
+                container?.containerId ===
+                "ground"
+            );
+
+        if (!ground) {
+          throw new Error(
+            "Conteneur Sol introuvable."
+          );
+        }
+
+        const result =
+          await clearGroundContainer(
+            api,
+            fresh,
+            ground
+          );
+
+        if (!result?.green) {
+          throw new Error(
+            result?.reason ??
+            "gm-clear-ground-failed"
+          );
+        }
+
+        if (
+          !result.changed &&
+          !result.cancelled
+        ) {
+          button.disabled =
+            false;
+        }
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+          " | GM clear ground failed",
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible de supprimer les objets au sol."
+        );
+
+        button.disabled =
+          false;
+      }
+    }
+  );
+
+  section.append(
+    title,
+    button
+  );
+
+  gmPane.prepend(
+    section
+  );
+
+  return {
+    green: true,
+  };
+}
+
 function injectGmAccessMatrix(
   dialog,
   manifest,
@@ -4590,6 +4755,18 @@ export async function refreshExpeditionInventoryUx() {
       )
     : { green: false, reason: "not-gm" };
 
+  const groundCleanupAdministration =
+    isGm
+      ? injectGmGroundCleanup(
+          dialog,
+          manifest,
+          api
+        )
+      : {
+          green: false,
+          reason: "not-gm",
+        };
+
   // Lifecycle badges are diagnostic too: GM only.
   dialog.querySelectorAll(".dhct-item-lifecycle-badge").forEach((node) => {
     node.remove();
@@ -4616,6 +4793,7 @@ export async function refreshExpeditionInventoryUx() {
     roleView,
     accessMatrixAdministration,
     backpackAdministration,
+    groundCleanupAdministration,
     annotatedItems,
     nativeObjectActions,
   };
