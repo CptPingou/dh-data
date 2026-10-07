@@ -29,8 +29,11 @@ function installResearchKnowledgeRefreshHook() {
 
       if (
         key !==
-        MODULE_ID +
-          ".materialKnowledge"
+          MODULE_ID +
+            ".materialKnowledge" &&
+        key !==
+          MODULE_ID +
+            ".craftingResearchQueue"
       ) {
         return;
       }
@@ -84,6 +87,7 @@ export async function buildResearchStationModel({
     !api?.craftingMaterials?.get ||
     !api?.craftingKnowledge?.propertyStatus ||
     !api?.craftingKnowledge?.setPropertyStatus ||
+    !api?.craftingResearchQueue?.status ||
     !api?.crafting?.resolveFobCraftContainerId
   ) {
     return {
@@ -124,6 +128,14 @@ export async function buildResearchStationModel({
         "fob-storage-unavailable",
     };
   }
+  const researchQueueState =
+    api.craftingResearchQueue
+      .status();
+
+  const researchQueue =
+    researchQueueState?.queue ??
+    [];
+
 
   const byMaterial = new Map();
   for (const entry of container.contents ?? []) {
@@ -178,6 +190,33 @@ export async function buildResearchStationModel({
             propertyId
           );
 
+      const queuePosition =
+        researchQueue.findIndex(
+          (entry) =>
+            entry.actorUuid ===
+              actor.uuid &&
+            entry.materialId ===
+              materialId &&
+            entry.propertyId ===
+              propertyId &&
+            entry.expeditionId ===
+              expeditionId
+        );
+
+      const queuedEntry =
+        queuePosition >= 0
+          ? researchQueue[
+              queuePosition
+            ]
+          : null;
+
+      const queued =
+        Boolean(queuedEntry);
+
+      const canResearch =
+        status === "visible" &&
+        !queued;
+
       if (
         !game.user?.isGM &&
         status === "invisible"
@@ -226,6 +265,30 @@ export async function buildResearchStationModel({
 
         shared:
           status === "shared",
+
+        queued,
+
+        queuePosition:
+          queued
+            ? queuePosition
+            : null,
+
+        queueProgress:
+          queued
+            ? Number(
+                queuedEntry?.progress
+              ) || 0
+            : null,
+
+        queueTurnsRequired:
+          queued
+            ? Number(
+                queuedEntry
+                  ?.turnsRequired
+              ) || 1
+            : null,
+
+        canResearch,
       });
     }
 
@@ -312,20 +375,54 @@ function content(
               .map(
                 (property) => {
                   const suffix =
-                    property.status ===
-                    "shared"
-                      ? " \u00b7 partag\u00e9e"
+                    property.queued
+                      ? property.queuePosition === 0
+                        ? " \u00b7 recherche active (" +
+                          String(
+                            property.queueProgress
+                          ) +
+                          "/" +
+                          String(
+                            property.queueTurnsRequired
+                          ) +
+                          ")"
+                        : " \u00b7 en file (" +
+                          String(
+                            property.queuePosition + 1
+                          ) +
+                          ")"
                       : property.status ===
-                        "discovered"
-                        ? " \u00b7 d\u00e9couverte"
+                        "shared"
+                        ? " \u00b7 partag\u00e9e"
                         : property.status ===
-                          "visible"
-                          ? " \u00b7 indice"
-                          : game.user?.isGM
-                            ? " \u00b7 invisible"
-                            : "";
+                          "discovered"
+                          ? " \u00b7 d\u00e9couverte"
+                          : property.status ===
+                            "visible"
+                            ? " \u00b7 indice"
+                            : game.user?.isGM
+                              ? " \u00b7 invisible"
+                              : "";
 
-                  const control =
+                  const researchControl =
+                    property.canResearch
+                      ? '<button ' +
+                        'type="button" ' +
+                        'data-dct-research-action="research" ' +
+                        'data-material-id="' +
+                        esc(material.materialId) +
+                        '" ' +
+                        'data-property-id="' +
+                        esc(property.propertyId) +
+                        '" ' +
+                        'data-container-id="' +
+                        esc(model.containerId) +
+                        '">' +
+                        "Mettre en recherche" +
+                        "</button>"
+                      : "";
+
+                  const gmStatusControl =
                     game.user?.isGM
                       ? '<select ' +
                         'data-dct-knowledge-status ' +
@@ -340,6 +437,19 @@ function content(
                           property.status
                         ) +
                         "</select>"
+                      : "";
+
+                  const control =
+                    researchControl ||
+                    gmStatusControl
+                      ? '<div style="' +
+                        "display:flex;" +
+                        "gap:.4rem;" +
+                        "align-items:center" +
+                        '">' +
+                        researchControl +
+                        gmStatusControl +
+                        "</div>"
                       : "";
 
                   const propertyLabel =
@@ -1391,6 +1501,100 @@ export async function openCraftingResearchStation({
       } finally {
         if (select.isConnected) {
           select.disabled = false;
+        }
+      }
+    }
+  );
+
+  root.addEventListener(
+    "click",
+    async (event) => {
+      const button =
+        event.target?.closest?.(
+          "[data-dct-research-action]"
+        );
+
+      if (!button) {
+        return;
+      }
+
+      const actorId =
+        root.querySelector(
+          "[data-dct-research-actor]"
+        )?.value;
+
+      const currentActor =
+        actors.find(
+          (candidate) =>
+            candidate.id === actorId
+        ) ?? selectedActor;
+
+      if (!currentActor) {
+        return;
+      }
+
+      button.disabled = true;
+
+      try {
+        const result =
+          await api
+            .craftingResearchAuthority
+            .request({
+              actor:
+                currentActor,
+
+              operation:
+                "research",
+
+              materialId:
+                button.dataset
+                  .materialId,
+
+              propertyId:
+                button.dataset
+                  .propertyId,
+
+              expeditionId,
+
+              containerId:
+                button.dataset
+                  .containerId,
+            });
+
+        if (!result?.green) {
+          ui.notifications?.warn(
+            "Centre d'\u00e9tude : " +
+            (
+              result?.reason ??
+              "recherche refus\u00e9e"
+            )
+          );
+        } else {
+          ui.notifications?.info(
+            "Recherche ajout\u00e9e \u00e0 la file."
+          );
+        }
+
+        await refresh();
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+            " | research queue action failed",
+          error
+        );
+
+        ui.notifications?.error(
+          "Centre d'\u00e9tude : " +
+          (
+            error?.message ??
+            "mise en recherche impossible"
+          )
+        );
+
+        await refresh();
+      } finally {
+        if (button.isConnected) {
+          button.disabled = false;
         }
       }
     }

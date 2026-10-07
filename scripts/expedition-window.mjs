@@ -257,15 +257,16 @@ function containerDetailHtml(
       : "";
 
   const research =
-    container.containerId ===
-      manifest?.fob?.storageContainerId
-      ? `<div style="margin:.6rem 0">
-          <button
-              type="button"
-              data-expedition-action="open-research-station">
-            <i class="fa-solid fa-flask"></i>
-            Station de recherche
-          </button>
+    container.containerId === "fob" ||
+    String(
+      presentation.playerRole ?? ""
+    ).toLowerCase() === "fob"
+      ? `<div style="
+          margin:.6rem 0;
+          display:flex;
+          gap:.5rem;
+          flex-wrap:wrap;
+        ">
         </div>`
       : "";
 
@@ -920,24 +921,129 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
       entry.addEventListener("keydown", selectEntry);
     }
 
-    for (const button of root.querySelectorAll("[data-expedition-action='open-research-station']")) {
-      if (button.dataset.dctBound === "1") continue;
+
+    for (
+      const button of root.querySelectorAll(
+        "[data-expedition-action='open-hunt-workshop']"
+      )
+    ) {
+      if (
+        button.dataset.dctBound === "1"
+      ) {
+        continue;
+      }
+
       button.dataset.dctBound = "1";
-      button.addEventListener("click", async () => {
-        const api = game.modules.get(MODULE_ID)?.api?.craftingResearchStation;
-        if (!api?.open) {
-          ui.notifications?.warn("Campaign Toolkit : station de recherche indisponible.");
-          return;
+
+      button.addEventListener(
+        "click",
+        async () => {
+          const api =
+            game.modules.get(MODULE_ID)
+              ?.api ?? null;
+
+          const workshop =
+            api?.weaponAugmentWorkshop;
+
+          if (
+            !workshop?.open ||
+            !workshop?.list
+          ) {
+            ui.notifications?.warn(
+              "Campaign Toolkit : atelier d'armes de chasse indisponible."
+            );
+
+            return;
+          }
+
+          const ownedActors =
+            [...(game.actors ?? [])]
+              .filter(
+                (actor) =>
+                  actor?.documentName === "Actor" &&
+                  actor?.type === "character" &&
+                  actor.testUserPermission?.(
+                    game.user,
+                    "OWNER"
+                  ) === true
+              );
+
+          const candidates = [];
+
+          if (
+            game.user?.character &&
+            ownedActors.includes(
+              game.user.character
+            )
+          ) {
+            candidates.push(
+              game.user.character
+            );
+          }
+
+          for (
+            const actor of ownedActors
+          ) {
+            if (
+              !candidates.includes(actor)
+            ) {
+              candidates.push(actor);
+            }
+          }
+
+          if (game.user?.isGM) {
+            for (
+              const actor of
+                game.actors ?? []
+            ) {
+              if (
+                actor?.type === "character" &&
+                !candidates.includes(actor)
+              ) {
+                candidates.push(actor);
+              }
+            }
+          }
+
+          let crafter = null;
+
+          for (
+            const actor of candidates
+          ) {
+            const probe =
+              workshop.list({
+                crafter: actor,
+                api,
+              });
+
+            if (probe?.green) {
+              crafter = actor;
+              break;
+            }
+          }
+
+          if (!crafter) {
+            ui.notifications?.warn(
+              "Campaign Toolkit : aucun Artisan disponible pour ouvrir l'atelier."
+            );
+
+            return;
+          }
+
+          const result =
+            await workshop.open(
+              crafter
+            );
+
+          if (
+            result?.green === false
+          ) {
+            ui.notifications?.warn(
+              `Campaign Toolkit : atelier d'armes de chasse — ${result.reason}.`
+            );
+          }
         }
-        const result =
-          await api.open({
-            expeditionId:
-              manifest.expeditionId,
-          });
-        if (result?.green === false) {
-          ui.notifications?.warn(`Campaign Toolkit : station de recherche — ${result.reason}.`);
-        }
-      });
+      );
     }
 
     for (const button of root.querySelectorAll("[data-expedition-action='return-to-actor']")) {

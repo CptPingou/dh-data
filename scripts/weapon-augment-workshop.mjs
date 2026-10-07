@@ -269,6 +269,7 @@ function augmentRow({
   biologicalRecipe = null,
   propertyLabels = new Map(),
   expeditionAvailable = false,
+  queuedEntry = null,
 }) {
   let action = "craft";
   let label = "Fabriquer";
@@ -281,16 +282,79 @@ function augmentRow({
     label = "Installer";
   }
 
-  const status = installed
-    ? "Installé"
-    : crafted
-      ? "Fabriqué"
-      : "À fabriquer";
+  const queued =
+    Boolean(queuedEntry);
 
-  const tier = requiredTier(augment);
-  const craftBlocked = action === "craft" && (!biologicalRecipe || !expeditionAvailable);
-  if (action === "craft" && !biologicalRecipe) label = "Recette à migrer";
-  if (action === "craft" && biologicalRecipe && !expeditionAvailable) label = "Expédition requise";
+  const queueProgress =
+    queued
+      ? `${queuedEntry.progress}/${queuedEntry.turnsRequired}`
+      : null;
+
+  const queueReady =
+    queued &&
+    Number(queuedEntry.progress) >=
+      Number(queuedEntry.turnsRequired);
+
+  const status =
+    installed
+      ? "Installé"
+      : crafted
+        ? "Fabriqué"
+        : queued
+          ? queueReady
+            ? "Prêt à finaliser"
+            : `En fabrication · ${queueProgress} tour(s)`
+          : "À fabriquer";
+
+  const tier =
+    requiredTier(augment);
+
+  const craftBlocked =
+    action === "craft" &&
+    (
+      queued ||
+      !biologicalRecipe ||
+      !expeditionAvailable
+    );
+
+  if (
+    action === "craft" &&
+    queued
+  ) {
+    label =
+      queueReady
+        ? "Prêt à finaliser"
+        : `En fabrication ${queueProgress}`;
+  }
+
+  if (
+    action === "craft" &&
+    !queued &&
+    !biologicalRecipe
+  ) {
+    label =
+      "Recette à migrer";
+  }
+
+  if (
+    action === "craft" &&
+    !queued &&
+    biologicalRecipe &&
+    !expeditionAvailable
+  ) {
+    label =
+      "Expédition requise";
+  }
+
+  if (
+    action === "craft" &&
+    !queued &&
+    biologicalRecipe &&
+    expeditionAvailable
+  ) {
+    label =
+      "Mettre en fabrication";
+  }
 
   return `
     <div
@@ -359,6 +423,11 @@ async function renderAugmentManager({
   const crafted = craftedIds(state);
   const installed = installedIds(state);
 
+  const craftQueue =
+    api.craftingCraftQueue
+      ?.status?.()
+      ?.queue ?? [];
+
   const propertyCatalog = await api.craftingMaterials?.loadProperties?.() ?? null;
   const propertyEntries = Array.isArray(propertyCatalog?.properties)
     ? propertyCatalog.properties
@@ -392,6 +461,14 @@ async function renderAugmentManager({
         biologicalRecipe: recipes.get(augment.id),
         propertyLabels,
         expeditionAvailable: Boolean(expeditionOptions),
+
+        queuedEntry:
+          craftQueue.find(
+            (entry) =>
+              entry.actorUuid === crafter.uuid &&
+              entry.weaponUuid === weapon.uuid &&
+              entry.augmentId === augment.id
+          ) ?? null,
       }),
     )
     .join("");
@@ -575,14 +652,46 @@ export async function openHuntWeaponWorkshop(crafter) {
         ? element.querySelector("[data-dct-crafting-expedition]")?.value ?? null
         : null;
 
-      const response =
-        await api.weaponAugmentAuthority.request({
-          crafter,
-          weapon: selectedWeapon,
-          operation,
-          augmentId,
-          expeditionId,
-        });
+      let response;
+
+      if (
+        operation === "craft"
+      ) {
+        if (
+          !api.craftingCraftQueue?.enqueue
+        ) {
+          response = {
+            green: false,
+            reason:
+              "craft-queue-unavailable",
+          };
+        } else {
+          response =
+            await api.craftingCraftQueue
+              .enqueue({
+                actor:
+                  crafter,
+
+                weapon:
+                  selectedWeapon,
+
+                augmentId,
+
+                expeditionId,
+              });
+        }
+      } else {
+        response =
+          await api.weaponAugmentAuthority
+            .request({
+              crafter,
+              weapon:
+                selectedWeapon,
+              operation,
+              augmentId,
+              expeditionId,
+            });
+      }
 
       console.info(
         `${MODULE_ID} | Hunt weapon workshop`,

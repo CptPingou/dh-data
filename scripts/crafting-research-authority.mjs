@@ -27,20 +27,89 @@ async function process(message) {
   if (actor.type !== "character") return { green:false, reason:"actor-not-research-character" };
   if (!requesterControlsActor(requester, actor)) return { green:false, reason:"actor-not-owned" };
 
-  const crafting = game.modules.get(MODULE_ID)?.api?.crafting ?? null;
-  if (!crafting) return { green:false, reason:"crafting-api-unavailable" };
+  const toolkit =
+    game.modules.get(MODULE_ID)?.api ?? null;
+
+  const crafting =
+    toolkit?.crafting ?? null;
+
+  const researchQueue =
+    toolkit?.craftingResearchQueue ?? null;
+
+  if (!crafting) {
+    return {
+      green:false,
+      reason:"crafting-api-unavailable",
+    };
+  }
 
   const input = {
     actor,
-    materialId: String(message?.materialId ?? "").trim(),
-    propertyId: String(message?.propertyId ?? "").trim(),
-    expeditionId: String(message?.expeditionId ?? "").trim(),
-    source: "foundry-research-station",
+
+    materialId:
+      String(
+        message?.materialId ?? ""
+      ).trim(),
+
+    propertyId:
+      String(
+        message?.propertyId ?? ""
+      ).trim(),
+
+    expeditionId:
+      String(
+        message?.expeditionId ?? ""
+      ).trim(),
+
+    containerId:
+      String(
+        message?.containerId ?? "fob"
+      ).trim() || "fob",
+
+    source:
+      "foundry-research-station",
   };
 
-  if (message?.operation === "research") return await crafting.researchMaterialProperty(input);
-  if (message?.operation === "document") return await crafting.documentMaterialProperty(input);
-  return { green:false, reason:"unsupported-operation" };
+  if (
+    message?.operation ===
+    "research"
+  ) {
+    if (!researchQueue?.enqueue) {
+      return {
+        green:false,
+        reason:
+          "research-queue-unavailable",
+      };
+    }
+
+    return await researchQueue.enqueue({
+      actor,
+      materialId:
+        input.materialId,
+      propertyId:
+        input.propertyId,
+      expeditionId:
+        input.expeditionId,
+      containerId:
+        input.containerId,
+    });
+  }
+
+  if (
+    message?.operation ===
+    "document"
+  ) {
+    return await crafting
+      .documentMaterialProperty(
+        input
+      );
+  }
+
+  return {
+    green:false,
+    reason:
+      "unsupported-operation",
+  };
 }
 function emitResult(message, result) {
   game.socket?.emit?.(SOCKET_CHANNEL, {
@@ -56,6 +125,7 @@ export async function requestCraftingResearchAuthority({
   materialId,
   propertyId,
   expeditionId,
+  containerId = "fob",
 } = {}) {
   if (!game.socket?.emit) return { green:false, reason:"socket-unavailable" };
   const authority = activeGm();
@@ -67,7 +137,9 @@ export async function requestCraftingResearchAuthority({
     actorUuid: actor?.uuid ?? null,
     operation,
     materialId,
-    propertyId,    expeditionId,
+    propertyId,
+    expeditionId,
+    containerId,
   };
   if (game.user?.isGM && authority.id === game.user.id) return await process(message);
   return new Promise((resolve) => {

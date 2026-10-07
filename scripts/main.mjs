@@ -89,6 +89,26 @@ import { registerMaterialKnowledgeSetting, createCraftingKnowledgeApi } from "./
 import { createCraftingRuntimeApi } from "./crafting-runtime.mjs";
 import { craftingResearchAuthorityApi } from "./crafting-research-authority.mjs";
 import { craftingResearchStationApi } from "./crafting-research-station.mjs";
+import {
+  registerCraftingResearchQueueSetting,
+  createCraftingResearchQueueApi,
+} from "./crafting-research-queue.mjs";
+import {
+  registerCraftingCraftQueueSetting,
+  createCraftingCraftQueueApi,
+} from "./crafting-craft-queue.mjs";
+import {
+  fobActivityDispatcherApi,
+} from "./fob-activity-dispatcher.mjs";
+import {
+  registerFobTurnSetting,
+  fobTurnApi,
+} from "./fob-turn-runtime.mjs";
+import {
+  registerFobActivityLedgerSetting,
+  createFobActivityLedgerApi,
+} from "./fob-activity-ledger.mjs";
+import { registerFobTurnControls } from "./fob-turn-controls.mjs";
 import { createCraftingKnowledgeBrowserApi } from "./crafting-knowledge-browser.mjs";
 import { registerWeaponAugmentSheetIntegration } from "./weapon-augment-sheet.mjs";
 import {
@@ -163,6 +183,11 @@ Hooks.once("init", () => {
   registerWorldInfusionsSetting();
   registerExpeditionManifestPersistence();
   registerMaterialKnowledgeSetting();
+  registerCraftingResearchQueueSetting();
+  registerCraftingCraftQueueSetting();
+  registerFobTurnSetting();
+  registerFobActivityLedgerSetting();
+  registerFobTurnControls();
   if (!bloodDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.blood) {
     registerBloodDomain();
   }
@@ -327,6 +352,10 @@ Hooks.once("init", () => {
     craftingKnowledge: createCraftingKnowledgeApi(craftingMaterialsApi),
     craftingResearchAuthority: craftingResearchAuthorityApi,
     craftingResearchStation: craftingResearchStationApi,
+    fobActivityDispatcher:
+      fobActivityDispatcherApi,
+    fob: fobTurnApi,
+    fobActivity: createFobActivityLedgerApi(),
     artificerResource: artificerResourceApi,
   };
 
@@ -338,6 +367,29 @@ Hooks.once("init", () => {
     persistenceApi: toolkitApi.expeditionManifest,
     weaponAugmentStateApi: toolkitApi.weaponAugmentState,
   });
+
+  toolkitApi.craftingResearchQueue =
+    createCraftingResearchQueueApi({
+      materialsApi:
+        toolkitApi.craftingMaterials,
+      persistenceApi:
+        toolkitApi.expeditionManifest,
+    });
+
+  toolkitApi.craftingCraftQueue =
+    createCraftingCraftQueueApi({
+      craftingApi:
+        toolkitApi.crafting,
+    });
+
+  const fobActivityDispatcher =
+    fobActivityDispatcherApi
+      .install();
+
+  console.info(
+    `${MODULE_ID} | FOB activity dispatcher`,
+    fobActivityDispatcher
+  );
 
   toolkitApi.craftingKnowledgeBrowser =
     createCraftingKnowledgeBrowserApi({

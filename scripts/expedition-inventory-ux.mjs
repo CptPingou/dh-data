@@ -2815,33 +2815,6 @@ async function buildExpeditionDashboardView(
   );
 }
 
-function expeditionShellPlaceholder(
-  title,
-  description
-) {
-  const section =
-    document.createElement("section");
-
-  section.className =
-    "dhct-expedition-shell-placeholder";
-
-  const heading =
-    document.createElement("h3");
-
-  heading.textContent = title;
-
-  const copy =
-    document.createElement("p");
-
-  copy.textContent = description;
-
-  section.append(
-    heading,
-    copy
-  );
-
-  return section;
-}
 
 function installCaravanEquipmentViewHandlers(
   view,
@@ -3464,6 +3437,160 @@ function renderFobWorkshopCards(
   return section;
 }
 
+function installHuntWorkshopFobCard(fobView) {
+  if (!(fobView instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "fob-view-not-found",
+    };
+  }
+
+  const grid =
+    fobView.querySelector(
+      ".dhct-fob-workshops__grid"
+    );
+
+  if (!(grid instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "fob-workshop-grid-not-found",
+    };
+  }
+
+  if (
+    grid.querySelector(
+      "[data-dhct-fob-workshop-card='hunt-weapon-workshop']"
+    )
+  ) {
+    return {
+      green: true,
+      reused: true,
+    };
+  }
+
+  const card =
+    document.createElement("button");
+
+  card.type = "button";
+  card.className =
+    "dhct-fob-workshop-card";
+
+  card.dataset.dhctFobWorkshopCard =
+    "hunt-weapon-workshop";
+
+  card.dataset.dhctFobSlotId =
+    "hunt-weapon-workshop-shortcut";
+
+  const title =
+    document.createElement("strong");
+
+  title.textContent =
+    "Atelier d\u2019armes de chasse";
+
+  const detail =
+    document.createElement("span");
+
+  detail.textContent =
+    "Fabrication et modifications";
+
+  card.append(
+    title,
+    detail
+  );
+
+  card.addEventListener(
+    "click",
+    async () => {
+      const api = getApi();
+
+      const workshop =
+        api?.weaponAugmentWorkshop;
+
+      if (
+        !workshop?.open ||
+        !workshop?.list
+      ) {
+        ui.notifications?.warn(
+          "Campaign Toolkit : atelier d'armes de chasse indisponible."
+        );
+        return;
+      }
+
+      const candidates = [];
+
+      if (game.user?.character) {
+        candidates.push(
+          game.user.character
+        );
+      }
+
+      for (const actor of game.actors ?? []) {
+        if (
+          actor?.type === "character" &&
+          actor.testUserPermission?.(
+            game.user,
+            "OWNER"
+          ) === true &&
+          !candidates.includes(actor)
+        ) {
+          candidates.push(actor);
+        }
+      }
+
+      if (game.user?.isGM) {
+        for (const actor of game.actors ?? []) {
+          if (
+            actor?.type === "character" &&
+            !candidates.includes(actor)
+          ) {
+            candidates.push(actor);
+          }
+        }
+      }
+
+      let crafter = null;
+
+      for (const actor of candidates) {
+        const probe =
+          workshop.list({
+            crafter: actor,
+            api,
+          });
+
+        if (probe?.green) {
+          crafter = actor;
+          break;
+        }
+      }
+
+      if (!crafter) {
+        ui.notifications?.warn(
+          "Campaign Toolkit : aucun Artisan disponible pour ouvrir l'atelier."
+        );
+        return;
+      }
+
+      const result =
+        await workshop.open(
+          crafter
+        );
+
+      if (result?.green === false) {
+        ui.notifications?.warn(
+          `Campaign Toolkit : atelier d'armes de chasse — ${result.reason}.`
+        );
+      }
+    }
+  );
+
+  grid.append(card);
+
+  return {
+    green: true,
+    reused: false,
+  };
+}
+
 async function configureExpeditionShell(
   dialog,
   manifest,
@@ -3712,6 +3839,10 @@ async function configureExpeditionShell(
     renderFobWorkshopCards(
       manifest
     );
+
+  installHuntWorkshopFobCard(
+    fobWorkshopCards
+  );
 
   fobPane.append(
     fobWorkshopCards,
@@ -4762,22 +4893,8 @@ function injectStyles() {
       }
     }
 
-    .dhct-expedition-shell-placeholder {
-      display: grid;
-      place-content: center;
-      min-height: 14rem;
-      padding: 2rem;
-      text-align: center;
-      opacity: .72;
-    }
 
-    .dhct-expedition-shell-placeholder h3 {
-      margin: 0 0 .35rem;
-    }
 
-    .dhct-expedition-shell-placeholder p {
-      margin: 0;
-    }
 
     dialog.dhct-expedition-layout {
       min-width: min(760px, 90vw);
