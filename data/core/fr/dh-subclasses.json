@@ -47,7 +47,7 @@
   {
     "type": "subclass",
     "name": "Appel du pourfendeur",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/melee/strike-axe-blood-red.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -92,7 +92,7 @@
   {
     "type": "subclass",
     "name": "Appel du brave",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/social/intimidation-impressing.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -137,7 +137,7 @@
   {
     "type": "subclass",
     "name": "Guilde des exécuteurs",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/melee/blade-tip-smoke-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -182,7 +182,7 @@
   {
     "type": "subclass",
     "name": "Lié aux bêtes",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/creatures/mammals/wolf-howl-moon-black.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -227,7 +227,7 @@
   {
     "type": "subclass",
     "name": "Vengeance",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/melee/sword-damaged-broken-purple.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -272,7 +272,7 @@
   {
     "type": "subclass",
     "name": "Origine élémentaire",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/fire/flame-burning-fist-strike.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -317,7 +317,7 @@
   {
     "type": "subclass",
     "name": "Lune",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/nature/moon-crescent.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -362,7 +362,7 @@
   {
     "type": "subclass",
     "name": "Origine primordiale",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/nature/root-vine-entangled-hand.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -407,7 +407,7 @@
   {
     "type": "subclass",
     "name": "Marcheur nocturne",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/unholy/silhouette-robe-evil-power.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -452,7 +452,7 @@
   {
     "type": "subclass",
     "name": "Inébranlable",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/melee/shield-block-bash-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -497,7 +497,7 @@
   {
     "type": "subclass",
     "name": "Juggernaut",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/melee/strike-hammer-destructive-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -542,7 +542,7 @@
   {
     "type": "subclass",
     "name": "Pacte de l’Infini",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/control/energy-stream-link-large-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -587,7 +587,7 @@
   {
     "type": "subclass",
     "name": "Pacte du Courroucé",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/unholy/strike-hand-glow-pink.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -632,7 +632,7 @@
   {
     "type": "subclass",
     "name": "Artiste martial",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/melee/unarmed-punch-fist.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -677,7 +677,7 @@
   {
     "type": "subclass",
     "name": "Gardien des éléments",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/nature/elemental-plant-humanoid.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -722,7 +722,7 @@
   {
     "type": "subclass",
     "name": "Haie",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/nature/vines-thorned-entwined-glow-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -767,7 +767,7 @@
   {
     "type": "subclass",
     "name": "Gardien du renouveau",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/life/heart-cross-strong-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -812,7 +812,7 @@
   {
     "type": "subclass",
     "name": "École du savoir",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/sundries/books/book-open-purple.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -857,7 +857,7 @@
   {
     "type": "subclass",
     "name": "Éclaireur",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/movement/arrow-upward-yellow.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -902,7 +902,7 @@
   {
     "type": "subclass",
     "name": "École de guerre",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/melee/swords-parry-block-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -947,7 +947,7 @@
   {
     "type": "subclass",
     "name": "Troubadour",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/tools/instruments/lute-gold-brown.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -992,7 +992,7 @@
   {
     "type": "subclass",
     "name": "Syndicat",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/social/diplomacy-handshake.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1037,7 +1037,7 @@
   {
     "type": "subclass",
     "name": "Porteur divin",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/holy/angel-wings-gray.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1082,7 +1082,7 @@
   {
     "type": "subclass",
     "name": "Maître des mots",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/magic/sonic/scream-wail-shout-teal.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -1127,7 +1127,7 @@
   {
     "type": "subclass",
     "name": "Sentinelle ailée",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/skills/movement/feet-winged-boots-glowing-yellow.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",

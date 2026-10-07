@@ -536,5 +536,42 @@ export async function syncAutonomousSources({ force = false } = {}) {
 }
 
 export async function rebuildAutonomousSources() {
-  return syncAutonomousSources({ force: true });
+  const autonomous =
+    await syncAutonomousSources({
+      force: true,
+    });
+
+  /*
+   * Dedicated homebrew that is not yet part of the autonomous
+   * source index must be restored after the destructive pack
+   * rebuild.
+   *
+   * Artificer currently owns:
+   * - class: Artificer
+   * - subclasses: Armorer, Battle Smith
+   * - Artillery domain cards
+   * - associated Feature items
+   */
+  const {
+    importArtificerArtillery,
+  } = await import(
+    "./artificer-artillery-import.mjs"
+  );
+
+  const artificer =
+    await importArtificerArtillery();
+
+  if (!artificer?.green) {
+    throw new Error(
+      "Autonomous rebuild succeeded, but dedicated Artificer restoration failed."
+    );
+  }
+
+  return {
+    green: true,
+    autonomous,
+    dedicated: {
+      artificer,
+    },
+  };
 }
