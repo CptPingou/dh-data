@@ -2,7 +2,7 @@
   {
     "type": "subclass",
     "name": "Ordre du Lycan",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/creatures/abilities/wolf-howl-moon-purple.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -74,7 +74,7 @@
   {
     "type": "subclass",
     "name": "Ordre du Spectre",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/creatures/magical/spirit-undead-ghost-blue.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",
@@ -142,7 +142,7 @@
   {
     "type": "subclass",
     "name": "Ordre du Mutant",
-    "img": "icons/skills/toxins/cup-goblet-poisoned-spilled.webp",
+    "img": "icons/consumables/potions/bottle-conical-corked-green.webp",
     "system": {
       "attribution": {
         "source": "Daggerheart SRD",

@@ -35,7 +35,7 @@
         "dh-subclasses": {
           "count": 26,
           "file": "data/core/fr/dh-subclasses.json",
-          "sha256": "9a2e23f836d0faaf079ad03099057a42d48f74bff8079d9c795f34cefa7ed4fa"
+          "sha256": "be5a98eb8fb55f9e023b357ba9717d2dbfe84c8acd5b69c536d29fce86f3c7dc"
         },
         "dh-weapons": {
           "count": 358,
@@ -75,7 +75,7 @@
         "dh-subclasses": {
           "count": 3,
           "file": "data/playtest/dh-subclasses.json",
-          "sha256": "efa1be140ebecb874ad012d5acac8630fbb4d92a985d6e2fca06c632195f88fd"
+          "sha256": "9b66ab31f075fb4b7ebe629dda14e547678c1f4447b9538be53fb174017276c8"
         },
         "dh-features": {
           "count": 18,
