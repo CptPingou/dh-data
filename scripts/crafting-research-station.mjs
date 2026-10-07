@@ -315,7 +315,13 @@ export async function buildResearchStationModel({
   const knowledgeProject =
     await api
       ?.craftingKnowledgeBrowser
-      ?.project?.(actor) ??
+      ?.project?.(
+        actor,
+        {
+          includeInvisible:
+            game.user?.isGM === true,
+        }
+      ) ??
     {
       materials: {},
       properties: {},
@@ -347,6 +353,142 @@ function researchStatusLabel(status) {
     default:
       return status ?? "Visible";
   }
+}
+
+
+function derivedKnowledgeStatus(statuses = []) {
+  const normalized =
+    statuses
+      .filter(Boolean)
+      .map(
+        (status) =>
+          String(status)
+            .trim()
+            .toLowerCase()
+      );
+
+  if (!normalized.length) {
+    return "invisible";
+  }
+
+  if (
+    normalized.every(
+      (status) =>
+        status === "shared"
+    )
+  ) {
+    return "shared";
+  }
+
+  if (
+    normalized.some(
+      (status) =>
+        status === "discovered" ||
+        status === "shared"
+    )
+  ) {
+    return "discovered";
+  }
+
+  if (
+    normalized.some(
+      (status) =>
+        status === "visible"
+    )
+  ) {
+    return "visible";
+  }
+
+  return "invisible";
+}
+
+function materialDerivedStatus(material) {
+  return derivedKnowledgeStatus(
+    (material?.properties ?? [])
+      .map(
+        (property) =>
+          property?.status
+      )
+  );
+}
+
+function recipePropertyIds(recipe) {
+  const ids =
+    new Set();
+
+  for (
+    const entry
+    of recipe?.properties ??
+      recipe?.requirements ??
+      []
+  ) {
+    const id =
+      entry?.id ??
+      entry?.propertyId ??
+      entry?.match?.property ??
+      null;
+
+    if (id) {
+      ids.add(id);
+    }
+  }
+
+  return [...ids];
+}
+
+function recipeDerivedStatus(
+  recipe,
+  project
+) {
+  const statuses = [];
+
+  for (
+    const propertyId
+    of recipePropertyIds(recipe)
+  ) {
+    const property =
+      project?.properties?.[
+        propertyId
+      ];
+
+    if (!property) {
+      continue;
+    }
+
+    /*
+     * Une propri?t? peut exister sur plusieurs mat?riaux.
+     * Le statut de la propri?t? globale est d?riv? de ses
+     * occurrences mat?riau+propri?t?.
+     */
+    const materialStatuses =
+      (property.materials ?? [])
+        .flatMap(
+          (material) =>
+            (
+              material?.properties ??
+              []
+            )
+              .filter(
+                (entry) =>
+                  entry?.id ===
+                  propertyId
+              )
+              .map(
+                (entry) =>
+                  entry?.status
+              )
+        );
+
+    statuses.push(
+      derivedKnowledgeStatus(
+        materialStatuses
+      )
+    );
+  }
+
+  return derivedKnowledgeStatus(
+    statuses
+  );
 }
 
 function researchStatusOptions(status) {
@@ -597,6 +739,12 @@ function content(
             material.creatureId
               ? "Mat\u00e9riau de chasse"
               : "",
+          status:
+            isGm
+              ? materialDerivedStatus(
+                  material
+                )
+              : null,
         })
     );
 
@@ -626,8 +774,12 @@ function content(
             recipe.id,
           subtitle: "Recette",
           status:
-            recipe.status ??
-            null,
+            isGm
+              ? recipeDerivedStatus(
+                  recipe,
+                  project
+                )
+              : null,
         })
     );
 
@@ -653,6 +805,12 @@ function content(
             material.id,
           subtitle:
             "Mat\u00e9riau de chasse",
+          status:
+            isGm
+              ? materialDerivedStatus(
+                  material
+                )
+              : null,
           focus: true,
         });
 
@@ -721,8 +879,12 @@ function content(
                 subtitle:
                   "Recette li\u00e9e",
                 status:
-                  recipe.status ??
-                  null,
+                  isGm
+                    ? recipeDerivedStatus(
+                        recipe,
+                        project
+                      )
+                    : null,
               })
           );
 
@@ -805,8 +967,12 @@ function content(
                 subtitle:
                   "Recette li\u00e9e",
                 status:
-                  recipe.status ??
-                  null,
+                  isGm
+                    ? recipeDerivedStatus(
+                        recipe,
+                        project
+                      )
+                    : null,
               })
           );
 
@@ -848,8 +1014,12 @@ function content(
             recipe.id,
           subtitle: "Recette",
           status:
-            recipe.status ??
-            null,
+            isGm
+              ? recipeDerivedStatus(
+                  recipe,
+                  project
+                )
+              : null,
           focus: true,
         });
 

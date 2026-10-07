@@ -97,7 +97,12 @@ export function createCraftingKnowledgeBrowserApi({
       );
   }
 
-  async function project(actor) {
+  async function project(
+    actor,
+    {
+      includeInvisible = false,
+    } = {}
+  ) {
     const graph =
       await sourceGraph();
 
@@ -106,6 +111,8 @@ export function createCraftingKnowledgeBrowserApi({
       {
         statusResolver:
           resolverFor(actor),
+
+        includeInvisible,
       }
     );
   }

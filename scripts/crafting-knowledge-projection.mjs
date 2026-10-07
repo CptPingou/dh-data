@@ -34,6 +34,7 @@ function projectedPropertyOccurrence({
   property,
   materialId,
   statusResolver,
+  includeInvisible = false,
 } = {}) {
   const projection =
     propertyKnowledgeProjection(
@@ -44,8 +45,48 @@ function projectedPropertyOccurrence({
       )
     );
 
-  if (!projection.listed) {
+  if (
+    !projection.listed &&
+    !includeInvisible
+  ) {
     return null;
+  }
+
+  /*
+   * Administrative projection:
+   * the GM must be able to inspect and change
+   * invisible / visible knowledge without exposing
+   * it to the normal player projection.
+   */
+  if (includeInvisible) {
+    return {
+      id:
+        property.id,
+
+      label:
+        property.label,
+
+      description:
+        property.description ?? "",
+
+      category:
+        property.category ?? null,
+
+      status:
+        projection.status,
+
+      discovered:
+        projection.revealIdentity,
+
+      shared:
+        projection.shared,
+
+      navigable:
+        true,
+
+      exploitable:
+        projection.exploitable,
+    };
   }
 
   if (
@@ -108,6 +149,7 @@ export function projectKnowledgeMaterial(
   materialId,
   {
     statusResolver,
+    includeInvisible = false,
   } = {}
 ) {
   const material =
@@ -138,6 +180,7 @@ export function projectKnowledgeMaterial(
         property,
         materialId,
         statusResolver,
+        includeInvisible,
       });
 
     if (projected) {
@@ -179,6 +222,7 @@ export function projectKnowledgeProperty(
   propertyId,
   {
     statusResolver,
+    includeInvisible = false,
   } = {}
 ) {
   const property =
@@ -207,10 +251,13 @@ export function projectKnowledgeProperty(
             );
 
           return (
-            projection
-              .revealIdentity &&
-            projection
-              .navigable
+            includeInvisible ||
+            (
+              projection
+                .revealIdentity &&
+              projection
+                .navigable
+            )
           );
         }
       );
@@ -231,6 +278,7 @@ export function projectKnowledgeProperty(
             materialId,
             {
               statusResolver,
+              includeInvisible,
             }
           )
       )
@@ -293,6 +341,7 @@ export function projectKnowledgeCreature(
   creatureId,
   {
     statusResolver,
+    includeInvisible = false,
   } = {}
 ) {
   const creature =
@@ -312,6 +361,7 @@ export function projectKnowledgeCreature(
             materialId,
             {
               statusResolver,
+              includeInvisible,
             }
           )
       )
@@ -342,6 +392,7 @@ export function projectKnowledgeRecipe(
   recipeId,
   {
     statusResolver,
+    includeInvisible = false,
   } = {}
 ) {
   const recipe =
@@ -361,6 +412,7 @@ export function projectKnowledgeRecipe(
             propertyId,
             {
               statusResolver,
+              includeInvisible,
             }
           )
       )
@@ -452,6 +504,7 @@ export function projectKnowledgeGraph(
   graph,
   {
     statusResolver,
+    includeInvisible = false,
   } = {}
 ) {
   const materials = {};
@@ -471,6 +524,7 @@ export function projectKnowledgeGraph(
         materialId,
         {
           statusResolver,
+          includeInvisible,
         }
       );
 
@@ -493,6 +547,7 @@ export function projectKnowledgeGraph(
         propertyId,
         {
           statusResolver,
+          includeInvisible,
         }
       );
 
@@ -515,6 +570,7 @@ export function projectKnowledgeGraph(
         creatureId,
         {
           statusResolver,
+          includeInvisible,
         }
       );
 
@@ -537,6 +593,7 @@ export function projectKnowledgeGraph(
         recipeId,
         {
           statusResolver,
+          includeInvisible,
         }
       );
 
