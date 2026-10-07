@@ -3008,10 +3008,305 @@ function installCaravanEquipmentViewHandlers(
   );
 }
 
+function parseExternalFoundryItemDrop(
+  dataTransfer
+) {
+  if (!dataTransfer) {
+    return null;
+  }
+
+  try {
+    const payload =
+      JSON.parse(
+        dataTransfer.getData(
+          "application/x-dct-foundry-item"
+        ) || "null"
+      );
+
+    const itemUuid =
+      String(
+        payload?.itemUuid ?? ""
+      ).trim();
+
+    if (itemUuid) {
+      return { itemUuid };
+    }
+  } catch (_error) {}
+
+  for (const mime of [
+    "text/plain",
+    "application/json",
+  ]) {
+    const raw =
+      dataTransfer.getData(mime);
+
+    if (!raw) {
+      continue;
+    }
+
+    try {
+      const payload =
+        JSON.parse(raw);
+
+      const itemUuid =
+        String(
+          payload?.uuid ??
+          payload?.data?.uuid ??
+          ""
+        ).trim();
+
+      const type =
+        String(
+          payload?.type ??
+          payload?.documentName ??
+          payload?.data?.type ??
+          ""
+        ).trim();
+
+      if (
+        itemUuid &&
+        (
+          type === "Item" ||
+          itemUuid.startsWith("Item.") ||
+          itemUuid.includes(".Item.") ||
+          itemUuid.startsWith("Compendium.")
+        )
+      ) {
+        return { itemUuid };
+      }
+    } catch (_error) {}
+  }
+
+  return null;
+}
+
+
+function findExternalItemDropTarget(
+  view,
+  manifest,
+  eventTarget
+) {
+  if (
+    !(view instanceof HTMLElement) ||
+    !(eventTarget instanceof Element)
+  ) {
+    return null;
+  }
+
+  const node =
+    eventTarget.closest(
+      "[data-container-id]"
+    );
+
+  if (
+    !(node instanceof HTMLElement) ||
+    !view.contains(node)
+  ) {
+    return null;
+  }
+
+  const containerId =
+    String(
+      node.dataset.containerId ?? ""
+    ).trim();
+
+  const container =
+    (manifest?.containers ?? [])
+      .find(
+        (candidate) =>
+          candidate?.containerId ===
+          containerId
+      );
+
+  if (!container) {
+    return null;
+  }
+
+  const zone =
+    containerAccessZone(
+      manifest,
+      container
+    );
+
+  if (
+    ![
+      "ground",
+      "fob",
+      "caravan",
+    ].includes(zone)
+  ) {
+    return null;
+  }
+
+  return {
+    node,
+    container,
+    containerId,
+    zone,
+  };
+}
+
+
 function installInventoryViewHandlers(
   view,
   manifest
 ) {
+  /*
+   * Foundry / Compendium -> stockage partag?.
+   */
+  view.addEventListener(
+    "dragover",
+    (event) => {
+      const types =
+        [
+          ...(event.dataTransfer?.types ?? []),
+        ];
+
+      const external =
+        types.includes(
+          "application/x-dct-foundry-item"
+        ) ||
+        types.includes("text/plain") ||
+        types.includes("application/json");
+
+      if (!external) {
+        return;
+      }
+
+      const target =
+        findExternalItemDropTarget(
+          view,
+          manifest,
+          event.target
+        );
+
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+
+      target.node.classList.add(
+        "dhct-inventory-view__drop-target"
+      );
+
+      if (event.dataTransfer) {
+        event.dataTransfer.dropEffect =
+          "copy";
+      }
+    }
+  );
+
+  view.addEventListener(
+    "dragleave",
+    (event) => {
+      const node =
+        event.target instanceof Element
+          ? event.target.closest(
+              "[data-container-id]"
+            )
+          : null;
+
+      if (
+        !(node instanceof HTMLElement) ||
+        !view.contains(node)
+      ) {
+        return;
+      }
+
+      if (
+        event.relatedTarget &&
+        node.contains(event.relatedTarget)
+      ) {
+        return;
+      }
+
+      node.classList.remove(
+        "dhct-inventory-view__drop-target"
+      );
+    }
+  );
+
+  view.addEventListener(
+    "drop",
+    async (event) => {
+      /*
+       * Ne jamais intercepter le drag DHCT interne.
+       */
+      if (
+        event.dataTransfer?.getData(
+          "application/x-dhct-inventory-entry"
+        )
+      ) {
+        return;
+      }
+
+      const payload =
+        parseExternalFoundryItemDrop(
+          event.dataTransfer
+        );
+
+      if (!payload?.itemUuid) {
+        return;
+      }
+
+      const target =
+        findExternalItemDropTarget(
+          view,
+          manifest,
+          event.target
+        );
+
+      if (!target) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      target.node.classList.remove(
+        "dhct-inventory-view__drop-target"
+      );
+
+      try {
+        const result =
+          await requestInventoryAuthorityAction({
+            expeditionId:
+              manifest.expeditionId,
+            action:
+              "acquire-item",
+            itemUuid:
+              payload.itemUuid,
+            toContainerId:
+              target.containerId,
+            quantity: 1,
+          });
+
+        if (!result?.green) {
+          throw new Error(
+            result?.reason ??
+            "acquire-item-refused"
+          );
+        }
+
+        ui.notifications?.info(
+          `${result.itemName ?? "Objet"} ajout? ? ${target.container.name ?? target.containerId}.`
+        );
+      } catch (error) {
+        console.error(
+          `${MODULE_ID} | native Foundry item drop failed`,
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible d'ajouter cet objet."
+        );
+      }
+    }
+  );
+
+
   view.addEventListener(
     "dhct-inventory-transfer-request",
     async (event) => {
@@ -3651,16 +3946,25 @@ async function configureExpeditionShell(
       ".dct-expedition-browser"
     );
 
-  if (!(browser instanceof HTMLElement)) {
-    return {
-      green: false,
-      reason: "expedition-browser-not-found",
-    };
+  const retainLegacyBrowser =
+    false;
+
+  if (
+    !retainLegacyBrowser &&
+    browser instanceof HTMLElement
+  ) {
+    browser.remove();
   }
+
+  const hasLegacyBrowser =
+    retainLegacyBrowser &&
+    browser instanceof HTMLElement;
+
 
   // Moving the original browser preserves the listeners installed
   // by expedition-window.mjs.
   if (
+    hasLegacyBrowser &&
     legacyTabs instanceof HTMLElement &&
     legacyTabs.contains(browser)
   ) {
@@ -3735,10 +4039,22 @@ async function configureExpeditionShell(
       ? "1"
       : "0";
 
-  browser.insertAdjacentElement(
-    "beforebegin",
-    shell
-  );
+  if (hasLegacyBrowser) {
+    browser.insertAdjacentElement(
+      "beforebegin",
+      shell
+    );
+  } else if (
+    closeHost instanceof HTMLElement &&
+    closeHost.parentElement === expeditionWindow
+  ) {
+    closeHost.insertAdjacentElement(
+      "beforebegin",
+      shell
+    );
+  } else {
+    expeditionWindow.append(shell);
+  }
 
   const inventoryPane =
     expeditionShellPane(
@@ -3783,7 +4099,9 @@ async function configureExpeditionShell(
   // Transitional mount: retain the legacy browser
   // and its listeners until the new inventory actions
   // are connected.
-  browser.hidden = true;
+  if (hasLegacyBrowser) {
+    browser.hidden = true;
+  }
 
   const inventoryView =
     buildExpeditionInventoryView(
@@ -3796,9 +4114,14 @@ async function configureExpeditionShell(
   );
 
   inventoryPane.append(
-    inventoryView,
-    browser
+    inventoryView
   );
+
+  if (hasLegacyBrowser) {
+    inventoryPane.append(
+      browser
+    );
+  }
 
   const fobView =
     buildExpeditionContainerView(
@@ -4353,8 +4676,11 @@ function injectStyles() {
       display: none !important;
     }
 
+    /* P2.12l.4 inventory vertical scroll */
     .dhct-expedition-shell__pane[data-dhct-expedition-pane="inventory"] {
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
+      scrollbar-gutter: stable;
     }
 
     .dhct-expedition-shell__gm-panel {

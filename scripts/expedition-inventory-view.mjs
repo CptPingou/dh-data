@@ -48,6 +48,29 @@ function capacityLabel(container) {
   return `${used} / ${slots}`;
 }
 
+function capacityRatio(container) {
+  const used =
+    Math.max(
+      0,
+      Number(container?.capacity?.used) || 0
+    );
+
+  const slots =
+    Math.max(
+      0,
+      Number(container?.capacity?.slots) || 0
+    );
+
+  if (slots <= 0) {
+    return 0;
+  }
+
+  return Math.min(
+    1,
+    used / slots
+  );
+}
+
 function entryLabel(entry) {
   const quantity =
     Math.max(0, Number(entry?.quantity) || 0);
@@ -205,18 +228,60 @@ function renderContainerCard(
   card.dataset.containerId =
     container.containerId;
 
+  if (container.role) {
+    card.dataset.role =
+      container.role;
+  }
+
   const header =
     element(
       "header",
       "dhct-inventory-view__pane-header"
     );
 
-  header.append(
+  const identity =
+    element(
+      "div",
+      "dhct-inventory-view__pane-identity"
+    );
+
+  identity.append(
     text(
       "h3",
       title ?? container.name,
       "dhct-inventory-view__pane-title"
-    ),
+    )
+  );
+
+  const zoneLabel =
+    kind === "shared"
+      ? (
+          ROLE_LABELS[container.role] ??
+          "Partag?"
+        )
+      : "Sac";
+
+  const zoneBadge =
+    text(
+      "span",
+      zoneLabel,
+      "dhct-inventory-view__zone-badge"
+    );
+
+  if (container.role) {
+    zoneBadge.classList.add(
+      `dhct-inventory-view__zone-badge--${container.role}`
+    );
+  } else {
+    zoneBadge.classList.add(
+      "dhct-inventory-view__zone-badge--personal"
+    );
+  }
+
+  identity.append(zoneBadge);
+
+  header.append(
+    identity,
     text(
       "span",
       capacityLabel(container),
@@ -225,6 +290,60 @@ function renderContainerCard(
   );
 
   card.append(header);
+
+  const ratio =
+    capacityRatio(container);
+
+  const meter =
+    element(
+      "div",
+      "dhct-inventory-view__capacity-meter"
+    );
+
+  meter.setAttribute(
+    "role",
+    "progressbar"
+  );
+
+  meter.setAttribute(
+    "aria-valuemin",
+    "0"
+  );
+
+  meter.setAttribute(
+    "aria-valuemax",
+    "100"
+  );
+
+  meter.setAttribute(
+    "aria-valuenow",
+    String(
+      Math.round(ratio * 100)
+    )
+  );
+
+  if (ratio >= 1) {
+    card.classList.add(
+      "dhct-inventory-view__container-card--full"
+    );
+  } else if (ratio >= 0.75) {
+    card.classList.add(
+      "dhct-inventory-view__container-card--high"
+    );
+  }
+
+  const meterFill =
+    element(
+      "span",
+      "dhct-inventory-view__capacity-meter-fill"
+    );
+
+  meterFill.style.width =
+    `${Math.round(ratio * 100)}%`;
+
+  meter.append(meterFill);
+
+  card.append(meter);
 
   const entries =
     renderContainerEntries(
@@ -1071,6 +1190,280 @@ export function renderExpeditionInventoryView(
 
     .dhct-inventory-view__drag-source:active {
       cursor: grabbing;
+    }
+  `;
+
+  style.textContent += `
+    /* P2.12l.1 inventory polish */
+
+    .dhct-inventory-view__group-title {
+      padding: 0 .15rem .35rem;
+      border-bottom: 1px solid rgba(201, 177, 137, .22);
+      letter-spacing: .02em;
+    }
+
+    .dhct-inventory-view__container-card {
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.035),
+          rgba(0,0,0,.035)
+        );
+    }
+
+    .dhct-inventory-view__container-card:hover {
+      border-color: rgba(201, 177, 137, .34);
+    }
+
+    .dhct-inventory-view__pane-header {
+      padding-bottom: .45rem;
+      border-bottom: 1px solid rgba(201, 177, 137, .16);
+    }
+
+    .dhct-inventory-view__pane-title {
+      font-size: .95rem;
+      letter-spacing: .015em;
+    }
+
+    .dhct-inventory-view__capacity {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 3.4rem;
+      padding: .15rem .4rem;
+      border: 1px solid rgba(201, 177, 137, .22);
+      border-radius: 999px;
+      background: rgba(0,0,0,.15);
+      font-variant-numeric: tabular-nums;
+      font-size: .78rem;
+    }
+
+    .dhct-inventory-view__entries {
+      padding: .1rem;
+    }
+
+    .dhct-inventory-view__entry {
+      box-sizing: border-box;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 5px;
+      padding: .3rem .4rem;
+      background: rgba(255,255,255,.025);
+      transition:
+        border-color 100ms ease,
+        background 100ms ease,
+        box-shadow 100ms ease,
+        transform 100ms ease;
+    }
+
+    .dhct-inventory-view__entry:hover {
+      border-color: rgba(201, 177, 137, .42);
+      background: rgba(201, 177, 137, .055);
+    }
+
+    .dhct-inventory-view__entry.active {
+      border-color: rgba(220, 190, 135, .82);
+      outline: none;
+      box-shadow:
+        inset 0 0 0 1px rgba(220, 190, 135, .38);
+      background: rgba(220, 190, 135, .08);
+    }
+
+    .dhct-inventory-view__entry-icon {
+      overflow: hidden;
+      border-radius: 4px;
+      background: rgba(0,0,0,.18);
+    }
+
+    .dhct-inventory-view__entry-name {
+      line-height: 1.15;
+    }
+
+    .dhct-inventory-view__drag-source:hover {
+      cursor: grab;
+    }
+
+    .dhct-inventory-view__drag-source:active {
+      transform: scale(.985);
+    }
+
+    .dhct-inventory-view__container-card.dhct-inventory-view__drop-target {
+      border-color: rgba(220, 190, 135, .95);
+      box-shadow:
+        inset 0 0 0 1px rgba(220, 190, 135, .65),
+        0 0 0 2px rgba(220, 190, 135, .10);
+      background: rgba(220, 190, 135, .055);
+    }
+
+    .dhct-inventory-view__detail {
+      border-top: 1px solid rgba(201, 177, 137, .22);
+      background: rgba(0,0,0,.10);
+    }
+
+    .dhct-inventory-view__detail-header {
+      min-width: 0;
+    }
+
+    .dhct-inventory-view__detail-image {
+      border: 1px solid rgba(201, 177, 137, .28);
+      background: rgba(0,0,0,.18);
+    }
+
+    .dhct-inventory-view__detail-title {
+      line-height: 1.1;
+    }
+
+    .dhct-inventory-view__detail-quantity {
+      opacity: .72;
+      font-size: .8rem;
+    }
+
+    .dhct-inventory-view__actions {
+      flex-wrap: wrap;
+    }
+
+    .dhct-inventory-view__action {
+      min-height: 32px;
+    }
+
+    @media (max-width: 820px) {
+      .dhct-inventory-view__container-stack {
+        padding-right: 0;
+      }
+
+      .dhct-inventory-view__detail {
+        max-height: 11rem;
+      }
+    }
+  `;
+
+  style.textContent += `
+    /* P2.12l.2 capacity meter */
+
+    .dhct-inventory-view__capacity-meter {
+      position: relative;
+      height: 5px;
+      overflow: hidden;
+      margin: -.1rem 0 .15rem;
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+    }
+
+    .dhct-inventory-view__capacity-meter-fill {
+      display: block;
+      height: 100%;
+      min-width: 0;
+      border-radius: inherit;
+      background: currentColor;
+      opacity: .42;
+      transition:
+        width 160ms ease,
+        opacity 120ms ease;
+    }
+
+    .dhct-inventory-view__container-card--high
+      .dhct-inventory-view__capacity-meter-fill {
+      opacity: .68;
+    }
+
+    .dhct-inventory-view__container-card--full
+      .dhct-inventory-view__capacity-meter-fill {
+      opacity: .92;
+    }
+
+    .dhct-inventory-view__container-card--full {
+      box-shadow:
+        inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+  `;
+
+  style.textContent += `
+    /* P2.12l.3 zone hierarchy */
+
+    .dhct-inventory-view__pane-group--personal,
+    .dhct-inventory-view__pane-group--shared {
+      padding: .15rem;
+    }
+
+    .dhct-inventory-view__pane-group--personal
+      > .dhct-inventory-view__group-title,
+    .dhct-inventory-view__pane-group--shared
+      > .dhct-inventory-view__group-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .dhct-inventory-view__pane-identity {
+      display: flex;
+      align-items: center;
+      gap: .45rem;
+      min-width: 0;
+    }
+
+    .dhct-inventory-view__pane-title {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .dhct-inventory-view__zone-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+      min-height: 1.35rem;
+      padding: .08rem .4rem;
+      border: 1px solid rgba(201, 177, 137, .26);
+      border-radius: 999px;
+      background: rgba(0,0,0,.16);
+      font-size: .68rem;
+      font-weight: 700;
+      line-height: 1;
+      letter-spacing: .035em;
+      text-transform: uppercase;
+      opacity: .78;
+    }
+
+    .dhct-inventory-view__container-card--personal {
+      border-left-width: 3px;
+    }
+
+    .dhct-inventory-view__container-card--shared {
+      border-left-width: 3px;
+      background:
+        linear-gradient(
+          180deg,
+          rgba(255,255,255,.045),
+          rgba(0,0,0,.045)
+        );
+    }
+
+    .dhct-inventory-view__container-card[data-role="ground"] {
+      border-left-style: dashed;
+    }
+
+    .dhct-inventory-view__container-card[data-role="fob"] {
+      border-left-style: double;
+    }
+
+    .dhct-inventory-view__container-card[data-role="caravan"] {
+      border-left-width: 5px;
+    }
+
+    .dhct-inventory-view__container-card[data-role="ground"]
+      .dhct-inventory-view__zone-badge {
+      opacity: .62;
+    }
+
+    .dhct-inventory-view__container-card[data-role="fob"]
+      .dhct-inventory-view__zone-badge {
+      opacity: .9;
+    }
+
+    .dhct-inventory-view__container-card[data-role="caravan"]
+      .dhct-inventory-view__zone-badge {
+      font-weight: 800;
+      opacity: 1;
     }
   `;
 

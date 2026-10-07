@@ -1366,7 +1366,23 @@ export async function openCraftingResearchStation({
   const root = dialog.element;
   if (!root) return dialog;
 
-  const refresh = async () => {
+
+  // P2.12l.4 research vertical scroll
+  const researchBody =
+    root.querySelector(".window-content");
+
+  if (researchBody instanceof HTMLElement) {
+    researchBody.style.overflowX =
+      "hidden";
+    researchBody.style.overflowY =
+      "auto";
+    researchBody.style.scrollbarGutter =
+      "stable";
+    researchBody.style.maxHeight =
+      "min(72vh, 760px)";
+  }
+
+const refresh = async () => {
     const actorId = root.querySelector("[data-dct-research-actor]")?.value;
     const currentActor = actors.find((candidate) => candidate.id === actorId) ?? selectedActor;
     const next = await buildResearchStationModel({

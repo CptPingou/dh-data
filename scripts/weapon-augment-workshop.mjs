@@ -575,7 +575,25 @@ export async function openHuntWeaponWorkshop(crafter) {
 
   const element = dialog.element;
 
-  if (!element) return dialog;
+
+  // P2.12l.4 workshop vertical scroll
+  const workshopBody =
+    element?.querySelector?.(
+      ".window-content"
+    );
+
+  if (workshopBody instanceof HTMLElement) {
+    workshopBody.style.overflowX =
+      "hidden";
+    workshopBody.style.overflowY =
+      "auto";
+    workshopBody.style.scrollbarGutter =
+      "stable";
+    workshopBody.style.maxHeight =
+      "min(72vh, 760px)";
+  }
+
+if (!element) return dialog;
 
   let selectedWeapon = null;
 
