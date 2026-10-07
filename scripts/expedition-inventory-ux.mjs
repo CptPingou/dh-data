@@ -2828,6 +2828,160 @@ function installCaravanEquipmentViewHandlers(
   }
 
   view.addEventListener(
+    "dhct-caravan-wheel-hp-change",
+    async (event) => {
+      if (!game.user?.isGM) {
+        ui.notifications?.warn(
+          "Action r?serv?e au MJ."
+        );
+
+        return;
+      }
+
+      const detail =
+        event.detail ?? {};
+
+      const componentId =
+        String(
+          detail.componentId ?? ""
+        ).trim();
+
+      const delta =
+        Math.trunc(
+          Number(
+            detail.delta
+          ) || 0
+        );
+
+      if (
+        !componentId ||
+        ![-1, 1].includes(delta)
+      ) {
+        ui.notifications?.warn(
+          "Modification de roue invalide."
+        );
+
+        return;
+      }
+
+      try {
+        const fresh =
+          await api.expeditionManifest.load(
+            manifest.expeditionId
+          );
+
+        if (!fresh) {
+          throw new Error(
+            "Manifeste d?exp?dition introuvable."
+          );
+        }
+
+        const component =
+          fresh.caravan
+            ?.components
+            ?.find(
+              (candidate) =>
+                candidate.id ===
+                componentId
+            );
+
+        if (
+          !component ||
+          component.type !== "wheel"
+        ) {
+          throw new Error(
+            "Roue introuvable dans la caravane."
+          );
+        }
+
+        const max =
+          Math.max(
+            0,
+            Math.floor(
+              Number(
+                component.hp?.max
+              ) || 0
+            )
+          );
+
+        const current =
+          Math.max(
+            0,
+            Math.min(
+              max,
+              Math.floor(
+                Number(
+                  component.hp?.value
+                ) || 0
+              )
+            )
+          );
+
+        const next =
+          Math.max(
+            0,
+            Math.min(
+              max,
+              current + delta
+            )
+          );
+
+        if (next === current) {
+          return;
+        }
+
+        component.hp ??= {
+          value: current,
+          max,
+        };
+
+        component.hp.value =
+          next;
+
+        component.hp.max =
+          max;
+
+        fresh.revision =
+          Math.max(
+            1,
+            Number(
+              fresh.revision
+            ) || 1
+          ) + 1;
+
+        await saveAndBroadcastBulkInventoryChange(
+          api,
+          fresh,
+          {
+            reason:
+              "gm-caravan-wheel-hp",
+          }
+        );
+
+        ui.notifications?.info(
+          component.name +
+          " : " +
+          String(next) +
+          "/" +
+          String(max) +
+          " PV."
+        );
+      } catch (error) {
+        console.error(
+          MODULE_ID +
+          " | caravan wheel HP update failed",
+          error
+        );
+
+        ui.notifications?.error(
+          error?.message ??
+          "Impossible de modifier les PV de la roue."
+        );
+      }
+    }
+  );
+
+  view.addEventListener(
     "dhct-caravan-equipment-install",
     async (event) => {
       if (!game.user?.isGM) {

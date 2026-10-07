@@ -210,6 +210,25 @@ function ensureCaravanStyles(
       opacity: .82;
     }
 
+    .dhct-caravan-view__wheel-hp-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: .25rem;
+      white-space: nowrap;
+    }
+
+    .dhct-caravan-view__wheel-hp-button {
+      width: 20px;
+      height: 20px;
+      min-width: 20px;
+      padding: 0;
+      border-radius: 50%;
+      font-size: .72rem;
+      line-height: 18px;
+      text-align: center;
+    }
+
     .dhct-caravan-view__cargo {
       border:
         1px dashed rgba(220, 190, 135, .7);
@@ -506,7 +525,10 @@ function applyLayout(
 
 function renderComponent(
   component,
-  documentRef
+  documentRef,
+  {
+    isGm = false,
+  } = {}
 ) {
   const node =
     documentRef.createElement(
@@ -572,7 +594,87 @@ function renderComponent(
         component.hp.max ?? 0
       );
 
-    node.append(hp);
+    if (
+      isGm &&
+      component.type === "wheel"
+    ) {
+      const controls =
+        documentRef.createElement(
+          "div"
+        );
+
+      controls.className =
+        "dhct-caravan-view__wheel-hp-controls";
+
+      const createButton =
+        (label, delta) => {
+          const button =
+            documentRef.createElement(
+              "button"
+            );
+
+          button.type =
+            "button";
+
+          button.className =
+            "dhct-caravan-view__wheel-hp-button";
+
+          button.textContent =
+            label;
+
+          button.title =
+            delta < 0
+              ? "Endommager la roue"
+              : "R?parer la roue";
+
+          button.addEventListener(
+            "pointerdown",
+            (event) => {
+              event.stopPropagation();
+            }
+          );
+
+          button.addEventListener(
+            "click",
+            (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+
+              node.dispatchEvent(
+                new CustomEvent(
+                  "dhct-caravan-wheel-hp-change",
+                  {
+                    bubbles: true,
+
+                    detail: {
+                      componentId:
+                        component.id,
+
+                      delta,
+                    },
+                  }
+                )
+              );
+            }
+          );
+
+          return button;
+        };
+
+      controls.append(
+        createButton("-", -1),
+        hp,
+        createButton("+", 1)
+      );
+
+      node.append(
+        controls
+      );
+    } else {
+      node.append(
+        hp
+      );
+    }
   }
 
   return node;
@@ -1745,7 +1847,10 @@ export function renderExpeditionCaravanView(
     board.append(
       renderComponent(
         component,
-        documentRef
+        documentRef,
+        {
+          isGm,
+        }
       )
     );
   }
