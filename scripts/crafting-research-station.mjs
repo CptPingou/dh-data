@@ -304,25 +304,278 @@ export async function buildResearchStationModel({
     });
   }
 
-  materials.sort((a,b) => a.name.localeCompare(b.name, game.i18n?.lang ?? "fr"));
-  return { green:true, expeditionId, containerId, actorUuid:actor.uuid, materials };
+  materials.sort(
+    (a, b) =>
+      a.name.localeCompare(
+        b.name,
+        game.i18n?.lang ?? "fr"
+      )
+  );
+
+  const knowledgeProject =
+    await api
+      ?.craftingKnowledgeBrowser
+      ?.project?.(actor) ??
+    {
+      materials: {},
+      properties: {},
+      creatures: {},
+      recipes: {},
+    };
+
+  return {
+    green: true,
+    expeditionId,
+    containerId,
+    actorUuid: actor.uuid,
+    materials,
+    knowledgeProject,
+  };
+}
+
+
+function researchStatusLabel(status) {
+  switch (status) {
+    case "invisible":
+      return "Invisible";
+    case "visible":
+      return "Visible";
+    case "discovered":
+      return "D\u00e9couvert";
+    case "shared":
+      return "Partag\u00e9";
+    default:
+      return status ?? "Visible";
+  }
+}
+
+function researchStatusOptions(status) {
+  return [
+    ["invisible", "Invisible"],
+    ["visible", "Visible"],
+    ["discovered", "D\u00e9couvert"],
+    ["shared", "Partag\u00e9"],
+  ]
+    .map(
+      ([value, label]) =>
+        '<option value="' +
+        esc(value) +
+        '"' +
+        (
+          status === value
+            ? " selected"
+            : ""
+        ) +
+        ">" +
+        esc(label) +
+        "</option>"
+    )
+    .join("");
+}
+
+function researchSquareCard({
+  type,
+  id,
+  name,
+  subtitle = "",
+  status = null,
+  materialId = null,
+  propertyId = null,
+  focus = false,
+} = {}) {
+  const isGm =
+    Boolean(game.user?.isGM);
+
+  const openAttribute =
+    type === "material"
+      ? 'data-dct-open-material="' +
+        esc(id) +
+        '"'
+      : type === "property"
+        ? 'data-dct-open-property="' +
+          esc(id) +
+          '"'
+        : type === "recipe"
+          ? 'data-dct-open-recipe="' +
+            esc(id) +
+            '"'
+          : "";
+
+  const statusEditor =
+    (
+      isGm &&
+      type === "property" &&
+      materialId &&
+      propertyId
+    )
+      ? (
+          '<label class="dct-research-card__status">' +
+          '<span>Statut</span>' +
+          '<select ' +
+          'data-dct-knowledge-status ' +
+          'data-material-id="' +
+          esc(materialId) +
+          '" ' +
+          'data-property-id="' +
+          esc(propertyId) +
+          '">' +
+          researchStatusOptions(status) +
+          "</select>" +
+          "</label>"
+        )
+      : (
+          isGm && status
+            ? (
+                '<span class="dct-research-card__status-badge" ' +
+                'data-status="' +
+                esc(status) +
+                '">' +
+                esc(
+                  researchStatusLabel(
+                    status
+                  )
+                ) +
+                "</span>"
+              )
+            : ""
+        );
+
+  return (
+    '<article class="dct-research-card' +
+    (
+      focus
+        ? " dct-research-card--focus"
+        : ""
+    ) +
+    '" data-research-kind="' +
+    esc(type) +
+    '">' +
+
+      '<button type="button" ' +
+      'class="dct-research-card__open" ' +
+      openAttribute +
+      ">" +
+
+        '<strong class="dct-research-card__title">' +
+        esc(name ?? id) +
+        "</strong>" +
+
+        (
+          subtitle
+            ? (
+                '<span class="dct-research-card__subtitle">' +
+                esc(subtitle) +
+                "</span>"
+              )
+            : ""
+        ) +
+
+      "</button>" +
+
+      statusEditor +
+
+    "</article>"
+  );
+}
+
+function researchRelationGrid(
+  cards,
+  emptyLabel
+) {
+  return (
+    '<div class="dct-research-grid">' +
+    (
+      cards.length
+        ? cards.join("")
+        : (
+            "<p>" +
+            esc(emptyLabel) +
+            "</p>"
+          )
+    ) +
+    "</div>"
+  );
 }
 
 function content(
   model,
   actors,
-  actorId
+  selectedActorId,
+  focus = null
 ) {
+  const isGm =
+    Boolean(game.user?.isGM);
+
+  const project =
+    model.knowledgeProject ?? {
+      materials: {},
+      properties: {},
+      creatures: {},
+      recipes: {},
+    };
+
+  const materials =
+    Object.values(
+      project.materials ?? {}
+    )
+      .sort(
+        (a, b) =>
+          String(
+            a.name ?? a.id
+          ).localeCompare(
+            String(
+              b.name ?? b.id
+            ),
+            game.i18n?.lang ??
+              "fr"
+          )
+      );
+
+  const properties =
+    Object.values(
+      project.properties ?? {}
+    )
+      .sort(
+        (a, b) =>
+          String(
+            a.label ?? a.id
+          ).localeCompare(
+            String(
+              b.label ?? b.id
+            ),
+            game.i18n?.lang ??
+              "fr"
+          )
+      );
+
+  const recipes =
+    Object.values(
+      project.recipes ?? {}
+    )
+      .sort(
+        (a, b) =>
+          String(
+            a.name ?? a.id
+          ).localeCompare(
+            String(
+              b.name ?? b.id
+            ),
+            game.i18n?.lang ??
+              "fr"
+          )
+      );
+
   const options =
     actors
       .map(
         (actor) =>
           '<option value="' +
           esc(actor.id) +
-          '" ' +
+          '"' +
           (
-            actor.id === actorId
-              ? "selected"
+            actor.id ===
+            selectedActorId
+              ? " selected"
               : ""
           ) +
           ">" +
@@ -331,219 +584,581 @@ function content(
       )
       .join("");
 
-  const statusLabels = {
-    invisible:
-      "Invisible",
+  const materialCards =
+    materials.map(
+      (material) =>
+        researchSquareCard({
+          type: "material",
+          id: material.id,
+          name:
+            material.name ??
+            material.id,
+          subtitle:
+            material.creatureId
+              ? "Mat\u00e9riau de chasse"
+              : "",
+        })
+    );
 
-    visible:
-      "Visible",
+  const propertyCards =
+    properties.map(
+      (property) =>
+        researchSquareCard({
+          type: "property",
+          id: property.id,
+          name:
+            property.label ??
+            property.id,
+          status:
+            property.status ??
+            null,
+        })
+    );
 
-    discovered:
-      "D\u00e9couvert",
+  const recipeCards =
+    recipes.map(
+      (recipe) =>
+        researchSquareCard({
+          type: "recipe",
+          id: recipe.id,
+          name:
+            recipe.name ??
+            recipe.id,
+          subtitle: "Recette",
+          status:
+            recipe.status ??
+            null,
+        })
+    );
 
-    shared:
-      "Partag\u00e9",
-  };
+  let focusHtml = "";
+  let relatedSections = "";
 
-  const statusOptions =
-    (current) =>
-      Object.entries(
-        statusLabels
-      )
-        .map(
-          ([value, label]) =>
-            '<option value="' +
-            esc(value) +
-            '" ' +
-            (
-              value === current
-                ? "selected"
-                : ""
-            ) +
-            ">" +
-            esc(label) +
-            "</option>"
+  if (
+    focus?.type === "material"
+  ) {
+    const material =
+      project.materials?.[
+        focus.id
+      ] ??
+      null;
+
+    if (material) {
+      focusHtml =
+        researchSquareCard({
+          type: "material",
+          id: material.id,
+          name:
+            material.name ??
+            material.id,
+          subtitle:
+            "Mat\u00e9riau de chasse",
+          focus: true,
+        });
+
+      const linkedProperties =
+        (
+          material.properties ??
+          []
         )
-        .join("");
+          .map(
+            (property) =>
+              researchSquareCard({
+                type: "property",
+                id: property.id,
+                name:
+                  property.label ??
+                  property.id,
+                status:
+                  property.status ??
+                  null,
+                materialId:
+                  material.id,
+                propertyId:
+                  property.id,
+              })
+          );
 
-  const rows =
-    model.materials
-      .map(
-        (material) => {
-          const propertyRows =
-            material.properties
-              .map(
-                (property) => {
-                  const suffix =
-                    property.queued
-                      ? property.queuePosition === 0
-                        ? " \u00b7 recherche active (" +
-                          String(
-                            property.queueProgress
-                          ) +
-                          "/" +
-                          String(
-                            property.queueTurnsRequired
-                          ) +
-                          ")"
-                        : " \u00b7 en file (" +
-                          String(
-                            property.queuePosition + 1
-                          ) +
-                          ")"
-                      : property.status ===
-                        "shared"
-                        ? " \u00b7 partag\u00e9e"
-                        : property.status ===
-                          "discovered"
-                          ? " \u00b7 d\u00e9couverte"
-                          : property.status ===
-                            "visible"
-                            ? " \u00b7 indice"
-                            : game.user?.isGM
-                              ? " \u00b7 invisible"
-                              : "";
+      const linkedRecipeIds =
+        new Set();
 
-                  const researchControl =
-                    property.canResearch
-                      ? '<button ' +
-                        'type="button" ' +
-                        'data-dct-research-action="research" ' +
-                        'data-material-id="' +
-                        esc(material.materialId) +
-                        '" ' +
-                        'data-property-id="' +
-                        esc(property.propertyId) +
-                        '" ' +
-                        'data-container-id="' +
-                        esc(model.containerId) +
-                        '">' +
-                        "Mettre en recherche" +
-                        "</button>"
-                      : "";
+      for (
+        const property
+        of material.properties ?? []
+      ) {
+        const p =
+          project.properties?.[
+            property.id
+          ];
 
-                  const gmStatusControl =
-                    game.user?.isGM
-                      ? '<select ' +
-                        'data-dct-knowledge-status ' +
-                        'data-material-id="' +
-                        esc(material.materialId) +
-                        '" ' +
-                        'data-property-id="' +
-                        esc(property.propertyId) +
-                        '" ' +
-                        'aria-label="\u00c9tat de connaissance">' +
-                        statusOptions(
-                          property.status
-                        ) +
-                        "</select>"
-                      : "";
-
-                  const control =
-                    researchControl ||
-                    gmStatusControl
-                      ? '<div style="' +
-                        "display:flex;" +
-                        "gap:.4rem;" +
-                        "align-items:center" +
-                        '">' +
-                        researchControl +
-                        gmStatusControl +
-                        "</div>"
-                      : "";
-
-                  const propertyLabel =
-                    property.discovered
-                      ? '<button ' +
-                        'type="button" ' +
-                        'data-dct-open-property="' +
-                        esc(property.propertyId) +
-                        '" ' +
-                        'style="' +
-                          "padding:0;" +
-                          "border:0;" +
-                          "background:none;" +
-                          "text-align:left;" +
-                          "cursor:pointer;" +
-                          "text-decoration:underline" +
-                        '">' +
-                        esc(property.label) +
-                        suffix +
-                        "</button>"
-                      : "<span>" +
-                        esc(property.label) +
-                        suffix +
-                        "</span>";
-
-                  return (
-                    '<div style="' +
-                    "display:grid;" +
-                    "grid-template-columns:1fr auto;" +
-                    "gap:.6rem;" +
-                    "align-items:center;" +
-                    "padding:.4rem 0;" +
-                    "border-top:1px solid var(--color-border-light-2)" +
-                    '">' +
-                    propertyLabel +
-                    control +
-                    "</div>"
-                  );
-                }
-              )
-              .join("");
-
-          return (
-            '<section class="dct-research-material" style="' +
-            "border:1px solid var(--color-border-light-2);" +
-            "border-radius:6px;" +
-            "padding:.65rem;" +
-            "margin:.5rem 0" +
-            '">' +
-            '<header style="' +
-            "display:flex;" +
-            "justify-content:space-between;" +
-            "gap:1rem" +
-            '">' +
-            "<strong>" +
-            esc(material.name) +
-            "</strong>" +
-            "<span>\u00d7" +
-            esc(material.quantity) +
-            "</span>" +
-            "</header>" +
-            "<div>" +
-            propertyRows +
-            "</div>" +
-            "</section>"
+        for (
+          const recipeId
+          of p?.recipeIds ?? []
+        ) {
+          linkedRecipeIds.add(
+            recipeId
           );
         }
-      )
-      .join("");
+      }
+
+      const linkedRecipes =
+        [...linkedRecipeIds]
+          .map(
+            (recipeId) =>
+              project.recipes?.[
+                recipeId
+              ]
+          )
+          .filter(Boolean)
+          .map(
+            (recipe) =>
+              researchSquareCard({
+                type: "recipe",
+                id: recipe.id,
+                name:
+                  recipe.name ??
+                  recipe.id,
+                subtitle:
+                  "Recette li\u00e9e",
+                status:
+                  recipe.status ??
+                  null,
+              })
+          );
+
+      relatedSections =
+        '<section class="dct-research-related">' +
+          '<h3>Propri\u00e9t\u00e9s li\u00e9es</h3>' +
+          researchRelationGrid(
+            linkedProperties,
+            "Aucune propri\u00e9t\u00e9 li\u00e9e."
+          ) +
+        "</section>" +
+
+        '<section class="dct-research-related">' +
+          '<h3>Recettes li\u00e9es</h3>' +
+          researchRelationGrid(
+            linkedRecipes,
+            "Aucune recette li\u00e9e."
+          ) +
+        "</section>";
+    }
+  }
+
+  if (
+    focus?.type === "property"
+  ) {
+    const property =
+      project.properties?.[
+        focus.id
+      ] ??
+      null;
+
+    if (property) {
+      focusHtml =
+        researchSquareCard({
+          type: "property",
+          id: property.id,
+          name:
+            property.label ??
+            property.id,
+          subtitle:
+            property.category ??
+            "Propri\u00e9t\u00e9",
+          status:
+            property.status ??
+            null,
+          focus: true,
+        });
+
+      const linkedMaterials =
+        (
+          property.materials ??
+          []
+        )
+          .map(
+            (material) =>
+              researchSquareCard({
+                type: "material",
+                id: material.id,
+                name:
+                  material.name ??
+                  material.id,
+                subtitle:
+                  "Mat\u00e9riau li\u00e9",
+              })
+          );
+
+      const linkedRecipes =
+        (
+          property.recipes ??
+          []
+        )
+          .map(
+            (recipe) =>
+              researchSquareCard({
+                type: "recipe",
+                id: recipe.id,
+                name:
+                  recipe.name ??
+                  recipe.id,
+                subtitle:
+                  "Recette li\u00e9e",
+                status:
+                  recipe.status ??
+                  null,
+              })
+          );
+
+      relatedSections =
+        '<section class="dct-research-related">' +
+          '<h3>Mat\u00e9riaux li\u00e9s</h3>' +
+          researchRelationGrid(
+            linkedMaterials,
+            "Aucun mat\u00e9riau li\u00e9."
+          ) +
+        "</section>" +
+
+        '<section class="dct-research-related">' +
+          '<h3>Recettes li\u00e9es</h3>' +
+          researchRelationGrid(
+            linkedRecipes,
+            "Aucune recette li\u00e9e."
+          ) +
+        "</section>";
+    }
+  }
+
+  if (
+    focus?.type === "recipe"
+  ) {
+    const recipe =
+      project.recipes?.[
+        focus.id
+      ] ??
+      null;
+
+    if (recipe) {
+      focusHtml =
+        researchSquareCard({
+          type: "recipe",
+          id: recipe.id,
+          name:
+            recipe.name ??
+            recipe.id,
+          subtitle: "Recette",
+          status:
+            recipe.status ??
+            null,
+          focus: true,
+        });
+
+      const linkedProperties =
+        (
+          recipe.properties ??
+          recipe.requirements ??
+          []
+        )
+          .map(
+            (entry) => {
+              const propertyId =
+                entry.id ??
+                entry.propertyId ??
+                entry.match?.property ??
+                null;
+
+              if (!propertyId) {
+                return null;
+              }
+
+              const property =
+                project.properties?.[
+                  propertyId
+                ];
+
+              if (!property) {
+                return null;
+              }
+
+              return researchSquareCard({
+                type: "property",
+                id: property.id,
+                name:
+                  property.label ??
+                  property.id,
+                status:
+                  property.status ??
+                  null,
+              });
+            }
+          )
+          .filter(Boolean);
+
+      const compatibleMaterials =
+        new Map();
+
+      for (
+        const propertyCard
+        of (
+          recipe.properties ??
+          recipe.requirements ??
+          []
+        )
+      ) {
+        const propertyId =
+          propertyCard.id ??
+          propertyCard.propertyId ??
+          propertyCard.match
+            ?.property ??
+          null;
+
+        if (!propertyId) {
+          continue;
+        }
+
+        const property =
+          project.properties?.[
+            propertyId
+          ];
+
+        for (
+          const material
+          of property?.materials ?? []
+        ) {
+          if (material?.id) {
+            compatibleMaterials.set(
+              material.id,
+              material
+            );
+          }
+        }
+      }
+
+      const linkedMaterials =
+        [
+          ...compatibleMaterials.values()
+        ]
+          .map(
+            (material) =>
+              researchSquareCard({
+                type: "material",
+                id: material.id,
+                name:
+                  material.name ??
+                  material.id,
+                subtitle:
+                  "Mat\u00e9riau compatible",
+              })
+          );
+
+      relatedSections =
+        '<section class="dct-research-related">' +
+          '<h3>Propri\u00e9t\u00e9s requises</h3>' +
+          researchRelationGrid(
+            linkedProperties,
+            "Aucune propri\u00e9t\u00e9 requise connue."
+          ) +
+        "</section>" +
+
+        '<section class="dct-research-related">' +
+          '<h3>Mat\u00e9riaux compatibles</h3>' +
+          researchRelationGrid(
+            linkedMaterials,
+            "Aucun mat\u00e9riau compatible connu."
+          ) +
+        "</section>";
+    }
+  }
 
   const gmHelp =
-    game.user?.isGM
-      ? " Le MJ contr\u00f4le directement leur \u00e9tat."
+    isGm
+      ? (
+          '<p class="dct-research-gm-help">' +
+          "<strong>Vue MJ :</strong> " +
+          "les statuts de connaissance sont affich\u00e9s uniquement ici." +
+          "</p>"
+        )
       : "";
 
   return (
     '<div class="dct-research-station">' +
-    "<p><label><strong>Chercheur :</strong> " +
-    '<select data-dct-research-actor>' +
-    options +
-    "</select>" +
-    "</label></p>" +
-    '<p style="opacity:.75">' +
-    "Les propri\u00e9t\u00e9s visibles sont des indices encore " +
-    "inexploitables. Les propri\u00e9t\u00e9s d\u00e9couvertes peuvent " +
-    "\u00eatre utilis\u00e9es et parcourues dans la recherche." +
-    gmHelp +
-    "</p>" +
-    '<div data-dct-research-materials>' +
-    (
-      rows ||
-      "<p>Aucun mat\u00e9riau de recherche connu \u00e0 la FOB.</p>"
-    ) +
-    "</div>" +
+
+      '<style>' +
+
+        '.dct-research-station{' +
+          'display:grid;' +
+          'gap:1rem;' +
+        '}' +
+
+        '.dct-research-toolbar{' +
+          'display:flex;' +
+          'align-items:center;' +
+          'justify-content:space-between;' +
+          'gap:1rem;' +
+          'flex-wrap:wrap;' +
+        '}' +
+
+        '.dct-research-focus{' +
+          'display:grid;' +
+          'justify-items:center;' +
+          'gap:.75rem;' +
+          'padding:.9rem;' +
+          'border:1px solid var(--color-border-light-2);' +
+          'border-radius:8px;' +
+          'background:rgba(0,0,0,.10);' +
+        '}' +
+
+        '.dct-research-focus[hidden]{' +
+          'display:none;' +
+        '}' +
+
+        '.dct-research-zone,' +
+        '.dct-research-related{' +
+          'display:grid;' +
+          'gap:.55rem;' +
+          'width:100%;' +
+        '}' +
+
+        '.dct-research-zone h3,' +
+        '.dct-research-related h3{' +
+          'margin:0;' +
+        '}' +
+
+        '.dct-research-grid{' +
+          'display:grid;' +
+          'grid-template-columns:' +
+            'repeat(auto-fill,minmax(128px,1fr));' +
+          'gap:.65rem;' +
+        '}' +
+
+        '.dct-research-card{' +
+          'min-width:0;' +
+          'aspect-ratio:1/1;' +
+          'display:flex;' +
+          'flex-direction:column;' +
+          'justify-content:space-between;' +
+          'gap:.45rem;' +
+          'padding:.55rem;' +
+          'border:1px solid var(--color-border-light-2);' +
+          'border-radius:8px;' +
+          'background:rgba(255,255,255,.035);' +
+          'overflow:hidden;' +
+        '}' +
+
+        '.dct-research-card--focus{' +
+          'width:min(220px,100%);' +
+          'aspect-ratio:1/1;' +
+          'box-shadow:0 0 0 2px rgba(255,255,255,.10);' +
+        '}' +
+
+        '.dct-research-card__open{' +
+          'flex:1;' +
+          'display:flex;' +
+          'flex-direction:column;' +
+          'justify-content:center;' +
+          'align-items:center;' +
+          'gap:.35rem;' +
+          'text-align:center;' +
+          'border:0;' +
+          'background:transparent;' +
+          'padding:.35rem;' +
+          'cursor:pointer;' +
+        '}' +
+
+        '.dct-research-card__title{' +
+          'font-size:.95rem;' +
+          'line-height:1.15;' +
+        '}' +
+
+        '.dct-research-card__subtitle{' +
+          'font-size:.75rem;' +
+          'opacity:.7;' +
+        '}' +
+
+        '.dct-research-card__status{' +
+          'display:grid;' +
+          'gap:.2rem;' +
+          'font-size:.72rem;' +
+        '}' +
+
+        '.dct-research-card__status select{' +
+          'width:100%;' +
+        '}' +
+
+        '.dct-research-card__status-badge{' +
+          'display:block;' +
+          'text-align:center;' +
+          'font-weight:700;' +
+          'font-size:.72rem;' +
+          'padding:.25rem .35rem;' +
+          'border-radius:999px;' +
+          'background:rgba(255,255,255,.09);' +
+        '}' +
+
+        '.dct-research-gm-help{' +
+          'margin:.2rem 0 0;' +
+          'opacity:.8;' +
+        '}' +
+
+      '</style>' +
+
+      '<div class="dct-research-toolbar">' +
+
+        '<label>' +
+          '<strong>Chercheur :</strong> ' +
+          '<select data-dct-research-actor>' +
+          options +
+          '</select>' +
+        '</label>' +
+
+      '</div>' +
+
+      gmHelp +
+
+      '<section class="dct-research-focus"' +
+      (
+        focusHtml
+          ? ""
+          : " hidden"
+      ) +
+      '>' +
+
+        (
+          focusHtml
+            ? (
+                "<h2>Focus</h2>" +
+                focusHtml +
+                relatedSections
+              )
+            : ""
+        ) +
+
+      "</section>" +
+
+      '<section class="dct-research-zone">' +
+        '<h3>Mat\u00e9riaux de chasse</h3>' +
+        researchRelationGrid(
+          materialCards,
+          "Aucun mat\u00e9riau de chasse connu."
+        ) +
+      "</section>" +
+
+      '<section class="dct-research-zone">' +
+        "<h3>Recettes</h3>" +
+        researchRelationGrid(
+          recipeCards,
+          "Aucune recette connue."
+        ) +
+      "</section>" +
+
+      '<section class="dct-research-zone">' +
+        "<h3>Propri\u00e9t\u00e9s</h3>" +
+        researchRelationGrid(
+          propertyCards,
+          "Aucune propri\u00e9t\u00e9 connue."
+        ) +
+      "</section>" +
+
     "</div>"
   );
 }
@@ -1382,16 +1997,50 @@ export async function openCraftingResearchStation({
       "min(72vh, 760px)";
   }
 
-const refresh = async () => {
-    const actorId = root.querySelector("[data-dct-research-actor]")?.value;
-    const currentActor = actors.find((candidate) => candidate.id === actorId) ?? selectedActor;
-    const next = await buildResearchStationModel({
-      api,
-      actor: currentActor,
-      expeditionId,
-    });
-    const body = root.querySelector(".window-content");
-    if (body && next.green) body.innerHTML = content(next, actors, currentActor.id);
+let currentFocus = null;
+
+  const refresh = async ({
+    focus = currentFocus,
+  } = {}) => {
+    const actorId =
+      root.querySelector(
+        "[data-dct-research-actor]"
+      )?.value;
+
+    const currentActor =
+      actors.find(
+        (candidate) =>
+          candidate.id === actorId
+      ) ??
+      selectedActor;
+
+    const next =
+      await buildResearchStationModel({
+        api,
+        actor: currentActor,
+        expeditionId,
+      });
+
+    const body =
+      root.querySelector(
+        ".window-content"
+      );
+
+    if (
+      body &&
+      next.green
+    ) {
+      currentFocus =
+        focus ?? null;
+
+      body.innerHTML =
+        content(
+          next,
+          actors,
+          currentActor.id,
+          currentFocus
+        );
+    }
   };
 
   installResearchKnowledgeRefreshHook();
@@ -1619,6 +2268,51 @@ const refresh = async () => {
   root.addEventListener(
     "click",
     async (event) => {
+      const focusCard =
+        event.target?.closest?.(
+          [
+            "[data-dct-open-material]",
+            "[data-dct-open-property]",
+            "[data-dct-open-recipe]",
+          ].join(",")
+        );
+
+      if (focusCard) {
+        event.preventDefault();
+        event.stopPropagation();
+
+        const type =
+          focusCard.hasAttribute(
+            "data-dct-open-material"
+          )
+            ? "material"
+            : focusCard.hasAttribute(
+                "data-dct-open-property"
+              )
+              ? "property"
+              : "recipe";
+
+        const id =
+          focusCard.dataset
+            .dctOpenMaterial ??
+          focusCard.dataset
+            .dctOpenProperty ??
+          focusCard.dataset
+            .dctOpenRecipe ??
+          null;
+
+        if (id) {
+          await refresh({
+            focus: {
+              type,
+              id,
+            },
+          });
+
+          return;
+        }
+      }
+
       const button =
         event.target?.closest?.(
           "[data-dct-open-property]"
