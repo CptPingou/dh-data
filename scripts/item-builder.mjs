@@ -14,6 +14,7 @@ import {
   clearItemLinks,
   baseDescription,
   normalizedChoice,
+  domainCardIcon,
   domainIcon,
   normalizedToken,
   mapTrait,
@@ -518,13 +519,56 @@ export async function buildItem(entry) {
 
     const domain = r.domain ?? raw?.domain;
     if (domain) {
-      data.system.domain = normalizedChoice(domain);
+      const domainKey =
+        normalizedChoice(domain);
 
-      const icon = domainIcon(domain);
-      if (icon) data.img = icon;
-      else if (normalizedChoice(domain) === HUNT_DOMAIN_ID) {
-        data.img = HUNT_DOMAIN_DEFINITION.src;
-      } else gaps.push("img.domain");
+      data.system.domain =
+        domainKey;
+
+      /*
+       * P2-domain-origin-icons
+       *
+       * Native/non-homebrew cards must retain their
+       * canonical SRD image. Toolkit paths are reserved
+       * for Toolkit homebrew domains only.
+       */
+      const toolkitHomebrewCardIcons =
+        Object.freeze({
+          artillery:
+            "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png",
+
+          hunt:
+            "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/hunt.png",
+
+          blood:
+            "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/blood.png",
+        });
+
+      const toolkitIcon =
+        toolkitHomebrewCardIcons[
+          domainKey
+        ] ?? null;
+
+      if (toolkitIcon) {
+        data.img =
+          toolkitIcon;
+      } else if (
+        typeof raw?.img === "string" &&
+        raw.img.trim()
+      ) {
+        /*
+         * SRD/core source wins.
+         */
+        data.img =
+          raw.img.trim();
+      } else {
+        /*
+         * Fallback only when the canonical SRD source
+         * does not carry img for some reason.
+         */
+        data.img =
+          `systems/daggerheart/assets/icons/domains/domain-card/${domainKey}.png`;
+      }
     }
 
     const level = Number(r.level ?? raw?.level);

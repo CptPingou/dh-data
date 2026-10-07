@@ -136,6 +136,30 @@ function domainIcon(domain) {
   );
 }
 
+/**
+ * Domain-card header artwork.
+ *
+ * Core Daggerheart domains use the PNG artwork shipped by
+ * the system. Toolkit-only domains use the Toolkit PNG set.
+ */
+export function domainCardIcon(domain) {
+  const key = normalizedChoice(domain);
+
+  if (!key || !DOMAIN_ICON_KEYS.has(key)) {
+    return null;
+  }
+
+  if (
+    key === "artillery" ||
+    key === "hunt" ||
+    key === "blood"
+  ) {
+    return `modules/daggerheart-campaign-toolkit/assets/icons/domain-card/${key}.png`;
+  }
+
+  return `systems/daggerheart/assets/icons/domains/domain-card/${key}.png`;
+}
+
 
 function normalizedToken(value) {
   return typeof value === "string"

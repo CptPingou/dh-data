@@ -24,7 +24,8 @@
         "charge token",
         "class card resource"
       ]
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.concussive-shot",
@@ -45,7 +46,8 @@
     "canonical": true,
     "integration": {
       "automation": "deferred"
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.heavy-volley",
@@ -66,7 +68,8 @@
     "canonical": true,
     "integration": {
       "automation": "deferred"
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.siege-stance",
@@ -87,7 +90,8 @@
     "canonical": true,
     "integration": {
       "automation": "deferred"
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.shockwave",
@@ -108,7 +112,8 @@
     "canonical": true,
     "integration": {
       "automation": "deferred"
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.barrage",
@@ -129,7 +134,8 @@
     "canonical": true,
     "integration": {
       "automation": "deferred"
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.overwhelming-force",
@@ -150,7 +156,8 @@
     "canonical": true,
     "integration": {
       "automation": "deferred"
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.decisive-strike",
@@ -176,7 +183,8 @@
         "charge tokens",
         "action resources"
       ]
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   },
   {
     "id": "homebrew.artificer.domain-card.artillery.carpet-bomb",
@@ -197,6 +205,7 @@
     "canonical": true,
     "integration": {
       "automation": "deferred"
-    }
+    },
+    "img": "modules/daggerheart-campaign-toolkit/assets/icons/domain-card/artillery.png"
   }
 ]
