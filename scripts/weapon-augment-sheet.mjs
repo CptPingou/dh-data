@@ -1,3 +1,4 @@
+import { huntArtisanCrafterForUser } from "./weapon-augment-workshop.mjs";
 import { describeWeaponAugmentPrecompile } from "./weapon-augment-precompile.mjs";
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const TAB_ID = "augment";
@@ -70,13 +71,22 @@ function setActiveTab(root, tabId) {
   }
 }
 
-function makeRow(augment, installed, canInstall) {
+function makeRow(
+  augment,
+  installed,
+  canInstall,
+  canModify,
+) {
   const id = escapeHtml(augment.id);
   const name = escapeHtml(augment.name ?? augment.id);
   const rules = escapeHtml(featureText(augment));
   const action = installed ? "uninstall" : "install";
   const label = installed ? "Uninstall" : "Install";
-  const disabled = !installed && !canInstall ? " disabled" : "";
+  const disabled =
+    !canModify ||
+    (!installed && !canInstall)
+      ? " disabled"
+      : "";
 
   return `
     <li class="dct-augment-row" data-augment-id="${id}">
@@ -164,7 +174,17 @@ async function injectAugmentTab(app, html) {
   const crafted = state.crafted
     .map(id => byId.get(id))
     .filter(Boolean);
-  const isGM = game.user?.isGM === true;
+  const isGM =
+    game.user?.isGM === true;
+
+  const artisanCrafter =
+    huntArtisanCrafterForUser(
+      game.user,
+    );
+
+  const canModifyAugments =
+    isGM ||
+    Boolean(artisanCrafter);
 
   const eligibilityById = new Map();
   const results = await Promise.all(
@@ -200,11 +220,15 @@ async function injectAugmentTab(app, html) {
   panel.dataset.applicationPart = TAB_ID;
   panel.dataset.dctAugmentTabPanel = "true";
 
-  const rows = usableCrafted.map(augment => makeRow(
-    augment,
-    installedIds.has(augment.id),
-    availableSlots > 0
-  )).join("");
+  const rows = usableCrafted.map(
+    (augment) =>
+      makeRow(
+        augment,
+        installedIds.has(augment.id),
+        availableSlots > 0,
+        canModifyAugments,
+      ),
+  ).join("");
 
   const gmControls = isGM ? `
     <fieldset class="dct-augment-fieldset dct-augment-gm-controls">
@@ -224,14 +248,10 @@ async function injectAugmentTab(app, html) {
       <div class="dct-augment-note">
         Precompile eligibility is enforced. Recipes are displayed, but scrap/material consumption is not enforced yet.
       </div>
-      <ul class="dct-augment-list">
-        ${catalog.map(augment => makeGmCatalogRow(
-          augment,
-          craftedIds,
-          installedIds,
-          eligibilityById.get(augment.id)
-        )).join("")}
-      </ul>
+      <div class="dct-augment-note">
+        Fabrication des augmentations :
+        utilisez l?Atelier d?armes de chasse du FOB.
+      </div>
     </fieldset>` : "";
 
   panel.innerHTML = `
@@ -322,14 +342,60 @@ async function injectAugmentTab(app, html) {
 
     const row = button.closest("[data-augment-id]");
     const augmentId = row?.dataset.augmentId;
-    const action = button.dataset.dctAugmentAction;
-    if (!augmentId || !["install", "uninstall", "craft", "uncraft"].includes(action)) return;
-    if (["craft", "uncraft"].includes(action) && !game.user?.isGM) return;
+    const action =
+      button.dataset.dctAugmentAction;
+
+    if (
+      !augmentId ||
+      ![
+        "install",
+        "uninstall",
+      ].includes(action)
+    ) {
+      return;
+    }
+
+    if (!canModifyAugments) {
+      return;
+    }
 
     button.disabled = true;
+
     try {
-      await api.weaponAugmentState[action](weapon, augmentId);
-      await app.render({ force: true });
+      if (isGM) {
+        await api.weaponAugmentState[
+          action
+        ](
+          weapon,
+          augmentId,
+        );
+      } else {
+        const response =
+          await api
+            .weaponAugmentAuthority
+            ?.request?.({
+              crafter:
+                artisanCrafter,
+
+              weapon,
+
+              operation:
+                action,
+
+              augmentId,
+            });
+
+        if (!response?.green) {
+          throw new Error(
+            response?.reason ??
+            "weapon-augment-authority-refused"
+          );
+        }
+      }
+
+      await app.render({
+        force: true,
+      });
     } catch (error) {
       console.error(`${MODULE_ID} | Weapon Augment ${action} failed`, error);
       ui.notifications.error(error?.message ?? `Weapon Augment ${action} failed.`);

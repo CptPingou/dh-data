@@ -1,3 +1,4 @@
+import { hasHuntArtisanCard } from "./weapon-augment-workshop.mjs";
 const MODULE_ID = "daggerheart-campaign-toolkit";
 
 const ARTIFICER_CLASS_SOURCE_ID =
@@ -65,37 +66,26 @@ export function canModifyMotherboard({
   }
 
   /*
-   * Preserve current behaviour:
-   * the owner of the weapon may still install/uninstall their
-   * already-crafted Augments.
+   * Player-side qualification:
+   * the requesting user must control a character
+   * that owns the Hunt Artisant card.
+   *
+   * The target weapon may belong to another character;
+   * the GM authority bridge performs the mutation.
    */
-  const ownsWeapon =
-    weapon.testUserPermission?.(user, "OWNER") === true ||
-    weapon.parent?.testUserPermission?.(user, "OWNER") === true;
+  const ownsCrafter =
+    crafter?.testUserPermission?.(
+      user,
+      "OWNER",
+    ) === true;
 
   if (
-    ownsWeapon &&
-    (operation === "install" || operation === "uninstall")
+    ownsCrafter &&
+    hasHuntArtisanCard(crafter)
   ) {
     return {
       allowed: true,
-      reason: "WEAPON_OWNER",
-      operation,
-      crafterUuid: crafter?.uuid ?? null,
-      weaponUuid: weapon.uuid,
-    };
-  }
-
-  /*
-   * Artificer qualification.
-   *
-   * This is deliberately independent from Foundry document ownership:
-   * the execution bridge will deal with the actual mutation later.
-   */
-  if (isMotherboardArtificer(crafter)) {
-    return {
-      allowed: true,
-      reason: "ARTIFICER",
+      reason: "HUNT_ARTISAN",
       operation,
       crafterUuid: crafter.uuid,
       weaponUuid: weapon.uuid,

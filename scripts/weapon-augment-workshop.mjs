@@ -40,6 +40,53 @@ export function hasHuntArtisanCard(actor) {
   return actor.items.some((item) => isHuntArtisanCard(item));
 }
 
+export function huntArtisanCrafterForUser(
+  user = globalThis.game?.user,
+) {
+  const candidates = [];
+
+  if (
+    user?.character?.type === "character" &&
+    user.character.testUserPermission?.(
+      user,
+      "OWNER",
+    ) === true
+  ) {
+    candidates.push(user.character);
+  }
+
+  for (const actor of game.actors ?? []) {
+    if (
+      actor?.type === "character" &&
+      actor.testUserPermission?.(
+        user,
+        "OWNER",
+      ) === true &&
+      !candidates.includes(actor)
+    ) {
+      candidates.push(actor);
+    }
+  }
+
+  if (user?.isGM) {
+    for (const actor of game.actors ?? []) {
+      if (
+        actor?.type === "character" &&
+        !candidates.includes(actor)
+      ) {
+        candidates.push(actor);
+      }
+    }
+  }
+
+  return (
+    candidates.find(
+      (actor) =>
+        hasHuntArtisanCard(actor),
+    ) ?? null
+  );
+}
+
 function weaponState(api, weapon) {
   return api?.weaponAugmentState?.get?.(weapon) ?? null;
 }
@@ -406,10 +453,14 @@ async function renderAugmentManager({
   crafter,
   weapon,
   api,
+  allowCraft = false,
 }) {
   const state = api.weaponAugmentState.get(weapon);
   const augments = await api.weaponAugments.list();
-  const expeditions = await api.expeditionManifest?.list?.() ?? [];
+  const expeditions =
+    allowCraft
+      ? await api.expeditionManifest?.list?.() ?? []
+      : [];
   const expeditionOptions = expeditions
     .map((entry) => {
       const id = String(entry?.expeditionId ?? "").trim();
@@ -452,7 +503,16 @@ async function renderAugmentManager({
   );
   const recipes = new Map(recipePairs);
 
-  const rows = augments
+  const visibleAugments =
+    allowCraft
+      ? augments
+      : augments.filter(
+          (augment) =>
+            crafted.has(augment.id) ||
+            installed.has(augment.id),
+        );
+
+  const rows = visibleAugments
     .map((augment) =>
       augmentRow({
         augment,
@@ -460,15 +520,19 @@ async function renderAugmentManager({
         installed: installed.has(augment.id),
         biologicalRecipe: recipes.get(augment.id),
         propertyLabels,
-        expeditionAvailable: Boolean(expeditionOptions),
+        expeditionAvailable:
+          allowCraft &&
+          Boolean(expeditionOptions),
 
         queuedEntry:
-          craftQueue.find(
-            (entry) =>
-              entry.actorUuid === crafter.uuid &&
-              entry.weaponUuid === weapon.uuid &&
-              entry.augmentId === augment.id
-          ) ?? null,
+          allowCraft
+            ? craftQueue.find(
+                (entry) =>
+                  entry.actorUuid === crafter.uuid &&
+                  entry.weaponUuid === weapon.uuid &&
+                  entry.augmentId === augment.id
+              ) ?? null
+            : null,
       }),
     )
     .join("");
@@ -496,15 +560,22 @@ async function renderAugmentManager({
         ${state.availableSlots} disponible(s)
       </p>
 
+      ${allowCraft
+        ? `
       <p>
         <label>
-          <strong>Expédition de craft :</strong>
+          <strong>Exp?dition de craft :</strong>
           <select data-dct-crafting-expedition ${expeditionOptions ? "" : "disabled"}>
-            ${expeditionOptions || '<option value="">Aucune expédition disponible</option>'}
+            ${expeditionOptions || '<option value="">Aucune exp?dition disponible</option>'}
           </select>
         </label>
-        <span style="opacity:.65;font-size:.85em"> · stock : d?p?t FOB</span>
-      </p>
+        <span style="opacity:.65;font-size:.85em"> ? stock : d?p?t FOB</span>
+      </p>`
+        : `
+      <p style="opacity:.75">
+        Installation et retrait uniquement.
+        La fabrication des augmentations est disponible depuis le FOB.
+      </p>`}
 
       <p>
         <button
@@ -522,7 +593,13 @@ async function renderAugmentManager({
   `;
 }
 
-export async function openHuntWeaponWorkshop(crafter) {
+export async function openHuntWeaponWorkshop(
+  crafter,
+  {
+    allowCraft = false,
+    source = "management",
+  } = {},
+) {
   const api = toolkitApi();
 
   const result = listHuntWeapons({
@@ -616,6 +693,7 @@ if (!element) return dialog;
       crafter,
       weapon,
       api,
+      allowCraft,
     });
 
     selectedWeapon = weapon;
@@ -672,44 +750,16 @@ if (!element) return dialog;
 
       let response;
 
-      if (
-        operation === "craft"
-      ) {
-        if (
-          !api.craftingCraftQueue?.enqueue
-        ) {
-          response = {
-            green: false,
-            reason:
-              "craft-queue-unavailable",
-          };
-        } else {
-          response =
-            await api.craftingCraftQueue
-              .enqueue({
-                actor:
-                  crafter,
-
-                weapon:
-                  selectedWeapon,
-
-                augmentId,
-
-                expeditionId,
-              });
-        }
-      } else {
-        response =
-          await api.weaponAugmentAuthority
-            .request({
-              crafter,
-              weapon:
-                selectedWeapon,
-              operation,
-              augmentId,
-              expeditionId,
-            });
-      }
+      response =
+        await api.weaponAugmentAuthority
+          .request({
+            crafter,
+            weapon:
+              selectedWeapon,
+            operation,
+            augmentId,
+            expeditionId,
+          });
 
       console.info(
         `${MODULE_ID} | Hunt weapon workshop`,
@@ -745,5 +795,7 @@ if (!element) return dialog;
 
 export const weaponAugmentWorkshopApi = Object.freeze({
   list: listHuntWeapons,
+  crafterForUser:
+    huntArtisanCrafterForUser,
   open: openHuntWeaponWorkshop,
 });

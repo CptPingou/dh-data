@@ -3894,6 +3894,25 @@ function installHuntWorkshopFobCard(fobView) {
     };
   }
 
+  const api =
+    getApi();
+
+  const workshop =
+    api?.weaponAugmentWorkshop;
+
+  const crafter =
+    workshop?.crafterForUser?.(
+      game.user,
+    ) ?? null;
+
+  if (!crafter) {
+    return {
+      green: false,
+      reason:
+        "viewer-missing-hunt-artisan-card",
+    };
+  }
+
   const grid =
     fobView.querySelector(
       ".dhct-fob-workshops__grid"
@@ -3965,63 +3984,13 @@ function installHuntWorkshopFobCard(fobView) {
         return;
       }
 
-      const candidates = [];
-
-      if (game.user?.character) {
-        candidates.push(
-          game.user.character
-        );
-      }
-
-      for (const actor of game.actors ?? []) {
-        if (
-          actor?.type === "character" &&
-          actor.testUserPermission?.(
-            game.user,
-            "OWNER"
-          ) === true &&
-          !candidates.includes(actor)
-        ) {
-          candidates.push(actor);
-        }
-      }
-
-      if (game.user?.isGM) {
-        for (const actor of game.actors ?? []) {
-          if (
-            actor?.type === "character" &&
-            !candidates.includes(actor)
-          ) {
-            candidates.push(actor);
-          }
-        }
-      }
-
-      let crafter = null;
-
-      for (const actor of candidates) {
-        const probe =
-          workshop.list({
-            crafter: actor,
-            api,
-          });
-
-        if (probe?.green) {
-          crafter = actor;
-          break;
-        }
-      }
-
-      if (!crafter) {
-        ui.notifications?.warn(
-          "Campaign Toolkit : aucun Artisan disponible pour ouvrir l'atelier."
-        );
-        return;
-      }
-
       const result =
         await workshop.open(
-          crafter
+          crafter,
+          {
+            allowCraft: true,
+            source: "fob",
+          },
         );
 
       if (result?.green === false) {
