@@ -1,0 +1,74 @@
+[
+  {
+    "id": "revelation.mh.vespoid-electric",
+    "schemaVersion": 1,
+    "title": "Propriété électrique identifiée",
+    "researchId": "research.mh.vespoid-electric",
+    "status": "locked",
+    "grantedTags": ["material:electrical"],
+    "unlocks": [
+      {
+        "type": "material-property",
+        "ref": "electrical"
+      }
+    ],
+    "export": {
+      "enabled": false,
+      "target": "none"
+    }
+  },
+  {
+    "id": "revelation.eberron.daelkyr-script",
+    "schemaVersion": 1,
+    "title": "Écriture daelkyr identifiée",
+    "researchId": "research.eberron.daelkyr-language",
+    "status": "locked",
+    "grantedTags": ["language:daelkyr-script"],
+    "unlocks": [
+      {
+        "type": "knowledge",
+        "ref": "knowledge.daelkyr-script"
+      }
+    ],
+    "export": {
+      "enabled": true,
+      "target": "campaignrepo"
+    }
+  },
+  {
+    "id": "revelation.eberron.planar-resonance",
+    "schemaVersion": 1,
+    "title": "Principe de résonance planaire",
+    "researchId": "research.eberron.planar-lens",
+    "status": "locked",
+    "grantedTags": ["knowledge:planar-resonance"],
+    "unlocks": [
+      {
+        "type": "knowledge",
+        "ref": "knowledge.planar-resonance"
+      }
+    ],
+    "export": {
+      "enabled": true,
+      "target": "campaignrepo"
+    }
+  },
+  {
+    "id": "revelation.eberron.roots-location",
+    "schemaVersion": 1,
+    "title": "Entrée du complexe identifiée",
+    "researchId": "research.eberron.roots-entrance",
+    "status": "locked",
+    "grantedTags": ["location:roots-entrance"],
+    "unlocks": [
+      {
+        "type": "location",
+        "ref": "location.daelkyr.roots"
+      }
+    ],
+    "export": {
+      "enabled": true,
+      "target": "campaignrepo"
+    }
+  }
+]

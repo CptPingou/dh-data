@@ -1,0 +1,98 @@
+[
+  {
+    "id": "research.mh.vespoid-electric",
+    "schemaVersion": 1,
+    "title": "Propriétés électriques de la glande de Vespoid",
+    "category": "material",
+    "status": "active",
+    "visibility": "party",
+    "sources": [
+      {
+        "type": "material",
+        "ref": "mh.vespoid.gland"
+      }
+    ],
+    "contributors": [],
+    "progression": {
+      "mode": "fob",
+      "current": 0,
+      "required": 10
+    },
+    "revelations": [
+      "revelation.mh.vespoid-electric"
+    ],
+    "tags": ["monster:vespoid", "research:electrical"]
+  },
+  {
+    "id": "research.eberron.daelkyr-language",
+    "schemaVersion": 1,
+    "title": "Déchiffrer une écriture daelkyr",
+    "category": "language",
+    "status": "available",
+    "visibility": "party",
+    "sources": [
+      {
+        "type": "artifact",
+        "ref": "artifact.daelkyr.manuscript"
+      }
+    ],
+    "contributors": [],
+    "progression": {
+      "mode": "gm",
+      "current": 0,
+      "required": 3
+    },
+    "revelations": [
+      "revelation.eberron.daelkyr-script"
+    ],
+    "tags": ["daelkyr", "language:unknown"]
+  },
+  {
+    "id": "research.eberron.planar-lens",
+    "schemaVersion": 1,
+    "title": "Étudier une lentille de focalisation",
+    "category": "artifact",
+    "status": "available",
+    "visibility": "gm",
+    "sources": [
+      {
+        "type": "artifact",
+        "ref": "artifact.planar-lens"
+      }
+    ],
+    "contributors": [],
+    "progression": {
+      "mode": "event",
+      "current": 0,
+      "required": 1
+    },
+    "revelations": [
+      "revelation.eberron.planar-resonance"
+    ],
+    "tags": ["arcane:industry", "planar:resonance"]
+  },
+  {
+    "id": "research.eberron.roots-entrance",
+    "schemaVersion": 1,
+    "title": "Localiser le complexe des racines",
+    "category": "location",
+    "status": "available",
+    "visibility": "gm",
+    "sources": [
+      {
+        "type": "document",
+        "ref": "document.daelkyr.roots-map"
+      }
+    ],
+    "contributors": [],
+    "progression": {
+      "mode": "gm",
+      "current": 0,
+      "required": 2
+    },
+    "revelations": [
+      "revelation.eberron.roots-location"
+    ],
+    "tags": ["exploration", "daelkyr"]
+  }
+]

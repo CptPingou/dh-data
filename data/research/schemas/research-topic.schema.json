@@ -1,0 +1,19 @@
+{
+  "schemaVersion": 1,
+  "entity": "researchTopic",
+  "required": [
+    "id", "schemaVersion", "title", "category",
+    "status", "visibility", "sources",
+    "contributors", "progression", "revelations", "tags"
+  ],
+  "categories": [
+    "material", "language", "artifact",
+    "location", "history", "mystery", "other"
+  ],
+  "statuses": ["available", "active", "completed", "archived"],
+  "visibilities": ["gm", "party"],
+  "progressionModes": ["fob", "gm", "event", "instant"],
+  "progressionFields": ["mode", "current", "required"],
+  "contributorFields": ["type", "uuid"],
+  "sourceFields": ["type", "ref"]
+}

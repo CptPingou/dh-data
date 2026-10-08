@@ -33,7 +33,10 @@ function installResearchKnowledgeRefreshHook() {
             ".materialKnowledge" &&
         key !==
           MODULE_ID +
-            ".craftingResearchQueue"
+            ".craftingResearchQueue" &&
+        key !==
+          MODULE_ID +
+            ".researchKnowledge"
       ) {
         return;
       }
@@ -60,6 +63,200 @@ function installResearchKnowledgeRefreshHook() {
   );
 }
 
+
+function ensureResearchStationStyles() {
+  const styleId =
+    "dhct-research-station-layout";
+
+  if (
+    document.getElementById(styleId)
+  ) {
+    return;
+  }
+
+  const style =
+    document.createElement("style");
+
+  style.id = styleId;
+
+  style.textContent = `
+    .dct-research-station {
+      display: grid !important;
+      gap: 1rem !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    .dct-research-toolbar {
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 1rem !important;
+      flex-wrap: wrap !important;
+    }
+
+    .dct-research-focus {
+      display: grid !important;
+      justify-items: center !important;
+      gap: .75rem !important;
+      width: 100% !important;
+      padding: .9rem !important;
+      box-sizing: border-box !important;
+      border:
+        1px solid
+        var(--color-border-light-2) !important;
+      border-radius: 8px !important;
+      background:
+        rgba(0, 0, 0, .10) !important;
+    }
+
+    .dct-research-focus[hidden] {
+      display: none !important;
+    }
+
+    .dct-research-focus
+    .dct-research-card {
+      width: 140px !important;
+      max-width: 140px !important;
+    }
+
+    .dct-research-zone,
+    .dct-research-related {
+      display: grid !important;
+      gap: .75rem !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      margin-top: .8rem !important;
+    }
+
+    .dct-research-zone h3,
+    .dct-research-related h3 {
+      margin: 0 !important;
+    }
+
+    .dct-research-grid {
+      display: grid !important;
+      grid-template-columns:
+        repeat(
+          5,
+          minmax(0, 1fr)
+        ) !important;
+      gap: .35rem !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      justify-items: center !important;
+    }
+
+    .dct-research-card {
+      width: 140px !important;
+      max-width: 140px !important;
+      min-width: 140px !important;
+      aspect-ratio: 1 / 1 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content:
+        space-between !important;
+      gap: .45rem !important;
+      padding: .55rem !important;
+      box-sizing: border-box !important;
+      border:
+        1px solid
+        var(--color-border-light-2) !important;
+      border-radius: 8px !important;
+      background:
+        rgba(255, 255, 255, .035) !important;
+      overflow: hidden !important;
+    }
+
+    .dct-research-card--focus {
+      width: min(140px, 100%) !important;
+      aspect-ratio: 1 / 1 !important;
+      box-shadow:
+        0 0 0 2px
+        rgba(255, 255, 255, .10) !important;
+    }
+
+    .dct-research-card__open {
+      flex: 1 1 auto !important;
+      width: 100% !important;
+      min-width: 0 !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: center !important;
+      align-items: center !important;
+      gap: .35rem !important;
+      text-align: center !important;
+      border: 0 !important;
+      background: transparent !important;
+      padding: .35rem !important;
+      cursor: pointer !important;
+      box-shadow: none !important;
+    }
+
+    .dct-research-card__title {
+      font-size: .95rem !important;
+      line-height: 1.15 !important;
+      white-space: normal !important;
+    }
+
+    .dct-research-card__subtitle {
+      font-size: .75rem !important;
+      opacity: .7 !important;
+      white-space: normal !important;
+    }
+
+    .dct-research-card__status {
+      display: grid !important;
+      gap: .2rem !important;
+      font-size: .72rem !important;
+    }
+
+    .dct-research-card__status select {
+      width: 100% !important;
+    }
+
+    .dct-research-card__status-badge {
+      display: block !important;
+      text-align: center !important;
+      font-weight: 700 !important;
+      font-size: .72rem !important;
+      padding: .25rem .35rem !important;
+      border-radius: 999px !important;
+      background:
+        rgba(255, 255, 255, .09) !important;
+    }
+
+    @media (max-width: 900px) {
+      .dct-research-grid {
+        grid-template-columns:
+          repeat(
+            3,
+            minmax(0, 1fr)
+          ) !important;
+      }
+    }
+
+    @media (max-width: 620px) {
+      .dct-research-grid {
+        grid-template-columns:
+          repeat(
+            2,
+            minmax(0, 1fr)
+          ) !important;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .dct-research-grid {
+        grid-template-columns:
+          1fr !important;
+      }
+    }
+  `;
+
+  document.head.appendChild(style);
+}
 
 function esc(value) {
   return String(value ?? "").replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
@@ -312,6 +509,13 @@ export async function buildResearchStationModel({
       )
   );
 
+  const publicKnowledge =
+    api.researchKnowledge?.read?.() ?? {
+      schemaVersion: 2,
+      revision: 0,
+      revelations: []
+    };
+
   const knowledgeProject =
     await api
       ?.craftingKnowledgeBrowser
@@ -336,6 +540,7 @@ export async function buildResearchStationModel({
     actorUuid: actor.uuid,
     materials,
     knowledgeProject,
+    publicKnowledge,
   };
 }
 
@@ -523,6 +728,7 @@ function researchSquareCard({
   status = null,
   materialId = null,
   propertyId = null,
+  containerId = null,
   focus = false,
 } = {}) {
   const isGm =
@@ -582,6 +788,33 @@ function researchSquareCard({
             : ""
         );
 
+  const researchAction =
+    (
+      type === "property" &&
+      status === "visible" &&
+      materialId &&
+      propertyId &&
+      containerId
+    )
+      ? (
+          '<button ' +
+          'type="button" ' +
+          'class="dct-research-card__research" ' +
+          'data-dct-research-action="research" ' +
+          'data-material-id="' +
+          esc(materialId) +
+          '" ' +
+          'data-property-id="' +
+          esc(propertyId) +
+          '" ' +
+          'data-container-id="' +
+          esc(containerId) +
+          '">' +
+          "Rechercher" +
+          "</button>"
+        )
+      : "";
+
   return (
     '<article class="dct-research-card' +
     (
@@ -615,6 +848,7 @@ function researchSquareCard({
       "</button>" +
 
       statusEditor +
+      researchAction +
 
     "</article>"
   );
@@ -636,6 +870,456 @@ function researchRelationGrid(
           )
     ) +
     "</div>"
+  );
+}
+
+function researchKnowledgeHolderName(uuid) {
+  const actor =
+    [...(game.actors ?? [])].find(
+      candidate => candidate.uuid === uuid
+    );
+
+  return actor?.name ?? uuid;
+}
+
+async function openNarrativeRevelationDialog() {
+  if (!game.user?.isGM) return;
+
+  const DialogV2 =
+    foundry?.applications?.api?.DialogV2;
+
+  if (!DialogV2) {
+    throw new Error("DialogV2 unavailable");
+  }
+
+  const actors = [...game.actors.contents]
+    .filter(actor =>
+      actor.type === "character" ||
+      actor.type === "npc"
+    )
+    .sort((a, b) =>
+      a.name.localeCompare(b.name)
+    );
+
+  const actorOptions = actors.map(actor =>
+    '<option value="' + esc(actor.uuid) + '">' +
+    esc(actor.name) +
+    "</option>"
+  ).join("");
+
+  const html = `
+    <div data-dhct-revelation-form
+          style="display:grid;gap:.75rem">
+
+      <label>
+        <strong>Titre *</strong>
+        <input name="title" required
+               placeholder="Déchiffrement d'une inscription">
+      </label>
+
+      <label>
+        <strong>Sujet de recherche *</strong>
+        <input name="researchId" required
+               placeholder="research.dhakaani.ecriture">
+      </label>
+
+      <label>
+        <strong>Statut initial</strong>
+        <select name="status">
+          <option value="discovered">Découvert</option>
+          <option value="shared">Partagé</option>
+        </select>
+      </label>
+
+      <label>
+        <strong>Détenteurs</strong>
+        <select name="holders" multiple size="5">
+          ${actorOptions}
+        </select>
+        <small>
+          Sélection multiple : Ctrl + clic.
+          Requis pour une découverte individuelle.
+        </small>
+      </label>
+
+      <label>
+        <strong>Tags acquis</strong>
+        <input name="tags"
+               placeholder="langue:dhakaani, savoir:ruines">
+        <small>Séparer les tags par des virgules.</small>
+      </label>
+
+      <label>
+        <strong>Déblocage — type (facultatif)</strong>
+        <input name="unlockType"
+               placeholder="location">
+      </label>
+
+      <label>
+        <strong>Déblocage — référence</strong>
+        <input name="unlockRef"
+               placeholder="location.ruines-dhakaani">
+      </label>
+
+      <button type="button"
+              data-dhct-revelation-save>
+        Enregistrer la connaissance
+      </button>
+    </div>
+  `;
+
+  const dialog = new DialogV2({
+    window: {
+      title: "Nouvelle révélation"
+    },
+    content: html,
+    buttons: [{
+      action: "close",
+      label: "Annuler"
+    }]
+  });
+
+  await dialog.render(true);
+
+  const root = dialog.element;
+  const form = root?.querySelector(
+    "[data-dhct-revelation-form]"
+  );
+
+  if (!(form instanceof HTMLElement)) {
+    throw new Error("Revelation form unavailable");
+  }
+
+  form.addEventListener("click", async event => {
+    const submitButton = event.target?.closest?.(
+      "[data-dhct-revelation-save]"
+    );
+
+    if (!submitButton) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    const api = game.modules.get(MODULE_ID)
+      ?.api?.researchKnowledge;
+
+    if (
+      !game.user?.isGM ||
+      typeof api?.reveal !== "function"
+    ) {
+      ui.notifications?.error(
+        "Publication MJ indisponible"
+      );
+      return;
+    }
+
+    const data = {
+      get(name) {
+        return form.querySelector(
+          `[name="${name}"]`
+        )?.value ?? "";
+      }
+    };
+
+    const title = String(
+      data.get("title") ?? ""
+    ).trim();
+
+    const researchId = String(
+      data.get("researchId") ?? ""
+    ).trim();
+
+    const status = String(
+      data.get("status") ?? ""
+    );
+
+    const holders = [
+      ...form.querySelector(
+        '[name="holders"]'
+      ).selectedOptions
+    ].map(option => option.value);
+
+    const tags = [
+      ...new Set(
+        String(data.get("tags") ?? "")
+          .split(",")
+          .map(tag => tag.trim())
+          .filter(Boolean)
+      )
+    ];
+
+    const unlockType = String(
+      data.get("unlockType") ?? ""
+    ).trim();
+
+    const unlockRef = String(
+      data.get("unlockRef") ?? ""
+    ).trim();
+
+    if (!title || !researchId) {
+      ui.notifications?.warn(
+        "Titre et sujet obligatoires"
+      );
+      return;
+    }
+
+    if (
+      status === "discovered" &&
+      holders.length === 0
+    ) {
+      ui.notifications?.warn(
+        "Sélectionner au moins un détenteur"
+      );
+      return;
+    }
+
+    if (
+      Boolean(unlockType) !==
+      Boolean(unlockRef)
+    ) {
+      ui.notifications?.warn(
+        "Renseigner le type et la référence du déblocage"
+      );
+      return;
+    }
+
+    const unlocks =
+      unlockType && unlockRef
+        ? [{type: unlockType, ref: unlockRef}]
+        : [];
+
+    const saveButton = form.querySelector(
+      "[data-dhct-revelation-save]"
+    );
+
+    if (saveButton?.disabled) return;
+    if (saveButton) saveButton.disabled = true;
+
+    try {
+      const id = "revelation.manual." +
+        foundry.utils.randomID();
+
+      await api.reveal({
+        status,
+        discoveredBy:
+          status === "discovered"
+            ? holders
+            : [],
+        revelation: {
+          id,
+          researchId,
+          title,
+          grantedTags: tags,
+          unlocks,
+          export: {
+            enabled: false,
+            target: "none"
+          }
+        }
+      });
+
+      ui.notifications?.info(
+        "Connaissance enregistrée"
+      );
+
+      await dialog.close();
+
+    } catch (error) {
+      console.error(
+        MODULE_ID + " | revelation failed",
+        error
+      );
+
+      ui.notifications?.error(
+        "Révélation : " +
+        (error?.message ?? "échec")
+      );
+
+    } finally {
+      if (saveButton?.isConnected) {
+        saveButton.disabled = false;
+      }
+    }
+  });
+}
+function renderPublicResearchKnowledge(registry) {
+  const revelations =
+    Array.isArray(registry?.revelations)
+      ? registry.revelations
+      : [];
+
+  const isGm = game.user?.isGM === true;
+
+  const active = revelations.filter(
+    entry => entry.archived !== true
+  );
+
+  const archived = revelations.filter(
+    entry => entry.archived === true
+  );
+
+  const renderEntry = entry => {
+    const shared = entry.status === "shared";
+
+    const holders =
+      (entry.discoveredBy ?? [])
+        .map(researchKnowledgeHolderName);
+
+    const holderLabel =
+      holders.length
+        ? holders.join(", ")
+        : shared
+          ? "Connaissance commune"
+          : "Détenteur non identifié";
+
+    const tags =
+      (entry.grantedTags ?? [])
+        .map(tag =>
+          "<li>" + esc(tag) + "</li>"
+        )
+        .join("");
+
+    const unlocks =
+      (entry.unlocks ?? [])
+        .map(item =>
+          "<li>" +
+          esc(item.type) +
+          " : " +
+          esc(item.ref) +
+          "</li>"
+        )
+        .join("");
+
+    const shareButton =
+      isGm && !shared && !entry.archived
+        ? (
+            '<button type="button" ' +
+            'data-dhct-knowledge-command="share" ' +
+            'data-knowledge-id="' +
+            esc(entry.id) +
+            '">Partager</button>'
+          )
+        : "";
+
+    const archiveButton =
+      isGm
+        ? (
+            '<button type="button" ' +
+            'data-dhct-knowledge-command="' +
+            (entry.archived ? "restore" : "archive") +
+            '" data-knowledge-id="' +
+            esc(entry.id) +
+            '">' +
+            (entry.archived ? "Restaurer" : "Archiver") +
+            "</button>"
+          )
+        : "";
+
+    const exportLabel =
+      entry.export?.enabled &&
+      entry.export?.target === "campaignrepo"
+        ? "<small>Export CampaignRepo prévu</small>"
+        : "";
+
+    return (
+      '<article class="dct-research-card" ' +
+      'data-dhct-knowledge-entry="' +
+      esc(entry.id) +
+      '" style="' +
+      'width:100%!important;' +
+      'max-width:none!important;' +
+      'min-width:0!important;' +
+      'aspect-ratio:auto!important;' +
+      'display:grid!important;' +
+      'gap:.5rem!important;">' +
+
+        '<div style="' +
+        'display:flex;gap:.5rem;' +
+        'justify-content:space-between;' +
+        'align-items:center;flex-wrap:wrap;">' +
+          "<strong>" + esc(entry.title) + "</strong>" +
+          '<span class="dct-research-card__status-badge">' +
+            (shared ? "Partagé" : "Découvert") +
+          "</span>" +
+        "</div>" +
+
+        "<small>" +
+          (shared
+            ? "Détenteurs initiaux : "
+            : "Découvert par : ") +
+          esc(holderLabel) +
+        "</small>" +
+
+        (tags
+          ? "<div><small>Tags acquis</small>" +
+            "<ul>" + tags + "</ul></div>"
+          : "") +
+
+        (unlocks
+          ? "<div><small>Déblocages</small>" +
+            "<ul>" + unlocks + "</ul></div>"
+          : "") +
+
+        exportLabel +
+
+        (isGm
+          ? (
+              '<div style="' +
+              'display:flex;gap:.4rem;' +
+              'justify-content:flex-end;' +
+              'flex-wrap:wrap;">' +
+                shareButton +
+                archiveButton +
+              "</div>"
+            )
+          : "") +
+
+      "</article>"
+    );
+  };
+
+  const activeHtml = active.map(renderEntry).join("");
+  const archiveHtml = archived.map(renderEntry).join("");
+
+  return (
+    '<section class="dct-research-zone" ' +
+    'data-dhct-public-research>' +
+
+      '<div style="display:flex;align-items:center;' +
+      'justify-content:space-between;gap:.5rem;' +
+      'flex-wrap:wrap;">' +
+        "<h3>Connaissances acquises (" +
+          active.length +
+        ")</h3>" +
+        (isGm
+          ? '<button type="button" ' +
+            'data-dhct-new-revelation>' +
+            '+ Nouvelle révélation</button>'
+          : "") +
+      "</div>" +
+
+      (activeHtml
+        ? '<div style="display:grid;gap:.6rem">' +
+            activeHtml +
+          "</div>"
+        : "<p>Aucune connaissance active.</p>") +
+
+      '<details data-dhct-knowledge-archives>' +
+        "<summary>Archives (" +
+          archived.length +
+        ")</summary>" +
+
+        (archiveHtml
+          ? '<div style="' +
+            'display:grid;gap:.6rem;' +
+            'margin-top:.65rem;">' +
+              archiveHtml +
+            "</div>"
+          : "<p>Aucune connaissance archivée.</p>") +
+
+      "</details>" +
+
+    "</section>"
   );
 }
 
@@ -834,6 +1518,8 @@ function content(
                   material.id,
                 propertyId:
                   property.id,
+                containerId:
+                  model.containerId,
               })
           );
 
@@ -1247,6 +1933,12 @@ function content(
           'overflow:hidden;' +
         '}' +
 
+        '.dct-research-card__research{' +
+          'width:100%;' +
+          'margin-top:.2rem;' +
+          'flex:0 0 auto;' +
+        '}' +
+
         '.dct-research-card--focus{' +
           'width:min(220px,100%);' +
           'aspect-ratio:1/1;' +
@@ -1360,6 +2052,10 @@ function content(
           "Aucune propri\u00e9t\u00e9 connue."
         ) +
       "</section>" +
+
+      renderPublicResearchKnowledge(
+        model.publicKnowledge
+      ) +
 
     "</div>"
   );
@@ -1670,23 +2366,18 @@ async function openCreatureKnowledgeDialog({
     );
   }
 
-  const materials =
+  const materialCards =
     (model.materials ?? [])
       .map(
         (material) =>
-          "<li>" +
-          '<button type="button" ' +
-          'data-dct-open-material="' +
-          esc(material.id) +
-          '">' +
-          esc(
-            material.name ??
-            material.id
-          ) +
-          "</button>" +
-          "</li>"
-      )
-      .join("");
+          researchSquareCard({
+            type: "material",
+            id: material.id,
+            name:
+              material.name ??
+              material.id,
+          })
+      );
 
   const content =
     '<div class="dct-knowledge-creature">' +
@@ -1980,7 +2671,7 @@ async function openPropertyKnowledgeDialog({
       )
       .join("");
 
-  const recipeRows = [];
+  const recipeCards = [];
 
   for (
     const recipeSummary
@@ -2018,111 +2709,86 @@ async function openPropertyKnowledgeDialog({
       }
     }
 
-    const effect =
-      outputDefinition?.description
-        ? '<p style="' +
-          "margin:.25rem 0 .4rem 0" +
-          '">' +
-          "<strong>Effet :</strong> " +
-          esc(
-            outputDefinition.description
-          ) +
-          "</p>"
-        : "";
-
-    const requirementRows =
+    const requirementSummary =
       (recipe.requirements ?? [])
         .map(
           (requirement) =>
-            "<li>" +
-            esc(
+            (
               requirement.label ??
               requirement.propertyId
             ) +
-            " : " +
-            esc(
-              requirement.value
-            ) +
-            "</li>"
+            " " +
+            (
+              requirement.value ??
+              ""
+            )
         )
-        .join("");
+        .filter(Boolean)
+        .join(" ? ");
 
-    const requirements =
-      requirementRows
-        ? '<div style="' +
-          "margin-top:.35rem" +
-          '">' +
-          "<strong>Propri\u00e9t\u00e9s requises connues</strong>" +
-          "<ul>" +
-          requirementRows +
-          "</ul>" +
-          "</div>"
-        : "";
+    const subtitle =
+      [
+        outputDefinition?.description ??
+          "",
+        requirementSummary
+          ? "Requiert : " +
+            requirementSummary
+          : "",
+      ]
+        .filter(Boolean)
+        .join(" ? ");
 
-    recipeRows.push(
-      '<li style="' +
-        "margin-bottom:.75rem" +
-      '">' +
-        '<button type="button" ' +
-        'data-dct-open-recipe="' +
-        esc(recipe.id) +
-        '">' +
-        "<strong>" +
-        esc(
+    recipeCards.push(
+      researchSquareCard({
+        type: "recipe",
+        id: recipe.id,
+        name:
           recipe.name ??
-          recipe.id
-        ) +
-        "</strong>" +
-        "</button>" +
-        effect +
-        requirements +
-      "</li>"
+          recipe.id,
+        subtitle,
+      })
     );
   }
 
-  const recipes =
-    recipeRows.join("");
-
-  const description =
-    model.description
-      ? "<p>" +
-        esc(model.description) +
-        "</p>"
-      : "";
+  const propertyFocusCard =
+    researchSquareCard({
+      type: "property",
+      id: model.id,
+      name:
+        model.label ??
+        model.id,
+      subtitle:
+        model.description ??
+        "",
+      propertyId:
+        model.id,
+      focus: true,
+    });
 
   const content =
-    '<div class="dct-knowledge-property">' +
-      description +
-      '<div style="' +
-        "display:grid;" +
-        "grid-template-columns:minmax(0,1fr) minmax(0,1fr);" +
-        "gap:1rem;" +
-        "align-items:start" +
-      '">' +
+    '<div class="dct-research-station dct-knowledge-property">' +
 
-        "<section>" +
-          "<h3>Parties connues</h3>" +
-          (
-            materials
-              ? "<ul>" +
-                materials +
-                "</ul>"
-              : "<p>Aucune partie connue.</p>"
-          ) +
-        "</section>" +
+      '<section class="dct-research-focus">' +
+        "<h2>Propri\u00e9t\u00e9</h2>" +
+        propertyFocusCard +
+      "</section>" +
 
-        "<section>" +
-          "<h3>Recettes d\u00e9pendantes</h3>" +
-          (
-            recipes
-              ? "<ul>" +
-                recipes +
-                "</ul>"
-              : "<p>Aucune recette connue.</p>"
-          ) +
-        "</section>" +
+      '<section class="dct-research-related">' +
+        "<h3>Mat\u00e9riaux connus</h3>" +
+        researchRelationGrid(
+          materialCards,
+          "Aucun mat\u00e9riau connu."
+        ) +
+      "</section>" +
 
-      "</div>" +
+      '<section class="dct-research-related">' +
+        "<h3>Recettes d\u00e9pendantes</h3>" +
+        researchRelationGrid(
+          recipeCards,
+          "Aucune recette connue."
+        ) +
+      "</section>" +
+
     "</div>";
 
   const dialog =
@@ -2165,6 +2831,8 @@ export async function openCraftingResearchStation({
   expeditionId,
   actor = null,
 } = {}) {
+  ensureResearchStationStyles();
+
   const api = game.modules.get(MODULE_ID)?.api;
   const actors = listOwnedResearchActors();
   const preferredActor = actor ?? game.user?.character ?? null;
@@ -2180,8 +2848,34 @@ export async function openCraftingResearchStation({
   if (!DialogV2) throw new Error("Campaign Toolkit | DialogV2 unavailable");
   const dialog = new DialogV2({ window:{ title:"Station de recherche" }, content:content(model, actors, selectedActor.id), buttons:[{action:"close",label:"Fermer",default:true}] });
   await dialog.render(true);
+
   const root = dialog.element;
   if (!root) return dialog;
+
+  const desiredWidth =
+    Math.min(
+      1050,
+      Math.max(
+        720,
+        Math.floor(
+          window.innerWidth * 0.88
+        )
+      )
+    );
+
+  try {
+    dialog.setPosition?.({
+      width: desiredWidth,
+    });
+  } catch {
+    // Foundry version fallback below.
+  }
+
+  root.style.width =
+    desiredWidth + "px";
+
+  root.style.maxWidth =
+    "88vw";
 
 
   // P2.12l.4 research vertical scroll
@@ -2281,6 +2975,102 @@ let currentFocus = null;
       refreshFromKnowledgeChange
     );
 
+  root.addEventListener(
+    "click",
+    async (event) => {
+      const button =
+        event.target?.closest?.(
+          "[data-dhct-knowledge-command]"
+        );
+
+      if (!(button instanceof HTMLButtonElement)) {
+        return;
+      }
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (!game.user?.isGM) {
+        return;
+      }
+
+      const id = button.dataset.knowledgeId;
+      const command = button.dataset.dhctKnowledgeCommand;
+
+      if (
+        !id ||
+        !["share", "archive", "restore"].includes(command)
+      ) {
+        return;
+      }
+
+      const registryApi =
+        game.modules.get(MODULE_ID)
+          ?.api?.researchKnowledge;
+
+      button.disabled = true;
+
+      try {
+        if (command === "share") {
+          if (typeof registryApi?.share !== "function") {
+            throw new Error("API de partage indisponible");
+          }
+
+          await registryApi.share(id);
+        } else {
+          if (typeof registryApi?.archive !== "function") {
+            throw new Error("API d'archivage indisponible");
+          }
+
+          await registryApi.archive(
+            id,
+            command === "archive"
+          );
+        }
+
+        await refresh();
+
+      } catch (error) {
+        console.error(
+          MODULE_ID + " | knowledge command failed",
+          error
+        );
+
+        ui.notifications?.error(
+          "Centre d'étude : " +
+          (error?.message ?? "action impossible")
+        );
+
+      } finally {
+        if (button.isConnected) {
+          button.disabled = false;
+        }
+      }
+    }
+  );
+
+  root.addEventListener("click", async event => {
+    const button = event.target?.closest?.(
+      "[data-dhct-new-revelation]"
+    );
+
+    if (!button || !game.user?.isGM) return;
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    try {
+      await openNarrativeRevelationDialog();
+    } catch (error) {
+      console.error(
+        MODULE_ID + " | revelation dialog failed",
+        error
+      );
+      ui.notifications?.error(
+        error?.message ?? "Formulaire indisponible"
+      );
+    }
+  });
   root.addEventListener(
     "change",
     async (event) => {

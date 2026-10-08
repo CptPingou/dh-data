@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "entity": "researchRevelation",
+  "required": [
+    "id", "schemaVersion", "title", "researchId",
+    "status", "grantedTags", "unlocks", "export"
+  ],
+  "statuses": ["locked", "revealed"],
+  "unlockFields": ["type", "ref"],
+  "exportFields": ["enabled", "target"],
+  "exportTargets": ["campaignrepo", "none"]
+}

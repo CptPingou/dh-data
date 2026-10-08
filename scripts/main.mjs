@@ -91,6 +91,14 @@ import { weaponAugmentWorkshopApi } from "./weapon-augment-workshop.mjs";
 import { huntArtisanWorkshopFeatureApi, registerHuntArtisanWorkshopFeatureRuntime } from "./hunt-artisan-workshop-feature.mjs";
 import { craftingMaterialsApi } from "./crafting-material-runtime.mjs";
 import { registerMaterialKnowledgeSetting, createCraftingKnowledgeApi } from "./crafting-knowledge-runtime.mjs";
+import {
+  registerResearchKnowledgeSetting,
+  readResearchKnowledge,
+  projectPartyKnowledge,
+  revealResearchKnowledge,
+  shareResearchKnowledge,
+  archiveResearchKnowledge,
+} from "./research-knowledge-registry.mjs";
 import { createCraftingRuntimeApi } from "./crafting-runtime.mjs";
 import { craftingResearchAuthorityApi } from "./crafting-research-authority.mjs";
 import { craftingResearchStationApi } from "./crafting-research-station.mjs";
@@ -188,6 +196,7 @@ Hooks.once("init", () => {
   registerWorldInfusionsSetting();
   registerExpeditionManifestPersistence();
   registerMaterialKnowledgeSetting();
+  registerResearchKnowledgeSetting();
   registerCraftingResearchQueueSetting();
   registerCraftingCraftQueueSetting();
   registerFobTurnSetting();
@@ -360,6 +369,13 @@ Hooks.once("init", () => {
     craftingKnowledge: createCraftingKnowledgeApi(craftingMaterialsApi),
     craftingResearchAuthority: craftingResearchAuthorityApi,
     craftingResearchStation: craftingResearchStationApi,
+    researchKnowledge: Object.freeze({
+      read: readResearchKnowledge,
+      reveal: revealResearchKnowledge,
+      projectParty: projectPartyKnowledge,
+      share: shareResearchKnowledge,
+      archive: archiveResearchKnowledge,
+    }),
     fobActivityDispatcher:
       fobActivityDispatcherApi,
     fob: fobTurnApi,
