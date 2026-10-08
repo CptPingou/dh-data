@@ -360,19 +360,81 @@ async function resolveCraft({
     };
   }
 
+  /*
+   * R4.4e.4c
+   * A completed queue entry is NOT proof that a craft
+   * still needs to be applied.
+   *
+   * The weapon's persistent crafted[] state takes
+   * precedence over a stale FOB queue entry.
+   */
+  const weaponStateApi =
+    api.weaponAugmentState;
+
+  if (
+    typeof weaponStateApi?.get !== "function"
+  ) {
+    return {
+      green: true,
+      type: "craft",
+      changed: false,
+      completed: true,
+      ready: true,
+      blocked: true,
+      reason: "craft-weapon-state-unavailable",
+      entry: currentEntry,
+    };
+  }
+
+  const weaponState =
+    await weaponStateApi.get(weapon);
+
+  if (
+    !weaponState?.initialized ||
+    !Array.isArray(
+      weaponState?.state?.crafted
+    )
+  ) {
+    return {
+      green: true,
+      type: "craft",
+      changed: false,
+      completed: true,
+      ready: true,
+      blocked: true,
+      reason: "craft-weapon-state-invalid",
+      entry: currentEntry,
+    };
+  }
+
+  if (
+    weaponState.state.crafted.includes(
+      currentEntry.augmentId
+    )
+  ) {
+    return {
+      green: true,
+      type: "craft",
+      changed: false,
+      completed: true,
+      ready: true,
+      blocked: true,
+      reason: "craft-augment-already-applied",
+      entry: currentEntry,
+      weaponUuid: weapon.uuid,
+      augmentId: currentEntry.augmentId,
+      requiresGmReview: true,
+    };
+  }
+
   const craft =
     await api.crafting
       .craftWeaponAugment({
-        crafter:
-          actor,
-
+        crafter: actor,
         weapon,
-
-        augmentId:
-          currentEntry.augmentId,
-
-        expeditionId:
-          currentEntry.expeditionId,
+        augmentId: currentEntry.augmentId,
+        expeditionId: currentEntry.expeditionId,
+        operationId: currentEntry.id,
       });
 
   /*
@@ -414,6 +476,22 @@ async function resolveCraft({
       entry:
         currentEntry,
       craft,
+    };
+  }
+
+  const completed =
+    await api.craftingOperationJournal.mark(
+      currentEntry.id,
+      "completed"
+    );
+
+  if (!completed?.green) {
+    return {
+      green: false,
+      type: "craft",
+      reason: "craft-journal-completion-failed",
+      entry: currentEntry,
+      requiresGmReview: true,
     };
   }
 
@@ -466,6 +544,7 @@ async function dispatchTurn(
     !api?.fobActivity?.claim ||
     !api?.fobActivity?.claimFor ||
     !api?.fobActivity?.recordResolution ||
+    !api?.craftingOperationJournal?.mark ||
     !api?.craftingResearchQueue
       ?.status ||
     !api?.craftingResearchQueue

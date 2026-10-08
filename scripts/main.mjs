@@ -99,6 +99,10 @@ import {
   shareResearchKnowledge,
   archiveResearchKnowledge,
 } from "./research-knowledge-registry.mjs";
+import {
+  registerCraftingOperationJournal,
+  createCraftingOperationJournalApi,
+} from "./crafting-operation-journal.mjs";
 import { createCraftingRuntimeApi } from "./crafting-runtime.mjs";
 import { craftingResearchAuthorityApi } from "./crafting-research-authority.mjs";
 import { craftingResearchStationApi } from "./crafting-research-station.mjs";
@@ -201,6 +205,7 @@ Hooks.once("init", () => {
   registerCraftingCraftQueueSetting();
   registerFobTurnSetting();
   registerFobActivityLedgerSetting();
+  registerCraftingOperationJournal();
   registerFobTurnControls();
   if (!bloodDomainBootstrapped && !CONFIG?.DH?.DOMAIN?.domains?.blood) {
     registerBloodDomain();
@@ -380,6 +385,7 @@ Hooks.once("init", () => {
       fobActivityDispatcherApi,
     fob: fobTurnApi,
     fobActivity: createFobActivityLedgerApi(),
+    craftingOperationJournal: createCraftingOperationJournalApi(),
     artificerResource: artificerResourceApi,
     artificerInfusionAuthority: artificerInfusionAuthorityApi,
     artificerInfusion: artificerInfusionApi,
@@ -402,6 +408,7 @@ Hooks.once("init", () => {
     manifestApi: toolkitApi.expeditionManifest,
     persistenceApi: toolkitApi.expeditionManifest,
     weaponAugmentStateApi: toolkitApi.weaponAugmentState,
+    operationJournalApi: toolkitApi.craftingOperationJournal,
   });
 
   toolkitApi.craftingResearchQueue =
@@ -579,7 +586,7 @@ Hooks.once("ready", async () => {
 });
 
 
-// P2.8n.1 — presentation-only virtual family label bridge.
+// P2.8n.1 â€” presentation-only virtual family label bridge.
 Hooks.once("init", () => {
   installToolkitCardPresentationBridge();
 });

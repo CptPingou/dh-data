@@ -375,7 +375,7 @@ function materialHasProperty(material, propertyId) {
   return materialPropertyIds(material).includes(propertyId);
 }
 
-export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestApi, persistenceApi, weaponAugmentStateApi } = {}) {
+export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestApi, persistenceApi, weaponAugmentStateApi, operationJournalApi = null } = {}) {
   if (!materialsApi?.list || !materialsApi?.get) throw new Error("craftingMaterials API is required.");
   if (!knowledgeApi?.effective || !knowledgeApi?.discover) throw new Error("craftingKnowledge API is required.");
   if (!manifestApi?.consume || !manifestApi?.validate) throw new Error("expeditionManifest API is required.");
@@ -615,11 +615,24 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
       containerInventory(container);
 
     const allocation =
-      allocateRecipe(
-        recipe,
-        inventory,
-        knownDefinitions
-      );
+      recipe?.testFixture
+        ?.free === true
+        ? {
+            green: true,
+            reason:
+              "test-fixture-free",
+            recipeId:
+              recipe.id,
+            allocations: [],
+            missing: [],
+            totalUnits: 0,
+            achieved: [],
+          }
+        : allocateRecipe(
+            recipe,
+            inventory,
+            knownDefinitions
+          );
 
     return {
       ...allocation,
@@ -674,53 +687,194 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     weapon,
     augmentId,
     expeditionId,
+    operationId = null,
   } = {}) {
-    if (!game.user?.isGM) throw new Error("Biological craft mutation is GM-only.");
-    const plan =
-      await planWeaponAugment({
-        crafter,
-        augmentId,
-        expeditionId,
-      });
-    if (!plan.green) return plan;
+    if (!game.user?.isGM) {
+      throw new Error("Biological craft mutation is GM-only.");
+    }
 
-    const original = await persistenceApi.load(expeditionId);
-    const working = clone(original);
-    const consumed =
-      consumeAllocationFromContainer(
+    // R4.4e.4a : empêcher la double consommation.
+    if (typeof weaponAugmentStateApi.get !== "function") {
+      return {
+        green: false,
+        reason: "craft-augment-state-api-unavailable",
+      };
+    }
+
+    const currentState = weaponAugmentStateApi.get(weapon);
+
+    if (currentState?.state?.crafted?.includes(augmentId)) {
+      return {
+        green: false,
+        reason: "craft-augment-already-crafted",
+        augmentId,
+        weaponUuid: weapon?.uuid ?? null,
+      };
+    }
+
+    // R4.4e.5c : les mutations doivent être journalisées.
+    if (
+      !operationJournalApi?.begin ||
+      !operationJournalApi?.mark ||
+      !operationJournalApi?.get
+    ) {
+      return {
+        green: false,
+        reason: "craft-operation-journal-unavailable",
+      };
+    }
+
+    operationId = String(operationId ?? "").trim();
+
+    if (!operationId) {
+      return {
+        green: false,
+        reason: "craft-operation-id-required",
+      };
+    }
+
+    // Aucune relance d'une opération déjà commencée.
+    const previous = operationJournalApi.get(operationId);
+
+    if (previous) {
+      return {
+        green: false,
+        reason: "craft-operation-already-recorded",
+        operation: previous,
+      };
+    }
+
+    // Planification en lecture seule avant ouverture du journal.
+    const plan = await planWeaponAugment({
+      crafter,
+      augmentId,
+      expeditionId,
+    });
+
+    if (!plan?.green) return plan;
+
+    const started = await operationJournalApi.begin({
+      operationId,
+      expeditionId,
+      weaponUuid: weapon?.uuid,
+      augmentId,
+    });
+
+    if (!started?.green) {
+      return {
+        green: false,
+        reason: started?.reason ?? "craft-journal-begin-failed",
+        operation: started?.operation ?? null,
+      };
+    }
+
+    let consumed = [];
+    let weaponApplied = false;
+
+    try {
+      const original = await persistenceApi.load(expeditionId);
+
+      if (!original) {
+        throw new Error("expedition-not-found");
+      }
+
+      const working = clone(original);
+
+      consumed = consumeAllocationFromContainer(
         manifestApi,
         working,
         plan.containerId,
         plan.allocations
       );
-    const validation = manifestApi.validate(working);
-    if (!validation.green) throw new Error(`Craft would create invalid expedition manifest: ${(validation.errors ?? []).join("; ")}`);
 
-    await persistenceApi.save(working);
-    try {
-      const state = await weaponAugmentStateApi.craft(weapon, augmentId);
+      const validation = manifestApi.validate(working);
+
+      if (!validation?.green) {
+        throw new Error(
+          `craft-manifest-invalid: ${(validation?.errors ?? []).join("; ")}`
+        );
+      }
+
+      // Écriture A : matériaux.
+      await persistenceApi.save(working);
+
+      const materialsMarked =
+        await operationJournalApi.mark(
+          operationId,
+          "materials-saved"
+        );
+
+      if (!materialsMarked?.green) {
+        throw new Error("craft-journal-materials-mark-failed");
+      }
+
+      // Écriture B : arme.
+      const state = await weaponAugmentStateApi.craft(
+        weapon,
+        augmentId
+      );
+
+      // Vérification de la persistance effective.
+      const after = weaponAugmentStateApi.get(weapon);
+
+      if (!after?.state?.crafted?.includes(augmentId)) {
+        throw new Error("craft-weapon-persistence-unconfirmed");
+      }
+
+      weaponApplied = true;
+
+      const weaponMarked =
+        await operationJournalApi.mark(
+          operationId,
+          "weapon-applied"
+        );
+
+      if (!weaponMarked?.green) {
+        throw new Error("craft-journal-weapon-mark-failed");
+      }
+
       return {
         green: true,
         operation: "craft",
+        operationId,
         augmentId,
         expeditionId,
-        containerId:
-          plan.containerId,
-        allocations:
-          plan.allocations,
+        containerId: plan.containerId,
+        allocations: plan.allocations,
         consumed,
         state,
+        journalPhase: "weapon-applied",
       };
     } catch (error) {
+      // Après une écriture potentielle, l'état est incertain.
+      // Ne jamais relancer automatiquement les matériaux.
+      let reviewError = null;
+
       try {
-        await persistenceApi.save(original);
-      } catch (rollbackError) {
-        throw new Error(`Craft failed (${error.message}); material rollback also failed (${rollbackError.message}).`);
+        const review =
+          await operationJournalApi.mark(
+            operationId,
+            "requires-review"
+          );
+
+        if (!review?.green) {
+          reviewError = review?.reason ?? "review-mark-failed";
+        }
+      } catch (markError) {
+        reviewError = String(markError?.message ?? markError);
       }
-      throw error;
+
+      return {
+        green: false,
+        reason: "craft-operation-requires-review",
+        operationId,
+        cause: String(error?.message ?? error),
+        weaponApplied,
+        reviewError,
+        requiresGmReview: true,
+      };
     }
   }
-
   return Object.freeze({
     loadRecipes: loadCraftingRecipeCatalog,
     recipeForOutput: getCraftingRecipeForOutput,

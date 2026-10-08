@@ -1,4 +1,4 @@
-﻿import assert from "node:assert/strict";
+import assert from "node:assert/strict";
 import { test, beforeEach } from "node:test";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
@@ -158,6 +158,17 @@ function createDispatcherFixture({
 
   const api = {
     fobActivity: ledger,
+
+    // R4.4e.5c JOURNAL FIXTURE
+    craftingOperationJournal: {
+      get: () => null,
+      async begin() {
+        return { green: true, changed: true };
+      },
+      async mark() {
+        return { green: true, changed: true };
+      },
+    },
 
     craftingResearchQueue: {
       status: () => ({
