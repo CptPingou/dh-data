@@ -465,6 +465,7 @@ async function dispatchTurn(
   if (
     !api?.fobActivity?.claim ||
     !api?.fobActivity?.claimFor ||
+    !api?.fobActivity?.recordResolution ||
     !api?.craftingResearchQueue
       ?.status ||
     !api?.craftingResearchQueue
@@ -495,13 +496,28 @@ async function dispatchTurn(
     api.craftingCraftQueue
       .status();
 
-  const selected =
+  const selectedCraft =
     candidatesByActor({
-      researchQueue:
-        research.queue,
+      researchQueue: [],
       craftQueue:
         craft.queue,
     });
+
+  const selectedResearch =
+    (research.queue ?? [])
+      .map(
+        entry => ({
+          type: "research",
+          actorUuid:
+            entry.actorUuid,
+          entry,
+        })
+      );
+
+  const selected = [
+    ...selectedResearch,
+    ...selectedCraft,
+  ];
 
   const results = [];
 
@@ -513,6 +529,10 @@ async function dispatchTurn(
         actorUuid:
           candidate.actorUuid,
         turn,
+        activityType:
+          candidate.type,
+        activityId:
+          candidate.entry.id,
       });
 
     /*
@@ -559,33 +579,81 @@ async function dispatchTurn(
       continue;
     }
 
+    // Une revendication reutilisee n'autorise jamais un rejeu.
+    if (claim.reused === true) {
+      results.push({
+        green: true,
+        changed: false,
+        skipped: true,
+        reason: "fob-turn-already-claimed",
+        actorUuid: candidate.actorUuid,
+        existing: claim.claim,
+      });
+      continue;
+    }
+
     let result;
 
-    if (
-      candidate.type ===
-      "research"
-    ) {
-      result =
-        await resolveResearch({
-          api,
-          entry:
-            candidate.entry,
-          turn,
-        });
-    } else {
-      result =
-        await resolveCraft({
-          api,
-          entry:
-            candidate.entry,
-        });
+    try {
+      result = candidate.type === "research"
+        ? await resolveResearch({
+            api,
+            entry: candidate.entry,
+            turn,
+          })
+        : await resolveCraft({
+            api,
+            entry: candidate.entry,
+          });
+    } catch (error) {
+      result = {
+        green: false,
+        changed: false,
+        reason: "fob-activity-resolution-exception",
+        errorMessage: String(error?.message ?? error),
+      };
+    }
+
+    const blocked =
+      result?.green !== true ||
+      result?.blocked === true;
+
+    let resolution;
+
+    try {
+      resolution = await api.fobActivity.recordResolution({
+        actorUuid: candidate.actorUuid,
+        turn,
+        activityType: candidate.type,
+        activityId: candidate.entry.id,
+        executionStatus: blocked ? "blocked" : "completed",
+        resolutionReason: blocked
+          ? String(
+              result?.reason ??
+              "fob-activity-resolution-failed"
+            )
+          : "",
+      });
+    } catch (error) {
+      resolution = {
+        green: false,
+        reason: "fob-resolution-record-exception",
+        errorMessage: String(error?.message ?? error),
+      };
     }
 
     results.push({
-      actorUuid:
-        candidate.actorUuid,
+      actorUuid: candidate.actorUuid,
       claim,
       ...result,
+      resolution,
+      ...(resolution?.green !== true
+        ? {
+            green: false,
+            reason: "fob-resolution-record-failed",
+            activityResult: result,
+          }
+        : {}),
     });
   }
 

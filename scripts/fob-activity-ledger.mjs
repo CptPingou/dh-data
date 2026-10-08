@@ -1,10 +1,10 @@
-﻿const MODULE_ID =
+const MODULE_ID =
   "daggerheart-campaign-toolkit";
 
 const SETTING_KEY =
   "fobActivityLedger";
 
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2;
 
 function clone(value) {
   return value == null
@@ -45,8 +45,24 @@ function normalizeClaim(claim) {
         claim?.activityId ?? ""
       ).trim(),
 
-    claimedAt:
+        claimedAt:
       Number(claim?.claimedAt) || 0,
+
+    executionStatus:
+      ["claimed", "completed", "blocked"].includes(
+        claim?.executionStatus
+      )
+        ? claim.executionStatus
+        : "claimed",
+
+    resolutionReason:
+      String(claim?.resolutionReason ?? "").trim(),
+
+    resolvedAt:
+      Number.isFinite(Number(claim?.resolvedAt)) &&
+      Number(claim?.resolvedAt) > 0
+        ? Number(claim.resolvedAt)
+        : 0,
   };
 }
 
@@ -147,10 +163,10 @@ export function registerFobActivityLedgerSetting() {
     SETTING_KEY,
     {
       name:
-        "Activités productives FOB",
+        "ActivitÃ©s productives FOB",
 
       hint:
-        "Garantit qu'un personnage ne progresse qu'une activité productive par tour de FOB.",
+        "Garantit qu'un personnage ne progresse qu'une activitÃ© productive par tour de FOB.",
 
       scope: "world",
       config: false,
@@ -213,6 +229,8 @@ export function createFobActivityLedgerApi() {
   function claimFor({
     actorUuid,
     turn,
+    activityType = null,
+    activityId = null,
   } = {}) {
     actorUuid =
       String(
@@ -221,6 +239,20 @@ export function createFobActivityLedgerApi() {
 
     turn =
       Number(turn);
+
+    activityType =
+      activityType == null
+        ? null
+        : String(
+            activityType
+          ).trim();
+
+    activityId =
+      activityId == null
+        ? null
+        : String(
+            activityId
+          ).trim();
 
     if (
       !actorUuid ||
@@ -239,7 +271,17 @@ export function createFobActivityLedgerApi() {
           claim.actorUuid ===
             actorUuid &&
           claim.turn ===
-            turn
+            turn &&
+          (
+            activityType == null ||
+            claim.activityType ===
+              activityType
+          ) &&
+          (
+            activityId == null ||
+            claim.activityId ===
+              activityId
+          )
       ) ?? null
     );
   }
@@ -371,7 +413,19 @@ export function createFobActivityLedgerApi() {
           entry.actorUuid ===
             resolvedActorUuid &&
           entry.turn ===
-            turn
+            turn &&
+          (
+            activityType ===
+              "research"
+              ? (
+                  entry.activityType ===
+                    "research" &&
+                  entry.activityId ===
+                    activityId
+                )
+              : entry.activityType !==
+                  "research"
+          )
       );
 
     if (existing) {
@@ -409,6 +463,10 @@ export function createFobActivityLedgerApi() {
       activityId,
       claimedAt:
         Date.now(),
+
+      executionStatus: "claimed",
+      resolutionReason: "",
+      resolvedAt: 0,
     };
 
     state.claims.push(
@@ -426,6 +484,101 @@ export function createFobActivityLedgerApi() {
         clone(activityClaim),
       revision:
         saved.revision,
+    };
+  }
+
+  async function recordResolution({
+    actorUuid,
+    turn,
+    activityType,
+    activityId,
+    executionStatus,
+    resolutionReason = "",
+  } = {}) {
+    assertGm();
+
+    actorUuid = String(actorUuid ?? "").trim();
+    turn = Number(turn);
+    activityType = String(activityType ?? "").trim();
+    activityId = String(activityId ?? "").trim();
+
+    if (
+      !actorUuid ||
+      !Number.isSafeInteger(turn) ||
+      turn < 0 ||
+      !activityType ||
+      !activityId
+    ) {
+      return {
+        green: false,
+        reason: "fob-resolution-invalid-identity",
+      };
+    }
+
+    if (
+      !["completed", "blocked"].includes(executionStatus)
+    ) {
+      return {
+        green: false,
+        reason: "fob-resolution-invalid-status",
+      };
+    }
+
+    const state = readState();
+
+    const claim = state.claims.find(
+      entry =>
+        entry.actorUuid === actorUuid &&
+        entry.turn === turn &&
+        entry.activityType === activityType &&
+        entry.activityId === activityId
+    );
+
+    if (!claim) {
+      return {
+        green: false,
+        reason: "fob-resolution-claim-not-found",
+      };
+    }
+
+    if (
+      claim.executionStatus === "completed" &&
+      executionStatus !== "completed"
+    ) {
+      return {
+        green: false,
+        reason: "fob-resolution-already-completed",
+        claim: clone(claim),
+      };
+    }
+
+    const reason =
+      executionStatus === "blocked"
+        ? String(resolutionReason ?? "").trim()
+        : "";
+
+    if (
+      claim.executionStatus === executionStatus &&
+      claim.resolutionReason === reason
+    ) {
+      return {
+        green: true,
+        changed: false,
+        claim: clone(claim),
+      };
+    }
+
+    claim.executionStatus = executionStatus;
+    claim.resolutionReason = reason;
+    claim.resolvedAt = Date.now();
+
+    const saved = await writeState(state);
+
+    return {
+      green: true,
+      changed: true,
+      claim: clone(claim),
+      revision: saved.revision,
     };
   }
 
@@ -522,9 +675,10 @@ export function createFobActivityLedgerApi() {
 
   return Object.freeze({
     status,
-    claimFor,
+        claimFor,
     canClaim,
     claim,
+    recordResolution,
     clearTurn,
     clear,
   });
