@@ -1,0 +1,3273 @@
+{
+  "schemaVersion": 1,
+  "tables": [
+    {
+      "name": "DH FR — Consommables — Extension",
+      "img": "icons/consumables/potions/bottle-corked-blue.webp",
+      "description": "<p>The following table includes the consumables from the Hope &amp; Fear Expansion Set.</p>",
+      "formula": "1d12",
+      "replacement": true,
+      "displayRoll": true,
+      "flags": {
+        "daggerheart": {
+          "formulaName": "Common",
+          "altFormula": {
+            "RKxWr9XX7zRPQGDD": {
+              "name": "Common/Uncommon",
+              "formula": "2d12"
+            },
+            "XAVgCBgN4ituTp2H": {
+              "name": "Uncommon/Rare",
+              "formula": "3d12"
+            },
+            "MhStccGw337INEiH": {
+              "name": "Rare/Legendary",
+              "formula": "4d12"
+            },
+            "7cpKCeqcmuMniqQ3": {
+              "name": "Legendary",
+              "formula": "5d12"
+            }
+          },
+          "activeAltFormula": "xJOLPb8NdHhZiIrY"
+        }
+      },
+      "results": [
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            1,
+            1
+          ],
+          "name": "Bougie de protection",
+          "img": "icons/sundries/lights/candle-lit-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.I2GS3jZQYuccPDbF",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            2,
+            2
+          ],
+          "name": "Poussière iridienne",
+          "img": "icons/commodities/materials/powder-red-green-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.p7ivO9zBOP6sGx7V",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            3,
+            3
+          ],
+          "name": "Graine verglasienne",
+          "img": "icons/commodities/gems/gem-faceted-oval-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Jey0IHKzL1SfkIUR",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            4,
+            4
+          ],
+          "name": "Bézoard de l’échanson",
+          "img": "icons/commodities/materials/slime-thick-orange.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.YzqRIaQZ9HFRKyfW",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            5,
+            5
+          ],
+          "name": "Potion de mante-mousse",
+          "img": "icons/consumables/potions/bottle-conical-corked-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.VTBnfRYvssKp6GHB",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            6,
+            6
+          ],
+          "name": "Pastille d’oiseau-lyre",
+          "img": "icons/commodities/treasure/token-silver-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.iFnZ0SCYmEWzqYud",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            7,
+            7
+          ],
+          "name": "Fiole de chute-plume",
+          "img": "icons/consumables/potions/conical-ornate-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Uoeow00Hh4pOIUen",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            8,
+            8
+          ],
+          "name": "Salive chimérique",
+          "img": "icons/commodities/materials/liquid-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.xRugwZeBfhBGgYbz",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            9,
+            9
+          ],
+          "name": "Sachet de poussière spatiale",
+          "img": "icons/containers/bags/sack-leather-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.82jDjGubIXrSEUge",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            10,
+            10
+          ],
+          "name": "Herbe à pipe",
+          "img": "icons/consumables/plants/leaf-dried-eaten-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.8T0bfENlg33SWJrO",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            11,
+            11
+          ],
+          "name": "Poudre du voyant des morts",
+          "img": "icons/commodities/materials/bowl-powder-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.4k2BZLCXahRDpzyf",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            12,
+            12
+          ],
+          "name": "Sel du pourfendeur",
+          "img": "icons/commodities/materials/bowl-powder-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.cYVfoWdqaTPDoWYV",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            13,
+            13
+          ],
+          "name": "Lait de Yakamel",
+          "img": "icons/consumables/drinks/coconut-fruit-milk.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.UD7ptma9hGxWqNlQ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            14,
+            14
+          ],
+          "name": "Champignon lumimousse",
+          "img": "icons/consumables/mushrooms/umbontae-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.oWddWj73j4LLOV2L",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            15,
+            15
+          ],
+          "name": "Huile de vase rouge",
+          "img": "icons/consumables/potions/bottle-bulb-corked-glowing-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.bnLiqCLxl0JY3CD9",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            16,
+            16
+          ],
+          "name": "Camp instantané",
+          "img": "icons/containers/boxes/crate-tech-silver-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.RW6bvof45Vy2PrCN",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            17,
+            17
+          ],
+          "name": "Fagot de pattes d’araignée",
+          "img": "icons/containers/bags/coinpouch-simple-leather-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.6orUiSHlLpglzKZy",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            18,
+            18
+          ],
+          "name": "Bouteille de brume ciscanne",
+          "img": "icons/consumables/potions/bottle-corked-empty.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.iopjxVwZa9e2mOQG",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            19,
+            19
+          ],
+          "name": "Graine d’épine-claquante",
+          "img": "icons/consumables/plants/thorned-curled-vine-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.WS5KoFlWkcba7G2z",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            20,
+            20
+          ],
+          "name": "Bouteille de sprite",
+          "img": "icons/consumables/drinks/alcohol-spirits-bottle-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.CR7q0DivKUfxpEGq",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            21,
+            21
+          ],
+          "name": "Bombe gravitationnelle",
+          "img": "icons/commodities/metal/plate-mount-round-copper.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Az1yiKdmAZvT0muk",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            22,
+            22
+          ],
+          "name": "Fleur à ragots",
+          "img": "icons/commodities/flowers/holly-buds-white.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.6vuMHx0UHVVhCmgZ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            23,
+            23
+          ],
+          "name": "Jeton de déplacement",
+          "img": "icons/commodities/treasure/token-brass-round.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.P12rg0QikhOLtFLz",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            24,
+            24
+          ],
+          "name": "Poussière de guenaude nocturne",
+          "img": "icons/commodities/materials/bowl-powder-grey.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.A9uvOZUsQGSx40xQ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            25,
+            25
+          ],
+          "name": "Fil auto-cousant",
+          "img": "icons/tools/hand/needle-thread-spool.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.mDqF4iQrqVnKGiFc",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            26,
+            26
+          ],
+          "name": "Fortune du tailleur de pierre",
+          "img": "icons/commodities/stone/masonry-bricks-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.eZdSKOIn2U357UBF",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            27,
+            27
+          ],
+          "name": "Potion mnémonique",
+          "img": "icons/consumables/potions/bottle-corked-empty.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.8sG9qW4kLy8KOOQS",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            28,
+            28
+          ],
+          "name": "Onguent de salamandre",
+          "img": "icons/commodities/materials/bowl-powder-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.jmQbZojOgZgqtXf7",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            29,
+            29
+          ],
+          "name": "Huile de vase verte",
+          "img": "icons/commodities/materials/glass-orb-marble-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.4P2Vg79LxScauRyz",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            30,
+            30
+          ],
+          "name": "Orbe de lumière solaire",
+          "img": "icons/commodities/gems/pearl-fire.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.T79CMjwWol2udX3G",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            31,
+            31
+          ],
+          "name": "Orbe de lumière lunaire",
+          "img": "icons/tools/laboratory/alembic-glass-ball-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.f271fZGyv7AdlHUC",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            32,
+            32
+          ],
+          "name": "Flacon de Midas",
+          "img": "icons/consumables/potions/flask-corked-yellow-glow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.rbRmpOCUd53pmZCQ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            33,
+            33
+          ],
+          "name": "Bâton d’inversion",
+          "img": "icons/weapons/staves/staff-simple-spiral.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.6R8XrPlGbmhOgifs",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            34,
+            34
+          ],
+          "name": "Breuvage du berserker",
+          "img": "icons/consumables/potions/bottle-corked-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.RLqmF0awYhJC7OgG",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            35,
+            35
+          ],
+          "name": "Éclat d’emberite",
+          "img": "icons/commodities/gems/gem-rough-cushion-red-white.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Qitdye48EZalIytH",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            36,
+            36
+          ],
+          "name": "Éclat d’arcticite",
+          "img": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.DD0h4rOvoTohQQA9",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            37,
+            37
+          ],
+          "name": "Éclat de fulgurite",
+          "img": "icons/commodities/gems/gem-rough-cushion-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Cvdku93FBcl3xtt7",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            38,
+            38
+          ],
+          "name": "Breuvage du démiurge",
+          "img": "icons/consumables/potions/potion-vial-corked-labeled-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.nPWln2QTMFWY0xGj",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            39,
+            39
+          ],
+          "name": "Thé de griffe de coq",
+          "img": "icons/consumables/drinks/coffee.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.HsREPTHFZ4JGGyqo",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            40,
+            40
+          ],
+          "name": "Potion de vigilance",
+          "img": "icons/consumables/potions/potion-flask-corked-cyan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.mvQN6mzl3S3wgP0a",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            41,
+            41
+          ],
+          "name": "Concoction cacophonique",
+          "img": "icons/consumables/potions/bottle-bulb-corked-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.3lQB26DxezhXbFRo",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            42,
+            42
+          ],
+          "name": "Hydromel de cauchemar",
+          "img": "icons/consumables/potions/flask-ornate-skull-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.24mft1MegvlcufBz",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            43,
+            43
+          ],
+          "name": "Pieu d’abjuration",
+          "img": "icons/sundries/survival/stake-rough-heavy-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.CqCnOzaEDT0Gfp46",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            44,
+            44
+          ],
+          "name": "Linceul du psychopompe",
+          "img": "icons/commodities/cloth/cloth-patterned-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.CYqhUx3dhGrwH6Ho",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            45,
+            45
+          ],
+          "name": "Fiole d’encre profonde",
+          "img": "icons/consumables/potions/potion-bottle-corked-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.HGgI08WuMeIu2Xqd",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            46,
+            46
+          ],
+          "name": "Tonique de Mesmer",
+          "img": "icons/consumables/potions/bottle-conical-bubbling-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.n8FSNqBuBgmpGi6l",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            47,
+            47
+          ],
+          "name": "Potion d’invisibilité",
+          "img": "icons/consumables/potions/bottle-round-empty-glass.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.WP2ymQtzJWevNnx0",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            48,
+            48
+          ],
+          "name": "Sérum formoïde",
+          "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.RBIIdbcGjU5XcAZc",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            49,
+            49
+          ],
+          "name": "Onguent peau-d’acier",
+          "img": "icons/commodities/materials/bowl-powder-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.G1v7zarA5fDc0m9m",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            50,
+            50
+          ],
+          "name": "Pomelo du demi-dieu",
+          "img": "icons/consumables/fruit/plum-ripe-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.9s6M0tqO3UiKQZuy",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            51,
+            51
+          ],
+          "name": "Esprit de mue",
+          "img": "icons/consumables/potions/bottle-round-label-cork-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.FeiVyzZpw0NRogYP",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            52,
+            52
+          ],
+          "name": "Malédiction du mage",
+          "img": "icons/commodities/treasure/gem-framed-spiral-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.29VORCQOegwPo7o5",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            53,
+            53
+          ],
+          "name": "Séparateur quintessentiel",
+          "img": "icons/tools/cooking/knife-chef-steel-black.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.jgmjq5N1mRFDzRo5",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            54,
+            54
+          ],
+          "name": "Masque du soi répercuté",
+          "img": "icons/commodities/treasure/mask-bone-white.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.5LU2ZVkrclirJwo4",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            55,
+            55
+          ],
+          "name": "Cloche du nécropranceur",
+          "img": "icons/tools/instruments/bell-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.YjeHIpGNnTCE7lSt",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            56,
+            56
+          ],
+          "name": "Manteau draconique",
+          "img": "icons/commodities/leather/scales-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.1mMZ7pyewWx9ozUY",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            57,
+            57
+          ],
+          "name": "Sophisme du joueur",
+          "img": "icons/sundries/misc/piggybank.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.YAZqy9SQOC2bctTi",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            58,
+            58
+          ],
+          "name": "Tonique cœur-de-lion",
+          "img": "icons/consumables/potions/potion-bottle-corked-stopper-ornate-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.hNov38nBgnFYZH6X",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            59,
+            59
+          ],
+          "name": "Larmes du héros immortel",
+          "img": "icons/consumables/potions/flask-corked-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.1sbMrP02RlVp8Q1a",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            60,
+            60
+          ],
+          "name": "Potion pas-de-plume",
+          "img": "icons/consumables/potions/potion-flask-corked-tied-necklace-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.hpQn0JV9J4LLEEWp",
+          "description": "",
+          "drawn": false
+        }
+      ],
+      "flagsMeta": {
+        "sourceTable": "Additional Consumables"
+      }
+    },
+    {
+      "name": "DH FR — Objets — Livre de base",
+      "img": "icons/commodities/treasure/brooch-gold-ruby.webp",
+      "description": "<p>The following table includes the items from the Daggerheart Core Set.</p>",
+      "formula": "1d12",
+      "replacement": true,
+      "displayRoll": true,
+      "flags": {
+        "daggerheart": {
+          "activeAltFormula": "",
+          "formulaName": "Common",
+          "altFormula": {
+            "yDVeXdKpG7LzjHWa": {
+              "name": "Common/Uncommon",
+              "formula": "2d12"
+            },
+            "AfKdabeXI6EbeRuZ": {
+              "name": "Uncommon/Rare",
+              "formula": "3d12"
+            },
+            "DZdKW5ZD1HFhWrEh": {
+              "name": "Rare/Legendary",
+              "formula": "4d12"
+            },
+            "lbOwKKz4Bwl82khb": {
+              "name": "Legendary",
+              "formula": "5d12"
+            }
+          }
+        }
+      },
+      "results": [
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            1,
+            1
+          ],
+          "name": "Couchage premium",
+          "img": "icons/sundries/survival/bedroll-blue-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.3GQgZNAVEjwv4dHC",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            2,
+            2
+          ],
+          "name": "Sifflet de Piper",
+          "img": "icons/tools/instruments/pipe-flue-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.6rakaPIES2wdek1i",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            3,
+            3
+          ],
+          "name": "Carquois de charge",
+          "img": "icons/containers/ammunition/arrows-quiver-grey-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.0JC1Q26tSCee0PxJ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            4,
+            4
+          ],
+          "name": "Torche d’Alistair",
+          "img": "icons/sundries/lights/torch-brown-lit.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.5e1aJigEJqBE0YFb",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            5,
+            5
+          ],
+          "name": "Orbes de communication",
+          "img": "icons/commodities/materials/glass-orb-blue-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.1oHJBmL7rwZ4ybkL",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            6,
+            6
+          ],
+          "name": "Menottes",
+          "img": "icons/sundries/survival/cuffs-shackles-steel.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.elUnB54xltXVz20t",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            7,
+            7
+          ],
+          "name": "Cape arcanique",
+          "img": "icons/equipment/back/cloak-layered-green-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.BQuhj8na4agk2BaA",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            8,
+            8
+          ],
+          "name": "Filet tissé",
+          "img": "icons/tools/fishing/net-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.EUYAzStQC0J6OGLn",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            9,
+            9
+          ],
+          "name": "Bocal de feu",
+          "img": "icons/containers/kitchenware/jug-wrapped-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.v2CPSAgfAuh8n0Aj",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            10,
+            10
+          ],
+          "name": "Tige suspendue",
+          "img": "icons/commodities/tech/pipe-metal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.xXlLpfYq6c58ufTO",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            11,
+            11
+          ],
+          "name": "Pierre de glamour",
+          "img": "icons/commodities/treasure/token-engraved-purple-glowing.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.DspFO33ijEKobVoM",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            12,
+            12
+          ],
+          "name": "Coffre vide",
+          "img": "icons/containers/chest/chest-simple-box-gold-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.XwzXQAImRCjC3n97",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            13,
+            13
+          ],
+          "name": "Étui de compagnon",
+          "img": "icons/containers/chest/chest-reinforced-steel-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.RQuDfLxFK5ZC11Gw",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            14,
+            14
+          ],
+          "name": "Flèches perforantes",
+          "img": "icons/weapons/ammunition/arrow-broadhead-glowing-orange.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.YdPCNM6o6XgDYj9Z",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            15,
+            15
+          ],
+          "name": "Pierre de vaillance",
+          "img": "icons/commodities/treasure/token-engraved-spiral-grey-white.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.SNhZIbkJGi3xic5Y",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            16,
+            16
+          ],
+          "name": "Clé squelette",
+          "img": "icons/sundries/misc/key-ornate-iron-black.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.yhWD8RxFmMQVUbhp",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            17,
+            17
+          ],
+          "name": "Prisme arcanique",
+          "img": "icons/commodities/gems/gem-faceted-trillion-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.GhtUPzrwQNWYVATz",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            18,
+            18
+          ],
+          "name": "Recette de potion mineure de vigueur",
+          "img": "icons/sundries/scrolls/scroll-bound-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.tMWWtso6aiabGmNL",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            19,
+            19
+          ],
+          "name": "Recette de potion mineure de soin",
+          "img": "icons/sundries/scrolls/scroll-bound-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.EPBu2mMaxxCQJt3x",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            20,
+            20
+          ],
+          "name": "Boussoles jumelles",
+          "img": "icons/tools/navigation/compass-worn-copper.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.5VPlpUfSFZMH5zum",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            21,
+            21
+          ],
+          "name": "Sprite correcteur",
+          "img": "icons/magic/light/orbs-smoke-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.7wXsdfWz93lS75A4",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            22,
+            22
+          ],
+          "name": "Gants de gecko",
+          "img": "icons/equipment/hand/glove-ring-leather-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.pAYCTtilP2EgQeXl",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            23,
+            23
+          ],
+          "name": "Gardien du savoir",
+          "img": "icons/sundries/books/book-backed-wood-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.rpecB0dx9oeEZR96",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            24,
+            24
+          ],
+          "name": "Recette de fiole de fumée noire",
+          "img": "icons/sundries/scrolls/scroll-bound-black-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.RiexkcpvqgPOhbLt",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            25,
+            25
+          ],
+          "name": "Pierre de sang",
+          "img": "icons/commodities/treasure/token-engraved-eye-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.K73k0Q3XymjemP9f",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            26,
+            26
+          ],
+          "name": "Grande pierre",
+          "img": "icons/commodities/treasure/token-etched-h-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.PYWOBG0Za4a1CoDO",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            27,
+            27
+          ],
+          "name": "Planeur",
+          "img": "icons/commodities/leather/leather-patch-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.VgApMXCw99A7ifoK",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            28,
+            28
+          ],
+          "name": "Anneau de silence",
+          "img": "icons/equipment/finger/ring-ball-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.sbiUb8lt6APzTGBl",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            29,
+            29
+          ],
+          "name": "Pendentif apaisant",
+          "img": "icons/equipment/neck/amulet-round-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.bbRU03ueKU7o4SeX",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            30,
+            30
+          ],
+          "name": "Flasque double",
+          "img": "icons/consumables/potions/round-decorated-snake-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.kI52TnZaqz9Hc8Zf",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            31,
+            31
+          ],
+          "name": "Sac de sable capricieux",
+          "img": "icons/containers/bags/pouch-cloth-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.UMPzUNxKPu9UReZB",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            32,
+            32
+          ],
+          "name": "Anneau de résistance",
+          "img": "icons/equipment/finger/ring-shield-silver.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.1I1xe3spJSyqiWKC",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            33,
+            33
+          ],
+          "name": "Plume de phénix",
+          "img": "icons/commodities/materials/feather-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.pVm7chqN9XHrz97G",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            34,
+            34
+          ],
+          "name": "Boîte aux mille ressources",
+          "img": "icons/containers/boxes/crate-heavy-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.zNgZ0AAGzZsb3svg",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            35,
+            35
+          ],
+          "name": "Charme de lame d’air",
+          "img": "icons/equipment/neck/amulet-carved-stone-spiral-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.CSDoUcNUU2EFE7HW",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            36,
+            36
+          ],
+          "name": "Graine de portail",
+          "img": "icons/commodities/treasure/egg-ornate-green-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.utkI3ukHNGIUvbZA",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            37,
+            37
+          ],
+          "name": "Chaîne du parangon",
+          "img": "icons/equipment/neck/choker-chain-thin-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.hAMA1iQhjkIzAalT",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            38,
+            38
+          ],
+          "name": "Amulette insaisissable",
+          "img": "icons/equipment/neck/pendant-rough-silver-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.qURiJ8zaiZwYmyZZ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            39,
+            39
+          ],
+          "name": "Médaillon gardien d’Espoir",
+          "img": "icons/equipment/neck/amulet-round-engraved-spiral-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.zSQHF3WutEgBURgx",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            40,
+            40
+          ],
+          "name": "Sac infini",
+          "img": "icons/containers/bags/pack-engraved-leather-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.6fOpUjB6IJU4Jv3i",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            41,
+            41
+          ],
+          "name": "Relique de foulée",
+          "img": "icons/commodities/treasure/token-runed-ing-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.mn7suobF0InyLJ8b",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            42,
+            42
+          ],
+          "name": "Relique de vigueur",
+          "img": "icons/commodities/treasure/token-runed-radr-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.BMcMSSVmQI4JmfFB",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            43,
+            43
+          ],
+          "name": "Relique de contrôle",
+          "img": "icons/commodities/treasure/token-runed-sigel-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.9bj5csLR7MkGyHpZ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            44,
+            44
+          ],
+          "name": "Relique d’harmonisation",
+          "img": "icons/commodities/treasure/token-runed-spiral-grey.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.4f3No1bO1VxtBZ4O",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            45,
+            45
+          ],
+          "name": "Relique de charme",
+          "img": "icons/commodities/treasure/token-runed-wyn-grey.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.5qTNOwccclAsM5ek",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            46,
+            46
+          ],
+          "name": "Relique d’illumination",
+          "img": "icons/commodities/treasure/token-runed-os-grey.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.B3gjw7Ra6XaTJ8I8",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            47,
+            47
+          ],
+          "name": "Relique d’affûtage",
+          "img": "icons/commodities/treasure/token-runed-nyd-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.4N6dqSKCvVZweiIz",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            48,
+            48
+          ],
+          "name": "Pendentif de luciole",
+          "img": "icons/equipment/neck/choker-rough-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.oT95ZGRwRqmR7fFt",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            49,
+            49
+          ],
+          "name": "Bottes d’arpenteur des lacs",
+          "img": "icons/equipment/feet/shoes-collared-leather-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.luYivDNyR6zEkf3g",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            50,
+            50
+          ],
+          "name": "Compagnon d’argile",
+          "img": "icons/commodities/gems/pearl-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.nHnSTen2cdE26YAo",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            51,
+            51
+          ],
+          "name": "Recette de poussière mythique",
+          "img": "icons/sundries/scrolls/scroll-bound-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.YjguBoDQ0ckjykVR",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            52,
+            52
+          ],
+          "name": "Éclat de mémoire",
+          "img": "icons/commodities/gems/gem-rough-navette-purple-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.XgKv2sDJcAwQIcBq",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            53,
+            53
+          ],
+          "name": "Gemme de célérité",
+          "img": "icons/commodities/gems/gem-rough-ball-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.niAgopft9VTTPfBH",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            54,
+            54
+          ],
+          "name": "Gemme de puissance",
+          "img": "icons/commodities/gems/gem-rough-brilliant-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.YPny1BToBOrsM9Vk",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            55,
+            55
+          ],
+          "name": "Gemme de précision",
+          "img": "icons/commodities/gems/gem-rough-cushion-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.kXZKtG1YMzKDpZGW",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            56,
+            56
+          ],
+          "name": "Gemme d’intuition",
+          "img": "icons/commodities/gems/gem-rough-cushion-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.cOC31WepBq9PmU3p",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            57,
+            57
+          ],
+          "name": "Gemme d’audace",
+          "img": "icons/commodities/gems/gem-rough-cushion-pink-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.wdya07URj9kwgqwe",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            58,
+            58
+          ],
+          "name": "Gemme de sagacité",
+          "img": "icons/commodities/gems/gem-rough-cushion-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.fs3FQZOa3p06N0yF",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            59,
+            59
+          ],
+          "name": "Anneau de résolution inébranlable",
+          "img": "icons/equipment/finger/ring-faceted-gold-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.YrKhYs33ix15Dl9b",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            60,
+            60
+          ],
+          "name": "Ceinture d’unité",
+          "img": "icons/equipment/waist/belt-buckle-ornate-steel.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.XMJXGaQaZ5vkKK7Z",
+          "description": "",
+          "drawn": false
+        }
+      ],
+      "flagsMeta": {
+        "sourceTable": "Core Set Items"
+      }
+    },
+    {
+      "name": "DH FR — Objets — Extension",
+      "img": "icons/equipment/finger/ring-band-engraved-teal.webp",
+      "description": "<p>The following table includes the items from the Hope &amp; Fear Expansion Set.</p>",
+      "formula": "1d12",
+      "replacement": true,
+      "displayRoll": true,
+      "flags": {
+        "daggerheart": {
+          "formulaName": "Common",
+          "altFormula": {
+            "vN7tM7NoAFOKp6lg": {
+              "name": "Common/Uncommon",
+              "formula": "2d12"
+            },
+            "WCBoCAi8GmQlqHln": {
+              "name": "Uncommon/Rare",
+              "formula": "3d12"
+            },
+            "2ju4ySAWXmyvb2Y5": {
+              "name": "Rare/Legendary",
+              "formula": "4d12"
+            },
+            "Pu1yAAOGuej37qcL": {
+              "name": "Legenary",
+              "formula": "5d12"
+            }
+          },
+          "activeAltFormula": "2ju4ySAWXmyvb2Y5"
+        }
+      },
+      "results": [
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            1,
+            1
+          ],
+          "name": "Chausse-trappes",
+          "img": "icons/containers/bags/coinpouch-simple-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.R18H87QeDCO1VTwl",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            2,
+            2
+          ],
+          "name": "Grappin",
+          "img": "icons/weapons/thrown/shuriken-triple-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.WhS7Yp1i3Dbydfa9",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            3,
+            3
+          ],
+          "name": "Billes",
+          "img": "icons/containers/bags/sack-cloth-heavy-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.raFxNofT0VOoJy1M",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            4,
+            4
+          ],
+          "name": "Boîte de poussière de dragon",
+          "img": "icons/containers/boxes/crate-tech-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.FnUCyLr44pId3OoF",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            5,
+            5
+          ],
+          "name": "Anneau de Nighthawker",
+          "img": "icons/equipment/finger/ring-band-thin-silver-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.PqtWmrIT9b3cq0fv",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            6,
+            6
+          ],
+          "name": "Longue-vue elfique",
+          "img": "icons/tools/navigation/spyglass-telescope-brass.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.pVlM2vp7CcDbMIni",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            7,
+            7
+          ],
+          "name": "Granules gourmandes",
+          "img": "icons/commodities/materials/bowl-powder-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.ePFBKRcG2VITpT9c",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            8,
+            8
+          ],
+          "name": "Perche télescopique",
+          "img": "icons/commodities/tech/pipe-metal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.GMRC4pVhxkk3TvPU",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            9,
+            9
+          ],
+          "name": "Plume d’aile noire",
+          "img": "icons/tools/scribal/ink-quill-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.rFvLHBl6jrthpmKb",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            10,
+            10
+          ],
+          "name": "Couteau pliant de Silee",
+          "img": "icons/weapons/daggers/knife-engraved-black.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.Uhvu6wwwLbo4B9Cf",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            11,
+            11
+          ],
+          "name": "Jouet mécanique",
+          "img": "icons/commodities/treasure/statue-carved-figurehead.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.9qE0w1ahJRrNCtcD",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            12,
+            12
+          ],
+          "name": "Dés pipés",
+          "img": "icons/sundries/gaming/dice-runed-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.mCul1FcE8QsNXxQ6",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            13,
+            13
+          ],
+          "name": "Corne d’écorce creuse",
+          "img": "icons/commodities/treasure/horn-carved-banded.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.RQUhENtG74nMPbbj",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            14,
+            14
+          ],
+          "name": "Corde auto-nouante",
+          "img": "icons/sundries/survival/rope-wrapped-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.rJJPWT3bAXnyBrEM",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            15,
+            15
+          ],
+          "name": "Boussole du voleur",
+          "img": "icons/tools/navigation/compass-worn-copper.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.ZQmqi4PZmI8jKbBI",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            16,
+            16
+          ],
+          "name": "Cloche du voyageur",
+          "img": "icons/tools/instruments/bell-brass-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.22OaQiDjeIUsqACb",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            17,
+            17
+          ],
+          "name": "Torche mandragorienne",
+          "img": "icons/sundries/lights/torch-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.L7jpNfEYBRbb76Vk",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            18,
+            18
+          ],
+          "name": "Bottes de mystique souple",
+          "img": "icons/equipment/feet/shoes-rounded-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.krcZyW4QW5JSvDBe",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            19,
+            19
+          ],
+          "name": "Bocal de zéphyr",
+          "img": "icons/containers/kitchenware/jug-bottle-clay-brown-gold-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.h5hQizkPoi7q234L",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            20,
+            20
+          ],
+          "name": "Anneau de retour",
+          "img": "icons/equipment/finger/ring-band-engraved-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.7y7cHyayFMeKiNUA",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            21,
+            21
+          ],
+          "name": "Filet du martin-pêcheur",
+          "img": "icons/tools/fishing/net-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.AXv9gZf33bJISQcL",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            22,
+            22
+          ],
+          "name": "Ceinture du titan",
+          "img": "icons/equipment/waist/belt-thick-bossed.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.WoLkV7hR2FXVUnPl",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            23,
+            23
+          ],
+          "name": "Voile de fer",
+          "img": "icons/equipment/head/hood-chain-worn.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.hnn23m3AqqeJ7Vbf",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            24,
+            24
+          ],
+          "name": "Sac à boules de poils",
+          "img": "icons/containers/bags/pouch-leather-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.TTNThKpzAZhxLrQ4",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            25,
+            25
+          ],
+          "name": "Chevillière pas-de-velours",
+          "img": "icons/equipment/finger/ring-cabochon-spiral-gold-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.qsUjtme6QzvvOjwB",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            26,
+            26
+          ],
+          "name": "Loupe de l’enchanteur",
+          "img": "icons/tools/scribal/magnifying-glass.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.OqmFNS1NaKCF5FrI",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            27,
+            27
+          ],
+          "name": "Boule-miroir d’Escher",
+          "img": "icons/commodities/gems/pearl-swirl-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.A3zGKEZ8hi1oWNW7",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            28,
+            28
+          ],
+          "name": "Pièce du tricheur",
+          "img": "icons/commodities/currency/coin-inset-swirl-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.BOhXNw0RHxkOWVWv",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            29,
+            29
+          ],
+          "name": "Cloche du gardien des tombes",
+          "img": "icons/tools/instruments/bell-silver.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.4FOeuXfVf5H6tpef",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            30,
+            30
+          ],
+          "name": "Reliquaire du saint aveugle",
+          "img": "icons/commodities/treasure/totem-wood-face-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.xBwowFtyKXsQlOrI",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            31,
+            31
+          ],
+          "name": "Carte de révélation",
+          "img": "icons/tools/navigation/map-marked-black.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.6ExzOKsJ7o2GlPpG",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            32,
+            32
+          ],
+          "name": "Tablette d’obsidienne de Dagginae",
+          "img": "icons/sundries/documents/document-worn-symbol-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.YQKowtRojiXGZAgh",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            33,
+            33
+          ],
+          "name": "Sac à dos de Gadiman",
+          "img": "icons/containers/bags/pack-leather-black-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.gV47DU9at30FKEVT",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            34,
+            34
+          ],
+          "name": "Pièce d’éclipse",
+          "img": "icons/commodities/currency/coin-engraved-waves-copper.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.1mUIMvUnO0gFt3Wb",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            35,
+            35
+          ],
+          "name": "Chapeau de sorcier",
+          "img": "icons/equipment/head/hat-pointed-leather-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.0PdytvVH0KvcjTWn",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            36,
+            36
+          ],
+          "name": "Gants en peau de goule",
+          "img": "icons/equipment/hand/glove-cuffed-leather-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.m5ldFe8Sf85x3c0b",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            37,
+            37
+          ],
+          "name": "Gants de célérité",
+          "img": "icons/equipment/hand/glove-simple-leather-brown-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.67jbQl8rrhDvnppR",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            38,
+            38
+          ],
+          "name": "Périapte de l’insomniaque",
+          "img": "icons/equipment/neck/necklace-simple-carved-spiral-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.otFDELhqCLgfaTuK",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            39,
+            39
+          ],
+          "name": "Selle du cavalier sauvage",
+          "img": "icons/commodities/leather/leather-buckle-steel-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.Hd5oYPVFowQfBPxj",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            40,
+            40
+          ],
+          "name": "Diadèmes des âmes jumelles",
+          "img": "icons/commodities/treasure/trinket-wing-white.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.tjDmuqiYt3tE5GAY",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            41,
+            41
+          ],
+          "name": "Oracle du nom",
+          "img": "icons/sundries/gaming/dice-runed-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.84WXcyhOGuXNLE2K",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            42,
+            42
+          ],
+          "name": "Lunettes du creuset",
+          "img": "icons/tools/scribal/spectacles-glasses.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.ksBLFoKirzEY4aPf",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            43,
+            43
+          ],
+          "name": "Broche d’égide à deux faces",
+          "img": "icons/commodities/currency/coin-engraved-moon-silver.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.XC0XwPY7yTuiutED",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            44,
+            44
+          ],
+          "name": "Bracelets de recul",
+          "img": "icons/equipment/wrist/bracer-reinforced.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.LBNXKobX9mSRHY0q",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            45,
+            45
+          ],
+          "name": "Disque de force",
+          "img": "icons/commodities/stone/stone-chunk-tan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.pyi0IubS9sJrPrTO",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            46,
+            46
+          ],
+          "name": "Mitaines de taupe",
+          "img": "icons/equipment/hand/glove-armored-leather-worn-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.etVw5kuSmCpadJcH",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            47,
+            47
+          ],
+          "name": "Pendentif du chronomancien",
+          "img": "icons/equipment/neck/amulet-round-gold-green-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.MWSYEou08Ov6WGEk",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            48,
+            48
+          ],
+          "name": "Pendentif à dague de fer",
+          "img": "icons/equipment/neck/necklace-simple-engraved-stone.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.zARPO5jNA1Kd9hq8",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            49,
+            49
+          ],
+          "name": "Collier d’ascendance",
+          "img": "icons/sundries/misc/pet-collar-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.tYXoMIprbdsRwOex",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            50,
+            50
+          ],
+          "name": "Sanctuaire temporel",
+          "img": "icons/commodities/treasure/token-worn-yang-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.e8dPXbHyQQOSkwNL",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            51,
+            51
+          ],
+          "name": "Heaume du héros",
+          "img": "icons/equipment/head/helm-barbute-brass-steel.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.6NkwNG4kzNSKaLXg",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            52,
+            52
+          ],
+          "name": "Anneaux d’amitié",
+          "img": "icons/equipment/finger/ring-fish-silver.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.5AOpn5VlD9hFhbY2",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            53,
+            53
+          ],
+          "name": "Anneaux de camaraderie",
+          "img": "icons/equipment/finger/ring-band-copper.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.ZssiWAHhLA2c7SKp",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            54,
+            54
+          ],
+          "name": "Anneaux d’alliance",
+          "img": "icons/equipment/finger/ring-cabochon-silver-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.SfRrr2AyFpjA6Uhx",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            55,
+            55
+          ],
+          "name": "Diadème du phobophage",
+          "img": "icons/commodities/treasure/crown-gold-laurel-wreath.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.Lc2fM5oxgGbs6FZu",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            56,
+            56
+          ],
+          "name": "Châle de piquants",
+          "img": "icons/commodities/cloth/ribbon-bow-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.LWoZJtdvMfc11sR3",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            57,
+            57
+          ],
+          "name": "Pendentif de distorsion",
+          "img": "icons/equipment/neck/pendant-runed-hagalz-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.Y5gyyDWJn9eNMNMa",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            58,
+            58
+          ],
+          "name": "Cadres de portail",
+          "img": "icons/commodities/treasure/gem-framed-spiral-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.MtoMnQKdzcOYXNlH",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            59,
+            59
+          ],
+          "name": "Relique de communion",
+          "img": "icons/commodities/treasure/token-engraved-spiral-grey.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.sE6bzaiA31NVYvNq",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            60,
+            60
+          ],
+          "name": "Relique de l’augure",
+          "img": "icons/commodities/treasure/puzzle-triangle-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.1SYCpttvfGKDOjQv",
+          "description": "",
+          "drawn": false
+        }
+      ],
+      "flagsMeta": {
+        "sourceTable": "Additional Items"
+      }
+    },
+    {
+      "name": "DH FR — Consommables — Livre de base",
+      "img": "icons/consumables/potions/bottle-corked-red.webp",
+      "description": "<p>The following table includes the consumables from the Daggerheart Core Set.</p>",
+      "formula": "1d12",
+      "replacement": true,
+      "displayRoll": true,
+      "flags": {
+        "daggerheart": {
+          "activeAltFormula": "",
+          "formulaName": "Common",
+          "altFormula": {
+            "FGxM2yoxUUUd9Eov": {
+              "name": "Common/Uncommon",
+              "formula": "2d12"
+            },
+            "Gq6mOIPwSCiJDs9G": {
+              "name": "Uncommon/Rare",
+              "formula": "3d12"
+            },
+            "siQEVVIEI3QS0tjG": {
+              "name": "Rare/Legendary",
+              "formula": "4d12"
+            },
+            "0IzFB1jGWCR7TzTT": {
+              "name": "Legendary",
+              "formula": "5d12"
+            }
+          }
+        }
+      },
+      "results": [
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            1,
+            1
+          ],
+          "name": "Potion de foulée",
+          "img": "icons/consumables/potions/potion-flask-corked-cyan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.lVzHjpi0CLULhE1f",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            2,
+            2
+          ],
+          "name": "Potion de vigueur",
+          "img": "icons/consumables/potions/potion-vial-tube-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.WN7dvlPZgC9nuKcb",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            3,
+            3
+          ],
+          "name": "Potion de contrôle",
+          "img": "icons/consumables/potions/flask-corked-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.8LzKaPEqAzdTW0cm",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            4,
+            4
+          ],
+          "name": "Potion d’harmonisation",
+          "img": "icons/consumables/potions/bottle-conical-corked-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.e2cW5Xc3SsXYlpGJ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            5,
+            5
+          ],
+          "name": "Potion de charme",
+          "img": "icons/consumables/potions/potion-tube-corked-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.fn4O8VSXQwRVZA84",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            6,
+            6
+          ],
+          "name": "Potion d’illumination",
+          "img": "icons/consumables/potions/vial-cork-empty.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.zRt2ITc8kpgzqOjd",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            7,
+            7
+          ],
+          "name": "Potion de soins mineure",
+          "img": "icons/consumables/potions/potion-tube-corked-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.fIGGQXMWwlpkVajF",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            8,
+            8
+          ],
+          "name": "Potion d’endurance mineure",
+          "img": "icons/consumables/potions/potion-tube-corked-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.z2JOxwpOL24wBhmm",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            9,
+            9
+          ],
+          "name": "Venin de Grindletooth",
+          "img": "icons/consumables/potions/bottle-conical-corked-labeled-skull-poison-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.yItxSnPsKrCQDL0F",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            10,
+            10
+          ],
+          "name": "Feuilles de Varik",
+          "img": "icons/consumables/plants/leaf-serrated-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.nRSUy9E3wtwYPKsy",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            11,
+            11
+          ],
+          "name": "Fiole de rosée lunaire",
+          "img": "icons/consumables/potions/bottle-ornate-bat-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.8yhFPDZGOyUwSq0x",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            12,
+            12
+          ],
+          "name": "Éclat arcanique instable",
+          "img": "icons/commodities/gems/gem-faceted-cushion-teal-black.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.zEcpCdwCkXbmygaB",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            13,
+            13
+          ],
+          "name": "Potion de stabilité",
+          "img": "icons/consumables/potions/bottle-conical-corked-labeled-shell-cyan.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.sPdrsRvastMYHEMB",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            14,
+            14
+          ],
+          "name": "Venin de Grindletooth amélioré",
+          "img": "icons/consumables/potions/potion-jar-corked-labeled-poison-skull-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.bIsJhPpkYeyGfkhx",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            15,
+            15
+          ],
+          "name": "Argile métamorphe",
+          "img": "icons/commodities/stone/ore-chunk-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.tZhbYT5sFV32O2cS",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            16,
+            16
+          ],
+          "name": "Fiole de fumée noire",
+          "img": "icons/consumables/potions/bottle-bulb-empty-glass.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Cptd5WlkkU8xBE6p",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            17,
+            17
+          ],
+          "name": "Racine bondissante",
+          "img": "icons/consumables/plants/dried-bundle-wrapped-stems-sticks-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.A6cQ3HOtg8ibCRC8",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            18,
+            18
+          ],
+          "name": "Poudre claquante",
+          "img": "icons/commodities/materials/bowl-powder-gold.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.W1n3JFsC1H1VVg5q",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            19,
+            19
+          ],
+          "name": "Potion de soins",
+          "img": "icons/consumables/potions/bottle-corked-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.huRwrTARhtWtdxJU",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            20,
+            20
+          ],
+          "name": "Potion d’endurance",
+          "img": "icons/consumables/potions/bottle-corked-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.7Boq91DYha4WUxrV",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            21,
+            21
+          ],
+          "name": "Suture d’armure",
+          "img": "icons/skills/trades/textiles-stitching-leather-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.irP6rqhLz4CQuCi4",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            22,
+            22
+          ],
+          "name": "Onguent branchial",
+          "img": "icons/commodities/materials/bowl-powder-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Oc5jxIRAfgNiCKsF",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            23,
+            23
+          ],
+          "name": "Parchemin de réplication",
+          "img": "icons/sundries/scrolls/scroll-worn-beige.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.DKffl2ALPxJDG4YG",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            24,
+            24
+          ],
+          "name": "Éclat arcanique amélioré",
+          "img": "icons/commodities/gems/gem-faceted-teardrop-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.2UH18uhCEtUEqy31",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            25,
+            25
+          ],
+          "name": "Potion majeure de foulée",
+          "img": "icons/consumables/potions/potion-jar-capped-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.h7TPNB9xPv8R7EfX",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            26,
+            26
+          ],
+          "name": "Potion majeure de vigueur",
+          "img": "icons/consumables/potions/potion-jar-corked-orange.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.1nbBvGEFg2plUtpi",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            27,
+            27
+          ],
+          "name": "Potion majeure de contrôle",
+          "img": "icons/consumables/potions/bottle-round-corked-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.D4YBhZqpjThh8YBD",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            28,
+            28
+          ],
+          "name": "Potion majeure d’harmonisation",
+          "img": "icons/consumables/potions/bottle-round-corked-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Z6qlnLmFcFyuDCEw",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            29,
+            29
+          ],
+          "name": "Potion majeure de charme",
+          "img": "icons/consumables/potions/potion-bottle-corked-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.hFcee6dIpUGh4cDE",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            30,
+            30
+          ],
+          "name": "Potion majeure d’illumination",
+          "img": "icons/consumables/potions/bottle-corked-empty.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.ZQ77dOWg627WPN1J",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            31,
+            31
+          ],
+          "name": "Sang du Yorgi",
+          "img": "icons/consumables/potions/potion-tube-corked-bat-gold-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.P13K4Vn2NKCbyxWq",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            32,
+            32
+          ],
+          "name": "Potion secrète de Homet",
+          "img": "icons/consumables/potions/conical-ornate-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.jL3tUJ56Y24jP1dE",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            33,
+            33
+          ],
+          "name": "Salive de Redthorn",
+          "img": "icons/commodities/materials/slime-thick-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.vO7KfVwM3a0yrGB3",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            34,
+            34
+          ],
+          "name": "Pierre de canalisation",
+          "img": "icons/commodities/stone/engraved-symbol-water-grey.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.9uCpXHFOOwrj8KAZ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            35,
+            35
+          ],
+          "name": "Poussière mythique",
+          "img": "icons/commodities/materials/bowl-powder-grey.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.qrNmDAfGJd5RRHXW",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            36,
+            36
+          ],
+          "name": "Pâte acide",
+          "img": "icons/commodities/materials/bowl-powder-teal.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.ayCbTpGo79puO27X",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            37,
+            37
+          ],
+          "name": "Fusée d’Espoir",
+          "img": "icons/commodities/tech/smoke-bomb-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.VrsS8khNvxTysZUx",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            38,
+            38
+          ],
+          "name": "Éclat arcanique majeur",
+          "img": "icons/commodities/gems/gem-rough-round-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.5fxdxJElf0fh3IQY",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            39,
+            39
+          ],
+          "name": "Os-plume",
+          "img": "icons/commodities/bones/bones-stack-worn-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.HfuHHPzvk4baXo3A",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            40,
+            40
+          ],
+          "name": "Cercle du Vide",
+          "img": "icons/magic/unholy/orb-glowing-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.4CwsN9wY26lwMyrZ",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            41,
+            41
+          ],
+          "name": "Sève d’Arbre-Soleil",
+          "img": "icons/consumables/drinks/wine-amphora-clay-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.aDh8StwTRh7K5lNR",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            42,
+            42
+          ],
+          "name": "Poison de Dripfang",
+          "img": "icons/consumables/potions/potion-jug-corked-skull-poison-brown-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.ALQZtMb1rD3ax8yf",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            43,
+            43
+          ],
+          "name": "Potion de soins majeure",
+          "img": "icons/consumables/potions/bottle-round-label-cork-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.mFo7kz2BdKjac5TG",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            44,
+            44
+          ],
+          "name": "Potion d’endurance majeure",
+          "img": "icons/consumables/potions/bottle-round-label-cork-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.SNpJ17fJonFpRVmn",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            45,
+            45
+          ],
+          "name": "Musc d’ogre",
+          "img": "icons/commodities/materials/slime-thick-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.uFBIhxiEvm8ejDka",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            46,
+            46
+          ],
+          "name": "Pousse-ailes",
+          "img": "icons/consumables/plants/leaf-broad-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.SaHn1S2QFdE9qmi6",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            47,
+            47
+          ],
+          "name": "Bocal des voix perdues",
+          "img": "icons/containers/kitchenware/jug-wrapped-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.RGQqzaUcy4pNfEIl",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            48,
+            48
+          ],
+          "name": "Thé de fleur-dragon",
+          "img": "icons/consumables/drinks/tea-jug-gourd-brown.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.nkTgRUEPHcqiJKm4",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            49,
+            49
+          ],
+          "name": "Graine-pont",
+          "img": "icons/consumables/plants/leaf-old-dried-curled-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.RhyAq7cDd9yjLV5j",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            50,
+            50
+          ],
+          "name": "Sève soporifique",
+          "img": "icons/consumables/potions/bottle-bulb-corked-labeled-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.i2Y1MBOw5smWxnr6",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            51,
+            51
+          ],
+          "name": "Festin de Xuria",
+          "img": "icons/consumables/food/bowl-stew-tofu-potato-red.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.cVE6P6ROZeMJSEqW",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            52,
+            52
+          ],
+          "name": "Miel liant",
+          "img": "icons/consumables/food/soup-broth-bowl-wooden-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.BEg1nIhwv8ZtD9Ky",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            53,
+            53
+          ],
+          "name": "Potion de rétrécissement",
+          "img": "icons/consumables/potions/flask-decorated-label-pink.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.TZWQ2yq7u7zq5Jmg",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            54,
+            54
+          ],
+          "name": "Potion de croissance",
+          "img": "icons/consumables/potions/potion-bottle-corked-labeled-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.JYU1KWYVbkV0NCBA",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            55,
+            55
+          ],
+          "name": "Pierre de connaissance",
+          "img": "icons/commodities/treasure/token-engraved-blue-glowing.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.30wdztWQoB19sjJ6",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            56,
+            56
+          ],
+          "name": "Mousse douce",
+          "img": "icons/consumables/plants/succulent-bundle-green.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.hOhuS7ztcjAsgja2",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            57,
+            57
+          ],
+          "name": "Orbe aveuglant",
+          "img": "icons/magic/light/explosion-star-large-blue-yellow.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.JS7x66GNzjdtCbGH",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            58,
+            58
+          ],
+          "name": "Thé de mort",
+          "img": "icons/consumables/drinks/wine-amphora-clay-gray.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.ZWKtuWxWXhKOGSxR",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            59,
+            59
+          ],
+          "name": "Miroir de Marigold",
+          "img": "icons/commodities/treasure/token-silver-blue.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.SkLD6XuUMdpTwWom",
+          "description": "",
+          "drawn": false
+        },
+        {
+          "type": "document",
+          "weight": 1,
+          "range": [
+            60,
+            60
+          ],
+          "name": "Goutte d’étoile",
+          "img": "icons/magic/light/projectiles-star-purple.webp",
+          "documentUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Q2O1BeAjaAQrBd0c",
+          "description": "",
+          "drawn": false
+        }
+      ],
+      "flagsMeta": {
+        "sourceTable": "Core Set Consumables"
+      }
+    }
+  ]
+}
