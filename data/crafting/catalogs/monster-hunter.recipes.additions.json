@@ -1,0 +1,1691 @@
+{
+  "schemaVersion": 3,
+  "id": "mh.recipes.additions.r48",
+  "namespace": "monster-hunter",
+  "kind": "recipe-catalog",
+  "recipes": [
+    {
+      "id": "craft.weapon-augment.amplify.tier1",
+      "name": "Amplify — Tier 1",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.amplify"
+      },
+      "requirements": [
+        {
+          "id": "amplify-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "amplify-impact",
+          "value": 4,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "amplify-conductive",
+          "value": 5,
+          "match": {
+            "property": "conductive"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.scope.tier1",
+      "name": "Scope — Tier 1",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.scope"
+      },
+      "requirements": [
+        {
+          "id": "scope-light",
+          "value": 4,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "scope-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "scope-flexible",
+          "value": 5,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.deny.tier1",
+      "name": "Deny — Tier 1",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.deny"
+      },
+      "requirements": [
+        {
+          "id": "deny-dense",
+          "value": 4,
+          "match": {
+            "property": "dense"
+          }
+        },
+        {
+          "id": "deny-reinforcing",
+          "value": 4,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "deny-rigid",
+          "value": 5,
+          "match": {
+            "property": "rigid"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.target.tier1",
+      "name": "Target — Tier 1",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.target"
+      },
+      "requirements": [
+        {
+          "id": "target-piercing",
+          "value": 4,
+          "match": {
+            "property": "piercing"
+          }
+        },
+        {
+          "id": "target-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "target-conductive",
+          "value": 5,
+          "match": {
+            "property": "conductive"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.split.tier1",
+      "name": "Split — Tier 1",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.split"
+      },
+      "requirements": [
+        {
+          "id": "split-flexible",
+          "value": 4,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "split-light",
+          "value": 4,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "split-resonant",
+          "value": 5,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.fix.tier1",
+      "name": "Fix — Tier 1",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.fix"
+      },
+      "requirements": [
+        {
+          "id": "fix-reinforcing",
+          "value": 4,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "fix-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "fix-flexible",
+          "value": 5,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.scare.tier1",
+      "name": "Scare — Tier 1",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.scare"
+      },
+      "requirements": [
+        {
+          "id": "scare-impact",
+          "value": 4,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "scare-electric",
+          "value": 4,
+          "match": {
+            "property": "electric"
+          }
+        },
+        {
+          "id": "scare-resonant",
+          "value": 5,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.sear.tier2",
+      "name": "Sear — Tier 2",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.sear"
+      },
+      "requirements": [
+        {
+          "id": "sear-impact",
+          "value": 8,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "sear-electric",
+          "value": 8,
+          "match": {
+            "property": "electric"
+          }
+        },
+        {
+          "id": "sear-conductive",
+          "value": 9,
+          "match": {
+            "property": "conductive"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 2,
+          "propertyLevelRange": [
+            8,
+            9
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.absorb.tier2",
+      "name": "Absorb — Tier 2",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.absorb"
+      },
+      "requirements": [
+        {
+          "id": "absorb-dense",
+          "value": 8,
+          "match": {
+            "property": "dense"
+          }
+        },
+        {
+          "id": "absorb-reinforcing",
+          "value": 8,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "absorb-flexible",
+          "value": 9,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 2,
+          "propertyLevelRange": [
+            8,
+            9
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.kick.tier2",
+      "name": "Kick — Tier 2",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.kick"
+      },
+      "requirements": [
+        {
+          "id": "kick-impact",
+          "value": 8,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "kick-rigid",
+          "value": 8,
+          "match": {
+            "property": "rigid"
+          }
+        },
+        {
+          "id": "kick-dense",
+          "value": 9,
+          "match": {
+            "property": "dense"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 2,
+          "propertyLevelRange": [
+            8,
+            9
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.block.tier3",
+      "name": "Block — Tier 3",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.block"
+      },
+      "requirements": [
+        {
+          "id": "block-reinforcing",
+          "value": 13,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "block-dense",
+          "value": 13,
+          "match": {
+            "property": "dense"
+          }
+        },
+        {
+          "id": "block-rigid",
+          "value": 14,
+          "match": {
+            "property": "rigid"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 3,
+          "propertyLevelRange": [
+            13,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.zip.tier3",
+      "name": "Zip — Tier 3",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.zip"
+      },
+      "requirements": [
+        {
+          "id": "zip-light",
+          "value": 13,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "zip-flexible",
+          "value": 13,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "zip-conductive",
+          "value": 14,
+          "match": {
+            "property": "conductive"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 3,
+          "propertyLevelRange": [
+            13,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.bury.tier3",
+      "name": "Bury — Tier 3",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.bury"
+      },
+      "requirements": [
+        {
+          "id": "bury-impact",
+          "value": 13,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "bury-rigid",
+          "value": 13,
+          "match": {
+            "property": "rigid"
+          }
+        },
+        {
+          "id": "bury-piercing",
+          "value": 14,
+          "match": {
+            "property": "piercing"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 3,
+          "propertyLevelRange": [
+            13,
+            14
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.follow.tier4",
+      "name": "Follow — Tier 4",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.follow"
+      },
+      "requirements": [
+        {
+          "id": "follow-resonant",
+          "value": 18,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "follow-flexible",
+          "value": 18,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "follow-light",
+          "value": 19,
+          "match": {
+            "property": "light"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 4,
+          "propertyLevelRange": [
+            18,
+            19
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.weapon-augment.override.tier4",
+      "name": "Override — Tier 4",
+      "mode": "property-budget",
+      "output": {
+        "type": "weaponAugment",
+        "id": "motherboard.override"
+      },
+      "requirements": [
+        {
+          "id": "override-conductive",
+          "value": 18,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "override-resonant",
+          "value": 18,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "override-piercing",
+          "value": 19,
+          "match": {
+            "property": "piercing"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 4,
+          "propertyLevelRange": [
+            18,
+            19
+          ]
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.01",
+      "name": "Fabriquer : Potion de foulée",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.lVzHjpi0CLULhE1f"
+      },
+      "requirements": [
+        {
+          "id": "core-01-light",
+          "value": 2,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "core-01-flexible",
+          "value": 3,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "core-01-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 1
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.02",
+      "name": "Fabriquer : Potion de vigueur",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.WN7dvlPZgC9nuKcb"
+      },
+      "requirements": [
+        {
+          "id": "core-02-reinforcing",
+          "value": 2,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "core-02-resonant",
+          "value": 3,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-02-dense",
+          "value": 4,
+          "match": {
+            "property": "dense"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 2
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.03",
+      "name": "Fabriquer : Potion de contrôle",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.8LzKaPEqAzdTW0cm"
+      },
+      "requirements": [
+        {
+          "id": "core-03-conductive",
+          "value": 2,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-03-resonant",
+          "value": 3,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-03-light",
+          "value": 4,
+          "match": {
+            "property": "light"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 3
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.04",
+      "name": "Fabriquer : Potion d’harmonisation",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.e2cW5Xc3SsXYlpGJ"
+      },
+      "requirements": [
+        {
+          "id": "core-04-resonant",
+          "value": 2,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-04-conductive",
+          "value": 3,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-04-flexible",
+          "value": 4,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 4
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.05",
+      "name": "Fabriquer : Potion de charme",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.fn4O8VSXQwRVZA84"
+      },
+      "requirements": [
+        {
+          "id": "core-05-resonant",
+          "value": 2,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-05-light",
+          "value": 3,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "core-05-flexible",
+          "value": 4,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 5
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.06",
+      "name": "Fabriquer : Potion d’illumination",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.zRt2ITc8kpgzqOjd"
+      },
+      "requirements": [
+        {
+          "id": "core-06-conductive",
+          "value": 2,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-06-light",
+          "value": 3,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "core-06-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 6
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.07",
+      "name": "Fabriquer : Potion de soins mineure",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.fIGGQXMWwlpkVajF"
+      },
+      "requirements": [
+        {
+          "id": "core-07-reinforcing",
+          "value": 2,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "core-07-flexible",
+          "value": 3,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "core-07-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 7
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.08",
+      "name": "Fabriquer : Potion d’endurance mineure",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.z2JOxwpOL24wBhmm"
+      },
+      "requirements": [
+        {
+          "id": "core-08-reinforcing",
+          "value": 2,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "core-08-dense",
+          "value": 3,
+          "match": {
+            "property": "dense"
+          }
+        },
+        {
+          "id": "core-08-flexible",
+          "value": 4,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 8
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.09",
+      "name": "Fabriquer : Venin de Grindletooth",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.yItxSnPsKrCQDL0F"
+      },
+      "requirements": [
+        {
+          "id": "core-09-piercing",
+          "value": 2,
+          "match": {
+            "property": "piercing"
+          }
+        },
+        {
+          "id": "core-09-conductive",
+          "value": 3,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-09-impact",
+          "value": 4,
+          "match": {
+            "property": "impact"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 9
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.10",
+      "name": "Fabriquer : Feuilles de Varik",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.nRSUy9E3wtwYPKsy"
+      },
+      "requirements": [
+        {
+          "id": "core-10-resonant",
+          "value": 2,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-10-flexible",
+          "value": 3,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "core-10-reinforcing",
+          "value": 4,
+          "match": {
+            "property": "reinforcing"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 10
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.11",
+      "name": "Fabriquer : Fiole de rosée lunaire",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.8yhFPDZGOyUwSq0x"
+      },
+      "requirements": [
+        {
+          "id": "core-11-resonant",
+          "value": 2,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-11-conductive",
+          "value": 3,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-11-light",
+          "value": 4,
+          "match": {
+            "property": "light"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 11
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.12",
+      "name": "Fabriquer : Éclat arcanique instable",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.zEcpCdwCkXbmygaB"
+      },
+      "requirements": [
+        {
+          "id": "core-12-electric",
+          "value": 2,
+          "match": {
+            "property": "electric"
+          }
+        },
+        {
+          "id": "core-12-conductive",
+          "value": 3,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-12-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 12
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.13",
+      "name": "Fabriquer : Potion de stabilité",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.sPdrsRvastMYHEMB"
+      },
+      "requirements": [
+        {
+          "id": "core-13-reinforcing",
+          "value": 2,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "core-13-dense",
+          "value": 3,
+          "match": {
+            "property": "dense"
+          }
+        },
+        {
+          "id": "core-13-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 13
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.14",
+      "name": "Fabriquer : Venin de Grindletooth amélioré",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.bIsJhPpkYeyGfkhx"
+      },
+      "requirements": [
+        {
+          "id": "core-14-piercing",
+          "value": 2,
+          "match": {
+            "property": "piercing"
+          }
+        },
+        {
+          "id": "core-14-impact",
+          "value": 3,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "core-14-conductive",
+          "value": 4,
+          "match": {
+            "property": "conductive"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 14
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.15",
+      "name": "Fabriquer : Argile métamorphe",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.tZhbYT5sFV32O2cS"
+      },
+      "requirements": [
+        {
+          "id": "core-15-flexible",
+          "value": 2,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "core-15-dense",
+          "value": 3,
+          "match": {
+            "property": "dense"
+          }
+        },
+        {
+          "id": "core-15-reinforcing",
+          "value": 4,
+          "match": {
+            "property": "reinforcing"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 15
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.16",
+      "name": "Fabriquer : Fiole de fumée noire",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Cptd5WlkkU8xBE6p"
+      },
+      "requirements": [
+        {
+          "id": "core-16-light",
+          "value": 2,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "core-16-impact",
+          "value": 3,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "core-16-resonant",
+          "value": 4,
+          "match": {
+            "property": "resonant"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 16
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.17",
+      "name": "Fabriquer : Racine bondissante",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.A6cQ3HOtg8ibCRC8"
+      },
+      "requirements": [
+        {
+          "id": "core-17-light",
+          "value": 2,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "core-17-flexible",
+          "value": 3,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "core-17-impact",
+          "value": 4,
+          "match": {
+            "property": "impact"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 17
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.18",
+      "name": "Fabriquer : Poudre claquante",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.W1n3JFsC1H1VVg5q"
+      },
+      "requirements": [
+        {
+          "id": "core-18-impact",
+          "value": 2,
+          "match": {
+            "property": "impact"
+          }
+        },
+        {
+          "id": "core-18-rigid",
+          "value": 3,
+          "match": {
+            "property": "rigid"
+          }
+        },
+        {
+          "id": "core-18-electric",
+          "value": 4,
+          "match": {
+            "property": "electric"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 18
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.19",
+      "name": "Fabriquer : Potion de soins",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.huRwrTARhtWtdxJU"
+      },
+      "requirements": [
+        {
+          "id": "core-19-reinforcing",
+          "value": 2,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "core-19-resonant",
+          "value": 3,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-19-flexible",
+          "value": 4,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 19
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.20",
+      "name": "Fabriquer : Potion d’endurance",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.7Boq91DYha4WUxrV"
+      },
+      "requirements": [
+        {
+          "id": "core-20-reinforcing",
+          "value": 2,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "core-20-flexible",
+          "value": 3,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "core-20-dense",
+          "value": 4,
+          "match": {
+            "property": "dense"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 20
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.21",
+      "name": "Fabriquer : Suture d’armure",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.irP6rqhLz4CQuCi4"
+      },
+      "requirements": [
+        {
+          "id": "core-21-reinforcing",
+          "value": 2,
+          "match": {
+            "property": "reinforcing"
+          }
+        },
+        {
+          "id": "core-21-flexible",
+          "value": 3,
+          "match": {
+            "property": "flexible"
+          }
+        },
+        {
+          "id": "core-21-rigid",
+          "value": 4,
+          "match": {
+            "property": "rigid"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 21
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.22",
+      "name": "Fabriquer : Onguent branchial",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.Oc5jxIRAfgNiCKsF"
+      },
+      "requirements": [
+        {
+          "id": "core-22-conductive",
+          "value": 2,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-22-resonant",
+          "value": 3,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-22-flexible",
+          "value": 4,
+          "match": {
+            "property": "flexible"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 22
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.23",
+      "name": "Fabriquer : Parchemin de réplication",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.DKffl2ALPxJDG4YG"
+      },
+      "requirements": [
+        {
+          "id": "core-23-resonant",
+          "value": 2,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-23-light",
+          "value": 3,
+          "match": {
+            "property": "light"
+          }
+        },
+        {
+          "id": "core-23-conductive",
+          "value": 4,
+          "match": {
+            "property": "conductive"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 23
+        }
+      }
+    },
+    {
+      "id": "craft.consumable.core.24",
+      "name": "Fabriquer : Éclat arcanique amélioré",
+      "mode": "property-budget",
+      "output": {
+        "type": "consumable",
+        "id": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.2UH18uhCEtUEqy31"
+      },
+      "requirements": [
+        {
+          "id": "core-24-conductive",
+          "value": 2,
+          "match": {
+            "property": "conductive"
+          }
+        },
+        {
+          "id": "core-24-resonant",
+          "value": 3,
+          "match": {
+            "property": "resonant"
+          }
+        },
+        {
+          "id": "core-24-impact",
+          "value": 4,
+          "match": {
+            "property": "impact"
+          }
+        }
+      ],
+      "craft": {
+        "turns": 2
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "sourceTable": "DH FR — Consommables — Livre de base",
+          "roll": 24
+        }
+      }
+    }
+  ]
+}

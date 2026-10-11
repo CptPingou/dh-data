@@ -82,6 +82,7 @@ export function createCraftingOperationJournalApi() {
       "prepared",
       "materials-saved",
       "weapon-applied",
+      "output-saved",
       "completed",
       "requires-review",
     ];
@@ -97,10 +98,19 @@ export function createCraftingOperationJournalApi() {
       return { green: false, reason: "craft-journal-not-found" };
     }
 
+    // R4.8f.9: separate consumable path, unchanged weapon transitions.
+    const isConsumable =
+      String(operation.augmentId ?? "").startsWith("craft.consumable.") &&
+      String(operation.weaponUuid ?? "").startsWith(
+        "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item."
+      );
     const transitions = {
       prepared: ["materials-saved", "requires-review"],
-      "materials-saved": ["weapon-applied", "requires-review"],
+      "materials-saved": isConsumable
+        ? ["output-saved", "requires-review"]
+        : ["weapon-applied", "requires-review"],
       "weapon-applied": ["completed", "requires-review"],
+      "output-saved": ["completed", "requires-review"],
       completed: [],
       "requires-review": [],
     };

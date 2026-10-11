@@ -36,7 +36,9 @@ function nonEmpty(value) {
 }
 
 function sourceIdOf(item) {
-  return item?.flags?.core?.sourceId
+  // R4.8g.2: la provenance d'expedition prime sur le sourceId SRD du snapshot.
+  return item?.flags?.["daggerheart-campaign-toolkit"]?.expeditionProvenance?.sourceId
+    ?? item?.flags?.core?.sourceId
     ?? item?._stats?.compendiumSource
     ?? item?.flags?.["daggerheart-campaign-toolkit"]?.sourceId
     ?? null;
@@ -529,6 +531,24 @@ export function createExpeditionFoundryItemsApi({ expeditionManifestApi } = {}) 
       }
 
       delete data._id;
+      // R4.8g.2: conserver l'identite du lot fabrique pendant l'aller-retour acteur.
+      // Conserver le sourceId SRD natif (ne pas le reecrire), provenance separee.
+      if (
+        typeof entry.itemRef?.sourceId === "string" &&
+        entry.entryId?.startsWith("craft-output-") &&
+        entry.itemRef.sourceId.startsWith(
+          "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item."
+        )
+      ) {
+        data.flags ??= {};
+        data.flags["daggerheart-campaign-toolkit"] ??= {};
+        data.flags["daggerheart-campaign-toolkit"].expeditionProvenance = {
+          schemaVersion: 1,
+          sourceId: entry.itemRef.sourceId,
+          originalEntryId: entry.entryId,
+          operationId: entry.entryId.slice("craft-output-".length),
+        };
+      }
       if (data.system && Object.prototype.hasOwnProperty.call(data.system, "quantity")) data.system.quantity = qty;
       else if (data.system && Object.prototype.hasOwnProperty.call(data.system, "amount")) data.system.amount = qty;
       // P2.10h.3 actor stack merge

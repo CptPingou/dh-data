@@ -1,0 +1,356 @@
+{
+  "schemaVersion": 3,
+  "id": "mh.materials.additions.r48",
+  "namespace": "monster-hunter",
+  "kind": "material-catalog",
+  "materials": [
+    {
+      "id": "mh.basic.herbes-communes",
+      "name": "Herbes communes",
+      "material": {
+        "family": "vegetal",
+        "quality": 1,
+        "properties": {
+          "flexible": 3,
+          "light": 2,
+          "resonant": 1
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/consumables/plants/leaf-dried-eaten-green.webp"
+    },
+    {
+      "id": "mh.basic.racine-amere",
+      "name": "Racine amère",
+      "material": {
+        "family": "vegetal",
+        "quality": 1,
+        "properties": {
+          "rigid": 2,
+          "reinforcing": 3,
+          "dense": 1
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/consumables/plants/dried-bundle-wrapped-stems-sticks-brown.webp"
+    },
+    {
+      "id": "mh.basic.spores-luminescentes",
+      "name": "Spores luminescentes",
+      "material": {
+        "family": "vegetal",
+        "quality": 1,
+        "properties": {
+          "resonant": 4,
+          "light": 3,
+          "conductive": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/consumables/mushrooms/umbontae-green.webp"
+    },
+    {
+      "id": "mh.basic.sève-claire",
+      "name": "Sève claire",
+      "material": {
+        "family": "vegetal",
+        "quality": 1,
+        "properties": {
+          "flexible": 3,
+          "reinforcing": 2,
+          "resonant": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/materials/slime-thick-orange.webp"
+    },
+    {
+      "id": "mh.basic.sel-mineral",
+      "name": "Sel minéral",
+      "material": {
+        "family": "mineral",
+        "quality": 1,
+        "properties": {
+          "dense": 3,
+          "rigid": 2,
+          "conductive": 1
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "hard-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/materials/bowl-powder-gold.webp"
+    },
+    {
+      "id": "mh.basic.poudre-cristalline",
+      "name": "Poudre cristalline",
+      "material": {
+        "family": "mineral",
+        "quality": 1,
+        "properties": {
+          "conductive": 4,
+          "resonant": 3,
+          "piercing": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "hard-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/materials/powder-red-green-yellow.webp"
+    },
+    {
+      "id": "mh.basic.fibres-vegetales",
+      "name": "Fibres végétales",
+      "material": {
+        "family": "fiber",
+        "quality": 1,
+        "properties": {
+          "flexible": 4,
+          "light": 3,
+          "reinforcing": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/cloth/cloth-patterned-teal.webp"
+    },
+    {
+      "id": "mh.basic.huile-vegetale",
+      "name": "Huile végétale",
+      "material": {
+        "family": "vegetal",
+        "quality": 1,
+        "properties": {
+          "flexible": 2,
+          "conductive": 2,
+          "light": 1
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "organ"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/materials/liquid-purple.webp"
+    },
+    {
+      "id": "mh.basic.argile-fine",
+      "name": "Argile fine",
+      "material": {
+        "family": "mineral",
+        "quality": 1,
+        "properties": {
+          "dense": 4,
+          "reinforcing": 3,
+          "rigid": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "hard-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/stone/ore-chunk-brown.webp"
+    },
+    {
+      "id": "mh.basic.eau-de-source",
+      "name": "Eau de source",
+      "material": {
+        "family": "fluid",
+        "quality": 1,
+        "properties": {
+          "conductive": 2,
+          "light": 1,
+          "resonant": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "organ"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/consumables/potions/bottle-corked-empty.webp"
+    },
+    {
+      "id": "mh.basic.charbon-fin",
+      "name": "Charbon fin",
+      "material": {
+        "family": "mineral",
+        "quality": 1,
+        "properties": {
+          "impact": 3,
+          "dense": 2,
+          "electric": 1
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "hard-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/materials/bowl-powder-grey.webp"
+    },
+    {
+      "id": "mh.basic.filament-insecte",
+      "name": "Filament d’insecte",
+      "material": {
+        "family": "fiber",
+        "quality": 1,
+        "properties": {
+          "light": 4,
+          "flexible": 3,
+          "resonant": 2
+        }
+      },
+      "inventory": {
+        "stackable": true,
+        "containerClass": "soft-material"
+      },
+      "research": {
+        "discoverable": true,
+        "specimen": {
+          "required": false,
+          "consumed": false
+        }
+      },
+      "source": {
+        "type": "gathering",
+        "sourceId": "mh.basic.supplies"
+      },
+      "img": "icons/commodities/biological/wing-insect-blue.webp"
+    }
+  ]
+}

@@ -4,7 +4,7 @@
   "recipes": [
     {
       "id": "craft.weapon-augment.force.properties",
-      "name": "Force — matériaux de chasse",
+      "name": "Force — Tier 1",
       "mode": "property-budget",
       "output": {
         "type": "weaponAugment",
@@ -13,23 +13,43 @@
       "requirements": [
         {
           "id": "force-rigid",
-          "value": 5,
+          "value": 4,
           "match": {
             "property": "rigid"
           }
         },
         {
           "id": "force-impact",
-          "value": 3,
+          "value": 4,
           "match": {
             "property": "impact"
           }
+        },
+        {
+          "id": "force-dense",
+          "value": 5,
+          "match": {
+            "property": "dense"
+          }
         }
-      ]
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
     },
     {
       "id": "craft.weapon-augment.guard.properties",
-      "name": "Guard — matériaux de chasse",
+      "name": "Guard — Tier 1",
       "mode": "property-budget",
       "output": {
         "type": "weaponAugment",
@@ -38,7 +58,7 @@
       "requirements": [
         {
           "id": "guard-reinforcing",
-          "value": 6,
+          "value": 4,
           "match": {
             "property": "reinforcing"
           }
@@ -52,16 +72,29 @@
         },
         {
           "id": "guard-flexible",
-          "value": 2,
+          "value": 5,
           "match": {
             "property": "flexible"
           }
         }
-      ]
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
     },
     {
       "id": "craft.weapon-augment.converge.properties",
-      "name": "Converge — matériaux de chasse",
+      "name": "Converge — Tier 1",
       "mode": "property-budget",
       "output": {
         "type": "weaponAugment",
@@ -70,26 +103,39 @@
       "requirements": [
         {
           "id": "converge-conductive",
-          "value": 6,
+          "value": 4,
           "match": {
             "property": "conductive"
           }
         },
         {
           "id": "converge-resonant",
-          "value": 3,
+          "value": 4,
           "match": {
             "property": "resonant"
           }
         },
         {
           "id": "converge-light",
-          "value": 2,
+          "value": 5,
           "match": {
             "property": "light"
           }
         }
-      ]
+      ],
+      "craft": {
+        "turns": 10
+      },
+      "flags": {
+        "daggerheart-campaign-toolkit": {
+          "origin": "craft-expansion",
+          "tier": 1,
+          "propertyLevelRange": [
+            4,
+            5
+          ]
+        }
+      }
     }
   ],
   "namespace": "monster-hunter",

@@ -105,6 +105,14 @@ function candidatesByActor({
     const entry of
       craftQueue ?? []
   ) {
+    const hasContributors =
+      (entry.contributors ?? []).some(
+        contributor =>
+          contributor?.type === "actor" &&
+          Boolean(contributor?.uuid)
+      );
+
+    if (!hasContributors) continue;
 
     add(
       "craft",
@@ -282,6 +290,28 @@ async function resolveResearch({
   };
 }
 
+
+async function resolveConsumableCraft({ api, entry, actor } = {}) {
+  const craft = await api.crafting.craftConsumable({
+    crafter: actor, recipeId: entry.recipeId,
+    expeditionId: entry.expeditionId, operationId: entry.id,
+  });
+  if (!craft?.green) return { green: true, type: "craft", changed: false,
+    completed: true, ready: true, blocked: true,
+    reason: craft?.reason ?? "consumable-craft-blocked", entry, craft };
+  const removal = await api.craftingCraftQueue.remove(entry.id);
+  if (!removal?.green) return { green: false, type: "craft",
+    reason: "craft-queue-cleanup-failed", completed: true, entry, craft,
+    requiresGmReview: true };
+  let journalWarning = craft.journalWarning ?? null;
+  try {
+    const completed = await api.craftingOperationJournal.mark(entry.id, "completed");
+    if (!completed?.green) journalWarning = completed?.reason ?? "journal-completion-failed";
+  } catch (e) { journalWarning = String(e?.message ?? e); }
+  return { green: true, type: "craft", completed: true, changed: true,
+    resolved: true, entry, craft, removal, journalWarning };
+}
+
 async function resolveCraft({
   api,
   entry,
@@ -338,6 +368,12 @@ async function resolveCraft({
       entry:
         currentEntry,
     };
+  }
+
+  if (currentEntry.outputType === "consumable") {
+    if (typeof api.crafting?.craftConsumable !== "function")
+      return { green: false, reason: "consumable-craft-api-unavailable" };
+    return await resolveConsumableCraft({ api, entry: currentEntry, actor });
   }
 
   const weapon =
@@ -793,6 +829,21 @@ export function installFobActivityDispatcher() {
 
               state.lastResult =
                 result;
+              // R4.8f.8: expedition UI refresh after successful FOB craft.
+              // The inventory projection must be rebuilt from the persisted manifest.
+              if (
+                result?.green === true &&
+                result.results?.some(
+                  (entry) =>
+                    entry?.type === "craft" &&
+                    entry?.changed === true
+                )
+              ) {
+                Hooks.callAll(
+                  `${MODULE_ID}.expeditionChanged`,
+                  { source: "fob-craft", turn: result.turn }
+                );
+              }
 
               if (!result?.green) {
                 console.warn(

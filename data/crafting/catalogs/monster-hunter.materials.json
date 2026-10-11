@@ -21,16 +21,21 @@
       "research": {
         "discoverable": true,
         "specimen": {
-          "required": true,
+          "required": false,
           "consumed": false
-        }
+        },
+        "turns": 10
       },
       "source": {
         "type": "creature",
         "creatureId": "mh.tetsucabra",
         "anatomy": "fang"
       },
-      "img": "icons/commodities/bones/tooth-canine-white.webp"
+      "img": "icons/commodities/bones/tooth-canine-white.webp",
+      "testFixture": {
+        "id": "r4-research-10-turns",
+        "temporary": true
+      }
     },
     {
       "id": "mh.tetsucabra.hide",
@@ -80,16 +85,21 @@
       "research": {
         "discoverable": true,
         "specimen": {
-          "required": true,
+          "required": false,
           "consumed": false
-        }
+        },
+        "turns": 10
       },
       "source": {
         "type": "creature",
         "creatureId": "mh.vespoid",
         "anatomy": "gland"
       },
-      "img": "icons/commodities/biological/organ-bladder-red.webp"
+      "img": "icons/commodities/biological/organ-bladder-red.webp",
+      "testFixture": {
+        "id": "r4-research-10-turns",
+        "temporary": true
+      }
     },
     {
       "id": "mh.vespoid.wing",
@@ -110,16 +120,21 @@
       "research": {
         "discoverable": true,
         "specimen": {
-          "required": true,
+          "required": false,
           "consumed": false
-        }
+        },
+        "turns": 10
       },
       "source": {
         "type": "creature",
         "creatureId": "mh.vespoid",
         "anatomy": "wing"
       },
-      "img": "icons/commodities/biological/wing-insect-blue.webp"
+      "img": "icons/commodities/biological/wing-insect-blue.webp",
+      "testFixture": {
+        "id": "r4-research-10-turns",
+        "temporary": true
+      }
     }
   ],
   "namespace": "monster-hunter",

@@ -20,6 +20,85 @@ function emptyState() {
   };
 }
 
+function normalizeContributors(
+  contributors,
+  legacyActorUuid = ""
+) {
+  const normalized = [];
+  const seen = new Set();
+
+  const add =
+    (
+      type,
+      uuid
+    ) => {
+      type =
+        String(
+          type ?? "actor"
+        ).trim() || "actor";
+
+      uuid =
+        String(
+          uuid ?? ""
+        ).trim();
+
+      if (
+        type !== "actor" ||
+        !uuid ||
+        seen.has(uuid)
+      ) {
+        return;
+      }
+
+      seen.add(uuid);
+
+      normalized.push({
+        type: "actor",
+        uuid,
+      });
+    };
+
+  if (Array.isArray(contributors)) {
+    for (
+      const contributor of
+      contributors
+    ) {
+      if (
+        typeof contributor ===
+        "string"
+      ) {
+        add(
+          "actor",
+          contributor
+        );
+      } else {
+        add(
+          contributor?.type,
+          contributor?.uuid
+        );
+      }
+    }
+  }
+
+  /*
+   * Soft migration from the R2 schema:
+   * actorUuid becomes the first contributor.
+   */
+  if (
+    !Array.isArray(contributors) &&
+    normalized.length === 0 &&
+    legacyActorUuid
+  ) {
+    add(
+      "actor",
+      legacyActorUuid
+    );
+  }
+
+  return normalized;
+}
+
+
 function normalizeEntry(entry) {
   const turnsRequired =
     Number.isSafeInteger(
@@ -50,6 +129,14 @@ function normalizeEntry(entry) {
       String(
         entry?.actorUuid ?? ""
       ).trim(),
+
+    contributors:
+      normalizeContributors(
+        entry?.contributors,
+        String(
+          entry?.actorUuid ?? ""
+        ).trim()
+      ),
 
     materialId:
       String(
@@ -159,6 +246,16 @@ async function writeState(state) {
     MODULE_ID,
     SETTING_KEY,
     normalized
+  );
+
+
+  Hooks.callAll(
+    `${MODULE_ID}.fobActivitiesChanged`,
+    {
+      kind: "research",
+      revision:
+        normalized.revision,
+    }
   );
 
   return normalized;
@@ -547,8 +644,8 @@ export function createCraftingResearchQueueApi({
     const duplicate =
       state.queue.find(
         entry =>
-          entry.actorUuid ===
-            resolvedActorUuid &&
+          entry.expeditionId ===
+            expeditionId &&
           entry.materialId ===
             materialId &&
           entry.propertyId ===
@@ -556,11 +653,57 @@ export function createCraftingResearchQueueApi({
       );
 
     if (duplicate) {
+      const alreadyContributor =
+        duplicate.contributors
+          .some(
+            contributor =>
+              contributor.type ===
+                "actor" &&
+              contributor.uuid ===
+                resolvedActorUuid
+          );
+
+      if (alreadyContributor) {
+        return {
+          green: true,
+          changed: false,
+          reason:
+            "research-contributor-already-present",
+          entry:
+            clone(duplicate),
+        };
+      }
+
+      duplicate.contributors.push({
+        type: "actor",
+        uuid:
+          resolvedActorUuid,
+      });
+
+      const saved =
+        await writeState(state);
+
+      const savedEntry =
+        saved.queue.find(
+          candidate =>
+            candidate.id ===
+            duplicate.id
+        ) ?? null;
+
       return {
-        green: false,
+        green: true,
+        changed: true,
         reason:
-          "research-already-queued",
-        entry: clone(duplicate),
+          "research-contributor-added",
+        entry:
+          clone(savedEntry),
+        contributor: {
+          type: "actor",
+          uuid:
+            resolvedActorUuid,
+        },
+        count:
+          saved.queue.length,
       };
     }
 
@@ -568,6 +711,15 @@ export function createCraftingResearchQueueApi({
       id: requestId(),
       actorUuid:
         resolvedActorUuid,
+
+      contributors: [
+        {
+          type: "actor",
+          uuid:
+            resolvedActorUuid,
+        },
+      ],
+
       materialId,
       propertyId,
       expeditionId,
@@ -724,6 +876,194 @@ export function createCraftingResearchQueueApi({
   }
 
 
+  async function addContributor(
+    id,
+    actorUuid
+  ) {
+    assertGm();
+
+    id =
+      String(
+        id ?? ""
+      ).trim();
+
+    actorUuid =
+      String(
+        actorUuid ?? ""
+      ).trim();
+
+    if (!actorUuid) {
+      return {
+        green: false,
+        reason:
+          "research-contributor-required",
+      };
+    }
+
+    const actor =
+      await fromUuid(
+        actorUuid
+      );
+
+    if (
+      !actor ||
+      actor.documentName !==
+        "Actor"
+    ) {
+      return {
+        green: false,
+        reason:
+          "research-contributor-not-found",
+        actorUuid,
+      };
+    }
+
+    const state =
+      readState();
+
+    const entry =
+      state.queue.find(
+        candidate =>
+          candidate.id === id
+      );
+
+    if (!entry) {
+      return {
+        green: false,
+        reason:
+          "research-entry-not-found",
+        id,
+      };
+    }
+
+    const exists =
+      entry.contributors.some(
+        contributor =>
+          contributor.type ===
+            "actor" &&
+          contributor.uuid ===
+            actorUuid
+      );
+
+    if (exists) {
+      return {
+        green: true,
+        changed: false,
+        reason:
+          "research-contributor-already-present",
+        entry:
+          clone(entry),
+      };
+    }
+
+    entry.contributors.push({
+      type: "actor",
+      uuid:
+        actorUuid,
+    });
+
+    const saved =
+      await writeState(state);
+
+    return {
+      green: true,
+      changed: true,
+      entry:
+        clone(
+          saved.queue.find(
+            candidate =>
+              candidate.id === id
+          ) ?? null
+        ),
+    };
+  }
+
+
+  async function removeContributor(
+    id,
+    actorUuid
+  ) {
+    assertGm();
+
+    id =
+      String(
+        id ?? ""
+      ).trim();
+
+    actorUuid =
+      String(
+        actorUuid ?? ""
+      ).trim();
+
+    const state =
+      readState();
+
+    const entry =
+      state.queue.find(
+        candidate =>
+          candidate.id === id
+      );
+
+    if (!entry) {
+      return {
+        green: false,
+        reason:
+          "research-entry-not-found",
+        id,
+      };
+    }
+
+    const before =
+      entry.contributors.length;
+
+    entry.contributors =
+      entry.contributors.filter(
+        contributor =>
+          !(
+            contributor.type ===
+              "actor" &&
+            contributor.uuid ===
+              actorUuid
+          )
+      );
+
+    if (
+      entry.contributors.length ===
+      before
+    ) {
+      return {
+        green: true,
+        changed: false,
+        reason:
+          "research-contributor-not-present",
+        entry:
+          clone(entry),
+      };
+    }
+
+    /*
+     * actorUuid is deliberately retained as
+     * the legacy owner/resolution actor for R3.
+     * R4 will use contributors exclusively
+     * for progression.
+     */
+    const saved =
+      await writeState(state);
+
+    return {
+      green: true,
+      changed: true,
+      entry:
+        clone(
+          saved.queue.find(
+            candidate =>
+              candidate.id === id
+          ) ?? null
+        ),
+    };
+  }
+
+
   async function progress(id) {
     assertGm();
 
@@ -759,18 +1099,87 @@ export function createCraftingResearchQueueApi({
         green: true,
         changed: false,
         completed: true,
+
+        progressDelta: 0,
+
+        contributorCount:
+          new Set(
+            (
+              entry.contributors ??
+              []
+            )
+              .filter(
+                contributor =>
+                  contributor?.type ===
+                    "actor" &&
+                  contributor?.uuid
+              )
+              .map(
+                contributor =>
+                  contributor.uuid
+              )
+          ).size,
+
         entry:
           clone(entry),
+
         count:
           state.queue.length,
       };
     }
 
+    const contributorCount =
+      new Set(
+        (
+          entry.contributors ??
+          []
+        )
+          .filter(
+            contributor =>
+              contributor?.type ===
+                "actor" &&
+              contributor?.uuid
+          )
+          .map(
+            contributor =>
+              contributor.uuid
+          )
+      ).size;
+
+    /*
+     * Une recherche sans contributeur reste
+     * programmée mais ne progresse pas.
+     */
+    if (contributorCount === 0) {
+      return {
+        green: true,
+        changed: false,
+        completed: false,
+
+        progressDelta: 0,
+        contributorCount: 0,
+
+        entry:
+          clone(entry),
+
+        count:
+          state.queue.length,
+      };
+    }
+
+    const before =
+      entry.progress;
+
     entry.progress =
       Math.min(
         entry.turnsRequired,
-        entry.progress + 1
+        entry.progress +
+          contributorCount
       );
+
+    const progressDelta =
+      entry.progress -
+      before;
 
     const saved =
       await writeState(state);
@@ -783,7 +1192,12 @@ export function createCraftingResearchQueueApi({
 
     return {
       green: true,
-      changed: true,
+
+      changed:
+        progressDelta > 0,
+
+      progressDelta,
+      contributorCount,
 
       completed:
         Boolean(
@@ -833,6 +1247,9 @@ export function createCraftingResearchQueueApi({
     enqueue,
     remove,
     move,
+    addContributor,
+    removeContributor,
+
     progress,
     clear,
   });

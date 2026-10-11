@@ -77,6 +77,11 @@ import {
   renderExpeditionView,
 } from "./expedition-view.mjs";
 
+import {
+  hasHuntArtisanCard,
+  isArtificer,
+} from "./weapon-augment-workshop.mjs";
+
 const MODULE_ID = "daggerheart-campaign-toolkit";
 const PANEL_CLASS = "dhct-expedition-ux-summary";
 const ROLE_TABS_CLASS = "dhct-expedition-role-tabs";
@@ -1656,7 +1661,7 @@ function renderGmAccessMatrix(
     <section class="dhct-access-matrix-panel">
       <header>
         <div>
-          <h3>Acc?s logistiques des PJ</h3>
+          <h3>Accès logistiques des PJ</h3>
           <p>
             Ce tableau devient la source unique pour la visibilit?
             et les transferts Sol, FOB et Caravane.
@@ -1689,7 +1694,7 @@ function renderGmAccessMatrix(
           <tbody>
             ${
               rows ||
-              '<tr><td colspan="7">Aucun PJ dans l?exp?dition.</td></tr>'
+              '<tr><td colspan="7">Aucun PJ dans l’expédition.</td></tr>'
             }
           </tbody>
         </table>
@@ -1701,7 +1706,7 @@ function renderGmAccessMatrix(
           data-dhct-access-matrix-save
         >
           <i class="fa-solid fa-floppy-disk"></i>
-          Enregistrer les acc?s
+          Enregistrer les accès
         </button>
       </footer>
     </section>
@@ -2078,7 +2083,7 @@ function injectGmGroundCleanup(
 
         if (!fresh) {
           throw new Error(
-            "Exp?dition introuvable."
+            "Expédition introuvable."
           );
         }
 
@@ -2246,7 +2251,7 @@ function injectGmAccessMatrix(
 
         if (!fresh) {
           throw new Error(
-            "Exp?dition introuvable."
+            "Expédition introuvable."
           );
         }
 
@@ -2272,7 +2277,7 @@ function injectGmAccessMatrix(
 
         if (!result.changed) {
           ui.notifications?.info(
-            "Acc?s inchang?s."
+            "Accès inchangés."
           );
 
           if (
@@ -2287,7 +2292,7 @@ function injectGmAccessMatrix(
         }
 
         ui.notifications?.info(
-          "Acc?s logistiques enregistr?s."
+          "Accès logistiques enregistrés."
         );
       } catch (error) {
         console.error(
@@ -2298,7 +2303,7 @@ function injectGmAccessMatrix(
 
         ui.notifications?.error(
           error?.message ??
-          "Impossible d'enregistrer les acc?s."
+          "Impossible d’enregistrer les accès."
         );
 
         if (
@@ -2997,7 +3002,7 @@ function installCaravanEquipmentViewHandlers(
     async (event) => {
       if (!game.user?.isGM) {
         ui.notifications?.warn(
-          "Action r?serv?e au MJ."
+          "Action réservée au MJ."
         );
 
         return;
@@ -3037,7 +3042,7 @@ function installCaravanEquipmentViewHandlers(
 
         if (!fresh) {
           throw new Error(
-            "Manifeste d?exp?dition introuvable."
+            "Manifeste d’expédition introuvable."
           );
         }
 
@@ -3609,7 +3614,7 @@ function installInventoryViewHandlers(
         }
 
         ui.notifications?.info(
-          `${result.itemName ?? "Objet"} ajout? ? ${target.container.name ?? target.containerId}.`
+          `${result.itemName ?? "Objet"} ajouté à ${target.container.name ?? target.containerId}.`
         );
       } catch (error) {
         console.error(
@@ -3848,6 +3853,1510 @@ function installInventoryViewHandlers(
   );
 }
 
+function resolveActorNameFromUuid(
+  actorUuid
+) {
+  const value =
+    String(actorUuid ?? "").trim();
+
+  if (!value.startsWith("Actor.")) {
+    return value;
+  }
+
+  const actorId =
+    value.slice("Actor.".length);
+
+  return (
+    game.actors?.get(actorId)?.name ??
+    value
+  );
+}
+
+function resolveWeaponNameFromUuid(
+  weaponUuid
+) {
+  const value =
+    String(weaponUuid ?? "").trim();
+
+  const match =
+    /^Actor\.([^.]+)\.Item\.([^.]+)$/
+      .exec(value);
+
+  if (!match) {
+    return value;
+  }
+
+  const actor =
+    game.actors?.get(
+      match[1]
+    );
+
+  return (
+    actor?.items?.get(
+      match[2]
+    )?.name ??
+    value
+  );
+}
+
+function fobQueueProgressLabel(
+  entry
+) {
+  const progress =
+    Math.max(
+      0,
+      Number(entry?.progress) || 0
+    );
+
+  const required =
+    Math.max(
+      1,
+      Number(entry?.turnsRequired) || 1
+    );
+
+  if (progress >= required) {
+    return "Prêt à finaliser";
+  }
+
+  return (
+    String(progress) +
+    "/" +
+    String(required) +
+    " tour(s)"
+  );
+}
+
+async function chooseResearchContributor(
+  entry,
+  action
+) {
+  const current =
+    new Set(
+      Array.isArray(
+        entry?.contributors
+      )
+        ? entry.contributors
+            .filter(
+              contributor =>
+                contributor?.type ===
+                  "actor" &&
+                contributor?.uuid
+            )
+            .map(
+              contributor =>
+                contributor.uuid
+            )
+        : []
+    );
+
+  let candidates =
+    [...(game.actors ?? [])]
+      .filter(
+        actor =>
+          actor?.type ===
+            "character"
+      )
+      .filter(
+        actor =>
+          action === "add"
+            ? !current.has(
+                actor.uuid
+              )
+            : current.has(
+                actor.uuid
+              )
+      )
+      .sort(
+        (a, b) =>
+          String(a.name ?? "")
+            .localeCompare(
+              String(b.name ?? ""),
+              game.i18n?.lang ??
+                "fr"
+            )
+      );
+
+  if (!candidates.length) {
+    return null;
+  }
+
+  if (candidates.length === 1) {
+    return candidates[0];
+  }
+
+  const DialogV2 =
+    foundry?.applications?.api
+      ?.DialogV2;
+
+  if (DialogV2?.prompt) {
+    const options =
+      candidates
+        .map(
+          actor =>
+            '<option value="' +
+            escapeHtml(actor.uuid) +
+            '">' +
+            escapeHtml(actor.name) +
+            "</option>"
+        )
+        .join("");
+
+    const selectedUuid =
+      await DialogV2.prompt({
+        window: {
+          title:
+            action === "add"
+              ? "Ajouter un contributeur"
+              : "Retirer un contributeur",
+        },
+
+        content:
+          `
+            <div class="form-group">
+              <label>
+                Personnage
+              </label>
+
+              <div class="form-fields">
+                <select
+                  name="dhct-research-contributor"
+                  autofocus
+                >
+                  ${options}
+                </select>
+              </div>
+            </div>
+          `,
+
+        ok: {
+          label:
+            action === "add"
+              ? "Ajouter"
+              : "Retirer",
+
+          callback:
+            (
+              _event,
+              _button,
+              dialog
+            ) =>
+              dialog?.element
+                ?.querySelector?.(
+                  '[name="dhct-research-contributor"]'
+                )
+                ?.value ??
+              null,
+        },
+
+        rejectClose:
+          false,
+      });
+
+    if (!selectedUuid) {
+      return null;
+    }
+
+    return (
+      candidates.find(
+        actor =>
+          actor.uuid ===
+          selectedUuid
+      ) ?? null
+    );
+  }
+
+  return candidates[0];
+}
+
+
+async function chooseCraftContributor(
+  entry,
+  action
+) {
+  const contributors =
+    Array.isArray(
+      entry?.contributors
+    )
+      ? entry.contributors
+          .filter(
+            contributor =>
+              contributor?.type ===
+                "actor" &&
+              contributor?.uuid
+          )
+          .map(
+            contributor =>
+              contributor.uuid
+          )
+      : [];
+
+  const contributorSet =
+    new Set(contributors);
+
+  const eligible =
+    [...(game.actors ?? [])]
+      .filter(
+        actor =>
+          actor?.type ===
+            "character"
+      )
+      .filter(
+        actor =>
+          action === "add"
+            ? (
+                (
+                  hasHuntArtisanCard(
+                    actor
+                  ) ||
+                  isArtificer(
+                    actor
+                  )
+                ) &&
+                !contributorSet.has(
+                  actor.uuid
+                )
+              )
+            : contributorSet.has(
+                actor.uuid
+              )
+      )
+      .sort(
+        (a, b) =>
+          String(
+            a.name ?? ""
+          ).localeCompare(
+            String(
+              b.name ?? ""
+            ),
+            game.i18n?.lang ??
+              "fr"
+          )
+      );
+
+  if (
+    eligible.length === 0
+  ) {
+    return null;
+  }
+
+  if (
+    eligible.length === 1
+  ) {
+    return eligible[0];
+  }
+
+  const options =
+    eligible
+      .map(
+        actor =>
+          `<option value="${actor.uuid}">${actor.name}</option>`
+      )
+      .join("");
+
+  if (
+    foundry?.applications?.api
+      ?.DialogV2?.prompt
+  ) {
+    const uuid =
+      await foundry
+        .applications
+        .api
+        .DialogV2
+        .prompt({
+          window: {
+            title:
+              action === "add"
+                ? "Ajouter un contributeur"
+                : "Retirer un contributeur",
+          },
+
+          content:
+            `<label>
+              Personnage
+              <select name="actorUuid">
+                ${options}
+              </select>
+            </label>`,
+
+          ok: {
+            label:
+              action === "add"
+                ? "Ajouter"
+                : "Retirer",
+
+            callback:
+              (
+                _event,
+                button
+              ) =>
+                button.form
+                  ?.elements
+                  ?.actorUuid
+                  ?.value ??
+                null,
+          },
+        });
+
+    return (
+      eligible.find(
+        actor =>
+          actor.uuid === uuid
+      ) ?? null
+    );
+  }
+
+  const listing =
+    eligible
+      .map(
+        (actor, index) =>
+          `${index + 1}. ${actor.name}`
+      )
+      .join("\n");
+
+  const answer =
+    globalThis.window
+      ?.prompt?.(
+        (
+          action === "add"
+            ? "Ajouter un contributeur"
+            : "Retirer un contributeur"
+        ) +
+        "\n\n" +
+        listing
+      );
+
+  const index =
+    Number(answer) - 1;
+
+  return (
+    Number.isInteger(index) &&
+    index >= 0 &&
+    index < eligible.length
+      ? eligible[index]
+      : null
+  );
+}
+
+function renderFobQueueColumn({
+  title,
+  kind,
+  entries,
+  isGm = false,
+} = {}) {
+  const section =
+    document.createElement(
+      "section"
+    );
+
+  section.className =
+    "dhct-fob-queue";
+
+  const heading =
+    document.createElement(
+      "h4"
+    );
+
+  heading.textContent =
+    title;
+
+  section.append(
+    heading
+  );
+
+  if (!entries.length) {
+    const empty =
+      document.createElement(
+        "p"
+      );
+
+    empty.className =
+      "dhct-fob-queue__empty";
+
+    empty.textContent =
+      "Aucune activité programmée.";
+
+    section.append(
+      empty
+    );
+
+    return section;
+  }
+
+  entries.forEach(
+    (entry, index) => {
+      const row =
+        document.createElement(
+          "article"
+        );
+
+      row.className =
+        "dhct-fob-queue__row";
+
+      row.dataset.dhctFobQueueKind =
+        kind;
+
+      row.dataset.dhctFobQueueEntryId =
+        entry.id;
+
+      const copy =
+        document.createElement(
+          "div"
+        );
+
+      copy.className =
+        "dhct-fob-queue__copy";
+
+      const titleLine =
+        document.createElement(
+          "strong"
+        );
+
+      titleLine.dataset.dhctFobQueueTitle =
+        "true";
+
+      if (kind === "research") {
+        row.dataset.dhctFobMaterialId =
+          entry.materialId ?? "";
+
+        row.dataset.dhctFobPropertyId =
+          entry.propertyId ?? "";
+
+        titleLine.textContent =
+          String(index + 1) +
+          ". " +
+          String(
+            entry.propertyId ??
+            "Propriété"
+          ) +
+          " — " +
+          String(
+            entry.materialId ??
+            "Matériau"
+          );
+      } else {
+        row.dataset.dhctFobAugmentId =
+          entry.augmentId ?? "";
+
+        row.dataset.dhctFobWeaponUuid =
+          entry.weaponUuid ?? "";
+
+        titleLine.textContent =
+          String(index + 1) +
+          ". " +
+          String(
+            entry.augmentId ??
+            "Fabrication"
+          ) +
+          " — " +
+          resolveWeaponNameFromUuid(
+            entry.weaponUuid
+          );
+      }
+
+      const actor =
+        document.createElement(
+          "small"
+        );
+
+      // R4.2b.3a : contributors est la source de verite.
+      // Le repli actorUuid est reserve aux anciennes entrees
+      // qui ne possedent pas encore le champ contributors.
+      const contributorUuids =
+        Array.isArray(entry?.contributors)
+          ? entry.contributors
+              .filter(
+                contributor =>
+                  contributor?.type === "actor" &&
+                  contributor?.uuid
+              )
+              .map(
+                contributor => contributor.uuid
+              )
+          : [entry?.actorUuid].filter(Boolean);
+
+      const contributorNames =
+        contributorUuids
+          .map(resolveActorNameFromUuid)
+          .filter(Boolean);
+
+      actor.textContent =
+        "Contributeurs : " +
+        (
+          contributorNames.length
+            ? contributorNames.join(", ")
+            : "aucun"
+        );
+      const progress =
+        document.createElement(
+          "span"
+        );
+
+      progress.className =
+        "dhct-fob-queue__progress";
+
+      progress.textContent =
+        fobQueueProgressLabel(
+          entry
+        );
+
+      copy.append(
+        titleLine,
+        actor,
+        progress
+      );
+
+      if (
+        kind === "craft" &&
+        index === 0
+      ) {
+        const next =
+          document.createElement(
+            "span"
+          );
+
+        next.className =
+          "dhct-fob-queue__next";
+
+        next.textContent =
+          "Prochain tour de Base Avancée";
+
+        copy.append(
+          next
+        );
+      }
+
+      row.append(
+        copy
+      );
+
+      if (
+        isGm &&
+        kind === "research"
+      ) {
+        const controls =
+          document.createElement(
+            "div"
+          );
+
+        controls.className =
+          "dhct-fob-queue__controls";
+
+        const add =
+          document.createElement(
+            "button"
+          );
+
+        add.type = "button";
+        add.textContent = "+";
+        add.title =
+          "Ajouter un contributeur";
+
+        add.dataset
+          .dhctResearchContributorAction =
+            "add";
+
+        const remove =
+          document.createElement(
+            "button"
+          );
+
+        remove.type = "button";
+        remove.textContent = "−";
+        remove.title =
+          "Retirer un contributeur";
+
+        remove.dataset
+          .dhctResearchContributorAction =
+            "remove";
+
+        /*
+         * R3 conserve au moins un contributeur.
+         * R4 autorisera 0 contributeur avec +0 progrès.
+         */
+        remove.disabled =
+          !Array.isArray(
+            entry?.contributors
+          ) ||
+          entry.contributors.length === 0;
+
+        controls.append(
+          add,
+          remove
+        );
+
+        row.append(
+          controls
+        );
+      }
+
+      if (
+        isGm &&
+        kind === "craft"
+      ) {
+        const controls =
+          document.createElement(
+            "div"
+          );
+
+        controls.className =
+          "dhct-fob-queue__controls";
+
+        const up =
+          document.createElement(
+            "button"
+          );
+
+        up.type = "button";
+        up.textContent = "↑";
+        up.title =
+          "Avancer dans la file";
+        up.dataset.dhctFobQueueMove =
+          "up";
+        up.disabled =
+          index === 0;
+
+        const down =
+          document.createElement(
+            "button"
+          );
+
+        down.type = "button";
+        down.textContent = "↓";
+        down.title =
+          "Reculer dans la file";
+        down.dataset.dhctFobQueueMove =
+          "down";
+        down.disabled =
+          index ===
+          entries.length - 1;
+
+        const addContributor =
+          document.createElement(
+            "button"
+          );
+
+        addContributor.type =
+          "button";
+
+        addContributor.textContent =
+          "+";
+
+        addContributor.title =
+          "Ajouter un contributeur";
+
+        addContributor.dataset
+          .dhctFobCraftContributor =
+            "add";
+
+        const removeContributor =
+          document.createElement(
+            "button"
+          );
+
+        removeContributor.type =
+          "button";
+
+        removeContributor.textContent =
+          "−";
+
+        removeContributor.title =
+          "Retirer un contributeur";
+
+        removeContributor.dataset
+          .dhctFobCraftContributor =
+            "remove";
+
+        removeContributor.disabled =
+          !Array.isArray(
+            entry?.contributors
+          ) ||
+          entry.contributors.length === 0;
+
+        controls.append(
+          addContributor,
+          removeContributor,
+          up,
+          down
+        );
+
+        row.append(
+          controls
+        );
+      }
+
+      section.append(
+        row
+      );
+    }
+  );
+
+  return section;
+}
+
+async function hydrateFobActivityPanelLabels(
+  panel
+) {
+  if (!(panel instanceof HTMLElement)) {
+    return;
+  }
+
+  const api =
+    getApi();
+
+  const rows =
+    [
+      ...panel.querySelectorAll(
+        "[data-dhct-fob-queue-entry-id]"
+      ),
+    ];
+
+  for (const row of rows) {
+    if (!(row instanceof HTMLElement)) {
+      continue;
+    }
+
+    const kind =
+      row.dataset
+        .dhctFobQueueKind;
+
+    const materialId =
+      row.dataset
+        .dhctFobMaterialId ?? "";
+
+    const propertyId =
+      row.dataset
+        .dhctFobPropertyId ?? "";
+
+    const augmentId =
+      row.dataset
+        .dhctFobAugmentId ?? "";
+
+    const weaponUuid =
+      row.dataset
+        .dhctFobWeaponUuid ?? "";
+
+    const title =
+      row.querySelector(
+        "[data-dhct-fob-queue-title]"
+      );
+
+    if (!(title instanceof HTMLElement)) {
+      continue;
+    }
+
+    try {
+      if (
+        kind === "research" &&
+        materialId &&
+        propertyId
+      ) {
+        const [
+          material,
+          property,
+        ] =
+          await Promise.all([
+            api?.craftingMaterials
+              ?.get?.(
+                materialId
+              ),
+
+            api?.craftingMaterials
+              ?.property?.(
+                propertyId
+              ),
+          ]);
+
+        const materialName =
+          material?.name ??
+          material?.label ??
+          material?.material?.name ??
+          materialId;
+
+        const propertyName =
+          property?.label ??
+          property?.name ??
+          propertyId;
+
+        title.textContent =
+          propertyName +
+          " — " +
+          materialName;
+
+        continue;
+      }
+
+      if (
+        kind === "craft" &&
+        augmentId
+      ) {
+        const augment =
+          await api?.weaponAugments
+            ?.get?.(
+              augmentId
+            );
+
+        const augmentName =
+          augment?.name ??
+          augment?.label ??
+          augmentId;
+
+        const weaponName =
+          resolveWeaponNameFromUuid(
+            weaponUuid
+          );
+
+        title.textContent =
+          augmentName +
+          " — " +
+          weaponName;
+      }
+    } catch (error) {
+      console.warn(
+        MODULE_ID +
+        " | FOB activity label hydration failed",
+        {
+          kind,
+          materialId,
+          propertyId,
+          augmentId,
+          weaponUuid,
+          error,
+        }
+      );
+    }
+  }
+}
+
+// R4.8h.1: creation d'un projet de consommable depuis la FOB (MJ seulement).
+async function openFobConsumableCraftDialog(expeditionId) {
+  if (!game.user?.isGM) return { green: false, reason: "not-gm" };
+  const api = getApi();
+  if (
+    !api?.crafting?.listRecipes ||
+    !api?.crafting?.planRecipe ||
+    !api?.craftingCraftQueue?.enqueueConsumable
+  ) {
+    throw new Error("API de fabrication des consommables indisponible.");
+  }
+
+  const [recipes, manifest] = await Promise.all([
+    api.crafting.listRecipes(),
+    api.expeditionManifest.load(expeditionId),
+  ]);
+  if (!manifest?.fob?.storageContainerId ||
+      !(manifest.containers ?? []).some(c => c.containerId === manifest.fob.storageContainerId)) {
+    throw new Error("Stockage FOB introuvable.");
+  }
+
+  const availableRecipes = (recipes ?? [])
+    .filter(recipe => recipe?.output?.type === "consumable" && recipe.id)
+    .sort((a, b) => String(a.name ?? a.id).localeCompare(String(b.name ?? b.id), "fr"));
+  const artisans = [...(game.actors ?? [])]
+    .filter(actor => actor?.type === "character" &&
+      (hasHuntArtisanCard(actor) || isArtificer(actor)))
+    .sort((a, b) => String(a.name).localeCompare(String(b.name), "fr"));
+  if (!availableRecipes.length) throw new Error("Aucune recette de consommable disponible.");
+  if (!artisans.length) throw new Error("Aucun Artisan ou Artificier disponible.");
+
+  const choices = `
+    <div class="form-group"><label>Recette</label>
+      <select name="dhct-craft-recipe">
+        ${availableRecipes.map(recipe => `<option value="${escapeHtml(recipe.id)}">${escapeHtml(recipe.name ?? recipe.label ?? recipe.id)} — ${Number(recipe.craft?.turns) || 1} tour(s)</option>`).join("")}
+      </select>
+    </div>
+    <div class="form-group"><label>Artisan responsable</label>
+      <select name="dhct-craft-actor">
+        ${artisans.map(actor => `<option value="${escapeHtml(actor.uuid)}">${escapeHtml(actor.name)}</option>`).join("")}
+      </select>
+    </div>
+    <p class="hint">La fabrication sera ajoutée à la file, sans consommer de matériaux maintenant.</p>`;
+
+  const DialogV2 = foundry?.applications?.api?.DialogV2;
+  if (!DialogV2?.prompt) throw new Error("DialogV2 indisponible.");
+  const selection = await DialogV2.prompt({
+    window: { title: "Programmer une fabrication FOB" },
+    content: choices,
+    ok: {
+      label: "Vérifier la recette",
+      callback: (_event, button, dialog) => {
+        const form = button?.form ?? dialog?.element;
+        return {
+          recipeId: form?.querySelector('[name="dhct-craft-recipe"]')?.value ?? null,
+          actorUuid: form?.querySelector('[name="dhct-craft-actor"]')?.value ?? null,
+        };
+      },
+    },
+    rejectClose: false,
+  });
+  if (!selection) return { green: true, cancelled: true };
+  const recipe = availableRecipes.find(item => item.id === selection.recipeId);
+  const actor = artisans.find(item => item.uuid === selection.actorUuid);
+  if (!recipe || !actor) throw new Error("Choix de fabrication invalide.");
+
+  // Lecture seule: la file et les matériaux restent intacts tant que le MJ ne confirme pas.
+  const plan = await api.crafting.planRecipe({
+    crafter: actor, recipeId: recipe.id, expeditionId,
+  });
+  if (!plan?.green) {
+    ui.notifications?.warn(`Fabrication impossible : ${plan?.reason ?? "matériaux insuffisants"}.`);
+    return { green: false, reason: plan?.reason ?? "craft-plan-unavailable" };
+  }
+  const allocations = (plan.allocations ?? [])
+    .map(a => `${Number(a.quantity) || 0} × ${a.materialId ?? "Matériau"}`)
+    .join(", ") || "aucun (recette de test)";
+  const confirmed = await confirmInventoryAction({
+    title: "Programmer la fabrication",
+    content: `Recette : ${escapeHtml(recipe.name ?? recipe.id)}. Artisan : ${escapeHtml(actor.name)}. ` +
+      `Matériaux prévus : ${escapeHtml(allocations)}. ` +
+      `Durée : ${Number(recipe.craft?.turns) || 1} tour(s) FOB.`,
+    confirmLabel: "Fabriquer",
+  });
+  if (!confirmed) return { green: true, cancelled: true };
+
+  // L'API refait les controles sur les données actuelles avant ecriture de la file.
+  const result = await api.craftingCraftQueue.enqueueConsumable({
+    actor, recipeId: recipe.id, expeditionId,
+  });
+  if (!result?.green) throw new Error(result?.reason ?? "Impossible d'ajouter la fabrication.");
+  ui.notifications?.info(`${recipe.name ?? recipe.id} ajoutée à la file de fabrication.`);
+  await refreshOpenFobActivityPanel();
+  return result;
+}
+
+function renderFobActivityPanel(
+  manifest,
+  {
+    isGm = false,
+  } = {}
+) {
+  const api =
+    getApi();
+
+  const panel =
+    document.createElement(
+      "section"
+    );
+
+  panel.className =
+    "dhct-fob-activity-panel";
+
+  const heading =
+    document.createElement(
+      "h3"
+    );
+
+  heading.textContent =
+    "Activités programmées";
+
+  panel.append(
+    heading
+  );
+
+  const expeditionId =
+    String(
+      manifest?.expeditionId ?? ""
+    );
+
+  let researchQueue = [];
+  let craftQueue = [];
+
+  try {
+    researchQueue =
+      api?.craftingResearchQueue
+        ?.status?.()
+        ?.queue ?? [];
+  } catch (error) {
+    console.warn(
+      MODULE_ID +
+      " | research queue status unavailable",
+      error
+    );
+  }
+
+  try {
+    craftQueue =
+      api?.craftingCraftQueue
+        ?.status?.()
+        ?.queue ?? [];
+  } catch (error) {
+    console.warn(
+      MODULE_ID +
+      " | craft queue status unavailable",
+      error
+    );
+  }
+
+  const research =
+    researchQueue.filter(
+      (entry) =>
+        String(
+          entry?.expeditionId ?? ""
+        ) === expeditionId
+    );
+
+  const craft =
+    craftQueue.filter(
+      (entry) =>
+        String(
+          entry?.expeditionId ?? ""
+        ) === expeditionId
+    );
+
+  const grid =
+    document.createElement(
+      "div"
+    );
+
+  grid.className =
+    "dhct-fob-activity-panel__grid";
+
+  grid.append(
+    renderFobQueueColumn({
+      title: "Recherche",
+      kind: "research",
+      entries: research,
+      isGm,
+    }),
+
+    renderFobQueueColumn({
+      title: "Fabrication",
+      kind: "craft",
+      entries: craft,
+      isGm,
+    })
+  );
+
+  panel.append(
+    grid
+  );
+
+  // R4.8h.1: acces MJ aux consommables depuis les activites FOB.
+  if (isGm) {
+    const craftButton = document.createElement("button");
+    craftButton.type = "button";
+    craftButton.dataset.dhctFobCraftCreate = "true";
+    craftButton.textContent = "Fabriquer un consommable";
+    craftButton.addEventListener("click", async (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      craftButton.disabled = true;
+      try {
+        await openFobConsumableCraftDialog(expeditionId);
+      } catch (error) {
+        console.error(`${MODULE_ID} | FOB consumable craft creation failed`, error);
+        ui.notifications?.error(error?.message ?? "Impossible de programmer la fabrication.");
+      } finally {
+        if (craftButton.isConnected) craftButton.disabled = false;
+      }
+    });
+    panel.append(craftButton);
+  }
+
+  if (isGm) {
+    panel.addEventListener(
+      "click",
+      async (event) => {
+        const button =
+          event.target instanceof Element
+            ? event.target.closest(
+                "[data-dhct-research-contributor-action]"
+              )
+            : null;
+
+        if (
+          !(button instanceof HTMLButtonElement)
+        ) {
+          return;
+        }
+
+        const row =
+          button.closest(
+            "[data-dhct-fob-queue-entry-id]"
+          );
+
+        if (!(row instanceof HTMLElement)) {
+          return;
+        }
+
+        if (
+          row.dataset
+            .dhctFobQueueKind !==
+          "research"
+        ) {
+          return;
+        }
+
+        const entryId =
+          row.dataset
+            .dhctFobQueueEntryId;
+
+        const action =
+          button.dataset
+            .dhctResearchContributorAction;
+
+        const queueApi =
+          getApi()
+            ?.craftingResearchQueue;
+
+        if (
+          !entryId ||
+          ![
+            "add",
+            "remove",
+          ].includes(action) ||
+          !queueApi?.status ||
+          !queueApi?.addContributor ||
+          !queueApi?.removeContributor
+        ) {
+          return;
+        }
+
+        const entry =
+          queueApi.status()
+            ?.queue
+            ?.find(
+              candidate =>
+                candidate.id ===
+                entryId
+            );
+
+        if (!entry) {
+          return;
+        }
+
+        const actor =
+          await chooseResearchContributor(
+            entry,
+            action
+          );
+
+        if (!actor) {
+          return;
+        }
+
+        button.disabled =
+          true;
+
+        try {
+          const result =
+            action === "add"
+              ? await queueApi
+                  .addContributor(
+                    entryId,
+                    actor.uuid
+                  )
+              : await queueApi
+                  .removeContributor(
+                    entryId,
+                    actor.uuid
+                  );
+
+          if (!result?.green) {
+            throw new Error(
+              result?.reason ??
+                "research-contributor-update-failed"
+            );
+          }
+
+          // Le hook peut avoir remplace le panneau initial.
+          // Toujours rafraichir le panneau actuellement monte.
+          await refreshOpenFobActivityPanel();
+        } catch (error) {
+          console.error(
+            MODULE_ID +
+              " | research contributor update failed",
+            error
+          );
+
+          ui.notifications?.error(
+            error?.message ??
+              "Impossible de modifier les contributeurs."
+          );
+
+          if (button.isConnected) {
+            button.disabled =
+              false;
+          }
+        }
+      }
+    );
+  }
+
+  if (isGm) {
+    panel.addEventListener(
+      "click",
+      async (event) => {
+        const button =
+          event.target instanceof Element
+            ? event.target.closest(
+                "[data-dhct-fob-craft-contributor]"
+              )
+            : null;
+
+        if (
+          !(button instanceof HTMLButtonElement)
+        ) {
+          return;
+        }
+
+        const row =
+          button.closest(
+            "[data-dhct-fob-queue-entry-id]"
+          );
+
+        if (!(row instanceof HTMLElement)) {
+          return;
+        }
+
+        if (
+          row.dataset
+            .dhctFobQueueKind !==
+          "craft"
+        ) {
+          return;
+        }
+
+        const entryId =
+          row.dataset
+            .dhctFobQueueEntryId;
+
+        const action =
+          button.dataset
+            .dhctFobCraftContributor;
+
+        const queueApi =
+          getApi()
+            ?.craftingCraftQueue;
+
+        if (
+          !entryId ||
+          !queueApi?.status ||
+          !queueApi?.addContributor ||
+          !queueApi?.removeContributor
+        ) {
+          return;
+        }
+
+        const entry =
+          queueApi
+            .status()
+            ?.queue
+            ?.find(
+              candidate =>
+                candidate.id ===
+                entryId
+            ) ?? null;
+
+        if (!entry) {
+          return;
+        }
+
+        const actor =
+          await chooseCraftContributor(
+            entry,
+            action
+          );
+
+        if (!actor) {
+          return;
+        }
+
+        button.disabled = true;
+
+        try {
+          const result =
+            action === "add"
+              ? await queueApi
+                  .addContributor(
+                    entryId,
+                    actor.uuid
+                  )
+              : await queueApi
+                  .removeContributor(
+                    entryId,
+                    actor.uuid
+                  );
+
+          if (!result?.green) {
+            throw new Error(
+              result?.reason ??
+              "craft-contributor-update-failed"
+            );
+          }
+
+
+          // Le hook peut avoir remplace le panneau initial.
+          // Toujours rafraichir le panneau actuellement monte.
+          await refreshOpenFobActivityPanel();
+        } catch (error) {
+          console.error(
+            MODULE_ID +
+            " | craft contributor update failed",
+            error
+          );
+
+          ui.notifications?.error(
+            error?.message ??
+            "Impossible de modifier les contributeurs."
+          );
+        } finally {
+          if (button.isConnected) {
+            button.disabled = false;
+          }
+        }
+      }
+    );
+
+
+    panel.addEventListener(
+      "click",
+      async (event) => {
+        const button =
+          event.target instanceof Element
+            ? event.target.closest(
+                "[data-dhct-fob-queue-move]"
+              )
+            : null;
+
+        if (
+          !(button instanceof HTMLButtonElement)
+        ) {
+          return;
+        }
+
+        const row =
+          button.closest(
+            "[data-dhct-fob-queue-entry-id]"
+          );
+
+        if (!(row instanceof HTMLElement)) {
+          return;
+        }
+
+        const kind =
+          row.dataset
+            .dhctFobQueueKind;
+
+        if (kind !== "craft") {
+          return;
+        }
+
+        const entryId =
+          row.dataset
+            .dhctFobQueueEntryId;
+
+        const direction =
+          button.dataset
+            .dhctFobQueueMove;
+
+        const queueApi =
+          kind === "research"
+            ? getApi()
+                ?.craftingResearchQueue
+            : getApi()
+                ?.craftingCraftQueue;
+
+        if (
+          !entryId ||
+          !queueApi?.status ||
+          !queueApi?.move
+        ) {
+          return;
+        }
+
+        const fullQueue =
+          queueApi.status()
+            ?.queue ?? [];
+
+        const expeditionEntries =
+          fullQueue.filter(
+            (entry) =>
+              String(
+                entry?.expeditionId ?? ""
+              ) === expeditionId
+          );
+
+        const localIndex =
+          expeditionEntries.findIndex(
+            (entry) =>
+              entry.id === entryId
+          );
+
+        if (localIndex < 0) {
+          return;
+        }
+
+        const targetLocalIndex =
+          direction === "up"
+            ? localIndex - 1
+            : localIndex + 1;
+
+        if (
+          targetLocalIndex < 0 ||
+          targetLocalIndex >=
+            expeditionEntries.length
+        ) {
+          return;
+        }
+
+        const targetEntry =
+          expeditionEntries[
+            targetLocalIndex
+          ];
+
+        const targetGlobalIndex =
+          fullQueue.findIndex(
+            (entry) =>
+              entry.id ===
+              targetEntry.id
+          );
+
+        if (targetGlobalIndex < 0) {
+          return;
+        }
+
+        button.disabled = true;
+
+        try {
+          const result =
+            await queueApi.move(
+              entryId,
+              targetGlobalIndex
+            );
+
+          if (!result?.green) {
+            throw new Error(
+              result?.reason ??
+              "queue-move-failed"
+            );
+          }
+
+          // Le hook peut avoir remplace le panneau initial.
+          // Toujours rafraichir le panneau actuellement monte.
+          await refreshOpenFobActivityPanel();
+        } catch (error) {
+          console.error(
+            MODULE_ID +
+            " | FOB queue move failed",
+            error
+          );
+
+          ui.notifications?.error(
+            error?.message ??
+            "Impossible de réordonner la file."
+          );
+
+          if (button.isConnected) {
+            button.disabled = false;
+          }
+        }
+      }
+    );
+  }
+
+  return panel;
+}
+
 function renderFobWorkshopCards(
   manifest
 ) {
@@ -3937,6 +5446,18 @@ function renderFobWorkshopCards(
 
   grid.className =
     "dhct-fob-workshops__grid";
+
+  grid.style.display =
+    "grid";
+
+  grid.style.gridTemplateColumns =
+    "repeat(2, minmax(0, 1fr))";
+
+  grid.style.gap =
+    ".75rem";
+
+  grid.style.alignItems =
+    "stretch";
 
   for (
     const {
@@ -4051,11 +5572,195 @@ function renderFobWorkshopCards(
   return section;
 }
 
+async function chooseHuntWorkshopCrafter(
+  workshop,
+  api
+) {
+  /*
+   * Players keep the simple ownership-based resolution.
+   */
+  if (!game.user?.isGM) {
+    return (
+      workshop?.crafterForUser?.(
+        game.user
+      ) ?? null
+    );
+  }
+
+  /*
+   * A GM owns everything, so crafterForUser() would
+   * otherwise always select the first Artisan found.
+   *
+   * Build the actual Artisan candidates explicitly
+   * and let the GM choose.
+   */
+  const candidates =
+    [...(game.actors ?? [])]
+      .filter(
+        actor =>
+          actor?.type ===
+            "character"
+      )
+      .filter(
+        actor => {
+          try {
+            return (
+              workshop
+                ?.list?.({
+                  crafter:
+                    actor,
+                  api,
+                })
+                ?.green ===
+              true
+            );
+          } catch (_error) {
+            return false;
+          }
+        }
+      )
+      .sort(
+        (a, b) =>
+          String(a.name ?? "")
+            .localeCompare(
+              String(b.name ?? ""),
+              game.i18n?.lang ??
+                "fr"
+            )
+      );
+
+  if (!candidates.length) {
+    return null;
+  }
+
+  if (candidates.length === 1) {
+    return candidates[0];
+  }
+
+  const DialogV2 =
+    foundry?.applications?.api
+      ?.DialogV2;
+
+  if (DialogV2?.prompt) {
+    const options =
+      candidates
+        .map(
+          actor =>
+            '<option value="' +
+            escapeHtml(actor.uuid) +
+            '">' +
+            escapeHtml(actor.name) +
+            "</option>"
+        )
+        .join("");
+
+    const selectedUuid =
+      await DialogV2.prompt({
+        window: {
+          title:
+            "Choisir l’Artisan",
+        },
+
+        content:
+          `
+            <div class="form-group">
+              <label>
+                Artisan
+              </label>
+
+              <div class="form-fields">
+                <select
+                  name="dhct-hunt-artisan"
+                  autofocus
+                >
+                  ${options}
+                </select>
+              </div>
+
+              <p class="hint">
+                Cet Artisan portera la fabrication
+                et les modifications de l’atelier.
+              </p>
+            </div>
+          `,
+
+        ok: {
+          label:
+            "Ouvrir l’atelier",
+
+          callback:
+            (
+              _event,
+              _button,
+              dialog
+            ) =>
+              dialog?.element
+                ?.querySelector?.(
+                  '[name="dhct-hunt-artisan"]'
+                )
+                ?.value ??
+              null,
+        },
+
+        rejectClose:
+          false,
+      });
+
+    if (!selectedUuid) {
+      return null;
+    }
+
+    return (
+      candidates.find(
+        actor =>
+          actor.uuid ===
+          selectedUuid
+      ) ?? null
+    );
+  }
+
+  /*
+   * Very old/fallback UI path.
+   */
+  const labels =
+    candidates
+      .map(
+        (actor, index) =>
+          String(index + 1) +
+          ". " +
+          actor.name
+      )
+      .join("\n");
+
+  const raw =
+    window.prompt(
+      "Choisir l’Artisan :\n" +
+        labels,
+      "1"
+    );
+
+  if (raw == null) {
+    return null;
+  }
+
+  const index =
+    Math.trunc(
+      Number(raw)
+    ) - 1;
+
+  return (
+    candidates[index] ??
+    null
+  );
+}
+
+
 function installHuntWorkshopFobCard(fobView) {
   if (!(fobView instanceof HTMLElement)) {
     return {
       green: false,
-      reason: "fob-view-not-found",
+      reason:
+        "fob-view-not-found",
     };
   }
 
@@ -4065,12 +5770,29 @@ function installHuntWorkshopFobCard(fobView) {
   const workshop =
     api?.weaponAugmentWorkshop;
 
-  const crafter =
-    workshop?.crafterForUser?.(
-      game.user,
-    ) ?? null;
+  if (
+    !workshop?.open ||
+    !workshop?.list
+  ) {
+    return {
+      green: false,
+      reason:
+        "hunt-workshop-unavailable",
+    };
+  }
 
-  if (!crafter) {
+  /*
+   * Players still need an immediately resolvable
+   * Artisan for the shortcut to be exposed.
+   *
+   * GM selection happens on click instead.
+   */
+  if (
+    !game.user?.isGM &&
+    !workshop?.crafterForUser?.(
+      game.user
+    )
+  ) {
     return {
       green: false,
       reason:
@@ -4086,7 +5808,8 @@ function installHuntWorkshopFobCard(fobView) {
   if (!(grid instanceof HTMLElement)) {
     return {
       green: false,
-      reason: "fob-workshop-grid-not-found",
+      reason:
+        "fob-workshop-grid-not-found",
     };
   }
 
@@ -4102,29 +5825,41 @@ function installHuntWorkshopFobCard(fobView) {
   }
 
   const card =
-    document.createElement("button");
+    document.createElement(
+      "button"
+    );
 
-  card.type = "button";
+  card.type =
+    "button";
+
   card.className =
     "dhct-fob-workshop-card";
 
-  card.dataset.dhctFobWorkshopCard =
-    "hunt-weapon-workshop";
+  card.dataset
+    .dhctFobWorkshopCard =
+      "hunt-weapon-workshop";
 
-  card.dataset.dhctFobSlotId =
-    "hunt-weapon-workshop-shortcut";
+  card.dataset
+    .dhctFobSlotId =
+      "hunt-weapon-workshop-shortcut";
 
   const title =
-    document.createElement("strong");
+    document.createElement(
+      "strong"
+    );
 
   title.textContent =
-    "Atelier d\u2019armes de chasse";
+    "Atelier d’armes de chasse";
 
   const detail =
-    document.createElement("span");
+    document.createElement(
+      "span"
+    );
 
   detail.textContent =
-    "Fabrication et modifications";
+    game.user?.isGM
+      ? "Choisir un Artisan · fabrication et modifications"
+      : "Fabrication et modifications";
 
   card.append(
     title,
@@ -4134,7 +5869,8 @@ function installHuntWorkshopFobCard(fobView) {
   card.addEventListener(
     "click",
     async () => {
-      const api = getApi();
+      const api =
+        getApi();
 
       const workshop =
         api?.weaponAugmentWorkshop;
@@ -4146,6 +5882,23 @@ function installHuntWorkshopFobCard(fobView) {
         ui.notifications?.warn(
           "Campaign Toolkit : atelier d'armes de chasse indisponible."
         );
+
+        return;
+      }
+
+      const crafter =
+        await chooseHuntWorkshopCrafter(
+          workshop,
+          api
+        );
+
+      if (!crafter) {
+        if (game.user?.isGM) {
+          ui.notifications?.warn(
+            "Campaign Toolkit : aucun Artisan sélectionné."
+          );
+        }
+
         return;
       }
 
@@ -4155,24 +5908,32 @@ function installHuntWorkshopFobCard(fobView) {
           {
             allowCraft: true,
             source: "fob",
-          },
+          }
         );
 
-      if (result?.green === false) {
+      if (
+        result?.green ===
+        false
+      ) {
         ui.notifications?.warn(
-          `Campaign Toolkit : atelier d'armes de chasse — ${result.reason}.`
+          "Campaign Toolkit : atelier d'armes de chasse — " +
+          result.reason +
+          "."
         );
       }
     }
   );
 
-  grid.append(card);
+  grid.append(
+    card
+  );
 
   return {
     green: true,
     reused: false,
   };
 }
+
 
 async function configureExpeditionShell(
   dialog,
@@ -4288,6 +6049,16 @@ async function configureExpeditionShell(
       activeTab: "expedition",
       canManage: isGm,
     });
+
+  const fobTab =
+    shell.querySelector(
+      '[data-dhct-expedition-tab="fob"]'
+    );
+
+  if (fobTab instanceof HTMLElement) {
+    fobTab.textContent =
+      "Base Avancée Temporaire";
+  }
 
   const fobVisible =
     isGm ||
@@ -4417,6 +6188,16 @@ async function configureExpeditionShell(
       "fob"
     );
 
+  const fobViewTitle =
+    fobView?.querySelector?.(
+      ".dhct-inventory-view__pane-title, h2, h3"
+    );
+
+  if (fobViewTitle instanceof HTMLElement) {
+    fobViewTitle.textContent =
+      "Inventaire de la Base Avancée";
+  }
+
   const caravanProjection =
     projectExpeditionCaravan({
       manifest,
@@ -4455,9 +6236,22 @@ async function configureExpeditionShell(
     fobWorkshopCards
   );
 
+  const fobActivityPanel =
+    renderFobActivityPanel(
+      manifest,
+      {
+        isGm,
+      }
+    );
+
   fobPane.append(
     fobWorkshopCards,
+    fobActivityPanel,
     fobView
+  );
+
+  void hydrateFobActivityPanelLabels(
+    fobActivityPanel
   );
 
   caravanPane.append(
@@ -4975,6 +6769,89 @@ function injectStyles() {
 
     .dhct-expedition-shell__pane[hidden] {
       display: none !important;
+    }
+
+    .dhct-fob-activity-panel {
+      display: grid;
+      gap: .55rem;
+      margin: .9rem 0;
+      padding: .7rem;
+      border:
+        1px solid
+        rgba(201, 177, 137, .32);
+      border-radius: 8px;
+      background:
+        rgba(18, 17, 22, .38);
+    }
+
+    .dhct-fob-activity-panel > h3,
+    .dhct-fob-queue > h4 {
+      margin: 0;
+    }
+
+    .dhct-fob-activity-panel__grid {
+      display: grid;
+      grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+      gap: .75rem;
+    }
+
+    .dhct-fob-queue {
+      display: grid;
+      align-content: start;
+      gap: .4rem;
+      min-width: 0;
+    }
+
+    .dhct-fob-queue__row {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1fr) auto;
+      gap: .5rem;
+      align-items: center;
+      padding: .5rem;
+      border:
+        1px solid
+        rgba(201, 177, 137, .18);
+      border-radius: 6px;
+    }
+
+    .dhct-fob-queue__copy {
+      display: grid;
+      gap: .15rem;
+      min-width: 0;
+    }
+
+    .dhct-fob-queue__copy strong {
+      overflow-wrap: anywhere;
+    }
+
+    .dhct-fob-queue__copy small,
+    .dhct-fob-queue__progress,
+    .dhct-fob-queue__empty {
+      opacity: .72;
+    }
+
+    .dhct-fob-queue__next {
+      font-size: .78rem;
+      font-weight: 700;
+    }
+
+    .dhct-fob-queue__controls {
+      display: grid;
+      grid-template-columns:
+        repeat(2, auto);
+      gap: .25rem;
+    }
+
+    .dhct-fob-queue__controls button {
+      min-width: 32px;
+    }
+
+    @media (max-width: 760px) {
+      .dhct-fob-activity-panel__grid {
+        grid-template-columns: 1fr;
+      }
     }
 
     /* P2.12l.4 inventory vertical scroll */
@@ -5718,6 +7595,111 @@ function injectStyles() {
   document.head.append(style);
 }
 
+async function refreshOpenFobActivityPanel() {
+  const dialog =
+    findOpenExpeditionDialog();
+
+  if (!(dialog instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "expedition-dialog-not-open",
+    };
+  }
+
+  const shell =
+    dialog.querySelector(
+      ".dhct-expedition-shell"
+    );
+
+  if (!(shell instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "expedition-shell-not-found",
+    };
+  }
+
+  const fobPane =
+    expeditionShellPane(
+      shell,
+      "fob"
+    );
+
+  if (!(fobPane instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "fob-pane-not-found",
+    };
+  }
+
+  /*
+   * Do not rely on a private CSS class here.
+   * The panel already has a stable player-facing title.
+   */
+  const currentPanel =
+    [...fobPane.children]
+      .find(
+        (node) =>
+          node instanceof HTMLElement &&
+          String(
+            node.textContent ?? ""
+          ).includes(
+            "Activités programmées"
+          )
+      ) ?? null;
+
+  if (!(currentPanel instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "fob-activity-panel-not-found",
+    };
+  }
+
+  const api =
+    getApi();
+
+  const manifest =
+    await loadCurrentManifest(
+      api
+    );
+
+  if (!manifest) {
+    return {
+      green: false,
+      reason: "expedition-manifest-not-found",
+    };
+  }
+
+  const replacement =
+    renderFobActivityPanel(
+      manifest,
+      {
+        isGm:
+          game.user?.isGM === true,
+      }
+    );
+
+  if (!(replacement instanceof HTMLElement)) {
+    return {
+      green: false,
+      reason: "fob-activity-panel-render-failed",
+    };
+  }
+
+  currentPanel.replaceWith(
+    replacement
+  );
+
+  void hydrateFobActivityPanelLabels(
+    replacement
+  );
+
+  return {
+    green: true,
+    changed: true,
+  };
+}
+
+
 let refreshTimer = null;
 
 function scheduleRefresh({ retries = 8, delay = 80 } = {}) {
@@ -5845,9 +7827,44 @@ export function installExpeditionInventoryUx() {
     });
   });
 
-  Hooks.on(`${MODULE_ID}.expeditionChanged`, () => {
-    scheduleRefresh({ retries: 8, delay: 80 });
+  // R4.8f.8b: rebuild an already mounted inventory after a persisted FOB craft.
+  // A standard scheduleRefresh() reuses the shell and keeps its old projection.
+  let fobCraftRefreshPending = false;
+  Hooks.on(`${MODULE_ID}.expeditionChanged`, (event = {}) => {
+    if (event?.source !== "fob-craft") {
+      scheduleRefresh({ retries: 8, delay: 80 });
+      return;
+    }
+    if (fobCraftRefreshPending || !findOpenExpeditionDialog()) return;
+    fobCraftRefreshPending = true;
+    void (async () => {
+      try {
+        const api = getApi();
+        const manifest = await loadCurrentManifest(api);
+        if (!manifest || !findOpenExpeditionDialog()) return;
+        await reopenExpeditionDialog(api, manifest);
+      } catch (error) {
+        console.warn(`${MODULE_ID} | FOB craft inventory refresh failed`, error);
+      } finally {
+        fobCraftRefreshPending = false;
+      }
+    })();
   });
+
+  Hooks.on(
+    `${MODULE_ID}.fobActivitiesChanged`,
+    () => {
+      void refreshOpenFobActivityPanel()
+        .catch(
+          (error) => {
+            console.warn(
+              `${MODULE_ID} | FOB activity panel refresh failed`,
+              error
+            );
+          }
+        );
+    }
+  );
 
 
   Hooks.on("renderApplicationV2", (application) => {

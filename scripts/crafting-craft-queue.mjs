@@ -20,6 +20,73 @@ function emptyState() {
   };
 }
 
+function normalizeContributors(
+  contributors,
+  legacyActorUuid = ""
+) {
+  const normalized = [];
+  const seen = new Set();
+
+  if (Array.isArray(contributors)) {
+    for (const contributor of contributors) {
+      const type =
+        typeof contributor === "string"
+          ? "actor"
+          : String(
+              contributor?.type ??
+              "actor"
+            ).trim();
+
+      const uuid =
+        typeof contributor === "string"
+          ? contributor.trim()
+          : String(
+              contributor?.uuid ?? ""
+            ).trim();
+
+      if (
+        type !== "actor" ||
+        !uuid ||
+        seen.has(uuid)
+      ) {
+        continue;
+      }
+
+      seen.add(uuid);
+
+      normalized.push({
+        type: "actor",
+        uuid,
+      });
+    }
+  }
+
+  /*
+   * Migration legacy :
+   * seulement si le champ contributors
+   * n'existait pas.
+   *
+   * Un tableau vide explicite signifie
+   * "projet en pause".
+   */
+  if (
+    !Array.isArray(contributors) &&
+    normalized.length === 0 &&
+    legacyActorUuid
+  ) {
+    normalized.push({
+      type: "actor",
+      uuid:
+        String(
+          legacyActorUuid
+        ).trim(),
+    });
+  }
+
+  return normalized;
+}
+
+
 function normalizeEntry(entry) {
   const turnsRequired =
     Number.isSafeInteger(
@@ -51,6 +118,12 @@ function normalizeEntry(entry) {
         entry?.actorUuid ?? ""
       ).trim(),
 
+    contributors:
+      normalizeContributors(
+        entry?.contributors,
+        entry?.actorUuid
+      ),
+
     weaponUuid:
       String(
         entry?.weaponUuid ?? ""
@@ -60,6 +133,10 @@ function normalizeEntry(entry) {
       String(
         entry?.augmentId ?? ""
       ).trim(),
+
+    recipeId: String(entry?.recipeId ?? "").trim(),
+    outputType: String(entry?.outputType ?? "weaponAugment").trim(),
+    outputId: String(entry?.outputId ?? entry?.augmentId ?? "").trim(),
 
     expeditionId:
       String(
@@ -89,9 +166,10 @@ function normalizeState(raw) {
             entry =>
               entry.id &&
               entry.actorUuid &&
-              entry.weaponUuid &&
-              entry.augmentId &&
-              entry.expeditionId
+              entry.expeditionId &&
+              (entry.outputType === "consumable"
+                ? Boolean(entry.recipeId && entry.outputId)
+                : Boolean(entry.weaponUuid && entry.augmentId))
           )
       : [];
 
@@ -154,6 +232,16 @@ async function writeState(state) {
     MODULE_ID,
     SETTING_KEY,
     normalized
+  );
+
+
+  Hooks.callAll(
+    `${MODULE_ID}.fobActivitiesChanged`,
+    {
+      kind: "craft",
+      revision:
+        normalized.revision,
+    }
   );
 
   return normalized;
@@ -251,7 +339,7 @@ export function createCraftingCraftQueueApi({
     weaponUuid = null,
     augmentId,
     expeditionId,
-    turnsRequired = 1,
+    turnsRequired = null,
   } = {}) {
     assertGm();
 
@@ -278,9 +366,13 @@ export function createCraftingCraftQueueApi({
       String(
         expeditionId ?? ""
       ).trim();
+    const explicitTurns =
+      turnsRequired == null
+        ? null
+        : Number(turnsRequired);
 
     turnsRequired =
-      Number(turnsRequired);
+      explicitTurns;
 
     if (!resolvedActorUuid) {
       return {
@@ -313,21 +405,7 @@ export function createCraftingCraftQueueApi({
           "expedition-id-required",
       };
     }
-
-    if (
-      !Number.isSafeInteger(
-        turnsRequired
-      ) ||
-      turnsRequired < 1
-    ) {
-      return {
-        green: false,
-        reason:
-          "craft-turns-invalid",
-      };
-    }
-
-    const resolvedActor =
+const resolvedActor =
       actor?.uuid
         ? actor
         : await fromUuid(
@@ -398,6 +476,7 @@ export function createCraftingCraftQueueApi({
           expeditionId,
         });
 
+
     if (!plan?.green) {
       return {
         ...clone(plan),
@@ -408,12 +487,41 @@ export function createCraftingCraftQueueApi({
       };
     }
 
+    const recipeTurns =
+      Number(
+        plan?.recipe
+          ?.craft
+          ?.turns
+      );
+
+    turnsRequired =
+      Number.isSafeInteger(
+        explicitTurns
+      ) &&
+      explicitTurns > 0
+        ? explicitTurns
+        : Number.isSafeInteger(
+            recipeTurns
+          ) &&
+          recipeTurns > 0
+            ? recipeTurns
+            : 1;
+
     const entry = {
       id:
         requestId(),
 
       actorUuid:
         resolvedActorUuid,
+
+
+      contributors: [
+        {
+          type: "actor",
+          uuid:
+            resolvedActorUuid,
+        },
+      ],
 
       weaponUuid:
         resolvedWeaponUuid,
@@ -462,12 +570,161 @@ export function createCraftingCraftQueueApi({
     };
   }
 
-  async function progress(id) {
+
+  // R4.8e: consumables use the same weighted FOB queue, without a weapon UUID.
+  async function enqueueConsumable({ actor, actorUuid = null, recipeId, expeditionId, turnsRequired = null } = {}) {
+    assertGm();
+    const uuid = String(actor?.uuid ?? actorUuid ?? "").trim();
+    recipeId = String(recipeId ?? "").trim();
+    expeditionId = String(expeditionId ?? "").trim();
+    if (!uuid || !recipeId || !expeditionId) return { green: false, reason: "craft-consumable-arguments-required" };
+    const resolvedActor = actor?.uuid ? actor : await fromUuid(uuid);
+    if (resolvedActor?.documentName !== "Actor") return { green: false, reason: "craft-actor-not-found" };
+    if (!craftingApi?.planRecipe) return { green: false, reason: "craft-plan-api-unavailable" };
+    const plan = await craftingApi.planRecipe({ crafter: resolvedActor, recipeId, expeditionId });
+    if (!plan?.green) return { ...plan, green: false };
+    if (plan.recipe?.output?.type !== "consumable") return { green: false, reason: "craft-output-not-consumable" };
+    const outputId = String(plan.recipe.output.id ?? "").trim();
+    if (!outputId.startsWith("Compendium.daggerheart-campaign-toolkit.dh-consumables.Item."))
+      return { green: false, reason: "craft-output-compendium-invalid" };
+    const state = readState();
+    if (state.queue.some(e => e.outputType === "consumable" && e.actorUuid === uuid && e.recipeId === recipeId && e.expeditionId === expeditionId))
+      return { green: false, reason: "craft-already-queued" };
+    const turnValue = Number(turnsRequired ?? plan.recipe.craft?.turns ?? 1);
+    if (!Number.isSafeInteger(turnValue) || turnValue <= 0) return { green: false, reason: "craft-turns-invalid" };
+    const entry = {
+      id: requestId(), actorUuid: uuid, contributors: [{ type: "actor", uuid }],
+      weaponUuid: "", augmentId: "", recipeId, outputType: "consumable", outputId,
+      expeditionId, turnsRequired: turnValue, progress: 0, queuedAt: Date.now(),
+    };
+    state.queue.push(entry);
+    await writeState(state);
+    return { green: true, changed: true, entry: clone(entry), plan };
+  }
+
+  async function addContributor(
+    id,
+    actorUuid
+  ) {
     assertGm();
 
     id =
+      String(id ?? "").trim();
+
+    actorUuid =
       String(
-        id ?? ""
+        actorUuid ?? ""
+      ).trim();
+
+    const state =
+      readState();
+
+    const index =
+      state.queue.findIndex(
+        entry =>
+          entry.id === id
+      );
+
+    if (index < 0) {
+      return {
+        green: false,
+        reason:
+          "craft-entry-not-found",
+        id,
+      };
+    }
+
+    if (!actorUuid) {
+      return {
+        green: false,
+        reason:
+          "craft-contributor-required",
+      };
+    }
+
+    const actor =
+      await fromUuid(
+        actorUuid
+      );
+
+    if (
+      !actor ||
+      actor.documentName !==
+        "Actor"
+    ) {
+      return {
+        green: false,
+        reason:
+          "craft-contributor-not-found",
+        actorUuid,
+      };
+    }
+
+    const entry =
+      state.queue[index];
+
+    entry.contributors =
+      normalizeContributors(
+        entry.contributors,
+        entry.actorUuid
+      );
+
+    if (
+      entry.contributors.some(
+        contributor =>
+          contributor.uuid ===
+          actorUuid
+      )
+    ) {
+      return {
+        green: true,
+        changed: false,
+        reason:
+          "craft-contributor-already-present",
+        entry:
+          clone(entry),
+      };
+    }
+
+    entry.contributors.push({
+      type: "actor",
+      uuid: actorUuid,
+    });
+
+    const saved =
+      await writeState(state);
+
+    const savedEntry =
+      saved.queue.find(
+        candidate =>
+          candidate.id === id
+      ) ?? null;
+
+    return {
+      green: true,
+      changed: true,
+      reason:
+        "craft-contributor-added",
+      entry:
+        clone(savedEntry),
+      count:
+        saved.queue.length,
+    };
+  }
+
+
+  async function removeContributor(
+    id,
+    actorUuid
+  ) {
+    assertGm();
+
+    id =
+      String(id ?? "").trim();
+
+    actorUuid =
+      String(
+        actorUuid ?? ""
       ).trim();
 
     const state =
@@ -491,24 +748,35 @@ export function createCraftingCraftQueueApi({
     const entry =
       state.queue[index];
 
+    entry.contributors =
+      normalizeContributors(
+        entry.contributors,
+        entry.actorUuid
+      );
+
+    const before =
+      entry.contributors.length;
+
+    entry.contributors =
+      entry.contributors.filter(
+        contributor =>
+          contributor.uuid !==
+          actorUuid
+      );
+
     if (
-      entry.progress >=
-      entry.turnsRequired
+      entry.contributors.length ===
+      before
     ) {
       return {
         green: true,
         changed: false,
-        completed: true,
+        reason:
+          "craft-contributor-not-present",
         entry:
           clone(entry),
       };
     }
-
-    entry.progress =
-      Math.min(
-        entry.turnsRequired,
-        entry.progress + 1
-      );
 
     const saved =
       await writeState(state);
@@ -517,18 +785,155 @@ export function createCraftingCraftQueueApi({
       saved.queue.find(
         candidate =>
           candidate.id === id
-      );
+      ) ?? null;
 
     return {
       green: true,
       changed: true,
-      completed:
-        savedEntry.progress >=
-        savedEntry.turnsRequired,
+      reason:
+        "craft-contributor-removed",
       entry:
         clone(savedEntry),
+      count:
+        saved.queue.length,
     };
   }
+
+
+  async function progress(id) {
+    assertGm();
+
+    id =
+      String(id ?? "").trim();
+
+    const state =
+      readState();
+
+    const index =
+      state.queue.findIndex(
+        entry =>
+          entry.id === id
+      );
+
+    if (index < 0) {
+      return {
+        green: false,
+        reason:
+          "craft-entry-not-found",
+        id,
+      };
+    }
+
+    const entry =
+      state.queue[index];
+
+    const contributorCount =
+      new Set(
+        (
+          entry.contributors ??
+          []
+        )
+          .filter(
+            contributor =>
+              contributor?.type ===
+                "actor" &&
+              contributor?.uuid
+          )
+          .map(
+            contributor =>
+              contributor.uuid
+          )
+      ).size;
+
+    if (
+      entry.progress >=
+      entry.turnsRequired
+    ) {
+      return {
+        green: true,
+        changed: false,
+        completed: true,
+
+        progressDelta: 0,
+        contributorCount,
+
+        entry:
+          clone(entry),
+
+        count:
+          state.queue.length,
+      };
+    }
+
+    /*
+     * Projet actif mais en pause :
+     * il reste dans la file et
+     * conserve toute sa progression.
+     */
+    if (contributorCount === 0) {
+      return {
+        green: true,
+        changed: false,
+        completed: false,
+
+        progressDelta: 0,
+        contributorCount: 0,
+
+        entry:
+          clone(entry),
+
+        count:
+          state.queue.length,
+      };
+    }
+
+    const before =
+      entry.progress;
+
+    entry.progress =
+      Math.min(
+        entry.turnsRequired,
+        entry.progress +
+          contributorCount
+      );
+
+    const progressDelta =
+      entry.progress -
+      before;
+
+    const saved =
+      await writeState(state);
+
+    const savedEntry =
+      saved.queue.find(
+        candidate =>
+          candidate.id === id
+      ) ?? null;
+
+    return {
+      green: true,
+
+      changed:
+        progressDelta > 0,
+
+      progressDelta,
+      contributorCount,
+
+      completed:
+        Boolean(
+          savedEntry &&
+          savedEntry.progress >=
+            savedEntry.turnsRequired
+        ),
+
+      entry:
+        clone(savedEntry),
+
+      count:
+        saved.queue.length,
+    };
+  }
+
 
   async function remove(id) {
     assertGm();
@@ -691,6 +1096,9 @@ export function createCraftingCraftQueueApi({
   return Object.freeze({
     status,
     enqueue,
+    enqueueConsumable,
+    addContributor,
+    removeContributor,
     progress,
     remove,
     move,

@@ -8,6 +8,12 @@
       "namespace": "monster-hunter",
       "kind": "recipe-catalog",
       "path": "data/crafting/catalogs/monster-hunter.recipes.json"
+    },
+    {
+      "id": "mh.recipes.additions.r48",
+      "namespace": "monster-hunter",
+      "kind": "recipe-catalog",
+      "path": "data/crafting/catalogs/monster-hunter.recipes.additions.json"
     }
   ]
 }

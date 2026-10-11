@@ -133,43 +133,73 @@ async function processAuthorityRequest(message) {
 
   switch (message.operation) {
     case "craft": {
-      const craftingApi = game.modules.get(MODULE_ID)?.api?.crafting ?? null;
-      if (!craftingApi?.craftWeaponAugment) {
-        return { green: false, reason: "crafting-api-unavailable" };
+      const craftQueue =
+        game.modules
+          .get(MODULE_ID)
+          ?.api
+          ?.craftingCraftQueue ?? null;
+
+      if (!craftQueue?.enqueue) {
+        return {
+          green: false,
+          reason: "craft-queue-unavailable",
+        };
       }
 
-      const expeditionId = String(message?.expeditionId ?? "").trim();
+      const expeditionId =
+        String(
+          message?.expeditionId ?? ""
+        ).trim();
 
       if (!expeditionId) {
-        return { green: false, reason: "expedition-id-required" };
+        return {
+          green: false,
+          reason: "expedition-id-required",
+        };
       }
 
-      const craft = await craftingApi.craftWeaponAugment({
-        crafter,
-        weapon,
-        augmentId,
-        expeditionId,
-      });
+      /*
+       * Scheduling a fabrication must never consume materials.
+       *
+       * enqueue() performs the read-only recipe plan and stores
+       * the activity. The FOB activity dispatcher performs the
+       * actual craft, consumption and weapon mutation when the
+       * queued activity completes.
+       */
+      const queued =
+        await craftQueue.enqueue({
+          actor: crafter,
+          weapon,
+          augmentId,
+          expeditionId,
+        });
 
-      if (!craft?.green) {
+      if (!queued?.green) {
         return {
-          ...craft,
+          ...queued,
           green: false,
-          operation: message.operation,
-          crafterUuid: crafter.uuid,
-          weaponUuid: weapon.uuid,
+          operation:
+            message.operation,
+          crafterUuid:
+            crafter.uuid,
+          weaponUuid:
+            weapon.uuid,
           augmentId,
           expeditionId,
         };
       }
 
       return {
-        ...craft,
+        ...queued,
         green: true,
-        reason: permission.reason,
-        operation: message.operation,
-        crafterUuid: crafter.uuid,
-        weaponUuid: weapon.uuid,
+        reason:
+          permission.reason,
+        operation:
+          message.operation,
+        crafterUuid:
+          crafter.uuid,
+        weaponUuid:
+          weapon.uuid,
         augmentId,
         expeditionId,
       };

@@ -875,7 +875,113 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
       };
     }
   }
+
+  // R4.8e: one manifest save contains both material removal and delivery.
+  // A deterministic delivery entryId permits safe recovery after a failed acknowledgement.
+  async function craftConsumable({ crafter, recipeId, expeditionId, operationId } = {}) {
+    if (!game.user?.isGM) throw new Error("Consumable craft is GM-only.");
+    operationId = String(operationId ?? "").trim();
+    if (!operationId || !/^[a-zA-Z0-9_-]{8,160}$/.test(operationId))
+      return { green: false, reason: "craft-operation-id-invalid" };
+    const deliveryId = `craft-output-${operationId}`;
+    const original = await persistenceApi.load(expeditionId);
+    if (!original) return { green: false, reason: "expedition-not-found" };
+    const containerId = resolveFobCraftContainerId(original);
+    if (!containerId) return { green: false, reason: "fob-storage-unavailable" };
+    const receipt = original.metadata?.craftingDeliveries?.[operationId] ?? null;
+    if (receipt) {
+      if (receipt.recipeId !== recipeId || receipt.containerId !== containerId)
+        return { green: false, reason: "craft-receipt-conflict", requiresGmReview: true };
+      return { green: true, alreadyDelivered: true, operationId,
+        entryId: receipt.entryId, containerId, itemName: receipt.itemName };
+    }
+    const resolved = await resolveCraftingRecipe(recipeId);
+    const recipe = resolved?.recipe;
+    if (!recipe || recipe.output?.type !== "consumable")
+      return { green: false, reason: "consumable-recipe-not-found" };
+    const outputUuid = recipe.output.id;
+    if (typeof outputUuid !== "string" || !/^Compendium\.daggerheart-campaign-toolkit\.dh-consumables\.Item\.[a-zA-Z0-9]{16}$/.test(outputUuid))
+      return { green: false, reason: "consumable-source-invalid" };
+    const item = await fromUuid(outputUuid);
+    if (item?.documentName !== "Item" || item.type !== "consumable")
+      return { green: false, reason: "consumable-source-not-found" };
+    const plan = await planRecipe({ crafter, recipeId, expeditionId });
+    if (!plan.green) return plan;
+    // Fail closed if the container changed between planning and mutation.
+    if (plan.containerId !== containerId) return { green: false, reason: "craft-storage-changed" };
+    if (!manifestApi.acquire) return { green: false, reason: "craft-manifest-acquire-unavailable" };
+    if (!operationJournalApi?.begin || !operationJournalApi?.get || !operationJournalApi?.mark)
+      return { green: false, reason: "craft-operation-journal-unavailable" };
+    if (operationJournalApi.get(operationId))
+      return { green: false, reason: "craft-operation-requires-review", requiresGmReview: true };
+    const started = await operationJournalApi.begin({ operationId, expeditionId, weaponUuid: outputUuid, augmentId: recipeId });
+    if (!started?.green) return { green: false, reason: "craft-journal-begin-failed" };
+    try {
+      const working = clone(original);
+      const consumed = consumeAllocationFromContainer(manifestApi, working, containerId, plan.allocations);
+      const snapshot = item.toObject();
+      const itemRef = {
+        kind: "foundry-item", uuid: item.uuid, sourceId: item.uuid,
+        name: item.name, type: item.type, img: item.img,
+        snapshot, lifecycle: { version: 1, state: "active", revision: 1 },
+      };
+      const acquired = manifestApi.acquire(working, {
+        containerId, itemRef, quantity: 1, entryId: deliveryId,
+        note: `Fabrication FOB ${recipeId} / ${operationId}`,
+      });
+      if (!acquired?.acquired || !acquired.entry?.entryId)
+        throw new Error(acquired?.reason ?? "craft-consumable-delivery-refused");
+      working.metadata ??= {};
+      working.metadata.craftingDeliveries ??= {};
+      working.metadata.craftingDeliveries[operationId] = {
+        recipeId, containerId, outputUuid, entryId: acquired.entry.entryId,
+        itemName: item.name,
+      };
+      const validated = manifestApi.validate(working);
+      if (!validated?.green) throw new Error(`craft-manifest-invalid: ${(validated?.errors ?? []).join('; ')}`);
+      await persistenceApi.save(working);
+      // Delivery is now authoritative, even if journal acknowledgement fails.
+      let journalWarning = null;
+      try {
+        const marked = await operationJournalApi.mark(operationId, "materials-saved");
+        if (!marked?.green) {
+          journalWarning = marked?.reason ?? "journal-mark-failed";
+        } else {
+          // R4.8f.9: only acknowledge output after durable receipt and item exist.
+          const persisted = await persistenceApi.load(expeditionId);
+          const receipt = persisted?.metadata?.craftingDeliveries?.[operationId];
+          const entry = persisted?.containers
+            ?.find(c => c.containerId === containerId)
+            ?.contents?.find(e => e.entryId === deliveryId);
+          if (
+            receipt?.recipeId !== recipeId ||
+            receipt?.containerId !== containerId ||
+            receipt?.entryId !== deliveryId ||
+            entry?.itemRef?.sourceId !== outputUuid ||
+            Number(entry?.quantity) < 1
+          ) {
+            journalWarning = "craft-output-persistence-unconfirmed";
+          } else {
+            const delivered = await operationJournalApi.mark(operationId, "output-saved");
+            if (!delivered?.green) {
+              journalWarning = delivered?.reason ?? "journal-output-mark-failed";
+            }
+          }
+        }
+      } catch (error) { journalWarning = String(error?.message ?? error); }
+      return { green: true, operationId, recipeId, expeditionId, containerId,
+        entryId: acquired.entry.entryId, itemName: item.name, consumed, journalWarning };
+    } catch (error) {
+      // A save can succeed before throwing (or before its acknowledgement).
+      // The dispatcher MUST check for the deterministic entry on the next attempt.
+      try { await operationJournalApi.mark(operationId, "requires-review"); } catch {}
+      return { green: false, reason: "craft-consumable-requires-review",
+        cause: String(error?.message ?? error), operationId, requiresGmReview: true };
+    }
+  }
+
   return Object.freeze({
+    craftConsumable,
     loadRecipes: loadCraftingRecipeCatalog,
     recipeForOutput: getCraftingRecipeForOutput,
     loadRecipeRegistry: loadCraftingRecipeCatalogRegistry,
