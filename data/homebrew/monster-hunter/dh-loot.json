@@ -210,5 +210,593 @@
         }
       }
     }
+  },
+  {
+    "_id": "729bca5e05412bb7",
+    "name": "Herbes communes",
+    "type": "loot",
+    "img": "icons/consumables/plants/herb-tied-bundle-green.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Herbes communes.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.herbes-communes",
+        "canonicalSourceId": "mh.basic.herbes-communes",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.herbes-communes",
+          "family": "vegetal",
+          "quality": 1,
+          "properties": {
+            "flexible": 3,
+            "light": 2,
+            "resonant": 1
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "eb54f92872030297",
+    "name": "Racine amère",
+    "type": "loot",
+    "img": "icons/consumables/plants/dried-bundle-wrapped-stems-sticks-brown.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Racine amère.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.racine-amere",
+        "canonicalSourceId": "mh.basic.racine-amere",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.racine-amere",
+          "family": "vegetal",
+          "quality": 1,
+          "properties": {
+            "rigid": 2,
+            "reinforcing": 3,
+            "dense": 1
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "683130f88c2205dd",
+    "name": "Spores luminescentes",
+    "type": "loot",
+    "img": "icons/consumables/mushrooms/umbontae-green.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Spores luminescentes.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.spores-luminescentes",
+        "canonicalSourceId": "mh.basic.spores-luminescentes",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.spores-luminescentes",
+          "family": "vegetal",
+          "quality": 1,
+          "properties": {
+            "resonant": 4,
+            "light": 3,
+            "conductive": 2
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "21edcd104d83426d",
+    "name": "Sève claire",
+    "type": "loot",
+    "img": "icons/commodities/materials/slime-thick-orange.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Sève claire.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.sève-claire",
+        "canonicalSourceId": "mh.basic.sève-claire",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.sève-claire",
+          "family": "vegetal",
+          "quality": 1,
+          "properties": {
+            "flexible": 3,
+            "reinforcing": 2,
+            "resonant": 2
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "2dfa56647520ff3c",
+    "name": "Sel minéral",
+    "type": "loot",
+    "img": "icons/consumables/food/salt-seasoning-spice-pink.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Sel minéral.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.sel-mineral",
+        "canonicalSourceId": "mh.basic.sel-mineral",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.sel-mineral",
+          "family": "mineral",
+          "quality": 1,
+          "properties": {
+            "dense": 3,
+            "rigid": 2,
+            "conductive": 1
+          },
+          "containerClass": "hard-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "2ec2144cca98ca26",
+    "name": "Poudre cristalline",
+    "type": "loot",
+    "img": "icons/commodities/materials/powder-red-green-yellow.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Poudre cristalline.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.poudre-cristalline",
+        "canonicalSourceId": "mh.basic.poudre-cristalline",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.poudre-cristalline",
+          "family": "mineral",
+          "quality": 1,
+          "properties": {
+            "conductive": 4,
+            "resonant": 3,
+            "piercing": 2
+          },
+          "containerClass": "hard-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "8098612643c1686e",
+    "name": "Fibres végétales",
+    "type": "loot",
+    "img": "icons/commodities/cloth/cloth-patterned-teal.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Fibres végétales.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.fibres-vegetales",
+        "canonicalSourceId": "mh.basic.fibres-vegetales",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.fibres-vegetales",
+          "family": "fiber",
+          "quality": 1,
+          "properties": {
+            "flexible": 4,
+            "light": 3,
+            "reinforcing": 2
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "accb8ef286850c33",
+    "name": "Huile végétale",
+    "type": "loot",
+    "img": "icons/commodities/materials/liquid-purple.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Huile végétale.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.huile-vegetale",
+        "canonicalSourceId": "mh.basic.huile-vegetale",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.huile-vegetale",
+          "family": "vegetal",
+          "quality": 1,
+          "properties": {
+            "flexible": 2,
+            "conductive": 2,
+            "light": 1
+          },
+          "containerClass": "organ",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "e0a9660f6d33271d",
+    "name": "Argile fine",
+    "type": "loot",
+    "img": "icons/commodities/stone/clay-grey.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Argile fine.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.argile-fine",
+        "canonicalSourceId": "mh.basic.argile-fine",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.argile-fine",
+          "family": "mineral",
+          "quality": 1,
+          "properties": {
+            "dense": 4,
+            "reinforcing": 3,
+            "rigid": 2
+          },
+          "containerClass": "hard-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "e8d0f0bd54fbc86c",
+    "name": "Eau de source",
+    "type": "loot",
+    "img": "icons/consumables/potions/bottle-corked-empty.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Eau de source.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.eau-de-source",
+        "canonicalSourceId": "mh.basic.eau-de-source",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.eau-de-source",
+          "family": "fluid",
+          "quality": 1,
+          "properties": {
+            "conductive": 2,
+            "light": 1,
+            "resonant": 2
+          },
+          "containerClass": "organ",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "ba43a7345c4b1725",
+    "name": "Charbon fin",
+    "type": "loot",
+    "img": "icons/commodities/materials/bowl-powder-grey.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Charbon fin.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.charbon-fin",
+        "canonicalSourceId": "mh.basic.charbon-fin",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.charbon-fin",
+          "family": "mineral",
+          "quality": 1,
+          "properties": {
+            "impact": 3,
+            "dense": 2,
+            "electric": 1
+          },
+          "containerClass": "hard-material",
+          "stackable": true
+        }
+      }
+    }
+  },
+  {
+    "_id": "746825c7028bf5c0",
+    "name": "Filament d’insecte",
+    "type": "loot",
+    "img": "icons/commodities/cloth/thread-spindle-white.webp",
+    "system": {
+      "description": "<p>Matériau de craft : Filament d’insecte.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Monster Hunter — homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "mh.basic.filament-insecte",
+        "canonicalSourceId": "mh.basic.filament-insecte",
+        "contentLocale": "fr",
+        "localeFallback": false,
+        "localizedPaths": [
+          "name",
+          "description"
+        ],
+        "managed": true,
+        "kind": "material",
+        "lootCategory": "material",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "contentOrigin": "homebrew",
+        "sourceNamespace": "monster-hunter",
+        "sourceSubset": "basic",
+        "material": {
+          "materialId": "mh.basic.filament-insecte",
+          "family": "fiber",
+          "quality": 1,
+          "properties": {
+            "light": 4,
+            "flexible": 3,
+            "resonant": 2
+          },
+          "containerClass": "soft-material",
+          "stackable": true
+        }
+      }
+    }
   }
 ]

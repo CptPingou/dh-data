@@ -464,6 +464,35 @@ function ensureCaravanStyles(
       min-height: 30px;
     }
 
+    .dhct-caravan-view__gm-edit {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: end;
+      gap: .45rem;
+      margin-top: .65rem;
+      padding-top: .6rem;
+      border-top: 1px solid rgba(220, 190, 135, .2);
+    }
+    .dhct-caravan-view__gm-edit label {
+      display: flex;
+      flex-direction: column;
+      gap: .2rem;
+      min-width: 150px;
+      flex: 1;
+    }
+    .dhct-caravan-view__gm-edit input { width: 100%; }
+    .dhct-caravan-view__gm-edit input[type="number"] { max-width: 100px; }
+    .dhct-caravan-view__gm-edit button { min-height: 30px; }
+    .dhct-caravan-view__caravan-edit {
+      position: absolute;
+      z-index: 5;
+      bottom: .35rem;
+      left: .5rem;
+      right: .5rem;
+      background: rgba(20, 18, 16, .85);
+      padding: .35rem;
+      border-radius: 4px;
+    }
     .dhct-caravan-view__empty {
       grid-column: 1 / -1;
       padding: 1rem;
@@ -1728,6 +1757,44 @@ function renderCaravanEquipmentControls(
   return controls;
 }
 
+function makeGmEditControls(documentRef, root, fields, detail) {
+  const section = documentRef.createElement("div");
+  section.className = "dhct-caravan-view__gm-edit";
+  const inputs = new Map();
+  for (const field of fields) {
+    const label = documentRef.createElement("label");
+    label.textContent = field.label;
+    const input = documentRef.createElement("input");
+    input.type = field.type ?? "text";
+    input.value = String(field.value ?? "");
+    input.maxLength = 120;
+    if (input.type === "number") {
+      input.min = field.min ?? "0";
+      input.max = field.max ?? "";
+      input.step = field.step ?? "1";
+    }
+    label.append(input);
+    section.append(label);
+    inputs.set(field.key, input);
+  }
+  const save = documentRef.createElement("button");
+  save.type = "button";
+  save.textContent = "Enregistrer";
+  save.addEventListener("click", (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const values = Object.fromEntries(
+      [...inputs].map(([key, input]) => [key, input.value])
+    );
+    root.dispatchEvent(new CustomEvent("dhct-caravan-metadata-update", {
+      bubbles: true,
+      detail: { ...detail, values },
+    }));
+  });
+  section.append(save);
+  return section;
+}
+
 export function renderExpeditionCaravanView(
   projection,
   {
@@ -1800,6 +1867,10 @@ export function renderExpeditionCaravanView(
     model.name;
 
   board.append(title);
+  if (isGm) {
+    title.title = "Nom modifiable dans les détails";
+  }
+
 
   if (model.assetSrc) {
     const image =
@@ -1865,6 +1936,28 @@ export function renderExpeditionCaravanView(
         documentRef
       )
     );
+  }
+
+  if (isGm) {
+    const caravanEdit = makeGmEditControls(documentRef, root,
+      [{ key: "name", label: "Nom de la caravane", value: model.name }],
+      { kind: "caravan", id: model.id });
+    caravanEdit.classList.add("dhct-caravan-view__caravan-edit");
+    board.append(caravanEdit);
+  }
+
+  if (isGm) {
+    const add = documentRef.createElement("button");
+    add.type = "button";
+    add.textContent = "+ Ajouter un composant";
+    add.style.position = "absolute";
+    add.style.right = ".5rem";
+    add.style.top = ".5rem";
+    add.style.zIndex = "6";
+    add.addEventListener("click", () => {
+      root.dispatchEvent(new CustomEvent("dhct-caravan-component-add", { bubbles: true }));
+    });
+    board.append(add);
   }
 
   root.append(
@@ -1988,6 +2081,43 @@ export function renderExpeditionCaravanView(
       selection,
       documentRef,
     });
+
+    if (isGm && selection) {
+      const target = selection.kind === "component"
+        ? model.components.find((entry) => entry.id === selection.id)
+        : model.cargoSlots.find((entry) => entry.id === selection.id);
+      if (target) {
+        const fields = [{ key: "name", label: "Libellé", value: target.name }];
+        if (selection.kind === "component" && target.hp?.max != null) {
+          fields.push({ key: "hpMax", label: "PV maximum", type: "number", value: target.hp.max });
+          fields.push({ key: "hpValue", label: "PV actuels", type: "number", value: target.hp.value });
+        }
+        if (selection.kind === "component") {
+          for (const axis of ["x", "y", "width", "height"]) {
+            fields.push({ key: axis, label: axis + " (0–1)", type: "number",
+              value: target.layout?.[axis] ?? 0, min: "0", max: "1", step: "0.01" });
+          }
+          fields.push({ key: "rotation", label: "Rotation (degrés)", type: "number",
+            value: target.layout?.rotation ?? 0, min: "-360", max: "360" });
+        }
+        detail.append(makeGmEditControls(documentRef, root, fields, {
+          kind: selection.kind, id: selection.id,
+        }));
+        if (selection.kind === "component" &&
+            !model.cargoSlots.some((slot) => slot.componentId === target.id)) {
+          const remove = documentRef.createElement("button");
+          remove.type = "button";
+          remove.textContent = "Supprimer ce composant";
+          remove.addEventListener("click", () => {
+            if (!globalThis.confirm("Supprimer définitivement ce composant ?")) return;
+            root.dispatchEvent(new CustomEvent("dhct-caravan-component-remove", {
+              bubbles: true, detail: { componentId: target.id },
+            }));
+          });
+          detail.append(remove);
+        }
+      }
+    }
 
     if (isGm) {
       const controls =

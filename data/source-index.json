@@ -2,15 +2,15 @@
   "schema": "daggerheart-campaign-toolkit/source-index@2",
   "owner": "daggerheart-campaign-toolkit",
   "sourceNamespace": "daggerheart-srd-2.0",
-  "total": 1120,
+  "total": 1139,
   "origins": {
     "core": {
-      "total": 1054,
+      "total": 1061,
       "packs": {
         "dh-ancestries": {
           "count": 72,
           "file": "data/core/fr/dh-ancestries.json",
-          "sha256": "57ebfaaa98e1cf1d3db983eff980a7e14434f620b647530c7de07e143a441860"
+          "sha256": "12e8dd77374013e4022971ba618da07c1b289e194e40908a34fbb7988a864988"
         },
         "dh-armor": {
           "count": 69,
@@ -25,17 +25,17 @@
         "dh-communities": {
           "count": 30,
           "file": "data/core/fr/dh-communities.json",
-          "sha256": "d29bbab5561721bec1f735f431c1d85e0e0720e32ddd023830ec4e9acb81d73c"
+          "sha256": "5d6bf93496ecf9b29110023758ccbd78d4bb76363a8d441644ec439b54b2e9e6"
         },
         "dh-domain-cards": {
           "count": 210,
           "file": "data/core/fr/dh-domain-cards.json",
-          "sha256": "c3faf8482f3ef7459cfd947ea824baef4d37e2af0502bc75b297eab88bfc34af"
+          "sha256": "be35f75aa61b24d2f0e21dcfd25a14de9113899a0f3e75fc96c09b66d9155ede"
         },
         "dh-subclasses": {
           "count": 26,
           "file": "data/core/fr/dh-subclasses.json",
-          "sha256": "be5a98eb8fb55f9e023b357ba9717d2dbfe84c8acd5b69c536d29fce86f3c7dc"
+          "sha256": "7a458f4f559d10f9c017840db192ac86a671e152a48488222bb7247b7c6c6024"
         },
         "dh-weapons": {
           "count": 358,
@@ -45,17 +45,17 @@
         "dh-features": {
           "count": 36,
           "file": "data/core/fr/dh-features.json",
-          "sha256": "68c283b4adfa8465762dde564fdeb7b423798e45f905bcd0198d1640584e8488"
+          "sha256": "e2c7e0be82928d272f39a11a115b92015422ce375bf402630cda95539022ebd2"
         },
         "dh-consumables": {
-          "count": 120,
+          "count": 121,
           "file": "data/core/fr/dh-consumables.json",
-          "sha256": "fdb4e2da7a4484bdf19535bc2f04a6b71950533191349114d5989170cf29c55a"
+          "sha256": "95891fd51a5662fe21fefd76b53cdc2a6585760ab8010ff4b97aa2bfbd938409"
         },
         "dh-loot": {
-          "count": 120,
+          "count": 126,
           "file": "data/core/fr/dh-loot.json",
-          "sha256": "51a4b82513fe0672fb44efae36dc303dff300858d0c1827c1700ff55b2be5bb7"
+          "sha256": "855d871a766fba592ad53229c42e74c43e8a1a1b3be22bc52ea5708150b1f070"
         }
       }
     },
@@ -70,40 +70,40 @@
         "dh-domain-cards": {
           "count": 21,
           "file": "data/playtest/dh-domain-cards.json",
-          "sha256": "0ec7f7fe12fb4ac59e1e9900da76e4e628abbdea9dd79b4389c75f311463da5d"
+          "sha256": "f919f9f542f5bb5b4460f04bbec1116f6301de862b3a4445d70b7cdbaadde641"
         },
         "dh-subclasses": {
           "count": 3,
           "file": "data/playtest/dh-subclasses.json",
-          "sha256": "9b66ab31f075fb4b7ebe629dda14e547678c1f4447b9538be53fb174017276c8"
+          "sha256": "d6bc10a29de79f4fe440b56db65e3f27c64584b6f870c66d8023727856cc90db"
         },
         "dh-features": {
           "count": 18,
           "file": "data/playtest/dh-features.json",
-          "sha256": "adc9b7852f45e8485a972fba0f73c4e724a92e9480887d816297b0af1537a8b4"
+          "sha256": "f27f7fc19d4702e1d30924c82551789deac0256322be3e580de9e88390cdaa32"
         }
       }
     },
     "homebrew": {
-      "total": 23,
+      "total": 35,
       "namespaces": {
         "monster-hunter": {
-          "total": 23,
+          "total": 35,
           "packs": {
             "dh-domain-cards": {
               "count": 18,
               "file": "data/homebrew/monster-hunter/dh-domain-cards.json",
-              "sha256": "f00c972e0df1bdd50a85592ecf29961b9191a2b8b05b9230e45c627e61a4bf20"
+              "sha256": "86f18761342ad152baf5eb759f08827ea62d134cd8af76b3a16c1a0b706de8bf"
             },
             "dh-loot": {
-              "count": 4,
+              "count": 16,
               "file": "data/homebrew/monster-hunter/dh-loot.json",
-              "sha256": "fc4f2a1c8ad9a4cb9ead23a665ed5b1da262c3f1c04ad0b3ce1b29aea966860c"
+              "sha256": "483fdd9cb4acb1dd527ef4c6a67620a4d9a2bcd8d6551d745e7f13a43186c5e0"
             },
             "dh-features": {
               "count": 1,
               "file": "data/homebrew/monster-hunter/dh-features.json",
-              "sha256": "f83fcd8c7af1c50d0f80bfc544c1bc040493bfb06705a0e25a48e7dca458f785"
+              "sha256": "01c6227ff2bcb7f9fff8d3ed80869fe066777225b46c9ea6e0c53e7e101150f6"
             }
           }
         },

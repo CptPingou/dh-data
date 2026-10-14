@@ -146,6 +146,8 @@ function normalizeEntry(entry) {
     turnsRequired,
     progress,
 
+    componentSelection: Array.isArray(entry?.componentSelection) ? clone(entry.componentSelection) : null,
+
     queuedAt:
       Number(entry?.queuedAt) || 0,
   };
@@ -340,6 +342,7 @@ export function createCraftingCraftQueueApi({
     augmentId,
     expeditionId,
     turnsRequired = null,
+    componentSelection = null,
   } = {}) {
     assertGm();
 
@@ -474,6 +477,7 @@ const resolvedActor =
             resolvedActor,
           augmentId,
           expeditionId,
+          componentSelection,
         });
 
 
@@ -532,6 +536,7 @@ const resolvedActor =
       turnsRequired,
       progress: 0,
 
+      componentSelection: clone(componentSelection ?? plan.allocations),
       queuedAt:
         Date.now(),
     };
@@ -572,7 +577,7 @@ const resolvedActor =
 
 
   // R4.8e: consumables use the same weighted FOB queue, without a weapon UUID.
-  async function enqueueConsumable({ actor, actorUuid = null, recipeId, expeditionId, turnsRequired = null } = {}) {
+  async function enqueueConsumable({ actor, actorUuid = null, recipeId, expeditionId, turnsRequired = null, componentSelection = null } = {}) {
     assertGm();
     const uuid = String(actor?.uuid ?? actorUuid ?? "").trim();
     recipeId = String(recipeId ?? "").trim();
@@ -581,7 +586,7 @@ const resolvedActor =
     const resolvedActor = actor?.uuid ? actor : await fromUuid(uuid);
     if (resolvedActor?.documentName !== "Actor") return { green: false, reason: "craft-actor-not-found" };
     if (!craftingApi?.planRecipe) return { green: false, reason: "craft-plan-api-unavailable" };
-    const plan = await craftingApi.planRecipe({ crafter: resolvedActor, recipeId, expeditionId });
+    const plan = await craftingApi.planRecipe({ crafter: resolvedActor, recipeId, expeditionId, componentSelection });
     if (!plan?.green) return { ...plan, green: false };
     if (plan.recipe?.output?.type !== "consumable") return { green: false, reason: "craft-output-not-consumable" };
     const outputId = String(plan.recipe.output.id ?? "").trim();
@@ -596,6 +601,7 @@ const resolvedActor =
       id: requestId(), actorUuid: uuid, contributors: [{ type: "actor", uuid }],
       weaponUuid: "", augmentId: "", recipeId, outputType: "consumable", outputId,
       expeditionId, turnsRequired: turnValue, progress: 0, queuedAt: Date.now(),
+      componentSelection: clone(componentSelection ?? plan.allocations),
     };
     state.queue.push(entry);
     await writeState(state);

@@ -479,6 +479,29 @@ function entriesShareStackIdentity(
   left,
   right
 ) {
+  const compendiumUuid = (entry) => {
+    const ref = entry?.itemRef;
+    const values = [ref?.uuid, ref?.sourceId];
+
+    return values.find(value =>
+      typeof value === "string" &&
+      value.startsWith(
+        "Compendium.daggerheart-campaign-toolkit.dh-loot.Item."
+      )
+    ) ?? null;
+  };
+
+  const leftCompendium = compendiumUuid(left);
+  const rightCompendium = compendiumUuid(right);
+
+  if (
+    leftCompendium &&
+    rightCompendium &&
+    leftCompendium === rightCompendium
+  ) {
+    return true;
+  }
+
   const leftSourceId =
     String(
       left?.itemRef?.sourceId ??

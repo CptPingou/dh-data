@@ -104,9 +104,23 @@ function isExpeditionDialog(dialog) {
   );
 }
 
-function findOpenExpeditionDialog() {
-  return [...document.querySelectorAll("dialog.application.dialog")]
-    .find(isExpeditionDialog) ?? null;
+function expeditionIdOfDialog(dialog) {
+  if (!isExpeditionDialog(dialog)) return null;
+  return dialog.dataset.expeditionId
+    ?? dialog.querySelector(".dhct-expedition-view")?.dataset.expeditionId
+    ?? dialog.querySelector(".dct-expedition-summary strong")?.textContent?.trim()
+    ?? null;
+}
+
+function findOpenExpeditionDialog(expeditionId = null) {
+  const dialogs = [...document.querySelectorAll("dialog.application.dialog")]
+    .filter(isExpeditionDialog);
+  if (expeditionId) {
+    return dialogs.find((dialog) =>
+      expeditionIdOfDialog(dialog) === expeditionId
+    ) ?? null;
+  }
+  return dialogs.find((dialog) => dialog.open) ?? dialogs[0] ?? null;
 }
 
 function badge(label, value, key) {
@@ -141,29 +155,13 @@ function renderSummaryMarkup(scan, restitution) {
   `;
 }
 
-async function loadCurrentManifest(api) {
-  if (!api?.expeditionManifest?.list || !api?.expeditionManifest?.load) {
-    return null;
-  }
-
-  const manifests = await api.expeditionManifest.list();
-
-  if (!Array.isArray(manifests) || manifests.length === 0) {
-    return null;
-  }
-
-  const preferred =
-    manifests.find((entry) => entry?.phase === "prepared") ??
-    manifests[0];
-
-  const expeditionId =
-    typeof preferred === "string"
-      ? preferred
-      : preferred?.expeditionId;
-
-  if (!expeditionId) return null;
-
-  return api.expeditionManifest.load(expeditionId);
+async function loadCurrentManifest(api, expeditionId = null) {
+  if (!api?.expeditionManifest?.load) return null;
+  const id = expeditionId
+    ?? expeditionIdOfDialog(findOpenExpeditionDialog());
+  // Never guess another expedition from the manifest list.
+  if (!id) return null;
+  return api.expeditionManifest.load(id);
 }
 
 
@@ -441,6 +439,7 @@ function captureExpeditionViewState(dialog) {
 }
 
 async function restoreExpeditionViewState(state, {
+  expeditionId = null,
   retries = 16,
   delay = 40,
 } = {}) {
@@ -548,7 +547,7 @@ async function reopenExpeditionDialog(api, manifest) {
 
   if (typeof api.expeditionManifest.open === "function") {
     await api.expeditionManifest.open(fresh);
-    await restoreExpeditionViewState(viewState);
+    await restoreExpeditionViewState(viewState, { expeditionId: manifest.expeditionId });
   }
 }
 
@@ -2870,6 +2869,63 @@ function buildExpeditionInventoryView(
   );
 }
 
+// P3.3b — Capacité du conteneur d'inventaire FOB (sans composants FOB).
+function installGmFobCapacityEditor(view, manifest, api) {
+  if (!(view instanceof HTMLElement) || !game.user?.isGM) return;
+  const container = (manifest?.containers ?? []).find(c => c?.containerId === "fob");
+  if (!container) return;
+
+  const panel = document.createElement("form");
+  panel.className = "dhct-fob-capacity-editor";
+  panel.style.cssText = "display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin:8px 0;padding:8px;border:1px solid var(--color-border-light-primary);border-radius:6px";
+  const label = document.createElement("label");
+  label.textContent = "MJ — Capacité de l’inventaire FOB (slots) : ";
+  const input = document.createElement("input");
+  input.type = "number";
+  input.min = "0";
+  input.max = "100000";
+  input.step = "1";
+  input.required = true;
+  input.value = String(container.capacity?.slots ?? 24);
+  input.style.width = "90px";
+  label.append(input);
+  const button = document.createElement("button");
+  button.type = "submit";
+  button.textContent = "Enregistrer";
+  panel.append(label, button);
+  view.prepend(panel);
+
+  panel.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    if (!game.user?.isGM || button.disabled) return;
+    const raw = input.value.trim();
+    const slots = Number(raw);
+    if (!raw || !Number.isSafeInteger(slots) || slots < 0 || slots > 100000) {
+      ui.notifications?.warn("La capacité doit être un entier compris entre 0 et 100 000.");
+      return;
+    }
+    button.disabled = true;
+    try {
+      const fresh = await api.expeditionManifest.load(manifest.expeditionId);
+      const target = (fresh?.containers ?? []).find(c => c?.containerId === "fob");
+      if (!target) throw new Error("Inventaire FOB introuvable.");
+      if (target.capacity?.slots === slots) return;
+      const result = normalizeBackpackSlots(target, slots);
+      if (!result.green) throw new Error(result.reason);
+      fresh.revision = Math.max(1, Number(fresh.revision) || 1) + 1;
+      await saveAndBroadcastBulkInventoryChange(api, fresh, {
+        containerId: "fob", reason: "gm-fob-inventory-capacity",
+      });
+      ui.notifications?.info(`Capacité FOB enregistrée : ${slots} slots.`);
+    } catch (error) {
+      console.error(MODULE_ID + " | FOB capacity update failed", error);
+      ui.notifications?.error(error?.message ?? "Impossible de modifier la capacité FOB.");
+    } finally {
+      button.disabled = false;
+    }
+  });
+}
+
 function buildExpeditionContainerView(
   manifest,
   role
@@ -2996,6 +3052,118 @@ function installCaravanEquipmentViewHandlers(
   ) {
     return;
   }
+
+  view.addEventListener("dhct-caravan-metadata-update", async (event) => {
+    if (!game.user?.isGM) {
+      ui.notifications?.warn("Action réservée au MJ.");
+      return;
+    }
+    const { kind, id, values = {} } = event.detail ?? {};
+    if (!["caravan", "component", "cargo"].includes(kind) || !id) return;
+    const name = String(values.name ?? "").trim();
+    if (!name || name.length > 120) {
+      ui.notifications?.warn("Le nom doit contenir entre 1 et 120 caractères.");
+      return;
+    }
+    try {
+      const fresh = await api.expeditionManifest.load(manifest.expeditionId);
+      if (!fresh?.caravan) throw new Error("Caravane introuvable.");
+      const target = kind === "caravan"
+        ? fresh.caravan
+        : kind === "component"
+          ? fresh.caravan.components?.find((entry) => entry.id === id)
+          : fresh.caravan.cargoSlots?.find((entry) => entry.id === id);
+      if (!target || target.id !== id) throw new Error("Élément de caravane introuvable.");
+      let changed = target.name !== name;
+      target.name = name;
+      if (kind === "component") {
+        if (values.hpMax !== undefined || values.hpValue !== undefined) {
+          const max = Number(values.hpMax ?? target.hp?.max);
+          const value = Number(values.hpValue ?? target.hp?.value);
+          if (!Number.isSafeInteger(max) || max < 0 ||
+              !Number.isSafeInteger(value) || value < 0 || value > max) {
+            throw new Error("PV invalides : 0 ≤ PV actuels ≤ PV maximum.");
+          }
+          if (target.hp?.max !== max || target.hp?.value !== value) changed = true;
+          target.hp = { max, value };
+        }
+        for (const key of ["x", "y", "width", "height", "rotation"]) {
+          if (values[key] === undefined) continue;
+          const number = Number(values[key]);
+          if (!Number.isFinite(number) ||
+              (key !== "rotation" && (number < 0 || number > 1))) {
+            throw new Error("Coordonnée invalide : " + key);
+          }
+          target.layout ??= {};
+          if (target.layout[key] !== number) changed = true;
+          target.layout[key] = number;
+        }
+      }
+      if (!changed) return;
+      fresh.revision = Math.max(1, Number(fresh.revision) || 1) + 1;
+      await saveAndBroadcastBulkInventoryChange(api, fresh, {
+        reason: "gm-caravan-metadata",
+      });
+      ui.notifications?.info("Caravane mise à jour.");
+    } catch (error) {
+      console.error(MODULE_ID + " | caravan metadata update failed", error);
+      ui.notifications?.error(error?.message ?? "Échec de la modification de la caravane.");
+    }
+  });
+
+  view.addEventListener("dhct-caravan-component-add", async () => {
+    if (!game.user?.isGM) return ui.notifications?.warn("Action réservée au MJ.");
+    try {
+      const fresh = await api.expeditionManifest.load(manifest.expeditionId);
+      if (!fresh?.caravan) throw new Error("Caravane introuvable.");
+      fresh.caravan.components ??= [];
+      const existing = new Set(fresh.caravan.components.map((c) => c.id));
+      let index = 1;
+      while (existing.has("custom-component-" + index)) index++;
+      const id = "custom-component-" + index;
+      fresh.caravan.components.push({
+        id, type: "generic", name: "Nouveau composant " + index,
+        hp: { value: 10, max: 10 }, containerId: null,
+        layout: { x: 0.42, y: 0.42, width: 0.15, height: 0.15, rotation: 0 },
+        state: {},
+      });
+      fresh.revision = Math.max(1, Number(fresh.revision) || 1) + 1;
+      await saveAndBroadcastBulkInventoryChange(api, fresh, {
+        reason: "gm-caravan-component-add",
+      });
+      ui.notifications?.info("Composant ajouté : " + id);
+    } catch (error) {
+      console.error(MODULE_ID + " | caravan component add failed", error);
+      ui.notifications?.error(error?.message ?? "Ajout impossible.");
+    }
+  });
+
+  view.addEventListener("dhct-caravan-component-remove", async (event) => {
+    if (!game.user?.isGM) return ui.notifications?.warn("Action réservée au MJ.");
+    try {
+      const id = String(event.detail?.componentId ?? "");
+      const fresh = await api.expeditionManifest.load(manifest.expeditionId);
+      if (!fresh?.caravan?.components?.some((c) => c.id === id)) {
+        throw new Error("Composant introuvable.");
+      }
+      if (fresh.caravan.cargoSlots?.some((slot) => slot.componentId === id)) {
+        throw new Error("Retirez d'abord ce composant de son emplacement cargo.");
+      }
+      const component = fresh.caravan.components.find((c) => c.id === id);
+      if (component.containerId) {
+        throw new Error("Composant associé à un conteneur : retrait bloqué.");
+      }
+      fresh.caravan.components = fresh.caravan.components.filter((c) => c.id !== id);
+      fresh.revision = Math.max(1, Number(fresh.revision) || 1) + 1;
+      await saveAndBroadcastBulkInventoryChange(api, fresh, {
+        reason: "gm-caravan-component-remove",
+      });
+      ui.notifications?.info("Composant supprimé.");
+    } catch (error) {
+      console.error(MODULE_ID + " | caravan component remove failed", error);
+      ui.notifications?.error(error?.message ?? "Suppression impossible.");
+    }
+  });
 
   view.addEventListener(
     "dhct-caravan-wheel-hp-change",
@@ -4801,8 +4969,191 @@ async function openFobConsumableCraftDialog(expeditionId) {
     ui.notifications?.warn(`Fabrication impossible : ${plan?.reason ?? "matériaux insuffisants"}.`);
     return { green: false, reason: plan?.reason ?? "craft-plan-unavailable" };
   }
-  const allocations = (plan.allocations ?? [])
-    .map(a => `${Number(a.quantity) || 0} × ${a.materialId ?? "Matériau"}`)
+  // Explicit allocation: defaults to the engine suggestion; no stock is mutated here.
+  const suggested = new Map();
+  for (const a of plan.allocations ?? []) suggested.set(a.materialId, (suggested.get(a.materialId) ?? 0) + a.quantity);
+  const inventoryRows = (plan.inventory ?? []).filter(row => Number(row.quantity) > 0);
+  // P2-UI: display catalog names and material properties.
+  const materialDefinitions = await api.craftingMaterials.list();
+  const materialById = new Map(materialDefinitions.map(m => [m.id, m]));
+
+  const materialPropertyLabels = {
+    light: "Léger",
+    flexible: "Souple",
+    resonant: "Résonnant",
+    reinforcing: "Renforçant",
+  };
+
+  const materialInputs = inventoryRows.map((row, index) => {
+    const definition = materialById.get(row.materialId);
+    const displayName = definition?.name ?? row.materialId;
+    const properties = Object.entries(definition?.material?.properties ?? {})
+      .filter(([, value]) => Number(value) > 0)
+      .map(([key, value]) =>
+        `${escapeHtml(materialPropertyLabels[key] ?? key)} ${Number(value)}`
+      )
+      .join(" · ");
+
+    return `<label style="display:flex;align-items:center;justify-content:space-between;gap:1rem;margin:.5rem 0">` +
+      `<span><strong>${escapeHtml(displayName)}</strong> (stock ${Number(row.quantity)})` +
+      (properties ? `<small style="display:block;opacity:.75">${properties}</small>` : "") +
+      `</span>` +
+      `<input type="number" name="dhct-material-${index}" min="0" max="${Number(row.quantity)}" step="1" ` +
+      `value="${Number(suggested.get(row.materialId) ?? 0)}" style="width:5rem" /></label>`;
+  }).join("");
+  // P2-UI: live craft validation.
+  const requirementLabels = (recipe.requirements ?? [])
+    .map(r => `${escapeHtml(materialPropertyLabels[r.match?.property] ?? r.match?.property ?? r.id)} : ${Number(r.value) || 0}`)
+    .join(" | ");
+
+  let validationSerial = 0;
+  let validationTimer = null;
+
+  const chosen = await DialogV2.prompt({
+    window: { title: "Choisir les composants" },
+    content: `<p>Indique les quantités à consommer.</p>
+      <div data-dhct-craft-material-list style="max-height:320px;overflow-y:auto;overflow-x:hidden;scrollbar-gutter:stable;padding-right:8px;">${materialInputs || "Aucun matériau requis."}</div>
+      <hr>
+      <p><strong>Propriétés requises :</strong> ${requirementLabels}</p>
+      <div data-dhct-craft-gauges></div>
+       <p data-dhct-craft-validation>Vérification des propriétés…</p>`,
+    ok: {
+      label: "Vérifier la sélection",
+      callback: (_event, button, dialog) => {
+        const form = button?.form ?? dialog?.element;
+        return inventoryRows.map((row, index) => ({
+          materialId: row.materialId,
+          quantity: Number(form?.querySelector(`[name="dhct-material-${index}"]`)?.value ?? 0),
+        }));
+      },
+    },
+    render: (_event, dialog) => {
+      const root = dialog?.element;
+      if (!root?.querySelector) return;
+
+      const confirmButton = root.querySelector('button[data-action="ok"]');
+      const status = root.querySelector('[data-dhct-craft-validation]');
+      const gauges = root.querySelector('[data-dhct-craft-gauges]');
+
+      const updateGauges = (selected) => {
+        if (!gauges) return;
+
+        const activeMaterials = selected
+          .filter(entry => entry.quantity > 0)
+          .map(entry => materialById.get(entry.materialId))
+          .filter(Boolean);
+
+        gauges.innerHTML = (recipe.requirements ?? []).map(req => {
+          const propertyId = req.match?.property;
+          const target = Number(req.value) || 0;
+
+          const achieved = activeMaterials.reduce((max, material) => {
+            if (req.match?.materialId !== undefined &&
+                material.id !== req.match.materialId) return max;
+
+            if (req.match?.family !== undefined &&
+                material.material?.family !== req.match.family) return max;
+
+            if (req.match?.minimumQuality !== undefined &&
+                Number(material.material?.quality) < req.match.minimumQuality)
+              return max;
+
+            return Math.max(
+              max,
+              Number(material.material?.properties?.[propertyId]) || 0
+            );
+          }, 0);
+
+          const valid = achieved >= target;
+          const percentage = target > 0
+            ? Math.min(100, achieved / target * 100)
+            : 100;
+
+          const label = materialPropertyLabels[propertyId] ??
+            propertyId ?? req.id;
+
+          return `<div style="margin:.65rem 0">` +
+            `<div style="display:flex;justify-content:space-between;gap:.5rem">` +
+            `<strong>${escapeHtml(label)}</strong>` +
+            `<span>${achieved} / ${target} ${valid ? "✓" : "✕"}</span>` +
+            `</div>` +
+            `<div style="height:8px;background:#7775;border-radius:4px;overflow:hidden">` +
+            `<div style="height:100%;width:${percentage}%;background:${valid ? "#369568" : "#bd8742"}"></div>` +
+            `</div></div>`;
+        }).join("");
+      };
+
+      const validate = async () => {
+        const serial = ++validationSerial;
+        if (confirmButton) confirmButton.disabled = true;
+        if (status) status.textContent = "Vérification des propriétés…";
+
+        const selected = inventoryRows.map((row, index) => ({
+          materialId: row.materialId,
+          quantity: Number(root.querySelector(`[name="dhct-material-${index}"]`)?.value ?? 0),
+        }));
+
+        updateGauges(selected);
+
+        if (selected.some((a, index) =>
+          !Number.isSafeInteger(a.quantity) ||
+          a.quantity < 0 ||
+          a.quantity > Number(inventoryRows[index].quantity)
+        )) {
+          if (status) status.textContent = "Quantités invalides.";
+          return;
+        }
+
+        try {
+          const result = await api.crafting.planRecipe({
+            crafter: actor,
+            recipeId: recipe.id,
+            expeditionId,
+            componentSelection: selected.filter(a => a.quantity > 0),
+          });
+
+          if (serial !== validationSerial) return;
+
+          if (status) status.textContent = result?.green
+            ? "✓ Propriétés suffisantes"
+            : `✕ Sélection insuffisante (${result?.reason ?? "invalide"})`;
+
+          if (confirmButton) confirmButton.disabled = !result?.green;
+        } catch (error) {
+          if (serial !== validationSerial) return;
+          if (status) status.textContent = "Erreur de validation.";
+          if (confirmButton) confirmButton.disabled = true;
+          console.error("P2-UI validation", error);
+        }
+      };
+
+      root.querySelectorAll('input[name^="dhct-material-"]').forEach(input => {
+        input.addEventListener("input", () => {
+          clearTimeout(validationTimer);
+          if (confirmButton) confirmButton.disabled = true;
+          validationTimer = setTimeout(validate, 200);
+        });
+      });
+
+      void validate();
+    },
+    rejectClose: false,
+  });
+  if (!chosen) return { green: true, cancelled: true };
+  if (chosen.some(a => !Number.isSafeInteger(a.quantity) || a.quantity < 0)) {
+    ui.notifications?.warn("Quantités de composants invalides.");
+    return { green: false, reason: "craft-selection-invalid" };
+  }
+  const componentSelection = chosen.filter(a => a.quantity > 0);
+  const checkedPlan = await api.crafting.planRecipe({
+    crafter: actor, recipeId: recipe.id, expeditionId, componentSelection,
+  });
+  if (!checkedPlan?.green) {
+    ui.notifications?.warn(`Sélection incompatible : ${checkedPlan?.reason ?? "propriétés insuffisantes"}.`);
+    return { green: false, reason: checkedPlan?.reason ?? "craft-selection-invalid" };
+  }
+  const allocations = (checkedPlan.allocations ?? [])
+    .map(a => `${Number(a.quantity) || 0} × ${materialById.get(a.materialId)?.name ?? a.materialId ?? "Matériau"}`)
     .join(", ") || "aucun (recette de test)";
   const confirmed = await confirmInventoryAction({
     title: "Programmer la fabrication",
@@ -4815,7 +5166,7 @@ async function openFobConsumableCraftDialog(expeditionId) {
 
   // L'API refait les controles sur les données actuelles avant ecriture de la file.
   const result = await api.craftingCraftQueue.enqueueConsumable({
-    actor, recipeId: recipe.id, expeditionId,
+    actor, recipeId: recipe.id, expeditionId, componentSelection,
   });
   if (!result?.green) throw new Error(result?.reason ?? "Impossible d'ajouter la fabrication.");
   ui.notifications?.info(`${recipe.name ?? recipe.id} ajoutée à la file de fabrication.`);
@@ -4929,6 +5280,40 @@ function renderFobActivityPanel(
   panel.append(
     grid
   );
+
+  // P2-UI: résolution asynchrone des noms des recettes.
+  if (craft.some(entry => entry.recipeId)) {
+    void api.crafting.listRecipes().then(recipes => {
+      const recipeNames = new Map(
+        (recipes ?? []).map(recipe => [
+          recipe.id,
+          recipe.name ?? recipe.label ?? recipe.id
+        ])
+      );
+
+      for (const row of panel.querySelectorAll(
+        '[data-dhct-fob-queue-kind="craft"]'
+      )) {
+        const entry = craft.find(item =>
+          String(item.id) === String(row.dataset.dhctFobQueueEntryId)
+        );
+
+        if (!entry?.recipeId) continue;
+
+        const title = row.querySelector(
+          '[data-dhct-fob-queue-title="true"]'
+        );
+
+        if (title) {
+          const index = craft.indexOf(entry) + 1;
+          title.textContent =
+            `${index}. ${recipeNames.get(entry.recipeId) ?? entry.recipeId}`;
+        }
+      }
+    }).catch(error => {
+      console.warn("DHCT | Résolution des noms de recettes impossible", error);
+    });
+  }
 
   // R4.8h.1: acces MJ aux consommables depuis les activites FOB.
   if (isGm) {
@@ -6216,6 +6601,10 @@ async function configureExpeditionShell(
     manifest
   );
 
+  installGmFobCapacityEditor(
+    fobView, manifest, getApi()
+  );
+
   installInventoryViewHandlers(
     caravanView,
     manifest
@@ -6267,6 +6656,171 @@ async function configureExpeditionShell(
   expeditionPane.append(
     expeditionView
   );
+
+  // P3.2f — Gestion explicite des participants.
+  if (isGm) {
+    const participantsButton = document.createElement("button");
+    participantsButton.type = "button";
+    participantsButton.className = "dhct-participants-button";
+    participantsButton.textContent = "Gérer les participants";
+
+    expeditionPane.prepend(participantsButton);
+
+    participantsButton.addEventListener("click", async () => {
+      const expeditionApi = getApi()?.expeditionManifest;
+      const assign = getApi()?.expeditionWorld?.assign;
+
+      if (!expeditionApi?.list || !expeditionApi?.load || !assign) {
+        ui.notifications.error("Gestion des participants indisponible.");
+        return;
+      }
+
+      const summaries = await expeditionApi.list();
+      const manifests = await Promise.all(
+        summaries.map(row => expeditionApi.load(row.expeditionId))
+      );
+
+      const current = manifests.find(
+        row => row?.expeditionId === manifest.expeditionId
+      );
+
+      if (!current) {
+        ui.notifications.error("Manifeste introuvable.");
+        return;
+      }
+
+      const allowedTypes = ["character", "npc", "companion"];
+
+      const actors = game.actors.contents
+        .filter(actor => allowedTypes.includes(actor.type))
+        .sort((a, b) => a.name.localeCompare(b.name, "fr"));
+
+      const escapeHtml = value =>
+        foundry.utils.escapeHTML(String(value ?? ""));
+
+      const actorRows = actors.map(actor => {
+        const assignedHere = (current.characters ?? []).some(c =>
+          c.foundryActorUuid === actor.uuid
+        );
+
+        const assignedElsewhere = manifests.some(other =>
+          other?.expeditionId !== current.expeditionId &&
+          (other?.characters ?? []).some(c =>
+            c.foundryActorUuid === actor.uuid
+          )
+        );
+
+        const disabled = assignedHere || assignedElsewhere;
+
+        const status = assignedHere
+          ? "Déjà affecté"
+          : assignedElsewhere
+            ? "Autre expédition"
+            : "Disponible";
+
+        return `
+          <label class="dhct-participant-row"
+                 data-actor-type="${escapeHtml(actor.type)}"
+                 style="display:flex;gap:10px;align-items:center;padding:6px">
+            <input type="checkbox"
+                   name="participant"
+                   value="${escapeHtml(actor.uuid)}"
+                   ${disabled ? "disabled" : ""}>
+            <span style="flex:1">${escapeHtml(actor.name)}</span>
+            <small>${escapeHtml(status)}</small>
+          </label>
+        `;
+      }).join("");
+
+      const content = `
+        <section class="dhct-participants-manager">
+          <p>Sélectionner les acteurs à ajouter à l'expédition.</p>
+
+          <nav style="display:flex;gap:6px;margin-bottom:10px">
+            <button type="button" data-filter="all">Tous</button>
+            <button type="button" data-filter="character">PJ</button>
+            <button type="button" data-filter="npc">PNJ</button>
+            <button type="button" data-filter="companion">Compagnons</button>
+          </nav>
+
+          <div data-participant-list
+               style="max-height:350px;overflow-y:auto">
+            ${actorRows}
+          </div>
+        </section>
+      `;
+
+      const selected = await foundry.applications.api.DialogV2.wait({
+        window: {
+          title: "Participants — " + current.expeditionId
+        },
+        content,
+        buttons: [
+          {
+            action: "cancel",
+            label: "Annuler",
+            callback: () => null
+          },
+          {
+            action: "save",
+            label: "Ajouter les participants",
+            default: true,
+            callback: (_event, button, dialog) => {
+              const root = dialog.element;
+
+              return [...root.querySelectorAll(
+                'input[name="participant"]:checked'
+              )].map(input => input.value);
+            }
+          }
+        ],
+        render: (_event, dialog) => {
+          const root = dialog.element;
+
+          root.querySelectorAll("[data-filter]").forEach(button => {
+            button.addEventListener("click", () => {
+              const filter = button.dataset.filter;
+
+              root.querySelectorAll(
+                "[data-actor-type]"
+              ).forEach(row => {
+                row.hidden =
+                  filter !== "all" &&
+                  row.dataset.actorType !== filter;
+
+                row.style.display = row.hidden ? "none" : "flex";
+              });
+            });
+          });
+        }
+      });
+
+      if (!selected?.length) return;
+
+      const result = await assign({
+        expeditionId: current.expeditionId,
+        actorUuids: selected
+      });
+
+      if (!result.green) {
+        ui.notifications.error(
+          "Affectation refusée : " + result.reason
+        );
+        console.warn("DHCT | participants assign", result);
+        return;
+      }
+
+      ui.notifications.info(
+        `${result.actors} participant(s) traité(s), ` +
+        `${result.backpacksCreated} sac(s) créé(s).`
+      );
+
+      console.log("DHCT | participants assign GREEN", result);
+
+      // Les données sont sauvegardées par assign().
+      // Rafraîchissement complet de la fenêtre à intégrer séparément.
+    });
+  }
 
 
 
@@ -6484,7 +7038,7 @@ export async function refreshExpeditionInventoryUx() {
     return { green: false, reason: "expedition-items-api-unavailable" };
   }
 
-  const manifest = await loadCurrentManifest(api);
+  const manifest = await loadCurrentManifest(api, expeditionIdOfDialog(dialog));
   if (!manifest) return { green: false, reason: "manifest-not-found" };
 
   const isGm = Boolean(game.user?.isGM);
@@ -7659,7 +8213,7 @@ async function refreshOpenFobActivityPanel() {
 
   const manifest =
     await loadCurrentManifest(
-      api
+      api, expeditionIdOfDialog(dialog)
     );
 
   if (!manifest) {
@@ -7840,8 +8394,9 @@ export function installExpeditionInventoryUx() {
     void (async () => {
       try {
         const api = getApi();
-        const manifest = await loadCurrentManifest(api);
-        if (!manifest || !findOpenExpeditionDialog()) return;
+        const dialog = findOpenExpeditionDialog();
+        const manifest = await loadCurrentManifest(api, expeditionIdOfDialog(dialog));
+        if (!manifest || !findOpenExpeditionDialog(manifest.expeditionId)) return;
         await reopenExpeditionDialog(api, manifest);
       } catch (error) {
         console.warn(`${MODULE_ID} | FOB craft inventory refresh failed`, error);

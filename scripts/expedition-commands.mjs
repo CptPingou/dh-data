@@ -28,15 +28,60 @@ function chooseManifestSummary(summaries = []) {
 export function createExpeditionCommandsApi({ persistenceApi, lifecycleApi, openManifest } = {}) {
   async function open() {
     const summaries = persistenceApi.list();
-    const selected = chooseManifestSummary(summaries);
+    let selected = chooseManifestSummary(summaries);
+
+    if (!selected && summaries.length > 1) {
+      const DialogV2 = foundry?.applications?.api?.DialogV2;
+      if (!DialogV2?.prompt) {
+        throw new Error("DialogV2 indisponible pour la sélection d'expédition.");
+      }
+
+      const escapeHtml = (value) => String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+
+      const options = summaries.map((entry) => {
+        const id = escapeHtml(entry.expeditionId);
+        const phase = escapeHtml(entry.phase ?? "prepared");
+        return `<option value="${id}">${id} — ${phase}</option>`;
+      }).join("");
+
+      const selectedId = await DialogV2.prompt({
+        window: { title: "Choisir une expédition" },
+        content: `
+          <div class="form-group">
+            <label>Expédition disponible</label>
+            <select name="dhct-expedition-choice">
+              ${options}
+            </select>
+          </div>`,
+        ok: {
+          label: "Ouvrir l'expédition",
+          callback: (_event, button, dialog) => {
+            const root = button?.form ?? dialog?.element;
+            return root?.querySelector(
+              '[name="dhct-expedition-choice"]'
+            )?.value ?? null;
+          },
+        },
+        rejectClose: false,
+      });
+
+      if (!selectedId) {
+        return { opened: false, reason: "selection-cancelled" };
+      }
+
+      selected = summaries.find(
+        (entry) => entry.expeditionId === selectedId
+      ) ?? null;
+    }
 
     if (!selected) {
-      if (!summaries.length) {
-        ui.notifications.warn("Expédition : aucun manifeste sauvegardé.");
-      } else {
-        ui.notifications.warn("Expédition : plusieurs manifestes sont disponibles. Aucun manifeste actif unique n'est identifiable.");
-      }
-      return { opened: false, reason: summaries.length ? "ambiguous-manifest" : "no-manifest" };
+      ui.notifications.warn("Expédition : aucun manifeste sauvegardé.");
+      return { opened: false, reason: "no-manifest" };
     }
 
     const manifest = await persistenceApi.load(selected.expeditionId);

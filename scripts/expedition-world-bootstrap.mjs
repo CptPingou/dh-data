@@ -332,6 +332,130 @@ async function bootstrapWorldExpedition({ notify = false } = {}) {
   return report;
 }
 
+async function assignExpeditionParticipants({ expeditionId, actorUuids = [] } = {}) {
+  if (!game.user?.isGM) {
+    return { green: false, reason: "gm-required" };
+  }
+
+  const expeditionApi = api()?.expeditionManifest;
+  if (!expeditionApi?.list || !expeditionApi?.load ||
+      !expeditionApi?.save || !expeditionApi?.validate) {
+    return { green: false, reason: "expedition-api-unavailable" };
+  }
+
+  if (typeof expeditionId !== "string" || !expeditionId.trim()) {
+    return { green: false, reason: "expedition-id-required" };
+  }
+
+  if (!Array.isArray(actorUuids) || !actorUuids.length) {
+    return { green: false, reason: "actors-required" };
+  }
+
+  const manifest = await expeditionApi.load(expeditionId);
+  if (!manifest) {
+    return { green: false, reason: "manifest-not-found" };
+  }
+
+  if (manifest.phase === "in_session") {
+    return { green: false, reason: "session-active" };
+  }
+
+  const uuids = [...new Set(actorUuids)];
+  const actors = [];
+
+  for (const uuid of uuids) {
+    const actor = await fromUuid(uuid);
+
+    if (!actor || actor.documentName !== "Actor" ||
+        actor.pack || actor.parent) {
+      return { green: false, reason: "invalid-world-actor", uuid };
+    }
+
+    actors.push(actor);
+  }
+
+  const listed = await expeditionApi.list();
+  const summaries = Array.isArray(listed)
+    ? listed
+    : Array.isArray(listed?.manifests)
+      ? listed.manifests
+      : [];
+
+  for (const summary of summaries) {
+    if (summary.expeditionId === expeditionId) continue;
+
+    const other = await expeditionApi.load(summary.expeditionId);
+    if (!other) {
+      return {
+        green: false,
+        reason: "other-manifest-unavailable",
+        expeditionId: summary.expeditionId,
+      };
+    }
+
+    for (const actor of actors) {
+      const assigned = (other.characters ?? []).some((character) =>
+        character?.foundryActorUuid === actor.uuid ||
+        character?.characterId === characterIdFor(actor)
+      );
+
+      if (assigned) {
+        return {
+          green: false,
+          reason: "actor-already-assigned",
+          actor: actor.name,
+          otherExpeditionId: other.expeditionId,
+        };
+      }
+    }
+  }
+
+  const working = structuredClone(manifest);
+  working.characters ??= [];
+  working.containers ??= [];
+
+  let changed = false;
+  let charactersCreated = 0;
+  let backpacksCreated = 0;
+
+  for (const actor of actors) {
+    const characterResult = ensureCharacter(working, actor);
+    const backpackResult = ensureBackpack(
+      working,
+      actor,
+      characterResult.character
+    );
+
+    if (characterResult.created) charactersCreated++;
+    if (backpackResult.created) backpacksCreated++;
+
+    changed ||= characterResult.changed || backpackResult.changed;
+  }
+
+  const validation = expeditionApi.validate(working);
+  if (!validation?.green) {
+    return {
+      green: false,
+      reason: "manifest-invalid",
+      errors: validation?.errors ?? [],
+    };
+  }
+
+  if (changed) {
+    working.revision = Math.max(1, Number(working.revision) || 1) + 1;
+    await expeditionApi.save(working);
+  }
+
+  return {
+    green: true,
+    changed,
+    expeditionId,
+    actors: actors.length,
+    charactersCreated,
+    backpacksCreated,
+    revision: working.revision,
+  };
+}
 async function worldExpeditionStatus() {
   const toolkitApi = api();
   const expeditionApi = toolkitApi?.expeditionManifest;
@@ -393,15 +517,8 @@ Hooks.once("ready", async () => {
 
   toolkitApi.expeditionWorld ??= {};
   toolkitApi.expeditionWorld.bootstrap = bootstrapWorldExpedition;
+  toolkitApi.expeditionWorld.assign = assignExpeditionParticipants;
   toolkitApi.expeditionWorld.status = worldExpeditionStatus;
-
-  try {
-    const report = await bootstrapWorldExpedition({ notify: false });
-
-    if (!report.green) {
-      console.warn(`${MODULE_ID} | world expedition bootstrap unavailable`, report);
-    }
-  } catch (error) {
-    console.error(`${MODULE_ID} | world expedition bootstrap failed`, error);
-  }
+  // P3.2a: affectation explicite des participants.
+  // Ne plus lancer le bootstrap automatiquement au démarrage.
 });

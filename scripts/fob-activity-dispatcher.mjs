@@ -295,6 +295,7 @@ async function resolveConsumableCraft({ api, entry, actor } = {}) {
   const craft = await api.crafting.craftConsumable({
     crafter: actor, recipeId: entry.recipeId,
     expeditionId: entry.expeditionId, operationId: entry.id,
+    componentSelection: entry.componentSelection ?? null,
   });
   if (!craft?.green) return { green: true, type: "craft", changed: false,
     completed: true, ready: true, blocked: true,
@@ -471,6 +472,7 @@ async function resolveCraft({
         augmentId: currentEntry.augmentId,
         expeditionId: currentEntry.expeditionId,
         operationId: currentEntry.id,
+        componentSelection: currentEntry.componentSelection ?? null,
       });
 
   /*

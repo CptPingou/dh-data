@@ -107,7 +107,10 @@ export async function openExpeditionWindow(inputManifest, { validate = null, nor
     buttons: [{ action: "close", label: "Fermer", icon: "fa-solid fa-xmark", default: true }],
   });
 
-  dialog.render({ force: true });
+  await dialog.render({ force: true });
+  if (dialog.element instanceof HTMLElement) {
+    dialog.element.dataset.expeditionId = manifest.expeditionId;
+  }
 
   return dialog;
 }

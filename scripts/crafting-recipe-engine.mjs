@@ -30,9 +30,10 @@ export function materialMatchesRequirement(material, requirement) {
 
 export function allocatePropertyBudgetRecipe(recipe, inventory, materialCatalog) {
   validateRecipe(recipe);
-  if (recipeMode(recipe) !== "property-budget") throw new Error(`Recipe ${recipe.id} is not a property-budget recipe.`);
-  if (!Array.isArray(inventory)) throw new Error("inventory must be an array.");
-  if (!Array.isArray(materialCatalog)) throw new Error("materialCatalog must be an array.");
+  if (recipeMode(recipe) !== "property-budget")
+    throw new Error(`Recipe ${recipe.id} is not a property-budget recipe.`);
+  if (!Array.isArray(inventory) || !Array.isArray(materialCatalog))
+    throw new Error("Invalid inventory or material catalog.");
 
   const byId = new Map();
   for (const material of materialCatalog) {
@@ -41,92 +42,105 @@ export function allocatePropertyBudgetRecipe(recipe, inventory, materialCatalog)
   }
 
   const stacks = inventory
-    .map((stack) => {
-      if (!stack || typeof stack.materialId !== "string" || !Number.isInteger(stack.quantity) || stack.quantity < 0) throw new Error("Invalid inventory material stack.");
+    .map(stack => {
+      if (!stack || typeof stack.materialId !== "string" ||
+          !Number.isSafeInteger(stack.quantity) || stack.quantity < 0)
+        throw new Error("Invalid inventory material stack.");
       const material = byId.get(stack.materialId);
-      if (!material) throw new Error(`Unknown inventory material: ${stack.materialId}.`);
+      if (!material)
+        throw new Error(`Unknown inventory material: ${stack.materialId}.`);
       return { materialId: stack.materialId, quantity: stack.quantity, material };
     })
-    .filter((stack) => stack.quantity > 0)
+    .filter(stack => stack.quantity > 0)
     .sort((a, b) => a.materialId.localeCompare(b.materialId));
 
-  const requirements = recipe.requirements.map((requirement) => ({
-    id: requirement.id,
-    target: requirement.value,
-    requirement,
-  }));
-
-  const contributions = stacks.map((stack) => requirements.map(({ requirement }) => budgetContribution(stack.material, requirement)));
-
-  const missing = requirements.map((req, reqIndex) => {
-    const availableValue = stacks.reduce((sum, stack, stackIndex) => sum + contributions[stackIndex][reqIndex] * stack.quantity, 0);
+  const requirements = recipe.requirements;
+  const missing = requirements.map(requirement => {
+    const availableValue = stacks.reduce(
+      (max, stack) => Math.max(max, budgetContribution(stack.material, requirement)), 0
+    );
     return {
-      requirementId: req.id,
-      propertyId: req.requirement.match.property,
-      requiredValue: req.target,
+      requirementId: requirement.id,
+      propertyId: requirement.match.property,
+      requiredValue: requirement.value,
       availableValue,
-      missingValue: Math.max(0, req.target - availableValue),
+      missingValue: Math.max(0, requirement.value - availableValue),
     };
-  }).filter((entry) => entry.missingValue > 0);
+  }).filter(entry => entry.missingValue > 0);
 
-  if (missing.length) {
-    return { green: false, reason: "insufficient-property-budget", recipeId: recipe.id, allocations: [], missing };
-  }
+  if (missing.length)
+    return {
+      green: false,
+      reason: "insufficient-property-threshold",
+      recipeId: recipe.id,
+      allocations: [],
+      missing,
+    };
 
-  const memo = new Map();
-  function solve(index, remaining) {
-    if (remaining.every((value) => value <= 0)) return { units: 0, counts: Array(stacks.length).fill(0) };
-    if (index >= stacks.length) return null;
+  // Une unité d'un matériau peut couvrir plusieurs propriétés.
+  // Recherche de la combinaison avec le moins d'unités consommées.
+  const candidates = stacks.filter(stack =>
+    requirements.some(requirement =>
+      budgetContribution(stack.material, requirement) >= requirement.value
+    )
+  );
 
-    const key = `${index}|${remaining.map((value) => Math.max(0, value)).join(",")}`;
-    if (memo.has(key)) return memo.get(key);
+  let best = null;
 
-    const stack = stacks[index];
-    const vector = contributions[index];
-    const useful = vector.some((value, reqIndex) => value > 0 && remaining[reqIndex] > 0);
-    const maxUseful = useful
-      ? Math.min(
-          stack.quantity,
-          Math.max(...remaining.map((value, reqIndex) => vector[reqIndex] > 0 ? Math.ceil(Math.max(0, value) / vector[reqIndex]) : 0)),
-        )
-      : 0;
-
-    let best = null;
-    for (let count = 0; count <= maxUseful; count += 1) {
-      const nextRemaining = remaining.map((value, reqIndex) => Math.max(0, value - vector[reqIndex] * count));
-      const tail = solve(index + 1, nextRemaining);
-      if (!tail) continue;
-      const candidate = { units: count + tail.units, counts: [...tail.counts] };
-      candidate.counts[index] = count;
-      if (!best || candidate.units < best.units) best = candidate;
+  function search(index, chosen, covered) {
+    if (covered.every(Boolean)) {
+      if (!best || chosen.length < best.length)
+        best = [...chosen];
+      return;
     }
 
-    memo.set(key, best);
-    return best;
+    if (index >= candidates.length) return;
+    if (best && chosen.length >= best.length) return;
+
+    const stack = candidates[index];
+    const nextCovered = requirements.map((requirement, i) =>
+      covered[i] ||
+      budgetContribution(stack.material, requirement) >= requirement.value
+    );
+
+    search(index + 1, [...chosen, stack], nextCovered);
+    search(index + 1, chosen, covered);
   }
 
-  const solution = solve(0, requirements.map((req) => req.target));
-  if (!solution) {
-    return { green: false, reason: "property-allocation-conflict", recipeId: recipe.id, allocations: [], missing: [{ requirementId: "allocation-conflict", missingValue: 1 }] };
-  }
+  search(0, [], requirements.map(() => false));
 
-  const allocations = stacks
-    .map((stack, index) => ({ materialId: stack.materialId, quantity: solution.counts[index] ?? 0 }))
-    .filter((entry) => entry.quantity > 0);
+  if (!best)
+    return {
+      green: false,
+      reason: "property-allocation-conflict",
+      recipeId: recipe.id,
+      allocations: [],
+      missing: [],
+    };
 
-  const achieved = requirements.map((req, reqIndex) => ({
-    requirementId: req.id,
-    propertyId: req.requirement.match.property,
-    requiredValue: req.target,
-    achievedValue: allocations.reduce((sum, allocation) => {
-      const stackIndex = stacks.findIndex((stack) => stack.materialId === allocation.materialId);
-      return sum + contributions[stackIndex][reqIndex] * allocation.quantity;
-    }, 0),
+  const allocations = best.map(stack => ({
+    materialId: stack.materialId,
+    quantity: 1,
   }));
 
-  return { green: true, recipeId: recipe.id, allocations, achieved, totalUnits: solution.units, missing: [] };
-}
+  const achieved = requirements.map(requirement => ({
+    requirementId: requirement.id,
+    propertyId: requirement.match.property,
+    requiredValue: requirement.value,
+    achievedValue: best.reduce(
+      (max, stack) => Math.max(max, budgetContribution(stack.material, requirement)), 0
+    ),
+  }));
 
+  return {
+    green: true,
+    recipeId: recipe.id,
+    allocations,
+    achieved,
+    totalUnits: allocations.length,
+    missing: [],
+  };
+}
 export function allocateRecipe(recipe, inventory, materialCatalog) {
   validateRecipe(recipe);
   if (recipeMode(recipe) === "property-budget") return allocatePropertyBudgetRecipe(recipe, inventory, materialCatalog);
@@ -184,4 +198,54 @@ export function allocateRecipe(recipe, inventory, materialCatalog) {
     grouped.set(key, current);
   }
   return { green: true, recipeId: recipe.id, allocations: [...grouped.values()], missing: [] };
+}
+
+// Validate an explicit material choice against the current inventory and recipe.
+// Unlike the automatic solver, this never silently substitutes materials.
+export function validateRecipeSelection(recipe, inventory, materialCatalog, selection) {
+  validateRecipe(recipe);
+  if (!Array.isArray(selection) || !Array.isArray(inventory) || !Array.isArray(materialCatalog))
+    return { green: false, reason: "craft-selection-invalid" };
+  const catalog = new Map(materialCatalog.map(m => { validateMaterial(m); return [m.id, m]; }));
+  const stock = new Map();
+  for (const stack of inventory) {
+    if (!stack || typeof stack.materialId !== "string" || !Number.isSafeInteger(stack.quantity) || stack.quantity < 0)
+      return { green: false, reason: "craft-inventory-invalid" };
+    stock.set(stack.materialId, (stock.get(stack.materialId) ?? 0) + stack.quantity);
+  }
+  const selected = new Map();
+  for (const entry of selection) {
+    if (!entry || typeof entry.materialId !== "string" || !Number.isSafeInteger(entry.quantity) || entry.quantity <= 0 || !catalog.has(entry.materialId))
+      return { green: false, reason: "craft-selection-invalid" };
+    selected.set(entry.materialId, (selected.get(entry.materialId) ?? 0) + entry.quantity);
+  }
+  for (const [id, quantity] of selected) {
+    if (quantity > (stock.get(id) ?? 0)) return { green: false, reason: "craft-selection-stock-changed", materialId: id };
+  }
+  const allocations = [...selected].map(([materialId, quantity]) => ({ materialId, quantity }));
+  if (recipeMode(recipe) === "property-budget") {
+    const achieved = recipe.requirements.map(requirement => {
+      const achievedValue = allocations.reduce((max, a) => Math.max(max, budgetContribution(catalog.get(a.materialId), requirement)), 0);
+      return { requirementId: requirement.id, propertyId: requirement.match.property, requiredValue: requirement.value, achievedValue };
+    });
+    const missing = achieved.filter(a => a.achievedValue < a.requiredValue).map(a => ({ ...a, missingValue: a.requiredValue - a.achievedValue }));
+    return missing.length ? { green: false, reason: "craft-selection-insufficient-properties", missing } :
+      { green: true, recipeId: recipe.id, allocations, achieved, totalUnits: allocations.reduce((n,a) => n+a.quantity,0), missing: [] };
+  }
+  // Legacy recipes: allocate the chosen units across distinct requirement slots.
+  const demands = recipe.requirements.flatMap(r => Array.from({length:r.units}, () => r));
+  const remaining = new Map(selected);
+  function solve(index) {
+    if (index === demands.length) return true;
+    for (const [id, count] of remaining) {
+      if (count <= 0 || !legacyMatches(catalog.get(id), demands[index].match)) continue;
+      remaining.set(id, count - 1);
+      if (solve(index + 1)) return true;
+      remaining.set(id, count);
+    }
+    return false;
+  }
+  if (allocations.reduce((n,a)=>n+a.quantity,0) !== demands.length || !solve(0))
+    return { green: false, reason: "craft-selection-requirements-not-met" };
+  return { green: true, recipeId: recipe.id, allocations, missing: [] };
 }

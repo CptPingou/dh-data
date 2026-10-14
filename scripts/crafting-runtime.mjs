@@ -1,5 +1,5 @@
 import { materialPropertyIds, recipeMode, validateRecipeCatalog } from "./crafting-schema.mjs";
-import { allocateRecipe } from "./crafting-recipe-engine.mjs";
+import { allocateRecipe, validateRecipeSelection } from "./crafting-recipe-engine.mjs";
 
 const MODULE_ID = "daggerheart-campaign-toolkit";
 
@@ -540,6 +540,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     crafter,
     recipeId,
     expeditionId,
+    componentSelection = null,
   } = {}) {
     const recipe =
       await getCraftingRecipe(recipeId);
@@ -628,11 +629,9 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
             totalUnits: 0,
             achieved: [],
           }
-        : allocateRecipe(
-            recipe,
-            inventory,
-            knownDefinitions
-          );
+        : componentSelection !== null
+          ? validateRecipeSelection(recipe, inventory, knownDefinitions, componentSelection)
+          : allocateRecipe(recipe, inventory, knownDefinitions);
 
     return {
       ...allocation,
@@ -654,6 +653,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     crafter,
     augmentId,
     expeditionId,
+    componentSelection = null,
   } = {}) {
     const recipe =
       await getCraftingRecipeForOutput(
@@ -674,6 +674,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
         crafter,
         recipeId: recipe.id,
         expeditionId,
+        componentSelection,
       });
 
     return {
@@ -688,6 +689,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     augmentId,
     expeditionId,
     operationId = null,
+    componentSelection = null,
   } = {}) {
     if (!game.user?.isGM) {
       throw new Error("Biological craft mutation is GM-only.");
@@ -749,6 +751,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
       crafter,
       augmentId,
       expeditionId,
+      componentSelection,
     });
 
     if (!plan?.green) return plan;
@@ -878,7 +881,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
 
   // R4.8e: one manifest save contains both material removal and delivery.
   // A deterministic delivery entryId permits safe recovery after a failed acknowledgement.
-  async function craftConsumable({ crafter, recipeId, expeditionId, operationId } = {}) {
+  async function craftConsumable({ crafter, recipeId, expeditionId, operationId, componentSelection = null } = {}) {
     if (!game.user?.isGM) throw new Error("Consumable craft is GM-only.");
     operationId = String(operationId ?? "").trim();
     if (!operationId || !/^[a-zA-Z0-9_-]{8,160}$/.test(operationId))
@@ -905,7 +908,7 @@ export function createCraftingRuntimeApi({ materialsApi, knowledgeApi, manifestA
     const item = await fromUuid(outputUuid);
     if (item?.documentName !== "Item" || item.type !== "consumable")
       return { green: false, reason: "consumable-source-not-found" };
-    const plan = await planRecipe({ crafter, recipeId, expeditionId });
+    const plan = await planRecipe({ crafter, recipeId, expeditionId, componentSelection });
     if (!plan.green) return plan;
     // Fail closed if the container changed between planning and mutation.
     if (plan.containerId !== containerId) return { green: false, reason: "craft-storage-changed" };

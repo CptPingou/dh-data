@@ -10198,5 +10198,37 @@
         }
       }
     }
+  },
+  {
+    "_id": "a6c52ed92479b92a",
+    "name": "Ration",
+    "type": "consumable",
+    "img": "icons/consumables/grains/breadsticks-crackers-wrapped-ration-brown.webp",
+    "system": {
+      "description": "<p>Une ration de voyage.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Daggerheart — utilitaires homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {},
+      "consumeOnUse": true
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "dhct.supplies.ration",
+        "canonicalSourceId": "dhct.supplies.ration",
+        "managed": true,
+        "kind": "supplies",
+        "lootCategory": "supplies",
+        "contentLocale": "fr",
+        "contentOrigin": "homebrew",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "sourceNamespace": "dhct-utility"
+      }
+    }
   }
 ]

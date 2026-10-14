@@ -131,15 +131,9 @@ function canonicalCaravanComponentName(
       : "";
 
   return (
-    CANONICAL_WHEEL_NAMES[id] ??
-    (
-      nonEmpty(component?.name)
-        ? component.name.trim()
-        : (
-            id ||
-            "Composant"
-          )
-    )
+    nonEmpty(component?.name)
+      ? component.name.trim()
+      : (CANONICAL_WHEEL_NAMES[id] ?? id ?? "Composant")
   );
 }
 

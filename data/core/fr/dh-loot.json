@@ -5518,5 +5518,194 @@
         }
       }
     }
+  },
+  {
+    "_id": "bcb1d2e2de427fd7",
+    "name": "Torche",
+    "type": "loot",
+    "img": "icons/sundries/lights/torch-brown-lit.webp",
+    "system": {
+      "description": "<p>Source de lumière transportable.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Daggerheart — utilitaires homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "dhct.equipment.torch",
+        "canonicalSourceId": "dhct.equipment.torch",
+        "managed": true,
+        "kind": "equipment",
+        "lootCategory": "equipment",
+        "contentLocale": "fr",
+        "contentOrigin": "homebrew",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "sourceNamespace": "dhct-utility"
+      }
+    }
+  },
+  {
+    "_id": "02d651c9970aeb42",
+    "name": "Pièce",
+    "type": "loot",
+    "img": "icons/commodities/currency/coin-embossed-sword-copper.webp",
+    "system": {
+      "description": "<p>Unité physique de monnaie.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Daggerheart — utilitaires homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "dhct.currency.coin",
+        "canonicalSourceId": "dhct.currency.coin",
+        "managed": true,
+        "kind": "currency",
+        "lootCategory": "currency",
+        "contentLocale": "fr",
+        "contentOrigin": "homebrew",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "sourceNamespace": "dhct-utility"
+      }
+    }
+  },
+  {
+    "_id": "24b005d3dea58596",
+    "name": "Poignée de pièces",
+    "type": "loot",
+    "img": "icons/containers/bags/pouch-leather-simple-tan.webp",
+    "system": {
+      "description": "<p>Équivalent de 10 pièces.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Daggerheart — utilitaires homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "dhct.currency.handful",
+        "canonicalSourceId": "dhct.currency.handful",
+        "managed": true,
+        "kind": "currency",
+        "lootCategory": "currency",
+        "contentLocale": "fr",
+        "contentOrigin": "homebrew",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "sourceNamespace": "dhct-utility",
+        "currencyEquivalentCoins": 10
+      }
+    }
+  },
+  {
+    "_id": "f4ea4027b9709bc7",
+    "name": "Sac de pièces",
+    "type": "loot",
+    "img": "icons/commodities/currency/coins-plain-pouch-gold.webp",
+    "system": {
+      "description": "<p>Équivalent de 10 poignées de pièces.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Daggerheart — utilitaires homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "dhct.currency.bag",
+        "canonicalSourceId": "dhct.currency.bag",
+        "managed": true,
+        "kind": "currency",
+        "lootCategory": "currency",
+        "contentLocale": "fr",
+        "contentOrigin": "homebrew",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "sourceNamespace": "dhct-utility",
+        "currencyEquivalentCoins": 100
+      }
+    }
+  },
+  {
+    "_id": "af0b9decd8f62757",
+    "name": "Coffre de pièces",
+    "type": "loot",
+    "img": "icons/containers/chest/chest-reinforced-steel-brown.webp",
+    "system": {
+      "description": "<p>Équivalent de 10 sacs de pièces.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Daggerheart — utilitaires homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "dhct.currency.chest",
+        "canonicalSourceId": "dhct.currency.chest",
+        "managed": true,
+        "kind": "currency",
+        "lootCategory": "currency",
+        "contentLocale": "fr",
+        "contentOrigin": "homebrew",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "sourceNamespace": "dhct-utility",
+        "currencyEquivalentCoins": 1000
+      }
+    }
+  },
+  {
+    "_id": "a4f86c1fdc5c4712",
+    "name": "Gemme",
+    "type": "loot",
+    "img": "icons/commodities/gems/gem-faceted-oval-blue.webp",
+    "system": {
+      "description": "<p>Richesse concentrée ; valeur fixée par le MJ.</p>",
+      "quantity": 1,
+      "attribution": {
+        "source": "Daggerheart — utilitaires homebrew",
+        "page": null,
+        "artist": ""
+      },
+      "gmNotes": "",
+      "actions": {}
+    },
+    "effects": [],
+    "flags": {
+      "daggerheart-campaign-toolkit": {
+        "sourceId": "dhct.wealth.gem",
+        "canonicalSourceId": "dhct.wealth.gem",
+        "managed": true,
+        "kind": "wealth",
+        "lootCategory": "wealth",
+        "contentLocale": "fr",
+        "contentOrigin": "homebrew",
+        "contentOwner": "daggerheart-campaign-toolkit",
+        "sourceNamespace": "dhct-utility"
+      }
+    }
   }
 ]
