@@ -1,0 +1,662 @@
+{
+  "schema": "dhct.expedition-transfer@1",
+  "expeditionId": "test-drag-drop",
+  "revision": 15,
+  "authority": "web",
+  "phase": "prepared",
+  "characters": [
+    {
+      "characterId": "foundry-character-LnbQjzGv9YeIvP4W",
+      "name": "test2",
+      "foundryActorUuid": "Actor.LnbQjzGv9YeIvP4W",
+      "backpack": {
+        "containerId": "foundry-backpack-LnbQjzGv9YeIvP4W",
+        "capacity": {
+          "slots": 8
+        },
+        "storageProfile": {
+          "accepts": [],
+          "mergeStacks": true
+        },
+        "materialStorage": {
+          "accepts": [],
+          "stackLimit": 1,
+          "mergeStacks": false
+        },
+        "contents": [
+          {
+            "entryId": "srd-2-0-consumable-core-15-morphing-clay-1",
+            "sourceId": "srd-2.0.consumable.core-15-morphing-clay",
+            "quantity": 1,
+            "display": {
+              "name": "Argile métamorphe",
+              "img": "icons/commodities/stone/ore-chunk-brown.webp",
+              "type": "consumable"
+            },
+            "foundryItemUuid": "Compendium.daggerheart-campaign-toolkit.dh-consumables.Item.tZhbYT5sFV32O2cS"
+          }
+        ]
+      },
+      "materialKnowledge": {
+        "materials": {}
+      },
+      "materialKnowledgeCoverage": "not-audited"
+    },
+    {
+      "characterId": "foundry-character-2x0apGuiZlElFoVT",
+      "name": "Témoin",
+      "foundryActorUuid": "Actor.2x0apGuiZlElFoVT",
+      "backpack": {
+        "containerId": "foundry-backpack-2x0apGuiZlElFoVT",
+        "capacity": {
+          "slots": 8
+        },
+        "storageProfile": {
+          "accepts": [],
+          "mergeStacks": true
+        },
+        "materialStorage": {
+          "accepts": [],
+          "stackLimit": 1,
+          "mergeStacks": false
+        },
+        "contents": []
+      },
+      "materialKnowledge": {
+        "materials": {}
+      },
+      "materialKnowledgeCoverage": "not-audited"
+    },
+    {
+      "characterId": "foundry-character-eAj8QUyotLzQk8rX",
+      "name": "00arti",
+      "foundryActorUuid": "Actor.eAj8QUyotLzQk8rX",
+      "backpack": {
+        "containerId": "foundry-backpack-eAj8QUyotLzQk8rX",
+        "capacity": {
+          "slots": 8
+        },
+        "storageProfile": {
+          "accepts": [],
+          "mergeStacks": true
+        },
+        "materialStorage": {
+          "accepts": [],
+          "stackLimit": 1,
+          "mergeStacks": false
+        },
+        "contents": []
+      },
+      "materialKnowledge": {
+        "materials": {
+          "mh.vespoid.wing": {
+            "discoveredProperties": {
+              "light": {
+                "discoveredAt": 1791363099048,
+                "source": {
+                  "type": "fob-research",
+                  "queueEntryId": "1abcca85-64e7-484e-a2d6-b0e14bd3f572",
+                  "fobTurn": 13
+                }
+              },
+              "resonant": {
+                "discoveredAt": 1791793733158,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "flexible": {
+                "discoveredAt": 1791793735126,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.vespoid.gland": {
+            "discoveredProperties": {
+              "conductive": {
+                "discoveredAt": 1791292175727,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "electric": {
+                "discoveredAt": 1791292180065,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.basic.eau-de-source": {
+            "discoveredProperties": {
+              "resonant": {
+                "discoveredAt": 1791793688407,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "conductive": {
+                "discoveredAt": 1791815459641,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "light": {
+                "discoveredAt": 1791815460653,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.basic.filament-insecte": {
+            "discoveredProperties": {
+              "resonant": {
+                "discoveredAt": 1791793699422,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "flexible": {
+                "discoveredAt": 1791899532051,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "light": {
+                "discoveredAt": 1791899533680,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.basic.racine-amere": {
+            "discoveredProperties": {
+              "rigid": {
+                "discoveredAt": 1791809095915,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "reinforcing": {
+                "discoveredAt": 1791809097067,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "dense": {
+                "discoveredAt": 1791809099027,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.basic.herbes-communes": {
+            "discoveredProperties": {
+              "light": {
+                "discoveredAt": 1791809144205,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "resonant": {
+                "discoveredAt": 1791809145789,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "flexible": {
+                "discoveredAt": 1791815493717,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.basic.spores-luminescentes": {
+            "discoveredProperties": {
+              "resonant": {
+                "discoveredAt": 1791818834599,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "light": {
+                "discoveredAt": 1791818837806,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "conductive": {
+                "discoveredAt": 1791818840206,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.tetsucabra.hide": {
+            "discoveredProperties": {
+              "flexible": {
+                "discoveredAt": 1791818852646,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "dense": {
+                "discoveredAt": 1791818856014,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "reinforcing": {
+                "discoveredAt": 1791818858135,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.basic.argile-fine": {
+            "discoveredProperties": {
+              "dense": {
+                "discoveredAt": 1791899575713,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "reinforcing": {
+                "discoveredAt": 1791899578769,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "rigid": {
+                "discoveredAt": 1791899581834,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          },
+          "mh.basic.sève-claire": {
+            "discoveredProperties": {
+              "resonant": {
+                "discoveredAt": 1791899615347,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "reinforcing": {
+                "discoveredAt": 1791899618408,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              },
+              "flexible": {
+                "discoveredAt": 1791899621560,
+                "source": {
+                  "type": "gm-research-status"
+                }
+              }
+            },
+            "propertyStatuses": {}
+          }
+        }
+      },
+      "materialKnowledgeCoverage": "captured"
+    },
+    {
+      "characterId": "foundry-character-yCIKjFUNDPGcnaj7",
+      "name": "Porteur",
+      "foundryActorUuid": "Actor.yCIKjFUNDPGcnaj7",
+      "backpack": {
+        "containerId": "foundry-backpack-yCIKjFUNDPGcnaj7",
+        "capacity": {
+          "slots": 8
+        },
+        "storageProfile": {
+          "accepts": [],
+          "mergeStacks": true
+        },
+        "materialStorage": {
+          "accepts": [],
+          "stackLimit": 1,
+          "mergeStacks": false
+        },
+        "contents": []
+      },
+      "materialKnowledge": {
+        "materials": {}
+      },
+      "materialKnowledgeCoverage": "not-audited"
+    }
+  ],
+  "caravan": {
+    "structure": {
+      "schema": "daggerheart-campaign-toolkit/expedition-caravan@1",
+      "id": "caravan",
+      "name": "Caravane",
+      "locationRef": null,
+      "asset": {
+        "src": null
+      },
+      "components": [
+        {
+          "id": "wheel-front-left",
+          "type": "wheel",
+          "name": "Roue avant gauche",
+          "hp": {
+            "value": 10,
+            "max": 10
+          },
+          "containerId": null,
+          "layout": {
+            "x": 0.12,
+            "y": 0.16,
+            "width": 0.1,
+            "height": 0.12,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "wheel-front-right",
+          "type": "wheel",
+          "name": "Roue avant droite",
+          "hp": {
+            "value": 10,
+            "max": 10
+          },
+          "containerId": null,
+          "layout": {
+            "x": 0.78,
+            "y": 0.16,
+            "width": 0.1,
+            "height": 0.12,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "wheel-rear-left",
+          "type": "wheel",
+          "name": "Roue arrière gauche",
+          "hp": {
+            "value": 10,
+            "max": 10
+          },
+          "containerId": null,
+          "layout": {
+            "x": 0.12,
+            "y": 0.74,
+            "width": 0.1,
+            "height": 0.12,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "wheel-rear-right",
+          "type": "wheel",
+          "name": "Roue arrière droite",
+          "hp": {
+            "value": 10,
+            "max": 10
+          },
+          "containerId": null,
+          "layout": {
+            "x": 0.78,
+            "y": 0.74,
+            "width": 0.1,
+            "height": 0.12,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-05-chest",
+          "type": "storage-chest",
+          "name": "Coffre",
+          "hp": {
+            "value": 10,
+            "max": 10
+          },
+          "containerId": "caravan-cargo-05-chest",
+          "layout": {
+            "x": 0,
+            "y": 0,
+            "width": 0.1,
+            "height": 0.1,
+            "rotation": 0
+          },
+          "state": {
+            "equipmentDefinitionId": "chest"
+          }
+        }
+      ],
+      "cargoSlots": [
+        {
+          "id": "cargo-01",
+          "name": "Cargo 01",
+          "componentId": null,
+          "layout": {
+            "x": 0.25,
+            "y": 0.31,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-02",
+          "name": "Cargo 02",
+          "componentId": null,
+          "layout": {
+            "x": 0.38,
+            "y": 0.31,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-03",
+          "name": "Cargo 03",
+          "componentId": null,
+          "layout": {
+            "x": 0.51,
+            "y": 0.31,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-04",
+          "name": "Cargo 04",
+          "componentId": null,
+          "layout": {
+            "x": 0.64,
+            "y": 0.31,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-05",
+          "name": "Cargo 05",
+          "componentId": "cargo-05-chest",
+          "layout": {
+            "x": 0.25,
+            "y": 0.54,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-06",
+          "name": "Cargo 06",
+          "componentId": null,
+          "layout": {
+            "x": 0.38,
+            "y": 0.54,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-07",
+          "name": "Cargo 07",
+          "componentId": null,
+          "layout": {
+            "x": 0.51,
+            "y": 0.54,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        },
+        {
+          "id": "cargo-08",
+          "name": "Cargo 08",
+          "componentId": null,
+          "layout": {
+            "x": 0.64,
+            "y": 0.54,
+            "width": 0.11,
+            "height": 0.14,
+            "rotation": 0
+          },
+          "state": {}
+        }
+      ],
+      "state": {}
+    },
+    "containers": [
+      {
+        "containerId": "caravan-cargo-05-chest",
+        "capacity": {
+          "slots": 1
+        },
+        "storageProfile": {
+          "accepts": [],
+          "mergeStacks": true
+        },
+        "materialStorage": null,
+        "contents": [
+          {
+            "entryId": "dhct-currency-handful-1",
+            "sourceId": "dhct.currency.handful",
+            "quantity": 1,
+            "display": {
+              "name": "Poignée de pièces",
+              "img": "icons/commodities/currency/coins-plain-pouch-gold.webp",
+              "type": "loot"
+            },
+            "foundryItemUuid": "Compendium.daggerheart-campaign-toolkit.dh-loot.Item.24b005d3dea58596"
+          }
+        ]
+      }
+    ]
+  },
+  "research": {
+    "partyMaterialKnowledge": {
+      "scope": "party",
+      "materials": {
+        "mh.vespoid.wing": {
+          "documentedProperties": {}
+        },
+        "mh.vespoid.gland": {
+          "documentedProperties": {}
+        },
+        "mh.basic.eau-de-source": {
+          "documentedProperties": {}
+        },
+        "mh.basic.filament-insecte": {
+          "documentedProperties": {}
+        },
+        "mh.basic.racine-amere": {
+          "documentedProperties": {}
+        },
+        "mh.basic.herbes-communes": {
+          "documentedProperties": {}
+        },
+        "mh.basic.spores-luminescentes": {
+          "documentedProperties": {}
+        },
+        "mh.tetsucabra.hide": {
+          "documentedProperties": {}
+        },
+        "mh.basic.argile-fine": {
+          "documentedProperties": {}
+        },
+        "mh.basic.sève-claire": {
+          "documentedProperties": {}
+        }
+      }
+    },
+    "revelations": [
+      {
+        "id": "revelation.manual.g5Qz9vNknrZPwUFV",
+        "researchId": "dhakaan",
+        "title": "test",
+        "status": "discovered",
+        "discoveredBy": [
+          "foundry-character-eAj8QUyotLzQk8rX"
+        ],
+        "sharedWith": [],
+        "archived": false,
+        "grantedTags": [
+          "dhakaan.forge"
+        ],
+        "unlocks": [
+          {
+            "type": "location",
+            "ref": "location.forge"
+          }
+        ],
+        "export": {
+          "enabled": false,
+          "target": "none"
+        }
+      }
+    ]
+  },
+  "transferPolicy": {
+    "fobStock": "reset-on-import",
+    "groundInventory": "excluded",
+    "narrativeTopics": "web-only",
+    "characterSheets": "excluded",
+    "infusions": "excluded",
+    "weaponAugments": "excluded"
+  },
+  "metadata": {
+    "exampleOnly": true,
+    "source": "Foundry audits: test-drag-drop-P3.4-inventory.json + 00arti-P3.4-knowledge-2.json",
+    "note": "Knowledge for other three characters NOT audited; do not import as an authoritative snapshot."
+  }
+}

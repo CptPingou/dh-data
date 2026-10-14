@@ -6669,8 +6669,9 @@ async function configureExpeditionShell(
     participantsButton.addEventListener("click", async () => {
       const expeditionApi = getApi()?.expeditionManifest;
       const assign = getApi()?.expeditionWorld?.assign;
+      const removeParticipant = getApi()?.expeditionWorld?.removeParticipant;
 
-      if (!expeditionApi?.list || !expeditionApi?.load || !assign) {
+      if (!expeditionApi?.list || !expeditionApi?.load || !assign || !removeParticipant) {
         ui.notifications.error("Gestion des participants indisponible.");
         return;
       }
@@ -6710,10 +6711,10 @@ async function configureExpeditionShell(
           )
         );
 
-        const disabled = assignedHere || assignedElsewhere;
+        const disabled = assignedElsewhere;
 
         const status = assignedHere
-          ? "Déjà affecté"
+          ? "Dans cette expédition"
           : assignedElsewhere
             ? "Autre expédition"
             : "Disponible";
@@ -6725,7 +6726,8 @@ async function configureExpeditionShell(
             <input type="checkbox"
                    name="participant"
                    value="${escapeHtml(actor.uuid)}"
-                   ${disabled ? "disabled" : ""}>
+                   data-assigned-here="${assignedHere}"
+                   ${assignedHere ? "checked" : ""} ${disabled ? "disabled" : ""}>
             <span style="flex:1">${escapeHtml(actor.name)}</span>
             <small>${escapeHtml(status)}</small>
           </label>
@@ -6734,7 +6736,7 @@ async function configureExpeditionShell(
 
       const content = `
         <section class="dhct-participants-manager">
-          <p>Sélectionner les acteurs à ajouter à l'expédition.</p>
+          <p>Cochez pour ajouter un acteur. Décochez un participant pour le retirer après confirmation. Un sac non vide bloque le retrait.</p>
 
           <nav style="display:flex;gap:6px;margin-bottom:10px">
             <button type="button" data-filter="all">Tous</button>
@@ -6749,6 +6751,8 @@ async function configureExpeditionShell(
           </div>
         </section>
       `;
+
+      let participantsChanged = false;
 
       const selected = await foundry.applications.api.DialogV2.wait({
         window: {
@@ -6768,15 +6772,46 @@ async function configureExpeditionShell(
             callback: (_event, button, dialog) => {
               const root = dialog.element;
 
-              return [...root.querySelectorAll(
-                'input[name="participant"]:checked'
-              )].map(input => input.value);
+              return [...root.querySelectorAll('input[name="participant"]:checked:not([data-assigned-here="true"])')]
+                .map(input => input.value);
             }
           }
         ],
         render: (_event, dialog) => {
           const root = dialog.element;
 
+          root.querySelectorAll('input[name="participant"][data-assigned-here="true"]').forEach(input => {
+            input.addEventListener("change", async () => {
+              if (input.checked) return;
+              input.checked = true; // conserver l'état jusqu'à la confirmation et la sauvegarde
+              const actorName = input.closest("label")?.querySelector("span")?.textContent ?? input.value;
+              const confirmed = await foundry.applications.api.DialogV2.confirm({
+                window: { title: "Retirer un participant" },
+                content: `<p>Retirer <strong>${escapeHtml(actorName)}</strong> de l'expédition <strong>${escapeHtml(current.expeditionId)}</strong> ?</p><p>Le personnage et son sac vide seront désaffectés. Le contenu d'un sac non vide empêche le retrait.</p>`,
+                rejectClose: false
+              });
+              if (!confirmed) return;
+              input.disabled = true;
+              const result = await removeParticipant({ expeditionId: current.expeditionId, actorUuid: input.value });
+              if (!result.green) {
+                input.disabled = false;
+                ui.notifications.error(result.reason === "backpack-not-empty"
+                  ? "Retrait refusé : vider le sac à dos avant de retirer ce participant."
+                  : `Retrait refusé : ${result.reason}`);
+                console.warn("DHCT | participants remove", result);
+                return;
+              }
+              participantsChanged = true;
+              // Reclasser la ligne comme disponible au lieu de laisser un état périmé.
+              input.dataset.assignedHere = "false";
+              input.checked = false;
+              input.disabled = false;
+              const status = input.closest("label")?.querySelector("small");
+              if (status) status.textContent = "Disponible";
+              ui.notifications.info(`${actorName} retiré de l'expédition (révision ${result.revision}).`);
+              console.log("DHCT | participants remove GREEN", result);
+            });
+          });
           root.querySelectorAll("[data-filter]").forEach(button => {
             button.addEventListener("click", () => {
               const filter = button.dataset.filter;
@@ -6795,30 +6830,35 @@ async function configureExpeditionShell(
         }
       });
 
-      if (!selected?.length) return;
+      if (selected?.length) {
+        const result = await assign({
+          expeditionId: current.expeditionId,
+          actorUuids: selected
+        });
 
-      const result = await assign({
-        expeditionId: current.expeditionId,
-        actorUuids: selected
-      });
-
-      if (!result.green) {
-        ui.notifications.error(
-          "Affectation refusée : " + result.reason
-        );
-        console.warn("DHCT | participants assign", result);
-        return;
+        if (!result.green) {
+          ui.notifications.error("Affectation refusée : " + result.reason);
+          console.warn("DHCT | participants assign", result);
+        } else {
+          participantsChanged = true;
+          ui.notifications.info(
+            `${result.actors} participant(s) traité(s), ` +
+            `${result.backpacksCreated} sac(s) créé(s).`
+          );
+          console.log("DHCT | participants assign GREEN", result);
+        }
       }
 
-      ui.notifications.info(
-        `${result.actors} participant(s) traité(s), ` +
-        `${result.backpacksCreated} sac(s) créé(s).`
-      );
-
-      console.log("DHCT | participants assign GREEN", result);
-
-      // Les données sont sauvegardées par assign().
-      // Rafraîchissement complet de la fenêtre à intégrer séparément.
+      // Le shell d'expédition réutilise sinon son ancien manifeste.
+      // Reconstruire la fenêtre principale après fermeture du dialogue modal.
+      if (participantsChanged) {
+        try {
+          await reopenExpeditionDialog(getApi(), current);
+        } catch (error) {
+          console.error("DHCT | participants refresh failed", error);
+          ui.notifications.error("Participants enregistrés, mais rafraîchissement impossible : rouvrir l'expédition.");
+        }
+      }
     });
   }
 

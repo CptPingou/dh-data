@@ -1,50 +1,30 @@
-# Artificer subclass link fix
+# P3.4 — Kit de transfert Foundry / base de travail Web
 
-But
----
-Le lien `system.linkedClass` des sous-classes Artificier est déjà correctement résolu
-vers l'UUID de la classe Artificier. Le problème restant est uniquement que
-`mappingGaps` conserve deux marqueurs devenus obsolètes :
-- `system.linkedClass`
-- `system.features`
+**Installation :** extraire à la racine du dépôt `E:\Dev\DH Data` (dossiers `tools/`, `schemas/`, `web/`, `docs/`, `examples/`). Aucune modification du runtime Foundry. Les scripts Foundry sont les versions déjà éprouvées en P3.4b / P3.4c.2.
 
-Ce patch retire ces deux gaps après résolution effective des liens.
+## Export depuis Foundry (MJ)
+1. Ouvrir le monde, console F12, exécuter le contenu de `tools/p34b-export-foundry.js`.
+2. Sauvegarder le JSON téléchargé dans `examples/`.
+3. `python .\tools\validate_transfer.py ".\examples\<nom-export>.json"`
 
-Installation
-------------
-Depuis PowerShell, à la racine où tu as extrait ce dossier :
+## Préparer les données pour une interface web (local, hors serveur)
+- `node .\tools\web-transfer-cli.mjs inspect ".\examples\P3.4b-transfer-test-drag-drop-r18.json"`
+- `node .\tools\web-transfer-cli.mjs stage ".\examples\P3.4b-transfer-test-drag-drop-r18.json" ".\web-state"`
+- `node .\tools\web-transfer-cli.mjs checkout ".\web-state\test-drag-drop.json" ".\examples\web-ready.json"`
+- `python .\tools\validate_transfer.py ".\examples\web-ready.json"`
 
-    powershell -ExecutionPolicy Bypass -File .\apply-artificer-link-fix.ps1 -RepoRoot C:\dev\dh-data
+`web/expedition-transfer.mjs` fournit `toWebView`, `inventoryRows` et `editCandidate` pour bâtir les composants UI. **Les fonctions ne valident pas le schéma complet** : toujours passer le validateur avant import ou persistance serveur. Le CLI local n'est pas une API web.
 
-Puis vérifie :
+## Import vers Foundry (MJ, copie de monde d'abord)
+1. Valider le fichier JSON avec Python.
+2. Ouvrir la console F12 et exécuter `tools/p34c2-import-foundry.js`.
+3. Choisir le JSON, lire le préflight, télécharger la sauvegarde, confirmer explicitement l'éventuelle remise à zéro FOB.
+4. Vérifier la révision, réexporter et comparer les données. Refuser tout préflight inattendu.
 
-    powershell -ExecutionPolicy Bypass -File .\verify-artificer-link-fix.ps1 -RepoRoot C:\dev\dh-data
+## Limites
+- Pas de synchronisation automatique, backend NAS, API HTTP, authentification, transaction atomique ni verrou distribué.
+- Pas de bascule automatique de l'autorité entre Foundry et Web.
+- L'importeur n'a été validé en situation que sur le scénario de référence `test-drag-drop` ; tester les autres expéditions sur une copie de monde.
+- Le JSON `r18` fourni est un **jeu de données de test** et non un modèle à réimporter dans un monde différent.
 
-Ensuite :
-1. `git diff -- scripts/pilot-import.mjs`
-2. déploie le repo vers le module Foundry avec ton robocopy habituel
-3. F5 dans Foundry
-4. relance :
-
-    const p = await import(
-      `/modules/daggerheart-campaign-toolkit/scripts/pilot-import.mjs?v=${Date.now()}`
-    );
-    await p.importArtificerArtillery();
-
-Contrôle final
---------------
-    const subPack = game.packs.get("daggerheart-campaign-toolkit.dh-subclasses");
-    const subs = await subPack.getDocuments();
-
-    for (const s of subs.filter(s =>
-      /artific/i.test(JSON.stringify(s.toObject()))
-    )) {
-      console.log(
-        s.name,
-        s.system?.linkedClass,
-        s.flags?.["daggerheart-campaign-toolkit"]?.mappingGaps
-      );
-    }
-
-Attendu : Armurier et Forgeron de bataille avec un UUID `linkedClass` vers
-`dh-classes` et `mappingGaps: []`.
+Lire `docs/WEB-DATA-MAPPING.md` et `schemas/expedition-transfer-v1.schema.json` avant de construire l'interface.

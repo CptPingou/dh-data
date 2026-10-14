@@ -456,6 +456,43 @@ async function assignExpeditionParticipants({ expeditionId, actorUuids = [] } = 
     revision: working.revision,
   };
 }
+// P3.4 — Désaffectation explicite, sans suppression d'inventaire.
+async function removeExpeditionParticipant({ expeditionId, actorUuid } = {}) {
+  if (!game.user?.isGM) return { green: false, reason: "gm-required" };
+  const expeditionApi = api()?.expeditionManifest;
+  if (!expeditionApi?.load || !expeditionApi?.save || !expeditionApi?.validate) {
+    return { green: false, reason: "expedition-api-unavailable" };
+  }
+  if (!expeditionId || !actorUuid) return { green: false, reason: "missing-arguments" };
+  const manifest = await expeditionApi.load(expeditionId);
+  if (!manifest) return { green: false, reason: "manifest-not-found" };
+  if (manifest.phase === "in_session") return { green: false, reason: "session-active" };
+  const character = (manifest.characters ?? []).find(c => c?.foundryActorUuid === actorUuid);
+  if (!character) return { green: false, reason: "participant-not-found" };
+  const backpacks = (manifest.containers ?? []).filter(c =>
+    c?.type === "backpack" && c?.scope === "personal" &&
+    (c?.holderRef?.foundryActorUuid === actorUuid || c?.holderRef?.id === character.characterId)
+  );
+  // Refus si un sac contient des objets : aucune perte silencieuse.
+  if (backpacks.some(c => (c.contents ?? []).length > 0)) {
+    return { green: false, reason: "backpack-not-empty" };
+  }
+  const working = structuredClone(manifest);
+  working.characters = working.characters.filter(c => c.characterId !== character.characterId);
+  const backpackIds = new Set(backpacks.map(c => c.containerId));
+  working.containers = (working.containers ?? []).filter(c => !backpackIds.has(c.containerId));
+  const validation = expeditionApi.validate(working);
+  if (!validation?.green) return { green: false, reason: "manifest-invalid", errors: validation.errors ?? [] };
+  // Revérifier l'état juste avant l'écriture pour limiter les changements concurrents.
+  const latest = await expeditionApi.load(expeditionId);
+  if (!latest || latest.revision !== manifest.revision || latest.phase === "in_session") {
+    return { green: false, reason: "state-changed" };
+  }
+  working.revision = Math.max(1, Number(working.revision) || 1) + 1;
+  await expeditionApi.save(working);
+  return { green: true, expeditionId, characterId: character.characterId, revision: working.revision };
+}
+
 async function worldExpeditionStatus() {
   const toolkitApi = api();
   const expeditionApi = toolkitApi?.expeditionManifest;
@@ -518,6 +555,7 @@ Hooks.once("ready", async () => {
   toolkitApi.expeditionWorld ??= {};
   toolkitApi.expeditionWorld.bootstrap = bootstrapWorldExpedition;
   toolkitApi.expeditionWorld.assign = assignExpeditionParticipants;
+  toolkitApi.expeditionWorld.removeParticipant = removeExpeditionParticipant;
   toolkitApi.expeditionWorld.status = worldExpeditionStatus;
   // P3.2a: affectation explicite des participants.
   // Ne plus lancer le bootstrap automatiquement au démarrage.

@@ -1,0 +1,497 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.invalid/dhct/expedition-transfer-v1.schema.json",
+  "title": "DHCT Expedition Transfer v1 (draft P3.4a.1)",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "expeditionId",
+    "revision",
+    "authority",
+    "phase",
+    "characters",
+    "caravan",
+    "research",
+    "transferPolicy"
+  ],
+  "properties": {
+    "schema": {
+      "const": "dhct.expedition-transfer@1"
+    },
+    "expeditionId": {
+      "$ref": "#/$defs/id"
+    },
+    "revision": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "authority": {
+      "enum": [
+        "foundry",
+        "web"
+      ]
+    },
+    "phase": {
+      "enum": [
+        "prepared",
+        "in_session",
+        "returned"
+      ]
+    },
+    "characters": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/character"
+      }
+    },
+    "caravan": {
+      "$ref": "#/$defs/caravan"
+    },
+    "research": {
+      "$ref": "#/$defs/research"
+    },
+    "transferPolicy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fobStock",
+        "groundInventory",
+        "narrativeTopics",
+        "characterSheets",
+        "infusions",
+        "weaponAugments"
+      ],
+      "properties": {
+        "fobStock": {
+          "const": "reset-on-import"
+        },
+        "groundInventory": {
+          "const": "excluded"
+        },
+        "narrativeTopics": {
+          "const": "web-only"
+        },
+        "characterSheets": {
+          "const": "excluded"
+        },
+        "infusions": {
+          "const": "excluded"
+        },
+        "weaponAugments": {
+          "const": "excluded"
+        }
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "nullableString": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entryId",
+        "sourceId",
+        "quantity"
+      ],
+      "properties": {
+        "entryId": {
+          "$ref": "#/$defs/id"
+        },
+        "sourceId": {
+          "$ref": "#/$defs/id"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "foundryItemUuid": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "display": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "img": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    },
+    "container": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "containerId",
+        "contents"
+      ],
+      "properties": {
+        "containerId": {
+          "$ref": "#/$defs/id"
+        },
+        "capacity": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "storageProfile": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "materialStorage": {
+          "type": [
+            "object",
+            "null"
+          ]
+        },
+        "contents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/item"
+          }
+        }
+      }
+    },
+    "character": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "characterId",
+        "name",
+        "foundryActorUuid",
+        "backpack",
+        "materialKnowledge",
+        "materialKnowledgeCoverage"
+      ],
+      "properties": {
+        "characterId": {
+          "$ref": "#/$defs/id"
+        },
+        "name": {
+          "type": "string"
+        },
+        "foundryActorUuid": {
+          "$ref": "#/$defs/id"
+        },
+        "backpack": {
+          "$ref": "#/$defs/container"
+        },
+        "materialKnowledge": {
+          "$ref": "#/$defs/personalKnowledge"
+        },
+        "materialKnowledgeCoverage": {
+          "enum": [
+            "captured",
+            "not-audited"
+          ]
+        }
+      }
+    },
+    "personalKnowledge": {
+      "type": "object",
+      "required": [
+        "materials"
+      ],
+      "additionalProperties": false,
+      "properties": {
+        "materials": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "discoveredProperties",
+              "propertyStatuses"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "discoveredProperties": {
+                "type": "object",
+                "additionalProperties": {
+                  "type": "object",
+                  "required": [
+                    "discoveredAt",
+                    "source"
+                  ],
+                  "properties": {
+                    "discoveredAt": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "source": {
+                      "type": "object"
+                    }
+                  }
+                }
+              },
+              "propertyStatuses": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "partyKnowledge": {
+      "type": "object",
+      "required": [
+        "scope",
+        "materials"
+      ],
+      "properties": {
+        "scope": {
+          "const": "party"
+        },
+        "materials": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "required": [
+              "documentedProperties"
+            ],
+            "properties": {
+              "documentedProperties": {
+                "type": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "revelation": {
+      "type": "object",
+      "required": [
+        "id",
+        "researchId",
+        "title",
+        "status",
+        "discoveredBy",
+        "sharedWith",
+        "archived",
+        "grantedTags",
+        "unlocks",
+        "export"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "researchId": {
+          "$ref": "#/$defs/id"
+        },
+        "title": {
+          "type": "string"
+        },
+        "status": {
+          "enum": [
+            "discovered",
+            "shared"
+          ]
+        },
+        "discoveredBy": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "sharedWith": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "archived": {
+          "type": "boolean"
+        },
+        "grantedTags": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "$ref": "#/$defs/id"
+          }
+        },
+        "unlocks": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "type",
+              "ref"
+            ],
+            "properties": {
+              "type": {
+                "$ref": "#/$defs/id"
+              },
+              "ref": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          }
+        },
+        "export": {
+          "type": "object",
+          "required": [
+            "enabled",
+            "target"
+          ],
+          "properties": {
+            "enabled": {
+              "type": "boolean"
+            },
+            "target": {
+              "enum": [
+                "none",
+                "campaignrepo"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "research": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "partyMaterialKnowledge",
+        "revelations"
+      ],
+      "properties": {
+        "partyMaterialKnowledge": {
+          "$ref": "#/$defs/partyKnowledge"
+        },
+        "revelations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/revelation"
+          }
+        }
+      }
+    },
+    "caravan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "structure",
+        "containers"
+      ],
+      "properties": {
+        "structure": {
+          "type": "object",
+          "required": [
+            "schema",
+            "id",
+            "components",
+            "cargoSlots"
+          ],
+          "properties": {
+            "schema": {
+              "type": "string"
+            },
+            "id": {
+              "$ref": "#/$defs/id"
+            },
+            "components": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "type",
+                  "hp",
+                  "layout"
+                ],
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "type": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "containerId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "hp": {
+                    "type": "object",
+                    "required": [
+                      "value",
+                      "max"
+                    ],
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": 0
+                      },
+                      "max": {
+                        "type": "number",
+                        "minimum": 0
+                      }
+                    }
+                  },
+                  "layout": {
+                    "type": "object"
+                  }
+                }
+              }
+            },
+            "cargoSlots": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "id",
+                  "componentId"
+                ],
+                "properties": {
+                  "id": {
+                    "$ref": "#/$defs/id"
+                  },
+                  "componentId": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "containers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/container"
+          }
+        }
+      }
+    }
+  }
+}
